@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://images/stars_panorama.png" type="Texture" id=1]
+[ext_resource path="res://models/fighter_spider/fighter_spider.dae" type="PackedScene" id=2]
 
 [sub_resource type="PanoramaSky" id=1]
 panorama = ExtResource( 1 )
@@ -22,3 +23,5 @@ environment = SubResource( 2 )
 transform = Transform( 0.866025, 0.482963, -0.12941, 0, 0.258819, 0.965926, 0.5, -0.836516, 0.224144, 0, 8, 2 )
 
 [node name="Camera" type="Camera" parent="."]
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
