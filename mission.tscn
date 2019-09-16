@@ -17,3 +17,8 @@ ambient_light_sky_contribution = 0.5
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 2 )
+
+[node name="Sun Light" type="DirectionalLight" parent="."]
+transform = Transform( 0.866025, 0.482963, -0.12941, 0, 0.258819, 0.965926, 0.5, -0.836516, 0.224144, 0, 8, 2 )
+
+[node name="Camera" type="Camera" parent="."]
