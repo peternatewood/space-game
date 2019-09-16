@@ -13,7 +13,6 @@ func post_import(scene):
 	exhaust_mesh.set_cast_shadows_setting(GeometryInstance.SHADOW_CASTING_SETTING_OFF)
 
 	# Some common physics settings
-	scene.set_gravity_scale(0)
 	scene.set_angular_damp(0.85)
 	scene.set_linear_damp(0.85)
 
