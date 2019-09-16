@@ -47,7 +47,11 @@ func _process(delta):
 			camera.transform.origin = cockpit_view.global_transform.origin
 			camera.look_at(transform.origin - 5 * transform.basis.z, transform.basis.y)
 		CHASE:
-			camera.transform.origin = chase_view.global_transform.origin
+			cam_offset = cam_offset.linear_interpolate(input_velocity, delta)
+			cam_dist = lerp(cam_dist, throttle * CAM_THROTTLE_MOD, delta)
+			var cam_up = transform.basis.y + transform.basis.x * CAM_ROLL_MOD * cam_offset.z
+
+			camera.transform.origin = chase_view.global_transform.origin - transform.basis.x * cam_offset.y + transform.basis.y * cam_offset.x + transform.basis.z * cam_dist
 			camera.look_at(transform.origin - transform.basis.z, cam_up)
 
 
@@ -64,5 +68,7 @@ func _set_cam_mode(mode: int):
 enum { COCKPIT, CHASE }
 
 const ACCELERATION: float = 0.1
+const CAM_ROLL_MOD: float = 0.25
+const CAM_THROTTLE_MOD: float = 1.5
 const MAX_THROTTLE: float = 1.0
 const TURN_SPEED: float = 2.5
