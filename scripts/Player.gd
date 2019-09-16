@@ -26,6 +26,15 @@ func _input(event):
 				_set_cam_mode(COCKPIT)
 
 
+func _physics_process(delta):
+	input_velocity.x = Input.get_action_strength("pitch_up") - Input.get_action_strength("pitch_down")
+	input_velocity.y = Input.get_action_strength("yaw_left") - Input.get_action_strength("yaw_right")
+	input_velocity.z = Input.get_action_strength("roll_left") - Input.get_action_strength("roll_right")
+
+	var torque_vector: Vector3 = transform.basis.x * input_velocity.x + transform.basis.y * input_velocity.y + transform.basis.z * input_velocity.z
+	add_torque(TURN_SPEED * torque_vector)
+
+
 func _process(delta):
 	match cam_mode:
 		COCKPIT:
@@ -47,3 +56,5 @@ func _set_cam_mode(mode: int):
 
 
 enum { COCKPIT, CHASE }
+
+const TURN_SPEED: float = 2.5
