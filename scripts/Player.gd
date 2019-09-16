@@ -24,6 +24,10 @@ func _input(event):
 				_set_cam_mode(CHASE)
 			CHASE:
 				_set_cam_mode(COCKPIT)
+	elif event.is_action("throttle_up") and event.pressed:
+		throttle = min(MAX_THROTTLE, throttle + ACCELERATION)
+	elif event.is_action("throttle_down") and event.pressed:
+		throttle = max(0, throttle - ACCELERATION)
 
 
 func _physics_process(delta):
@@ -33,6 +37,8 @@ func _physics_process(delta):
 
 	var torque_vector: Vector3 = transform.basis.x * input_velocity.x + transform.basis.y * input_velocity.y + transform.basis.z * input_velocity.z
 	add_torque(TURN_SPEED * torque_vector)
+
+	apply_central_impulse(throttle * -transform.basis.z)
 
 
 func _process(delta):
@@ -57,4 +63,6 @@ func _set_cam_mode(mode: int):
 
 enum { COCKPIT, CHASE }
 
+const ACCELERATION: float = 0.1
+const MAX_THROTTLE: float = 1.0
 const TURN_SPEED: float = 2.5
