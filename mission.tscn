@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://images/stars_panorama.png" type="Texture" id=1]
 [ext_resource path="res://models/fighter_spider/fighter_spider.dae" type="PackedScene" id=2]
 [ext_resource path="res://scripts/Player.gd" type="Script" id=3]
+[ext_resource path="res://models/asteroid/asteroid.dae" type="PackedScene" id=4]
 
 [sub_resource type="PanoramaSky" id=1]
 panorama = ExtResource( 1 )
@@ -28,3 +29,20 @@ transform = Transform( 0.866025, 0.482963, -0.12941, 0, 0.258819, 0.965926, 0.5,
 [node name="Player" parent="." instance=ExtResource( 2 )]
 script = ExtResource( 3 )
 camera_path = NodePath("../Camera")
+
+[node name="Asteroid Container" type="Node" parent="."]
+
+[node name="Asteroid" parent="Asteroid Container" instance=ExtResource( 4 )]
+transform = Transform( 0.259528, -0.21257, 0.942051, 0, 0.975475, 0.220112, -0.965736, -0.0571252, 0.253163, -9.23632, 0, -4.16173 )
+
+[node name="Asteroid2" parent="Asteroid Container" instance=ExtResource( 4 )]
+transform = Transform( 0.259528, -0.21257, 0.942051, 0, 0.975475, 0.220112, -0.965736, -0.0571252, 0.253163, -4.19477, -2.44779, -21.2546 )
+
+[node name="Asteroid3" parent="Asteroid Container" instance=ExtResource( 4 )]
+transform = Transform( 0.259528, -0.21257, 0.942051, 0, 0.975475, 0.220112, -0.965736, -0.0571252, 0.253163, 13.091, 2.66699, -0.730242 )
+
+[node name="Asteroid4" parent="Asteroid Container" instance=ExtResource( 4 )]
+transform = Transform( 0.259528, -0.21257, 0.942051, 0, 0.975475, 0.220112, -0.965736, -0.0571252, 0.253163, -0.994405, -2.7771, 6.78909 )
+
+[node name="Asteroid5" parent="Asteroid Container" instance=ExtResource( 4 )]
+transform = Transform( 0.259528, -0.21257, 0.942051, 0, 0.975475, 0.220112, -0.965736, -0.0571252, 0.253163, 8.44888, 1.41283, -11.3189 )
