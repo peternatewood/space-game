@@ -1,0 +1,53 @@
+[gd_resource type="SpatialMaterial" load_steps=10 format=2]
+
+[sub_resource type="OpenSimplexNoise" id=1]
+octaves = 1
+
+[sub_resource type="NoiseTexture" id=2]
+seamless = true
+noise = SubResource( 1 )
+
+[sub_resource type="OpenSimplexNoise" id=3]
+seed = 1
+octaves = 1
+
+[sub_resource type="NoiseTexture" id=4]
+seamless = true
+noise = SubResource( 3 )
+
+[sub_resource type="OpenSimplexNoise" id=5]
+seed = 2
+octaves = 1
+
+[sub_resource type="NoiseTexture" id=6]
+seamless = true
+noise = SubResource( 5 )
+
+[sub_resource type="OpenSimplexNoise" id=7]
+seed = 3
+octaves = 1
+
+[sub_resource type="NoiseTexture" id=8]
+seamless = true
+noise = SubResource( 7 )
+
+[sub_resource type="AnimatedTexture" id=9]
+flags = 7
+frames = 4
+fps = 15.0
+frame_0/texture = SubResource( 2 )
+frame_1/texture = SubResource( 4 )
+frame_1/delay_sec = 0.0
+frame_2/texture = SubResource( 6 )
+frame_2/delay_sec = 0.0
+frame_3/texture = SubResource( 8 )
+frame_3/delay_sec = 0.0
+
+[resource]
+flags_transparent = true
+flags_unshaded = true
+flags_do_not_receive_shadows = true
+flags_disable_ambient_light = true
+params_blend_mode = 1
+albedo_color = Color( 0.352941, 0.615686, 0.733333, 1 )
+albedo_texture = SubResource( 9 )
