@@ -1,4 +1,4 @@
-extends RigidBody
+extends "res://scripts/ActorBase.gd"
 
 export (NodePath) var camera_path
 
