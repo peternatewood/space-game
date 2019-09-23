@@ -1,6 +1,6 @@
 extends RigidBody
 
-var hitpoints: int = 100
+export (int) var hitpoints
 
 
 func _ready():

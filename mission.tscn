@@ -16,6 +16,7 @@ transform = Transform( 0.866025, 0.482963, -0.12941, 0, 0.258819, 0.965926, 0.5,
 collision_layer = 2
 collision_mask = 5
 script = ExtResource( 2 )
+hitpoints = 100
 camera_path = NodePath("../Camera")
 
 [node name="Asteroid Container" type="Node" parent="."]
@@ -24,23 +25,28 @@ camera_path = NodePath("../Camera")
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11.9108, 0, -8.19799 )
 collision_mask = 7
 script = ExtResource( 4 )
+hitpoints = 20
 
 [node name="Asteroid2" parent="Asteroid Container" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.89396, -6.71257, 7.66448 )
 collision_mask = 7
 script = ExtResource( 4 )
+hitpoints = 20
 
 [node name="Asteroid3" parent="Asteroid Container" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.10207, -3.187, 4.12244 )
 collision_mask = 7
 script = ExtResource( 4 )
+hitpoints = 20
 
 [node name="Asteroid4" parent="Asteroid Container" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15.0285, 9.41962, -26.4233 )
 collision_mask = 7
 script = ExtResource( 4 )
+hitpoints = 20
 
 [node name="Asteroid5" parent="Asteroid Container" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.18502, 5.07815, -14.7815 )
 collision_mask = 7
 script = ExtResource( 4 )
+hitpoints = 20
