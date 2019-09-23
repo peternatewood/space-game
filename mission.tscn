@@ -18,16 +18,16 @@ camera_path = NodePath("../Camera")
 [node name="Asteroid Container" type="Node" parent="."]
 
 [node name="Asteroid" parent="Asteroid Container" instance=ExtResource( 3 )]
-transform = Transform( 0.259528, -0.21257, 0.942051, 0, 0.975475, 0.220112, -0.965736, -0.0571252, 0.253163, -9.23632, 0, -4.16173 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11.9108, 0, -8.19799 )
 
 [node name="Asteroid2" parent="Asteroid Container" instance=ExtResource( 3 )]
-transform = Transform( 0.259528, -0.21257, 0.942051, 0, 0.975475, 0.220112, -0.965736, -0.0571252, 0.253163, -4.19477, -2.44779, -21.2546 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.89396, -6.71257, 7.66448 )
 
 [node name="Asteroid3" parent="Asteroid Container" instance=ExtResource( 3 )]
-transform = Transform( 0.259528, -0.21257, 0.942051, 0, 0.975475, 0.220112, -0.965736, -0.0571252, 0.253163, 13.091, 2.66699, -0.730242 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.10207, -3.187, 4.12244 )
 
 [node name="Asteroid4" parent="Asteroid Container" instance=ExtResource( 3 )]
-transform = Transform( 0.259528, -0.21257, 0.942051, 0, 0.975475, 0.220112, -0.965736, -0.0571252, 0.253163, -0.994405, -2.7771, 6.78909 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15.0285, 9.41962, -26.4233 )
 
 [node name="Asteroid5" parent="Asteroid Container" instance=ExtResource( 3 )]
-transform = Transform( 0.259528, -0.21257, 0.942051, 0, 0.975475, 0.220112, -0.965736, -0.0571252, 0.253163, 8.44888, 1.41283, -11.3189 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.18502, 5.07815, -14.7815 )
