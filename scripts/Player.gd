@@ -6,6 +6,10 @@ onready var camera = get_node(camera_path)
 onready var chase_view = get_node("Chase View")
 onready var cockpit_view = get_node("Cockpit View")
 onready var energy_weapon_hardpoints = get_node("Energy Weapon Hardpoints 1").get_children()
+onready var shield_front = get_node("Shield Front")
+onready var shield_left = get_node("Shield Left")
+onready var shield_rear = get_node("Shield Rear")
+onready var shield_right = get_node("Shield Right")
 
 var cam_dist: float
 var cam_mode: int
@@ -18,6 +22,15 @@ var throttle: float
 
 func _ready():
 	_set_cam_mode(COCKPIT)
+	# Set the shield collision layers and masks to be the same as that of the ship
+	shield_front.set_collision_layer(collision_layer)
+	shield_front.set_collision_mask(collision_mask)
+	shield_left.set_collision_layer(collision_layer)
+	shield_left.set_collision_mask(collision_mask)
+	shield_rear.set_collision_layer(collision_layer)
+	shield_rear.set_collision_mask(collision_mask)
+	shield_right.set_collision_layer(collision_layer)
+	shield_right.set_collision_mask(collision_mask)
 
 
 func _input(event):
