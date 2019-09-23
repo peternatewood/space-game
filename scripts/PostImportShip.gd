@@ -28,11 +28,14 @@ func post_import(scene):
 			# Add the shield mesh (note: set_owner must be the Scene, not the node's parent)
 			area_node.add_child(shield_mesh)
 			shield_mesh.set_owner(scene)
+			shield_mesh.set_name("mesh")
 			shield_mesh.hide()
 
 			# Add the collision shape
 			area_node.add_child(collision_shape)
 			collision_shape.set_owner(scene)
+
+			area_node.set_script(ShieldQuadrant)
 
 			# Remove the static node and original shield mesh
 			scene.remove_child(shield_static)
@@ -48,5 +51,7 @@ func post_import(scene):
 
 	return .post_import(scene)
 
+
+const ShieldQuadrant = preload("ShieldQuadrant.gd")
 
 const BLUE_EXHAUST_MATERIAL = preload("res://materials/blue_exhaust.tres")
