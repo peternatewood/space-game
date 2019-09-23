@@ -29,6 +29,7 @@ func post_import(scene):
 			area_node.add_child(shield_mesh)
 			shield_mesh.set_owner(scene)
 			shield_mesh.set_name("mesh")
+			shield_mesh.set_surface_material(0, BLUE_SHIELD_MATERIAL)
 			shield_mesh.hide()
 
 			# Add the collision shape
@@ -55,3 +56,4 @@ func post_import(scene):
 const ShieldQuadrant = preload("ShieldQuadrant.gd")
 
 const BLUE_EXHAUST_MATERIAL = preload("res://materials/blue_exhaust.tres")
+const BLUE_SHIELD_MATERIAL = preload("res://materials/blue_shield.tres")
