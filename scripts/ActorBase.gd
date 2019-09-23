@@ -8,5 +8,11 @@ func _ready():
 
 
 func _on_body_entered(body):
-	hitpoints -= 1
-	print("Body Entered; hitpoints: ", hitpoints)
+	if body is EnergyBolt:
+		hitpoints -= 10
+		body.destroy()
+	else:
+		hitpoints -= 1
+
+
+const EnergyBolt = preload("EnergyBolt.gd")
