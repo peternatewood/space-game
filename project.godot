@@ -88,4 +88,4 @@ change_cam={
 [rendering]
 
 environment/default_clear_color=Color( 0, 0, 0, 1 )
-environment/default_environment="res://default_env.tres"
+environment/default_environment="res://star_environment.tres"
