@@ -81,6 +81,12 @@ change_cam={
  ]
 }
 
+[layer_names]
+
+3d_physics/layer_1="World"
+3d_physics/layer_2="Player"
+3d_physics/layer_3="Non-Player"
+
 [physics]
 
 3d/default_gravity=0.0
