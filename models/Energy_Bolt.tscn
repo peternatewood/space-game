@@ -17,8 +17,8 @@ radius = 0.0253062
 height = 0.182505
 
 [node name="Energy Bolt" type="RigidBody"]
-collision_layer = 2
-collision_mask = 5
+collision_layer = 0
+collision_mask = 0
 mass = 0.2
 script = ExtResource( 1 )
 

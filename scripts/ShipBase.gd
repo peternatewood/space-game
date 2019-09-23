@@ -25,7 +25,11 @@ func _ready():
 
 
 func _fire_energy_weapon():
+	# Instance bolt and set its layer and mask so it doesn't immediately collide with the ship firing it
 	var bolt = ENERGY_BOLT.instance()
+	bolt.set_collision_layer(collision_layer)
+	bolt.set_collision_mask(collision_mask)
+
 	get_tree().get_root().add_child(bolt)
 	bolt.transform.origin = energy_weapon_hardpoints[energy_weapon_index].global_transform.origin
 	bolt.look_at(bolt.transform.origin - transform.basis.z, transform.basis.y)
