@@ -5,11 +5,13 @@ export (NodePath) var camera_path
 onready var camera = get_node(camera_path)
 onready var chase_view = get_node("Chase View")
 onready var cockpit_view = get_node("Cockpit View")
+onready var energy_weapon_hardpoints = get_node("Energy Weapon Hardpoints 1").get_children()
 
 var cam_dist: float
 var cam_mode: int
 var cam_offset: Vector3
 var energy_weapon_countdown: float = 0.0
+var energy_weapon_index: int = 0
 var input_velocity: Vector3
 var throttle: float
 
@@ -61,10 +63,12 @@ func _process(delta):
 	if Input.is_action_pressed("fire_energy_weapon") and energy_weapon_countdown == 0:
 		var bolt = ENERGY_BOLT.instance()
 		get_tree().get_root().add_child(bolt)
-		bolt.transform = transform
+		bolt.transform.origin = energy_weapon_hardpoints[energy_weapon_index].global_transform.origin
+		bolt.look_at(bolt.transform.origin - transform.basis.z, transform.basis.y)
 		bolt.add_speed(get_linear_velocity().length())
 
 		energy_weapon_countdown = ENERGY_WEAPON_DELAY
+		energy_weapon_index = (energy_weapon_index + 1) % energy_weapon_hardpoints.size()
 
 
 func _set_cam_mode(mode: int):
