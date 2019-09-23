@@ -9,6 +9,7 @@ onready var cockpit_view = get_node("Cockpit View")
 var cam_dist: float
 var cam_mode: int
 var cam_offset: Vector3
+var energy_weapon_countdown: float = 0.0
 var input_velocity: Vector3
 var throttle: float
 
@@ -54,6 +55,17 @@ func _process(delta):
 			camera.transform.origin = chase_view.global_transform.origin - transform.basis.x * cam_offset.y + transform.basis.y * cam_offset.x + transform.basis.z * cam_dist
 			camera.look_at(transform.origin - transform.basis.z, cam_up)
 
+	if energy_weapon_countdown != 0:
+		energy_weapon_countdown = max(0, energy_weapon_countdown - delta)
+
+	if Input.is_action_pressed("fire_energy_weapon") and energy_weapon_countdown == 0:
+		var bolt = ENERGY_BOLT.instance()
+		get_tree().get_root().add_child(bolt)
+		bolt.transform = transform
+		bolt.add_speed(get_linear_velocity().length())
+
+		energy_weapon_countdown = ENERGY_WEAPON_DELAY
+
 
 func _set_cam_mode(mode: int):
 	match mode:
@@ -70,5 +82,7 @@ enum { COCKPIT, CHASE }
 const ACCELERATION: float = 0.1
 const CAM_ROLL_MOD: float = 0.25
 const CAM_THROTTLE_MOD: float = 1.5
+const ENERGY_BOLT = preload("res://models/Energy_Bolt.tscn")
+const ENERGY_WEAPON_DELAY: float = 0.1
 const MAX_THROTTLE: float = 1.0
 const TURN_SPEED: float = 2.5
