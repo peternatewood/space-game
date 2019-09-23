@@ -28,6 +28,12 @@ func _process(delta):
 	if flicker_countdown != 0:
 		flicker_countdown -= delta
 
+		var shield_material = mesh.get_surface_material(0)
+		var albedo_color = shield_material.albedo_color
+
+		albedo_color.a = flicker_countdown / FLICKER_DELAY
+		shield_material.set_albedo(albedo_color)
+
 		if flicker_countdown <= 0:
 			mesh.hide()
 			flicker_countdown = 0
