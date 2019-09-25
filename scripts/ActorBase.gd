@@ -14,7 +14,7 @@ func _deal_damage(amount: int):
 
 
 func _on_body_entered(body):
-	if body is EnergyBolt:
+	if body is EnergyBolt or body is Missile:
 		_deal_damage(body.DAMAGE_HULL)
 		body.destroy()
 	else:
@@ -22,3 +22,4 @@ func _on_body_entered(body):
 
 
 const EnergyBolt = preload("EnergyBolt.gd")
+const Missile = preload("Missile.gd")
