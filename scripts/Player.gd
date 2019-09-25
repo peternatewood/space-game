@@ -37,7 +37,10 @@ func _process(delta):
 	torque_vector = transform.basis.x * input_velocity.x + transform.basis.y * input_velocity.y + transform.basis.z * input_velocity.z
 
 	if Input.is_action_pressed("fire_energy_weapon") and energy_weapon_countdown == 0:
-		._fire_energy_weapon()
+		_fire_energy_weapon()
+
+	if Input.is_action_pressed("fire_missile_weapon") and missile_weapon_countdown == 0:
+		_fire_missile_weapon()
 
 	match cam_mode:
 		COCKPIT:
