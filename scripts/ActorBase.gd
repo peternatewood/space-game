@@ -15,7 +15,7 @@ func _deal_damage(amount: int):
 
 func _on_body_entered(body):
 	if body is EnergyBolt:
-		_deal_damage(10)
+		_deal_damage(body.DAMAGE_HULL)
 		body.destroy()
 	else:
 		_deal_damage(1)

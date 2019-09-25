@@ -20,3 +20,7 @@ func add_speed(amount: float):
 
 func destroy():
 	queue_free()
+
+
+var DAMAGE_HULL: int = 15
+var DAMAGE_SHIELD: int = 10

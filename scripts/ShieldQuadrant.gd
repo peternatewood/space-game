@@ -20,7 +20,7 @@ func _on_body_entered(body):
 	# Only handle collisions if this shield quadrant is still up
 	if hitpoints > 0:
 		if body is EnergyBolt:
-			_damage(10)
+			_damage(body.DAMAGE_SHIELD)
 			body.destroy()
 
 
