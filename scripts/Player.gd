@@ -5,6 +5,7 @@ export (NodePath) var camera_path
 onready var camera = get_node(camera_path)
 onready var chase_view = get_node("Chase View")
 onready var cockpit_view = get_node("Cockpit View")
+onready var enemies_container = get_tree().get_root().get_node("Scene/Enemies Container")
 
 var cam_dist: float
 var cam_mode: int
@@ -40,7 +41,12 @@ func _process(delta):
 		_fire_energy_weapon()
 
 	if Input.is_action_pressed("fire_missile_weapon") and missile_weapon_countdown == 0:
-		_fire_missile_weapon()
+		var missile_target
+		var ships = enemies_container.get_children()
+		if ships.size() != 0:
+			missile_target = ships[0]
+
+		_fire_missile_weapon(missile_target)
 
 	match cam_mode:
 		COCKPIT:
