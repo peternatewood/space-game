@@ -2,8 +2,8 @@
 
 [ext_resource path="res://models/fighter_spider/fighter_spider.dae" type="PackedScene" id=1]
 [ext_resource path="res://scripts/Player.gd" type="Script" id=2]
-[ext_resource path="res://scripts/ShipBase.gd" type="Script" id=3]
-[ext_resource path="res://models/fighter_frog/fighter_frog.dae" type="PackedScene" id=4]
+[ext_resource path="res://models/fighter_frog/fighter_frog.dae" type="PackedScene" id=3]
+[ext_resource path="res://scripts/ShipBase.gd" type="Script" id=4]
 [ext_resource path="res://models/fighter_hawk/fighter_hawk.dae" type="PackedScene" id=5]
 [ext_resource path="res://models/asteroid/asteroid.dae" type="PackedScene" id=6]
 [ext_resource path="res://scripts/ActorBase.gd" type="Script" id=7]
@@ -22,25 +22,27 @@ script = ExtResource( 2 )
 hitpoints = 100
 camera_path = NodePath("../Camera")
 
-[node name="Spider Fighter" parent="." instance=ExtResource( 1 )]
-transform = Transform( 0.787268, 0.302992, 0.537034, -0.226817, 0.95218, -0.204713, -0.573379, 0.0393554, 0.818344, 4.66133, 2.33831, -2.32113 )
-collision_layer = 4
-collision_mask = 7
-script = ExtResource( 3 )
-hitpoints = 60
+[node name="Enemies Container" type="Node" parent="."]
 
-[node name="Frog Fighter" parent="." instance=ExtResource( 4 )]
+[node name="Frog Fighter" parent="Enemies Container" instance=ExtResource( 3 )]
 transform = Transform( 0.478177, -0.0391645, 0.87739, 0.696631, 0.62528, -0.351753, -0.534838, 0.779417, 0.326278, 0, 0, -7.69467 )
 collision_layer = 4
 collision_mask = 7
-script = ExtResource( 3 )
+script = ExtResource( 4 )
 hitpoints = 60
 
-[node name="Hawk Fighter" parent="." instance=ExtResource( 5 )]
+[node name="Spider Fighter" parent="Enemies Container" instance=ExtResource( 1 )]
+transform = Transform( 0.787268, 0.302992, 0.537034, -0.226817, 0.95218, -0.204713, -0.573379, 0.0393554, 0.818344, 4.66133, 2.33831, -2.32113 )
+collision_layer = 4
+collision_mask = 7
+script = ExtResource( 4 )
+hitpoints = 60
+
+[node name="Hawk Fighter" parent="Enemies Container" instance=ExtResource( 5 )]
 transform = Transform( 0.836961, -0.335142, -0.432639, 0, 0.79055, -0.612397, 0.547263, 0.512552, 0.66166, -6.00805, -1.47702, -5.09553 )
 collision_layer = 4
 collision_mask = 7
-script = ExtResource( 3 )
+script = ExtResource( 4 )
 hitpoints = 60
 
 [node name="Asteroid Container" type="Node" parent="."]
