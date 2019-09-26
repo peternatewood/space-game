@@ -10,7 +10,12 @@ func _ready():
 func _deal_damage(amount: int):
 	hitpoints -= amount
 	if hitpoints <= 0:
-		queue_free()
+		_destroy()
+
+
+func _destroy():
+	emit_signal("destroyed")
+	queue_free()
 
 
 func _on_body_entered(body):
@@ -20,6 +25,8 @@ func _on_body_entered(body):
 	else:
 		_deal_damage(1)
 
+
+signal destroyed
 
 const EnergyBolt = preload("EnergyBolt.gd")
 const Missile = preload("Missile.gd")
