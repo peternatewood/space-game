@@ -42,7 +42,7 @@ func _fire_energy_weapon():
 	energy_weapon_index = (energy_weapon_index + 1) % energy_weapon_hardpoints.size()
 
 
-func _fire_missile_weapon():
+func _fire_missile_weapon(target = null):
 	var missile = MISSILE.instance()
 	missile.set_collision_layer(collision_layer)
 	missile.set_collision_mask(collision_mask)
@@ -51,6 +51,8 @@ func _fire_missile_weapon():
 	missile.transform.origin = missile_weapon_hardpoints[missile_weapon_index].global_transform.origin
 	missile.look_at(missile.transform.origin - transform.basis.z, transform.basis.y)
 	missile.add_speed(get_linear_velocity().length())
+	if target != null:
+		missile.set_target(target)
 
 	missile_weapon_countdown = MISSILE_WEAPON_DELAY
 	missile_weapon_index = (missile_weapon_index + 1) % missile_weapon_hardpoints.size()
