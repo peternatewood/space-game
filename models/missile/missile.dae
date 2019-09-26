@@ -5,8 +5,8 @@
 		<author>Anonymous</author>
 		<authoring_tool>Collada Exporter for Blender 2.6+, by Juan Linietsky (juan@codenix.com)</authoring_tool>
 	</contributor>
-	<created>2019-09-25T15:04:15Z</created>
-	<modified>2019-09-25T15:04:15Z</modified>
+	<created>2019-09-26T11:51:41Z</created>
+	<modified>2019-09-26T11:51:41Z</modified>
 	<unit meter="1.0" name="meter"/>
 	<up_axis>Z_UP</up_axis>
 </asset>
@@ -16,7 +16,7 @@
 	</image>
 </library_images>
 <library_effects>
-	<effect id="id-fx-2" name="Fueslage Material-fx">
+	<effect id="id-fx-2" name="Fuselage Material-fx">
 		<profile_COMMON>
 			<newparam sid="id-fx_surf-4">
 				<surface type="2D">
@@ -65,7 +65,7 @@
 	</effect>
 </library_effects>
 <library_materials>
-	<material id="id-material-6" name="Fueslage Material">
+	<material id="id-material-6" name="Fuselage Material">
 		<instance_effect url="#id-fx-2"/>
 	</material>
 </library_materials>
