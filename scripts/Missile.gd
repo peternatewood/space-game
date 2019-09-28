@@ -23,7 +23,7 @@ func _process(delta):
 		if dot_product < 0:
 			_on_target_destroyed()
 		else:
-			transform = transform.interpolate_with(transform.looking_at(target.transform.origin, Vector3.UP), delta)
+			transform = transform.interpolate_with(transform.looking_at(target.transform.origin, Vector3.UP), delta * TURN_SPEED)
 
 	if speed < MAX_SPEED:
 		speed = min(MAX_SPEED, speed + delta * ACCELERATION)
@@ -52,4 +52,4 @@ var ACCELERATION: float = 20.0
 var DAMAGE_HULL: int = 25
 var DAMAGE_SHIELD: int = 5
 var MAX_SPEED: float = 100.0
-var TURN_SPEED: float = 0.2
+var TURN_SPEED: float = 1.5
