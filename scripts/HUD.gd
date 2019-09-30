@@ -10,6 +10,19 @@ onready var target_icon = get_node("Target Icon")
 onready var viewport = get_viewport()
 
 
+func _get_edge_direction(pos: Vector2):
+	var viewport_size = viewport.get_visible_rect().size
+
+	if pos.x == 0:
+		return EdgeTargetIcon.LEFT
+	elif pos.x == viewport_size.x:
+		return EdgeTargetIcon.RIGHT
+	elif pos.y == 0:
+		return EdgeTargetIcon.UP
+	elif pos.y == viewport_size.y:
+		return EdgeTargetIcon.DOWN
+
+
 func _get_edge_pos(pos: Vector3):
 	var viewport_size: Vector2 = viewport.get_visible_rect().size
 	var unprojected: Vector2 = camera.unproject_position(pos)
@@ -57,6 +70,12 @@ func _process(delta):
 
 			if not edge_target_icon.visible:
 				edge_target_icon.show()
-			edge_target_icon.set_position(_get_edge_pos(player.current_target.transform.origin))
+			var edge_pos = _get_edge_pos(player.current_target.transform.origin)
+			edge_target_icon.set_position(edge_pos)
+			var edge_direction = _get_edge_direction(edge_pos)
+			edge_target_icon.set_direction(edge_direction)
 	elif target_icon.visible:
 		target_icon.hide()
+
+
+const EdgeTargetIcon = preload("EdgeTargetIcon.gd")
