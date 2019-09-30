@@ -4,10 +4,15 @@ export (NodePath) var camera_path
 export (NodePath) var player_path
 
 onready var camera = get_node(camera_path)
+onready var debug = get_node("Debug")
 onready var edge_target_icon = get_node("Edge Target Icon")
 onready var player = get_node(player_path)
 onready var target_icon = get_node("Target Icon")
 onready var viewport = get_viewport()
+
+
+func _ready():
+	debug.set_text("Hello!")
 
 
 func _get_edge_direction(pos: Vector2):

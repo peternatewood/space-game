@@ -83,4 +83,9 @@ polygon = PoolVector2Array( 2, 0, 8, -6, 8, 6 )
 polygon = PoolVector2Array( -2, 0, -8, -6, -8, 6 )
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
-color = Color( 0.4, 0.501961, 1, 1 )
+color = Color( 0.501961, 0.752941, 1, 1 )
+
+[node name="Debug" type="Label" parent="."]
+visible = false
+margin_right = 40.0
+margin_bottom = 14.0
