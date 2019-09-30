@@ -37,9 +37,19 @@ func _input(event):
 			has_target = false
 			current_target = null
 		else:
+			if has_target:
+				current_target.disconnect("destroyed", self, "_on_target_destroyed")
+
 			has_target = true
 			current_target = enemies[target_index]
 			target_index = (target_index + 1) % enemies.size()
+			current_target.connect("destroyed", self, "_on_target_destroyed")
+
+
+func _on_target_destroyed():
+	has_target = false
+	current_target = null
+	target_index = 0
 
 
 func _process(delta):
