@@ -38,7 +38,7 @@ I'd like to implement these, but I'm not sure whether they're feasible.
 Here are some more in-depth descriptions for certain features.
 
 - Power Distribution: Allocate power between Energy Weapons Battery, Shield Power, and Engine Power. Energy Weapons Battery determines how quickly energy weapons power recovers (maybe also the maximum battery too?) Shield Power determines recovery rate (maybe also max strength?) Engine Power determines acceleration and max speed.
-- Alliance Groups: Every ship either belongs to a designated group (probably best to default to a given group). Each group just contains a mapping to every other group determining its alliances with other groups. We then use each ship's group to determine whether they're allied with, neutral to, or an enemy of other ships.
+- Alliance Groups: Every ship belongs to a designated group (probably best to default to a given group). Each group just contains a mapping to every other group determining its alliances with other groups. We then use each ship's group to determine whether they're allied with, neutral to, or an enemy of other ships.
 - Mission Objectives and Warp Out: Once all critical objectives are complete, the player warps out to end the mission.
 - Communications Menu: This is a staple of old space games, used to issue orders to wingmen, call in reinforcements, request repairs/reloading, and more.
 - Loadout Menu: The player chooses their ship and loadout before launching the mission.
