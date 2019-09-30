@@ -27,28 +27,24 @@ func _get_edge_direction(pos: Vector2):
 	elif pos.y == viewport_size.y:
 		return EdgeTargetIcon.DOWN
 
+	return -1
+
 
 func _get_edge_pos(pos: Vector3):
-	var viewport_size: Vector2 = viewport.get_visible_rect().size
+	var viewport_rect: Rect2 = viewport.get_visible_rect()
 	var unprojected: Vector2 = camera.unproject_position(pos)
 
-	# If the position is directly behind, the camera will unproject it back into the viewport
+	# If the position is behind the camera, unproject_position mirrors the actual position
 	if camera.is_position_behind(pos):
-		var x_pos: float
-		var y_pos: float
-		var x_percent: float = abs(viewport_size.x / 2 - unprojected.x) / viewport_size.x
-		var y_percent: float = abs(viewport_size.y / 2 - unprojected.y) / viewport_size.y
+		if viewport_rect.has_point(unprojected):
+			unprojected = viewport_rect.size / 2 + max(viewport_rect.size.x, viewport_rect.size.y) * (unprojected - viewport_rect.size / 2).normalized()
 
-		if x_percent > y_percent:
-			x_pos = 0 if x_pos < 0 else viewport_size.x
-			y_pos = clamp(unprojected.y, 0, viewport_size.y)
-		else:
-			x_pos = clamp(unprojected.x, 0, viewport_size.x)
-			y_pos = 0 if y_pos < 0 else viewport_size.y
+		var x_pos = viewport_rect.size.x - clamp(unprojected.x, 0, viewport_rect.size.x)
+		var y_pos = viewport_rect.size.y - clamp(unprojected.y, 0, viewport_rect.size.y)
 
 		return Vector2(x_pos, y_pos)
 
-	return Vector2(clamp(unprojected.x, 0, viewport_size.x), clamp(unprojected.y, 0, viewport_size.y))
+	return Vector2(clamp(unprojected.x, 0, viewport_rect.size.x), clamp(unprojected.y, 0, viewport_rect.size.y))
 
 
 func _is_position_in_view(pos: Vector3):
@@ -76,9 +72,12 @@ func _process(delta):
 			if not edge_target_icon.visible:
 				edge_target_icon.show()
 			var edge_pos = _get_edge_pos(player.current_target.transform.origin)
+			debug.set_text(str(edge_pos))
 			edge_target_icon.set_position(edge_pos)
+
 			var edge_direction = _get_edge_direction(edge_pos)
 			edge_target_icon.set_direction(edge_direction)
+
 	elif target_icon.visible:
 		target_icon.hide()
 
