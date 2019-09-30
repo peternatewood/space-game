@@ -66,3 +66,17 @@ points = PoolVector2Array( -12, 16, -16, 16, -16, 12 )
 width = 2.0
 default_color = Color( 1, 1, 1, 1 )
 texture_mode = -1108771308
+
+[node name="Edge Target Icon" type="Control" parent="."]
+
+[node name="Arrow Right" type="Polygon2D" parent="Edge Target Icon"]
+polygon = PoolVector2Array( -2, 0, -8, -6, -8, 6 )
+
+[node name="Arrow Left" type="Polygon2D" parent="Edge Target Icon"]
+polygon = PoolVector2Array( 2, 0, 8, -6, 8, 6 )
+
+[node name="Arrow Up" type="Polygon2D" parent="Edge Target Icon"]
+polygon = PoolVector2Array( 0, -2, -6, -8, 6, -8 )
+
+[node name="Arrow Down" type="Polygon2D" parent="Edge Target Icon"]
+polygon = PoolVector2Array( 0, 2, -6, 8, 6, 8 )
