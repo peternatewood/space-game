@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scripts/HUD.gd" type="Script" id=1]
+[ext_resource path="res://scripts/EdgeTargetIcon.gd" type="Script" id=2]
 
 [node name="HUD" type="Control"]
 anchor_right = 1.0
@@ -68,15 +69,16 @@ default_color = Color( 1, 1, 1, 1 )
 texture_mode = -1108771308
 
 [node name="Edge Target Icon" type="Control" parent="."]
+script = ExtResource( 2 )
 
-[node name="Arrow Right" type="Polygon2D" parent="Edge Target Icon"]
-polygon = PoolVector2Array( -2, 0, -8, -6, -8, 6 )
+[node name="Arrow Up" type="Polygon2D" parent="Edge Target Icon"]
+polygon = PoolVector2Array( 0, 2, -6, 8, 6, 8 )
+
+[node name="Arrow Down" type="Polygon2D" parent="Edge Target Icon"]
+polygon = PoolVector2Array( 0, -2, -6, -8, 6, -8 )
 
 [node name="Arrow Left" type="Polygon2D" parent="Edge Target Icon"]
 polygon = PoolVector2Array( 2, 0, 8, -6, 8, 6 )
 
-[node name="Arrow Up" type="Polygon2D" parent="Edge Target Icon"]
-polygon = PoolVector2Array( 0, -2, -6, -8, 6, -8 )
-
-[node name="Arrow Down" type="Polygon2D" parent="Edge Target Icon"]
-polygon = PoolVector2Array( 0, 2, -6, 8, 6, 8 )
+[node name="Arrow Right" type="Polygon2D" parent="Edge Target Icon"]
+polygon = PoolVector2Array( -2, 0, -8, -6, -8, 6 )
