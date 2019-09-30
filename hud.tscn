@@ -41,8 +41,6 @@ texture_mode = 50
 
 [node name="Target Icon" type="Control" parent="."]
 editor/display_folded = true
-margin_right = 40.0
-margin_bottom = 40.0
 
 [node name="Line2D" type="Line2D" parent="Target Icon"]
 points = PoolVector2Array( -16, -2, -16, -10, -10, -16, -2, -16 )
@@ -69,6 +67,7 @@ default_color = Color( 1, 1, 1, 1 )
 texture_mode = -1108771308
 
 [node name="Edge Target Icon" type="Control" parent="."]
+editor/display_folded = true
 script = ExtResource( 2 )
 
 [node name="Arrow Up" type="Polygon2D" parent="Edge Target Icon"]
@@ -82,3 +81,6 @@ polygon = PoolVector2Array( 2, 0, 8, -6, 8, 6 )
 
 [node name="Arrow Right" type="Polygon2D" parent="Edge Target Icon"]
 polygon = PoolVector2Array( -2, 0, -8, -6, -8, 6 )
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color( 0.4, 0.501961, 1, 1 )
