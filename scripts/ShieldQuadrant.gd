@@ -28,11 +28,10 @@ func _process(delta):
 	if flicker_countdown != 0:
 		flicker_countdown -= delta
 
-		var shield_material = mesh.get_surface_material(0)
-		var albedo_color = shield_material.albedo_color
+		var albedo_color = mesh.get_surface_material(0).albedo_color
 
 		albedo_color.a = flicker_countdown / FLICKER_DELAY
-		shield_material.set_albedo(albedo_color)
+		mesh.get_surface_material(0).set_albedo(albedo_color)
 
 		if flicker_countdown <= 0:
 			mesh.hide()
@@ -44,4 +43,4 @@ signal shield_hit
 const EnergyBolt = preload("EnergyBolt.gd")
 const Missile = preload("Missile.gd")
 
-const FLICKER_DELAY: float = 0.25
+const FLICKER_DELAY: float = 0.45
