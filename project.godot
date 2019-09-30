@@ -81,10 +81,17 @@ change_cam={
  ]
 }
 
+[layer_names]
+
+3d_physics/layer_1="World"
+3d_physics/layer_2="Player"
+3d_physics/layer_3="Non-Player"
+
 [physics]
 
 3d/default_gravity=0.0
 
 [rendering]
 
-environment/default_environment="res://default_env.tres"
+environment/default_clear_color=Color( 0, 0, 0, 1 )
+environment/default_environment="res://star_environment.tres"

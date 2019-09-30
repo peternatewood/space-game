@@ -16,4 +16,7 @@ func post_import(scene):
 			# Remove unused StaticBody
 			scene.remove_child(child)
 
+	scene.set_contact_monitor(true)
+	scene.set_max_contacts_reported(4)
+
 	return scene

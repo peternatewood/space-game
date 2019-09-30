@@ -8,9 +8,9 @@ Here I'll be keeping track of the all the features I want to implement, and chec
 
 - [x] Panorama Sky
 - [x] Player-controlled spaceship
-- [ ] Basic Energy Weapons
-- [ ] Hull Damage
-- [ ] Shield Damage
+- [x] Basic Energy Weapons
+- [x] Hull Damage
+- [x] Shield Damage
 - [ ] Head's Up Display (HUD)
 - [ ] Power Distribution
 - [ ] Reroute power to Shields by quadrant
