@@ -46,6 +46,11 @@ func post_import(scene):
 	exhaust_mesh.set_surface_material(0, BLUE_EXHAUST_MATERIAL)
 	exhaust_mesh.set_cast_shadows_setting(GeometryInstance.SHADOW_CASTING_SETTING_OFF)
 
+	# Set exhaust billboard material
+	var exhaust_points = scene.get_node("Exhaust Points")
+	if exhaust_points != null:
+		exhaust_points.set_surface_material(0, EXHAUST_LIGHT_MATERIAL)
+
 	# Some common physics settings
 	scene.set_angular_damp(0.85)
 	scene.set_linear_damp(0.85)
@@ -57,3 +62,4 @@ const ShieldQuadrant = preload("ShieldQuadrant.gd")
 
 const BLUE_EXHAUST_MATERIAL = preload("res://materials/blue_exhaust.tres")
 const BLUE_SHIELD_MATERIAL = preload("res://materials/blue_shield.tres")
+const EXHAUST_LIGHT_MATERIAL = preload("res://materials/exhaust_light.tres")
