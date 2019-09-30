@@ -10,7 +10,10 @@ onready var enemies_container = get_tree().get_root().get_node("Scene/Enemies Co
 var cam_dist: float
 var cam_mode: int
 var cam_offset: Vector3
+var current_target
+var has_target: bool = false
 var input_velocity: Vector3
+var target_index: int = 0
 
 
 func _ready():
@@ -28,6 +31,15 @@ func _input(event):
 		throttle = min(MAX_THROTTLE, throttle + ACCELERATION)
 	elif event.is_action("throttle_down") and event.pressed:
 		throttle = max(0, throttle - ACCELERATION)
+	elif event.is_action("target_next") and event.pressed:
+		var enemies = enemies_container.get_children()
+		if enemies.size() == 0:
+			has_target = false
+			current_target = null
+		else:
+			has_target = true
+			current_target = enemies[target_index]
+			target_index = (target_index + 1) % enemies.size()
 
 
 func _process(delta):
@@ -41,12 +53,10 @@ func _process(delta):
 		_fire_energy_weapon()
 
 	if Input.is_action_pressed("fire_missile_weapon") and missile_weapon_countdown == 0:
-		var missile_target
-		var ships = enemies_container.get_children()
-		if ships.size() != 0:
-			missile_target = ships[0]
-
-		_fire_missile_weapon(missile_target)
+		if has_target:
+			_fire_missile_weapon(current_target)
+		else:
+			_fire_missile_weapon()
 
 	match cam_mode:
 		COCKPIT:
