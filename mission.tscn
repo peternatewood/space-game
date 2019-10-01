@@ -80,4 +80,5 @@ hitpoints = 20
 
 [node name="HUD" parent="." instance=ExtResource( 8 )]
 camera_path = NodePath("../Camera")
+enemies_container_path = NodePath("../Enemies Container")
 player_path = NodePath("../Player")

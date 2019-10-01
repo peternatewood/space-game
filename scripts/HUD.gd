@@ -1,19 +1,21 @@
 extends Control
 
 export (NodePath) var camera_path
+export (NodePath) var enemies_container_path
 export (NodePath) var player_path
 
 onready var debug = get_node("Debug")
 onready var edge_target_icon = get_node("Edge Target Icon")
 onready var loader = get_node("/root/SceneLoader")
 onready var player_icon = get_node("Player Icon")
+onready var radar = get_node("Radar")
 onready var target_icon = get_node("Target Icon")
 onready var viewport = get_viewport()
 
 var camera
 var player
 var player_hull_bar
-
+var radar_icons: Array
 
 func _ready():
 	player_hull_bar = player_icon.get_node("Hull Bar")
@@ -46,6 +48,11 @@ func _on_scene_loaded():
 	player_hull_bar.set_value(player.hitpoints)
 	player.connect("damaged", self, "_on_player_damaged")
 
+	for node in get_node(enemies_container_path).get_children():
+		var icon = RADAR_ICON.instance()
+		radar.add_child(icon)
+		radar_icons.append({ "target": node, "icon": icon })
+
 	set_process(true)
 
 
@@ -69,6 +76,29 @@ func _process(delta):
 			_update_edge_icon()
 	elif target_icon.visible:
 		target_icon.hide()
+
+	# Update radar icons
+	var viewport_rect = viewport.get_visible_rect()
+	var radar_position
+	for icon in radar_icons:
+		var to_target = (icon.target.transform.origin - player.transform.origin).normalized()
+		var unprojected = Vector2(to_target.dot(player.transform.basis.x), -to_target.dot(player.transform.basis.y))
+
+		# Get the radius at this angle so we can project onto the ellipse properly
+		var theta = unprojected.angle_to(Vector2.RIGHT)
+		var radius = radar.rect_size.x / 2 * radar.rect_size.y / 2 / sqrt(pow(radar.rect_size.x / 2, 2) * pow(sin(theta), 2) + pow(radar.rect_size.y / 2, 2) * pow(cos(theta), 2))
+
+		var center_distance = unprojected.length()
+		unprojected = unprojected.normalized() * radius
+
+		if camera.is_position_behind(icon.target.transform.origin):
+			radar_position = unprojected - (unprojected * center_distance / 2)
+		else:
+			radar_position = unprojected * center_distance / 2
+
+		icon.icon.set_position(radar.rect_size / 2 + radar_position)
+
+	debug.set_text(str(radar_position))
 
 
 func _update_edge_icon():
@@ -111,3 +141,5 @@ func _update_edge_icon():
 
 
 const EdgeTargetIcon = preload("EdgeTargetIcon.gd")
+
+const RADAR_ICON = preload("res://icons/enemy_icon.tscn")
