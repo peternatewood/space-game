@@ -1,5 +1,6 @@
 extends "res://scripts/ActorBase.gd"
 
+onready var directory = get_meta("directory")
 onready var energy_weapon_hardpoints = get_node("Energy Weapon Hardpoints 1").get_children()
 onready var missile_weapon_hardpoints = get_node("Missile Weapon Hardpoints").get_children()
 onready var shield_front = get_node("Shield Front")
@@ -69,6 +70,16 @@ func _process(delta):
 
 	if missile_weapon_countdown != 0:
 		missile_weapon_countdown = max(0, missile_weapon_countdown - delta)
+
+
+# PUBLIC
+
+
+func get_overhead_icon():
+	if directory != null:
+		return load(directory + "/overhead.png")
+
+	return null
 
 
 const ACCELERATION: float = 0.1
