@@ -85,6 +85,50 @@ text = "100"
 align = 1
 valign = 1
 
+[node name="Arrow Up Right" type="Control" parent="Edge Target Icon"]
+
+[node name="Arrow Up Right Poly" type="Polygon2D" parent="Edge Target Icon/Arrow Up Right"]
+rotation = 0.785398
+polygon = PoolVector2Array( 0, 2, -6, 8, 6, 8 )
+
+[node name="Label" type="Label" parent="Edge Target Icon/Arrow Up Right"]
+margin_left = -34.0
+margin_top = 11.0
+margin_right = -10.0
+margin_bottom = 25.0
+text = "100"
+align = 1
+valign = 1
+
+[node name="Arrow Right" type="Control" parent="Edge Target Icon"]
+
+[node name="Arrow Right Poly" type="Polygon2D" parent="Edge Target Icon/Arrow Right"]
+polygon = PoolVector2Array( -2, 0, -8, -6, -8, 6 )
+
+[node name="Label" type="Label" parent="Edge Target Icon/Arrow Right"]
+margin_left = -36.0
+margin_top = -7.0
+margin_right = -12.0
+margin_bottom = 7.0
+text = "100"
+align = 1
+valign = 1
+
+[node name="Arrow Down Right" type="Control" parent="Edge Target Icon"]
+
+[node name="Arrow Down Right Poly" type="Polygon2D" parent="Edge Target Icon/Arrow Down Right"]
+rotation = 2.35619
+polygon = PoolVector2Array( 0, 2, -6, 8, 6, 8 )
+
+[node name="Label" type="Label" parent="Edge Target Icon/Arrow Down Right"]
+margin_left = -34.0
+margin_top = -24.0
+margin_right = -10.0
+margin_bottom = -10.0
+text = "100"
+align = 1
+valign = 1
+
 [node name="Arrow Down" type="Control" parent="Edge Target Icon"]
 
 [node name="Arrow Down Poly" type="Polygon2D" parent="Edge Target Icon/Arrow Down"]
@@ -94,6 +138,21 @@ polygon = PoolVector2Array( 0, -2, -6, -8, 6, -8 )
 margin_left = -12.0
 margin_top = -24.0
 margin_right = 12.0
+margin_bottom = -10.0
+text = "100"
+align = 1
+valign = 1
+
+[node name="Arrow Down Left" type="Control" parent="Edge Target Icon"]
+
+[node name="Arrow Down Left Poly" type="Polygon2D" parent="Edge Target Icon/Arrow Down Left"]
+rotation = 3.92699
+polygon = PoolVector2Array( 0, 2, -6, 8, 6, 8 )
+
+[node name="Label" type="Label" parent="Edge Target Icon/Arrow Down Left"]
+margin_left = 12.0
+margin_top = -24.0
+margin_right = 36.0
 margin_bottom = -10.0
 text = "100"
 align = 1
@@ -113,16 +172,17 @@ text = "100"
 align = 1
 valign = 1
 
-[node name="Arrow Right" type="Control" parent="Edge Target Icon"]
+[node name="Arrow Up Left" type="Control" parent="Edge Target Icon"]
 
-[node name="Arrow Right Poly" type="Polygon2D" parent="Edge Target Icon/Arrow Right"]
-polygon = PoolVector2Array( -2, 0, -8, -6, -8, 6 )
+[node name="Arrow  Up Left Poly" type="Polygon2D" parent="Edge Target Icon/Arrow Up Left"]
+rotation = 5.49779
+polygon = PoolVector2Array( 0, 2, -6, 8, 6, 8 )
 
-[node name="Label" type="Label" parent="Edge Target Icon/Arrow Right"]
-margin_left = -36.0
-margin_top = -7.0
-margin_right = -12.0
-margin_bottom = 7.0
+[node name="Label" type="Label" parent="Edge Target Icon/Arrow Up Left"]
+margin_left = 12.0
+margin_top = 11.0
+margin_right = 36.0
+margin_bottom = 25.0
 text = "100"
 align = 1
 valign = 1

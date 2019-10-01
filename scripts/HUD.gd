@@ -47,8 +47,8 @@ func _process(delta):
 func _update_edge_icon():
 	var viewport_rect: Rect2 = viewport.get_visible_rect()
 	var unprojected: Vector2 = camera.unproject_position(player.current_target.transform.origin)
-
 	var edge_pos = Vector2(clamp(unprojected.x, 0, viewport_rect.size.x), clamp(unprojected.y, 0, viewport_rect.size.y))
+
 	# If the position is behind the camera, unproject_position mirrors the actual position
 	if camera.is_position_behind(player.current_target.transform.origin):
 		if viewport_rect.has_point(unprojected):
@@ -61,9 +61,19 @@ func _update_edge_icon():
 	edge_target_icon.set_position(edge_pos)
 
 	if edge_pos.x == 0:
-		edge_target_icon.set_direction(EdgeTargetIcon.LEFT)
+		if edge_pos.y == 0:
+			edge_target_icon.set_direction(EdgeTargetIcon.UP_LEFT)
+		elif edge_pos.y == viewport_rect.size.y:
+			edge_target_icon.set_direction(EdgeTargetIcon.DOWN_LEFT)
+		else:
+			edge_target_icon.set_direction(EdgeTargetIcon.LEFT)
 	elif edge_pos.x == viewport_rect.size.x:
-		edge_target_icon.set_direction(EdgeTargetIcon.RIGHT)
+		if edge_pos.y == 0:
+			edge_target_icon.set_direction(EdgeTargetIcon.UP_RIGHT)
+		elif edge_pos.y == viewport_rect.size.y:
+			edge_target_icon.set_direction(EdgeTargetIcon.DOWN_RIGHT)
+		else:
+			edge_target_icon.set_direction(EdgeTargetIcon.RIGHT)
 	elif edge_pos.y == 0:
 		edge_target_icon.set_direction(EdgeTargetIcon.UP)
 	elif edge_pos.y == viewport_rect.size.y:

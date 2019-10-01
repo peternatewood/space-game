@@ -1,15 +1,23 @@
 extends Control
 
-onready var arrow_up = get_node("Arrow Up")
-onready var arrow_down = get_node("Arrow Down")
-onready var arrow_left = get_node("Arrow Left")
-onready var arrow_right = get_node("Arrow Right")
-onready var arrow_up_label = get_node("Arrow Up/Label")
-onready var arrow_down_label = get_node("Arrow Down/Label")
-onready var arrow_left_label = get_node("Arrow Left/Label")
-onready var arrow_right_label = get_node("Arrow Right/Label")
+onready var arrow_icons: Array = [
+	get_node("Arrow Up"),
+	get_node("Arrow Up Right"),
+	get_node("Arrow Right"),
+	get_node("Arrow Down Right"),
+	get_node("Arrow Down"),
+	get_node("Arrow Down Left"),
+	get_node("Arrow Left"),
+	get_node("Arrow Up Left")
+]
 
+var arrow_labels: Array = []
 var direction: int = 0
+
+
+func _ready():
+	for icon in arrow_icons:
+		arrow_labels.append(icon.get_node("Label"))
 
 
 # PUBLIC
@@ -19,42 +27,20 @@ func set_direction(dir: int):
 	if direction != dir:
 		direction = dir
 
-		match direction:
-			UP:
-				arrow_up.show()
-				arrow_down.hide()
-				arrow_left.hide()
-				arrow_right.hide()
-			DOWN:
-				arrow_up.hide()
-				arrow_down.show()
-				arrow_left.hide()
-				arrow_right.hide()
-			LEFT:
-				arrow_up.hide()
-				arrow_down.hide()
-				arrow_left.show()
-				arrow_right.hide()
-			RIGHT:
-				arrow_up.hide()
-				arrow_down.hide()
-				arrow_left.hide()
-				arrow_right.show()
+		var index: int = 0
+		for icon in arrow_icons:
+			if index == direction:
+				icon.show()
+			else:
+				icon.hide()
+
+			index += 1
 
 
 # Angle is in radians
 func update_angle_label(angle: float):
 	var angle_str = str(round(360 * angle / TAU))
-
-	match direction:
-		UP:
-			arrow_up_label.set_text(angle_str)
-		DOWN:
-			arrow_down_label.set_text(angle_str)
-		LEFT:
-			arrow_left_label.set_text(angle_str)
-		RIGHT:
-			arrow_right_label.set_text(angle_str)
+	arrow_labels[direction].set_text(angle_str)
 
 
-enum { UP, DOWN, LEFT, RIGHT }
+enum { UP, UP_RIGHT, RIGHT, DOWN_RIGHT, DOWN, DOWN_LEFT, LEFT, UP_LEFT }
