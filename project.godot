@@ -16,7 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Space Game"
-run/main_scene="res://mission.tscn"
+run/main_scene="res://title.tscn"
 config/icon="res://icon.png"
 
 [input]
