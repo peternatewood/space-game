@@ -14,6 +14,7 @@ func _ready():
 
 func _deal_damage(amount: int):
 	hitpoints -= amount
+	emit_signal("damaged")
 	if hitpoints <= 0:
 		_destroy()
 
@@ -35,6 +36,7 @@ func _on_scene_loaded():
 	set_process(true)
 
 
+signal damaged
 signal destroyed
 
 const EnergyBolt = preload("EnergyBolt.gd")
