@@ -2,7 +2,6 @@ extends "res://scripts/ShipBase.gd"
 
 export (NodePath) var camera_path
 
-onready var camera = get_node(camera_path)
 onready var chase_view = get_node("Chase View")
 onready var cockpit_view = get_node("Cockpit View")
 onready var enemies_container = get_tree().get_root().get_node("Scene/Enemies Container")
@@ -10,14 +9,11 @@ onready var enemies_container = get_tree().get_root().get_node("Scene/Enemies Co
 var cam_dist: float
 var cam_mode: int
 var cam_offset: Vector3
+var camera
 var current_target
 var has_target: bool = false
 var input_velocity: Vector3
 var target_index: int = 0
-
-
-func _ready():
-	_set_cam_mode(COCKPIT)
 
 
 func _input(event):
@@ -44,6 +40,13 @@ func _input(event):
 			current_target = enemies[target_index]
 			target_index = (target_index + 1) % enemies.size()
 			current_target.connect("destroyed", self, "_on_target_destroyed")
+
+
+func _on_scene_loaded():
+	camera = get_node(camera_path)
+	_set_cam_mode(COCKPIT)
+
+	._on_scene_loaded()
 
 
 func _on_target_destroyed():

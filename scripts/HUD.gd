@@ -3,16 +3,19 @@ extends Control
 export (NodePath) var camera_path
 export (NodePath) var player_path
 
-onready var camera = get_node(camera_path)
 onready var debug = get_node("Debug")
 onready var edge_target_icon = get_node("Edge Target Icon")
-onready var player = get_node(player_path)
+onready var loader = get_node("/root/SceneLoader")
 onready var target_icon = get_node("Target Icon")
 onready var viewport = get_viewport()
 
+var camera
+var player
+
 
 func _ready():
-	debug.set_text("Hello!")
+	loader.connect("scene_loaded", self, "_on_scene_loaded")
+	set_process(false)
 
 
 func _is_position_in_view(pos: Vector3):
@@ -20,6 +23,14 @@ func _is_position_in_view(pos: Vector3):
 		return false
 
 	return viewport.get_visible_rect().has_point(camera.unproject_position(pos))
+
+
+func _on_scene_loaded():
+	debug.set_text("Hello!")
+	camera = get_node(camera_path)
+	player = get_node(player_path)
+
+	set_process(true)
 
 
 func _process(delta):
