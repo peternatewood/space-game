@@ -12,9 +12,12 @@ onready var viewport = get_viewport()
 
 var camera
 var player
+var player_hull_bar
 
 
 func _ready():
+	player_hull_bar = player_icon.get_node("Hull Bar")
+
 	loader.connect("scene_loaded", self, "_on_scene_loaded")
 	set_process(false)
 
@@ -26,6 +29,10 @@ func _is_position_in_view(pos: Vector3):
 	return viewport.get_visible_rect().has_point(camera.unproject_position(pos))
 
 
+func _on_player_damaged():
+	player_hull_bar.set_value(player.hitpoints)
+
+
 func _on_scene_loaded():
 	debug.set_text("Hello!")
 	camera = get_node(camera_path)
@@ -34,6 +41,10 @@ func _on_scene_loaded():
 	var overhead_icon = player.get_overhead_icon()
 	if overhead_icon != null:
 		player_icon.get_node("Ship Icon").set_texture(overhead_icon)
+
+	player_hull_bar.set_max(player.hitpoints)
+	player_hull_bar.set_value(player.hitpoints)
+	player.connect("damaged", self, "_on_player_damaged")
 
 	set_process(true)
 
