@@ -15,38 +15,6 @@ func _ready():
 	debug.set_text("Hello!")
 
 
-func _get_edge_direction(pos: Vector2):
-	var viewport_size = viewport.get_visible_rect().size
-
-	if pos.x == 0:
-		return EdgeTargetIcon.LEFT
-	elif pos.x == viewport_size.x:
-		return EdgeTargetIcon.RIGHT
-	elif pos.y == 0:
-		return EdgeTargetIcon.UP
-	elif pos.y == viewport_size.y:
-		return EdgeTargetIcon.DOWN
-
-	return -1
-
-
-func _get_edge_pos(pos: Vector3):
-	var viewport_rect: Rect2 = viewport.get_visible_rect()
-	var unprojected: Vector2 = camera.unproject_position(pos)
-
-	# If the position is behind the camera, unproject_position mirrors the actual position
-	if camera.is_position_behind(pos):
-		if viewport_rect.has_point(unprojected):
-			unprojected = viewport_rect.size / 2 + max(viewport_rect.size.x, viewport_rect.size.y) * (unprojected - viewport_rect.size / 2).normalized()
-
-		var x_pos = viewport_rect.size.x - clamp(unprojected.x, 0, viewport_rect.size.x)
-		var y_pos = viewport_rect.size.y - clamp(unprojected.y, 0, viewport_rect.size.y)
-
-		return Vector2(x_pos, y_pos)
-
-	return Vector2(clamp(unprojected.x, 0, viewport_rect.size.x), clamp(unprojected.y, 0, viewport_rect.size.y))
-
-
 func _is_position_in_view(pos: Vector3):
 	if camera.is_position_behind(pos):
 		return false
@@ -71,15 +39,38 @@ func _process(delta):
 
 			if not edge_target_icon.visible:
 				edge_target_icon.show()
-			var edge_pos = _get_edge_pos(player.current_target.transform.origin)
-			debug.set_text(str(edge_pos))
-			edge_target_icon.set_position(edge_pos)
-
-			var edge_direction = _get_edge_direction(edge_pos)
-			edge_target_icon.set_direction(edge_direction)
-
+			_update_edge_icon()
 	elif target_icon.visible:
 		target_icon.hide()
+
+
+func _update_edge_icon():
+	var viewport_rect: Rect2 = viewport.get_visible_rect()
+	var unprojected: Vector2 = camera.unproject_position(player.current_target.transform.origin)
+
+	var edge_pos = Vector2(clamp(unprojected.x, 0, viewport_rect.size.x), clamp(unprojected.y, 0, viewport_rect.size.y))
+	# If the position is behind the camera, unproject_position mirrors the actual position
+	if camera.is_position_behind(player.current_target.transform.origin):
+		if viewport_rect.has_point(unprojected):
+			unprojected = viewport_rect.size / 2 + max(viewport_rect.size.x, viewport_rect.size.y) * (unprojected - viewport_rect.size / 2).normalized()
+
+		edge_pos = Vector2(viewport_rect.size.x - clamp(unprojected.x, 0, viewport_rect.size.x), viewport_rect.size.y - clamp(unprojected.y, 0, viewport_rect.size.y))
+	else:
+		edge_pos = Vector2(clamp(unprojected.x, 0, viewport_rect.size.x), clamp(unprojected.y, 0, viewport_rect.size.y))
+
+	edge_target_icon.set_position(edge_pos)
+
+	if edge_pos.x == 0:
+		edge_target_icon.set_direction(EdgeTargetIcon.LEFT)
+	elif edge_pos.x == viewport_rect.size.x:
+		edge_target_icon.set_direction(EdgeTargetIcon.RIGHT)
+	elif edge_pos.y == 0:
+		edge_target_icon.set_direction(EdgeTargetIcon.UP)
+	elif edge_pos.y == viewport_rect.size.y:
+		edge_target_icon.set_direction(EdgeTargetIcon.DOWN)
+
+	var angle_to = (-player.transform.basis.z).angle_to(player.current_target.transform.origin - player.transform.origin)
+	edge_target_icon.update_angle_label(angle_to)
 
 
 const EdgeTargetIcon = preload("EdgeTargetIcon.gd")

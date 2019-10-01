@@ -68,19 +68,64 @@ texture_mode = -1108771308
 
 [node name="Edge Target Icon" type="Control" parent="."]
 editor/display_folded = true
+visible = false
 script = ExtResource( 2 )
 
-[node name="Arrow Up" type="Polygon2D" parent="Edge Target Icon"]
+[node name="Arrow Up" type="Control" parent="Edge Target Icon"]
+
+[node name="Arrow Up Poly" type="Polygon2D" parent="Edge Target Icon/Arrow Up"]
 polygon = PoolVector2Array( 0, 2, -6, 8, 6, 8 )
 
-[node name="Arrow Down" type="Polygon2D" parent="Edge Target Icon"]
+[node name="Label" type="Label" parent="Edge Target Icon/Arrow Up"]
+margin_left = -12.0
+margin_top = 11.0
+margin_right = 12.0
+margin_bottom = 25.0
+text = "100"
+align = 1
+valign = 1
+
+[node name="Arrow Down" type="Control" parent="Edge Target Icon"]
+
+[node name="Arrow Down Poly" type="Polygon2D" parent="Edge Target Icon/Arrow Down"]
 polygon = PoolVector2Array( 0, -2, -6, -8, 6, -8 )
 
-[node name="Arrow Left" type="Polygon2D" parent="Edge Target Icon"]
+[node name="Label" type="Label" parent="Edge Target Icon/Arrow Down"]
+margin_left = -12.0
+margin_top = -24.0
+margin_right = 12.0
+margin_bottom = -10.0
+text = "100"
+align = 1
+valign = 1
+
+[node name="Arrow Left" type="Control" parent="Edge Target Icon"]
+
+[node name="Arrow Left Poly" type="Polygon2D" parent="Edge Target Icon/Arrow Left"]
 polygon = PoolVector2Array( 2, 0, 8, -6, 8, 6 )
 
-[node name="Arrow Right" type="Polygon2D" parent="Edge Target Icon"]
+[node name="Label" type="Label" parent="Edge Target Icon/Arrow Left"]
+margin_left = 11.0
+margin_top = -7.0
+margin_right = 35.0
+margin_bottom = 7.0
+text = "100"
+align = 1
+valign = 1
+
+[node name="Arrow Right" type="Control" parent="Edge Target Icon"]
+
+[node name="Arrow Right Poly" type="Polygon2D" parent="Edge Target Icon/Arrow Right"]
 polygon = PoolVector2Array( -2, 0, -8, -6, -8, 6 )
+
+[node name="Label" type="Label" parent="Edge Target Icon/Arrow Right"]
+margin_left = -36.0
+margin_top = -7.0
+margin_right = -12.0
+margin_bottom = 7.0
+text = "100"
+align = 1
+valign = 1
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color( 0.501961, 0.752941, 1, 1 )
