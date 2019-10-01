@@ -6,6 +6,7 @@ export (NodePath) var player_path
 onready var debug = get_node("Debug")
 onready var edge_target_icon = get_node("Edge Target Icon")
 onready var loader = get_node("/root/SceneLoader")
+onready var player_icon = get_node("Player Icon")
 onready var target_icon = get_node("Target Icon")
 onready var viewport = get_viewport()
 
@@ -29,6 +30,10 @@ func _on_scene_loaded():
 	debug.set_text("Hello!")
 	camera = get_node(camera_path)
 	player = get_node(player_path)
+
+	var overhead_icon = player.get_overhead_icon()
+	if overhead_icon != null:
+		player_icon.get_node("Ship Icon").set_texture(overhead_icon)
 
 	set_process(true)
 
