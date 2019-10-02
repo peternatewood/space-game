@@ -1,13 +1,14 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://models/fighter_spider/fighter_spider.dae" type="PackedScene" id=1]
 [ext_resource path="res://scripts/Player.gd" type="Script" id=2]
 [ext_resource path="res://models/fighter_frog/fighter_frog.dae" type="PackedScene" id=3]
-[ext_resource path="res://scripts/ShipBase.gd" type="Script" id=4]
-[ext_resource path="res://models/fighter_hawk/fighter_hawk.dae" type="PackedScene" id=5]
-[ext_resource path="res://models/asteroid/asteroid.dae" type="PackedScene" id=6]
-[ext_resource path="res://scripts/ActorBase.gd" type="Script" id=7]
-[ext_resource path="res://hud.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scripts/NPCShip.gd" type="Script" id=4]
+[ext_resource path="res://scripts/ShipBase.gd" type="Script" id=5]
+[ext_resource path="res://models/fighter_hawk/fighter_hawk.dae" type="PackedScene" id=6]
+[ext_resource path="res://models/asteroid/asteroid.dae" type="PackedScene" id=7]
+[ext_resource path="res://scripts/ActorBase.gd" type="Script" id=8]
+[ext_resource path="res://hud.tscn" type="PackedScene" id=9]
 
 [node name="Scene" type="Spatial"]
 
@@ -36,49 +37,49 @@ hitpoints = 60
 transform = Transform( 0.787268, 0.302992, 0.537034, -0.226817, 0.95218, -0.204713, -0.573379, 0.0393554, 0.818344, 4.66133, 2.33831, -2.32113 )
 collision_layer = 4
 collision_mask = 7
-script = ExtResource( 4 )
+script = ExtResource( 5 )
 hitpoints = 60
 
-[node name="Hawk Fighter" parent="Enemies Container" instance=ExtResource( 5 )]
+[node name="Hawk Fighter" parent="Enemies Container" instance=ExtResource( 6 )]
 transform = Transform( 0.836961, -0.335142, -0.432639, 0, 0.79055, -0.612397, 0.547263, 0.512552, 0.66166, -6.00805, -1.47702, -5.09553 )
 collision_layer = 4
 collision_mask = 7
-script = ExtResource( 4 )
+script = ExtResource( 5 )
 hitpoints = 60
 
 [node name="Asteroid Container" type="Node" parent="."]
 
-[node name="Asteroid" parent="Asteroid Container" instance=ExtResource( 6 )]
+[node name="Asteroid" parent="Asteroid Container" instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11.9108, 0, -8.19799 )
 collision_mask = 7
-script = ExtResource( 7 )
+script = ExtResource( 8 )
 hitpoints = 20
 
-[node name="Asteroid2" parent="Asteroid Container" instance=ExtResource( 6 )]
+[node name="Asteroid2" parent="Asteroid Container" instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.89396, -6.71257, 7.66448 )
 collision_mask = 7
-script = ExtResource( 7 )
+script = ExtResource( 8 )
 hitpoints = 20
 
-[node name="Asteroid3" parent="Asteroid Container" instance=ExtResource( 6 )]
+[node name="Asteroid3" parent="Asteroid Container" instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.10207, -3.187, 4.12244 )
 collision_mask = 7
-script = ExtResource( 7 )
+script = ExtResource( 8 )
 hitpoints = 20
 
-[node name="Asteroid4" parent="Asteroid Container" instance=ExtResource( 6 )]
+[node name="Asteroid4" parent="Asteroid Container" instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15.0285, 9.41962, -26.4233 )
 collision_mask = 7
-script = ExtResource( 7 )
+script = ExtResource( 8 )
 hitpoints = 20
 
-[node name="Asteroid5" parent="Asteroid Container" instance=ExtResource( 6 )]
+[node name="Asteroid5" parent="Asteroid Container" instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.18502, 5.07815, -14.7815 )
 collision_mask = 7
-script = ExtResource( 7 )
+script = ExtResource( 8 )
 hitpoints = 20
 
-[node name="HUD" parent="." instance=ExtResource( 8 )]
+[node name="HUD" parent="." instance=ExtResource( 9 )]
 camera_path = NodePath("../Camera")
 enemies_container_path = NodePath("../Enemies Container")
 player_path = NodePath("../Player")
