@@ -316,5 +316,6 @@ align = 1
 valign = 1
 
 [node name="Debug" type="Label" parent="."]
+visible = false
 margin_right = 726.0
 margin_bottom = 14.0

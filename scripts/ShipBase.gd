@@ -16,23 +16,11 @@ var throttle: float
 var torque_vector: Vector3
 
 
-func _ready():
-	# Set the shield collision layers and masks to be the same as that of the ship
-	shield_front.set_collision_layer(collision_layer)
-	shield_front.set_collision_mask(collision_mask)
-	shield_left.set_collision_layer(collision_layer)
-	shield_left.set_collision_mask(collision_mask)
-	shield_rear.set_collision_layer(collision_layer)
-	shield_rear.set_collision_mask(collision_mask)
-	shield_right.set_collision_layer(collision_layer)
-	shield_right.set_collision_mask(collision_mask)
-
-
 func _fire_energy_weapon():
 	# Instance bolt and set its layer and mask so it doesn't immediately collide with the ship firing it
 	var bolt = ENERGY_BOLT.instance()
-	bolt.set_collision_layer(collision_layer)
-	bolt.set_collision_mask(collision_mask)
+	bolt.add_collision_exception_with(self)
+	bolt.owner_ship = self
 
 	get_tree().get_root().add_child(bolt)
 	bolt.transform.origin = energy_weapon_hardpoints[energy_weapon_index].global_transform.origin
@@ -45,8 +33,8 @@ func _fire_energy_weapon():
 
 func _fire_missile_weapon(target = null):
 	var missile = MISSILE.instance()
-	missile.set_collision_layer(collision_layer)
-	missile.set_collision_mask(collision_mask)
+	missile.add_collision_exception_with(self)
+	missile.owner_ship = self
 
 	get_tree().get_root().add_child(missile)
 	missile.transform.origin = missile_weapon_hardpoints[missile_weapon_index].global_transform.origin

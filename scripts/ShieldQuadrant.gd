@@ -22,7 +22,7 @@ func _damage(amount: int):
 func _on_body_entered(body):
 	# Only handle collisions if this shield quadrant is still up
 	if hitpoints > 0:
-		if body is WeaponBase:
+		if body is WeaponBase and body.owner_ship != get_parent():
 			_damage(body.damage_shield)
 			body.destroy()
 
