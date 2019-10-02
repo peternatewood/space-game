@@ -78,7 +78,7 @@ func _process(delta):
 		target_icon.hide()
 
 	# Update radar icons
-	var viewport_rect = viewport.get_visible_rect()
+	var viewport_rect: Rect2 = viewport.get_visible_rect()
 	var radar_position
 	for icon in radar_icons:
 		var to_target = (icon.target.transform.origin - player.transform.origin).normalized()
@@ -98,48 +98,47 @@ func _process(delta):
 
 		icon.icon.set_position(radar.rect_size / 2 + radar_position)
 
-	debug.set_text(str(radar_position))
-
 
 func _update_edge_icon():
 	var viewport_rect: Rect2 = viewport.get_visible_rect()
-	var unprojected: Vector2 = camera.unproject_position(player.current_target.transform.origin)
-	var edge_pos = Vector2(clamp(unprojected.x, 0, viewport_rect.size.x), clamp(unprojected.y, 0, viewport_rect.size.y))
+	var to_target = (player.current_target.transform.origin - player.transform.origin).normalized()
+	var unprojected = (viewport_rect.size / 2) + (Vector2(to_target.dot(player.transform.basis.x), -to_target.dot(player.transform.basis.y)) * max(viewport_rect.size.x, viewport_rect.size.y))
 
-	# If the position is behind the camera, unproject_position mirrors the actual position
-	if camera.is_position_behind(player.current_target.transform.origin):
-		if viewport_rect.has_point(unprojected):
-			unprojected = viewport_rect.size / 2 + max(viewport_rect.size.x, viewport_rect.size.y) * (unprojected - viewport_rect.size / 2).normalized()
+	var icon_pos = MathHelper.get_line_rect_intersect(viewport_rect.size / 2, unprojected, viewport_rect)
+	if not icon_pos:
+		icon_pos = Vector2.ZERO
 
-		edge_pos = Vector2(viewport_rect.size.x - clamp(unprojected.x, 0, viewport_rect.size.x), viewport_rect.size.y - clamp(unprojected.y, 0, viewport_rect.size.y))
-	else:
-		edge_pos = Vector2(clamp(unprojected.x, 0, viewport_rect.size.x), clamp(unprojected.y, 0, viewport_rect.size.y))
+	debug.set_text(str(unprojected) + "\n" + str(icon_pos))
 
-	edge_target_icon.set_position(edge_pos)
+	edge_target_icon.set_position(icon_pos)
 
-	if edge_pos.x == 0:
-		if edge_pos.y == 0:
-			edge_target_icon.set_direction(EdgeTargetIcon.UP_LEFT)
-		elif edge_pos.y == viewport_rect.size.y:
-			edge_target_icon.set_direction(EdgeTargetIcon.DOWN_LEFT)
+	var direction = -1
+	if icon_pos.x == 0:
+		if icon_pos.y == 0:
+			direction = EdgeTargetIcon.UP_LEFT
+		elif icon_pos.y == viewport_rect.size.y:
+			direction = EdgeTargetIcon.DOWN_LEFT
 		else:
-			edge_target_icon.set_direction(EdgeTargetIcon.LEFT)
-	elif edge_pos.x == viewport_rect.size.x:
-		if edge_pos.y == 0:
-			edge_target_icon.set_direction(EdgeTargetIcon.UP_RIGHT)
-		elif edge_pos.y == viewport_rect.size.y:
-			edge_target_icon.set_direction(EdgeTargetIcon.DOWN_RIGHT)
+			direction = EdgeTargetIcon.LEFT
+	elif icon_pos.x == viewport_rect.size.x:
+		if icon_pos.y == 0:
+			direction = EdgeTargetIcon.UP_RIGHT
+		elif icon_pos.y == viewport_rect.size.y:
+			direction = EdgeTargetIcon.DOWN_RIGHT
 		else:
-			edge_target_icon.set_direction(EdgeTargetIcon.RIGHT)
-	elif edge_pos.y == 0:
-		edge_target_icon.set_direction(EdgeTargetIcon.UP)
-	elif edge_pos.y == viewport_rect.size.y:
-		edge_target_icon.set_direction(EdgeTargetIcon.DOWN)
+			direction = EdgeTargetIcon.RIGHT
+	elif icon_pos.y == 0:
+		direction = EdgeTargetIcon.UP
+	elif icon_pos.y == viewport_rect.size.y:
+		direction = EdgeTargetIcon.DOWN
+
+	edge_target_icon.set_direction(direction)
 
 	var angle_to = (-player.transform.basis.z).angle_to(player.current_target.transform.origin - player.transform.origin)
 	edge_target_icon.update_angle_label(angle_to)
 
 
 const EdgeTargetIcon = preload("EdgeTargetIcon.gd")
+const MathHelper = preload("MathHelper.gd")
 
 const RADAR_ICON = preload("res://icons/enemy_icon.tscn")

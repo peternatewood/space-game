@@ -12,7 +12,7 @@ onready var arrow_icons: Array = [
 ]
 
 var arrow_labels: Array = []
-var direction: int = 0
+var direction: int = -1
 
 
 func _ready():
