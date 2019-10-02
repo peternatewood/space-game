@@ -25,8 +25,8 @@ func _destroy():
 
 
 func _on_body_entered(body):
-	if body is EnergyBolt or body is Missile:
-		_deal_damage(body.DAMAGE_HULL)
+	if body is WeaponBase:
+		_deal_damage(body.damage_hull)
 		body.destroy()
 	else:
 		_deal_damage(1)
@@ -39,5 +39,4 @@ func _on_scene_loaded():
 signal damaged
 signal destroyed
 
-const EnergyBolt = preload("EnergyBolt.gd")
-const Missile = preload("Missile.gd")
+const WeaponBase = preload("WeaponBase.gd")

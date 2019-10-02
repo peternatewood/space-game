@@ -19,8 +19,8 @@ func _damage(amount: int):
 func _on_body_entered(body):
 	# Only handle collisions if this shield quadrant is still up
 	if hitpoints > 0:
-		if body is EnergyBolt or body is Missile:
-			_damage(body.DAMAGE_SHIELD)
+		if body is WeaponBase:
+			_damage(body.damage_shield)
 			body.destroy()
 
 
@@ -40,7 +40,6 @@ func _process(delta):
 
 signal shield_hit
 
-const EnergyBolt = preload("EnergyBolt.gd")
-const Missile = preload("Missile.gd")
+const WeaponBase = preload("WeaponBase.gd")
 
 const FLICKER_DELAY: float = 0.45

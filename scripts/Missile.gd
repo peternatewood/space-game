@@ -1,21 +1,17 @@
-extends RigidBody
-
-var has_target: bool = false
-var life: float = 12.0 # In seconds
-var speed: float = 0.0
-var target
+extends "res://scripts/MissileBase.gd"
 
 
-func _on_target_destroyed():
-	has_target = false
-	target = null
+func _ready():
+	acceleration = 20.0
+	damage_hull = 25
+	damage_shield = 5
+	life = 12.0
+	max_speed = 100.0
+	speed = 0.0
+	turn_speed = 1.5
 
 
 func _process(delta):
-	life -= delta
-	if life <= 0:
-		queue_free()
-
 	if has_target:
 		var to_target = target.transform.origin - transform.origin
 		var dot_product = -transform.basis.z.dot(to_target)
@@ -23,33 +19,11 @@ func _process(delta):
 		if dot_product < 0:
 			_on_target_destroyed()
 		else:
-			transform = transform.interpolate_with(transform.looking_at(target.transform.origin, Vector3.UP), delta * TURN_SPEED)
+			transform = transform.interpolate_with(transform.looking_at(target.transform.origin, Vector3.UP), delta * turn_speed)
 
-	if speed < MAX_SPEED:
-		speed = min(MAX_SPEED, speed + delta * ACCELERATION)
+	if speed < max_speed:
+		speed = min(max_speed, speed + delta * acceleration)
 
 	translate(delta * speed * Vector3.FORWARD)
 
-
-# PUBLIC
-
-
-func add_speed(amount: float):
-	speed += amount
-
-
-func destroy():
-	queue_free()
-
-
-func set_target(node):
-	has_target = true
-	target = node
-	target.connect("destroyed", self, "_on_target_destroyed")
-
-
-var ACCELERATION: float = 20.0
-var DAMAGE_HULL: int = 25
-var DAMAGE_SHIELD: int = 5
-var MAX_SPEED: float = 100.0
-var TURN_SPEED: float = 1.5
+	._process(delta)
