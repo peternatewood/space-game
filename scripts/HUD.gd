@@ -43,13 +43,12 @@ func _on_player_damaged():
 
 
 func _on_scene_loaded():
-	debug.set_text("Hello!")
 	camera = get_node(camera_path)
 	player = get_node(player_path)
 
 	var overhead_icon = player.get_overhead_icon()
 	if overhead_icon != null:
-		player_icon.get_node("Ship Icon").set_texture(overhead_icon)
+		player_icon.set_texture(overhead_icon)
 
 	player_hull_bar.set_max(player.hitpoints)
 	player_hull_bar.set_value(player.hitpoints)
@@ -114,8 +113,6 @@ func _update_edge_icon():
 	var icon_pos = MathHelper.get_line_rect_intersect(viewport_rect.size / 2, unprojected, viewport_rect)
 	if not icon_pos:
 		icon_pos = Vector2.ZERO
-
-	debug.set_text(str(unprojected) + "\n" + str(icon_pos))
 
 	edge_target_icon.set_position(icon_pos)
 

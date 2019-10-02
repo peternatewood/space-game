@@ -26,11 +26,12 @@ anchor_bottom = 1.0
 script = ExtResource( 1 )
 player_icon_path = NodePath("Player Icon Rows/Player Icons Center/Ship Icon")
 shield_front_path = NodePath("Player Icon Rows/CenterContainer/Shield Front")
-shield_left_path = NodePath("Player Icon Rows/Player Icons Center/Shield Left")
+shield_left_path = NodePath("Player Icon Rows/Player Icons Center/CenterContainer2/Shield Left")
 shield_rear_path = NodePath("Player Icon Rows/CenterContainer2/Shield Rear")
-shield_right_path = NodePath("Player Icon Rows/Player Icons Center/Shield Right")
+shield_right_path = NodePath("Player Icon Rows/Player Icons Center/CenterContainer/Shield Right")
 
 [node name="Hull Bar" type="ProgressBar" parent="."]
+modulate = Color( 0.501961, 0.752941, 1, 1 )
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -37.5
@@ -43,6 +44,7 @@ step = 1.0
 value = 50.0
 
 [node name="Player Icon Rows" type="VBoxContainer" parent="."]
+modulate = Color( 0.501961, 0.752941, 1, 1 )
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -67,9 +69,14 @@ margin_top = 38.0
 margin_right = 129.0
 margin_bottom = 163.0
 
-[node name="Shield Left" type="TextureRect" parent="Player Icon Rows/Player Icons Center"]
+[node name="CenterContainer2" type="CenterContainer" parent="Player Icon Rows/Player Icons Center"]
 margin_right = 23.0
 margin_bottom = 125.0
+
+[node name="Shield Left" type="TextureRect" parent="Player Icon Rows/Player Icons Center/CenterContainer2"]
+margin_top = 6.0
+margin_right = 23.0
+margin_bottom = 119.0
 texture = ExtResource( 3 )
 
 [node name="Ship Icon" type="TextureRect" parent="Player Icon Rows/Player Icons Center"]
@@ -78,10 +85,15 @@ margin_right = 102.0
 margin_bottom = 125.0
 texture = ExtResource( 4 )
 
-[node name="Shield Right" type="TextureRect" parent="Player Icon Rows/Player Icons Center"]
+[node name="CenterContainer" type="CenterContainer" parent="Player Icon Rows/Player Icons Center"]
 margin_left = 106.0
 margin_right = 129.0
 margin_bottom = 125.0
+
+[node name="Shield Right" type="TextureRect" parent="Player Icon Rows/Player Icons Center/CenterContainer"]
+margin_top = 6.0
+margin_right = 23.0
+margin_bottom = 119.0
 texture = ExtResource( 5 )
 
 [node name="CenterContainer2" type="CenterContainer" parent="Player Icon Rows"]
@@ -97,7 +109,6 @@ margin_bottom = 35.0
 texture = ExtResource( 6 )
 
 [node name="Radar" type="Control" parent="."]
-editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -109,6 +120,7 @@ margin_bottom = -32.0
 rect_min_size = Vector2( 132, 66 )
 
 [node name="TextureRect" type="TextureRect" parent="Radar"]
+modulate = Color( 0.501961, 0.752941, 1, 1 )
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -121,6 +133,7 @@ texture = ExtResource( 7 )
 
 [node name="Target Reticule" type="Control" parent="."]
 editor/display_folded = true
+modulate = Color( 0.501961, 0.752941, 1, 1 )
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -298,9 +311,7 @@ text = "100"
 align = 1
 valign = 1
 
-[node name="CanvasModulate" type="CanvasModulate" parent="."]
-color = Color( 0.501961, 0.752941, 1, 1 )
-
 [node name="Debug" type="Label" parent="."]
+visible = false
 margin_right = 726.0
 margin_bottom = 14.0
