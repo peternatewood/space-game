@@ -8,10 +8,13 @@ onready var shield_left = get_node("Shield Left")
 onready var shield_rear = get_node("Shield Rear")
 onready var shield_right = get_node("Shield Right")
 
+var current_target
 var energy_weapon_countdown: float = 0.0
 var energy_weapon_index: int = 0
+var has_target: bool = false
 var missile_weapon_countdown: float = 0.0
 var missile_weapon_index: int = 0
+var target_index: int = 0
 var throttle: float
 var torque_vector: Vector3
 
@@ -57,6 +60,12 @@ func _fire_missile_weapon(target = null):
 	return false
 
 
+func _on_target_destroyed():
+	has_target = false
+	current_target = null
+	target_index = 0
+
+
 func _physics_process(delta):
 	add_torque(TURN_SPEED * torque_vector)
 	apply_central_impulse(throttle * -transform.basis.z)
@@ -68,6 +77,15 @@ func _process(delta):
 
 	if missile_weapon_countdown != 0:
 		missile_weapon_countdown = max(0, missile_weapon_countdown - delta)
+
+
+func _set_current_target(node):
+	if has_target:
+		current_target.disconnect("destroyed", self, "_on_target_destroyed")
+
+	has_target = true
+	current_target = node
+	current_target.connect("destroyed", self, "_on_target_destroyed")
 
 
 func _start_destruction():
