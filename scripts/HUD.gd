@@ -20,11 +20,14 @@ onready var shield_left = get_node(shield_left_path)
 onready var shield_rear = get_node(shield_rear_path)
 onready var shield_right = get_node(shield_right_path)
 onready var target_icon = get_node("Target Icon")
+onready var throttle_bar = get_node("Throttle Bar Container/Throttle Bar")
+onready var throttle_line = get_node("Throttle Bar Container/Throttle Line")
 onready var viewport = get_viewport()
 
 var camera
 var player
 var radar_icons_container: Control
+var throttle_target: float
 
 func _ready():
 	radar_icons_container = radar.get_node("Radar Icons Container")
@@ -67,6 +70,11 @@ func _on_player_shield_right_changed(percent: float):
 	shield_right.set_modulate(current_color)
 
 
+func _on_player_throttle_changed(throttle: float):
+	throttle_target = 100 * throttle
+	_set_throttle_line_position(throttle)
+
+
 func _on_scene_loaded():
 	camera = get_node(camera_path)
 	player = get_node(player_path)
@@ -83,6 +91,10 @@ func _on_scene_loaded():
 	player.shield_left.connect("hitpoints_changed", self, "_on_player_shield_left_changed")
 	player.shield_rear.connect("hitpoints_changed", self, "_on_player_shield_rear_changed")
 	player.shield_right.connect("hitpoints_changed", self, "_on_player_shield_right_changed")
+
+	throttle_bar.set_value(player.throttle)
+	_set_throttle_line_position(player.throttle)
+	player.connect("throttle_changed", self, "_on_player_throttle_changed")
 
 	for node in get_node(enemies_container_path).get_children():
 		var icon = RADAR_ICON.instance()
@@ -134,7 +146,14 @@ func _process(delta):
 				radar_position = unprojected * center_distance / 2
 
 			icon.set_position(radar.rect_size / 2 + radar_position)
-	debug.set_text(str(radar_position))
+
+	if throttle_bar.value != throttle_target:
+		throttle_bar.set_value(lerp(throttle_bar.value, throttle_target, delta * THROTTLE_BAR_SPEED))
+
+
+func _set_throttle_line_position(throttle: float):
+	var line_pos: Vector2 = Vector2(0, throttle_bar.rect_size.y) + throttle * throttle_bar.rect_size.y * Vector2.UP
+	throttle_line.set_position(line_pos)
 
 
 func _update_edge_icon():
@@ -178,3 +197,4 @@ const EdgeTargetIcon = preload("EdgeTargetIcon.gd")
 const MathHelper = preload("MathHelper.gd")
 
 const RADAR_ICON = preload("res://icons/enemy_icon.tscn")
+const THROTTLE_BAR_SPEED: float = 2.5

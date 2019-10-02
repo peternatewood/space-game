@@ -25,8 +25,10 @@ func _input(event):
 				_set_cam_mode(COCKPIT)
 	elif event.is_action("throttle_up") and event.pressed:
 		throttle = min(MAX_THROTTLE, throttle + ACCELERATION)
+		emit_signal("throttle_changed", throttle)
 	elif event.is_action("throttle_down") and event.pressed:
 		throttle = max(0, throttle - ACCELERATION)
+		emit_signal("throttle_changed", throttle)
 	elif event.is_action("target_next") and event.pressed:
 		var enemies = enemies_container.get_children()
 		if enemies.size() == 0:
@@ -95,6 +97,8 @@ func _set_cam_mode(mode: int):
 			cam_mode = CHASE
 			show()
 
+
+signal throttle_changed
 
 enum { COCKPIT, CHASE }
 

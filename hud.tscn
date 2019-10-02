@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://scripts/HUD.gd" type="Script" id=1]
 [ext_resource path="res://images/shield_front.png" type="Texture" id=2]
@@ -6,8 +6,11 @@
 [ext_resource path="res://models/fighter_frog/overhead.png" type="Texture" id=4]
 [ext_resource path="res://images/shield_right.png" type="Texture" id=5]
 [ext_resource path="res://images/shield_rear.png" type="Texture" id=6]
-[ext_resource path="res://images/radar_bg.svg" type="Texture" id=7]
-[ext_resource path="res://scripts/EdgeTargetIcon.gd" type="Script" id=8]
+[ext_resource path="res://images/throttle_bar_under.png" type="Texture" id=7]
+[ext_resource path="res://images/throttle_bar_over.png" type="Texture" id=8]
+[ext_resource path="res://images/throttle_bar_progress.png" type="Texture" id=9]
+[ext_resource path="res://images/radar_bg.svg" type="Texture" id=10]
+[ext_resource path="res://scripts/EdgeTargetIcon.gd" type="Script" id=11]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.501961, 0.501961, 0.501961, 1 )
@@ -108,6 +111,35 @@ margin_right = 103.0
 margin_bottom = 35.0
 texture = ExtResource( 6 )
 
+[node name="Throttle Bar Container" type="Control" parent="."]
+modulate = Color( 0.501961, 0.752941, 1, 1 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 170.0
+margin_top = -24.0
+margin_right = 182.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 12, 48 )
+
+[node name="Throttle Bar" type="TextureProgress" parent="Throttle Bar Container"]
+margin_right = 12.0
+margin_bottom = 48.0
+rect_min_size = Vector2( 12, 48 )
+step = 0.01
+value = 45.0
+texture_under = ExtResource( 7 )
+texture_over = ExtResource( 8 )
+texture_progress = ExtResource( 9 )
+fill_mode = 3
+
+[node name="Throttle Line" type="Line2D" parent="Throttle Bar Container"]
+points = PoolVector2Array( 0, 0, 12, 0 )
+width = 2.0
+default_color = Color( 0.25098, 0.25098, 0.25098, 1 )
+texture_mode = 0
+
 [node name="Radar" type="Control" parent="."]
 anchor_left = 0.5
 anchor_top = 1.0
@@ -129,7 +161,7 @@ margin_left = -66.0
 margin_top = -33.0
 margin_right = 66.0
 margin_bottom = 33.0
-texture = ExtResource( 7 )
+texture = ExtResource( 10 )
 
 [node name="Radar Icons Container" type="Control" parent="Radar"]
 anchor_right = 1.0
@@ -197,7 +229,7 @@ texture_mode = -1108771308
 [node name="Edge Target Icon" type="Control" parent="."]
 editor/display_folded = true
 visible = false
-script = ExtResource( 8 )
+script = ExtResource( 11 )
 
 [node name="Arrow Up" type="Control" parent="Edge Target Icon"]
 
