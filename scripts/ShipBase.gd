@@ -39,7 +39,7 @@ func _fire_energy_weapon():
 	bolt.look_at(bolt.transform.origin - transform.basis.z, transform.basis.y)
 	bolt.add_speed(get_linear_velocity().length())
 
-	energy_weapon_countdown = ENERGY_WEAPON_DELAY
+	energy_weapon_countdown = bolt.fire_delay
 	energy_weapon_index = (energy_weapon_index + 1) % energy_weapon_hardpoints.size()
 
 
@@ -55,7 +55,7 @@ func _fire_missile_weapon(target = null):
 	if target != null:
 		missile.set_target(target)
 
-	missile_weapon_countdown = MISSILE_WEAPON_DELAY
+	missile_weapon_countdown = missile.fire_delay
 	missile_weapon_index = (missile_weapon_index + 1) % missile_weapon_hardpoints.size()
 
 
@@ -84,8 +84,6 @@ func get_overhead_icon():
 
 const ACCELERATION: float = 0.1
 const ENERGY_BOLT = preload("res://models/Energy_Bolt.tscn")
-const ENERGY_WEAPON_DELAY: float = 0.1
 const MISSILE = preload("res://models/missile/missile.dae")
-const MISSILE_WEAPON_DELAY: float = 1.2
 const MAX_THROTTLE: float = 1.0
 const TURN_SPEED: float = 2.5

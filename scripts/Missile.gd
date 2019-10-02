@@ -5,6 +5,7 @@ func _ready():
 	acceleration = 20.0
 	damage_hull = 25
 	damage_shield = 5
+	fire_delay = 1.0
 	life = 12.0
 	max_speed = 100.0
 	speed = 0.0
