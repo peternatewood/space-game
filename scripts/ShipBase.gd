@@ -17,34 +17,44 @@ var torque_vector: Vector3
 
 
 func _fire_energy_weapon():
-	# Instance bolt and set its layer and mask so it doesn't immediately collide with the ship firing it
-	var bolt = ENERGY_BOLT.instance()
-	bolt.add_collision_exception_with(self)
-	bolt.owner_ship = self
+	if energy_weapon_countdown == 0:
+		# Instance bolt and set its layer and mask so it doesn't immediately collide with the ship firing it
+		var bolt = ENERGY_BOLT.instance()
+		bolt.add_collision_exception_with(self)
+		bolt.owner_ship = self
 
-	get_tree().get_root().add_child(bolt)
-	bolt.transform.origin = energy_weapon_hardpoints[energy_weapon_index].global_transform.origin
-	bolt.look_at(bolt.transform.origin - transform.basis.z, transform.basis.y)
-	bolt.add_speed(get_linear_velocity().length())
+		get_tree().get_root().add_child(bolt)
+		bolt.transform.origin = energy_weapon_hardpoints[energy_weapon_index].global_transform.origin
+		bolt.look_at(bolt.transform.origin - transform.basis.z, transform.basis.y)
+		bolt.add_speed(get_linear_velocity().length())
 
-	energy_weapon_countdown = bolt.fire_delay
-	energy_weapon_index = (energy_weapon_index + 1) % energy_weapon_hardpoints.size()
+		energy_weapon_countdown = bolt.fire_delay
+		energy_weapon_index = (energy_weapon_index + 1) % energy_weapon_hardpoints.size()
+
+		return true
+
+	return false
 
 
 func _fire_missile_weapon(target = null):
-	var missile = MISSILE.instance()
-	missile.add_collision_exception_with(self)
-	missile.owner_ship = self
+	if missile_weapon_countdown == 0:
+		var missile = MISSILE.instance()
+		missile.add_collision_exception_with(self)
+		missile.owner_ship = self
 
-	get_tree().get_root().add_child(missile)
-	missile.transform.origin = missile_weapon_hardpoints[missile_weapon_index].global_transform.origin
-	missile.look_at(missile.transform.origin - transform.basis.z, transform.basis.y)
-	missile.add_speed(get_linear_velocity().length())
-	if target != null:
-		missile.set_target(target)
+		get_tree().get_root().add_child(missile)
+		missile.transform.origin = missile_weapon_hardpoints[missile_weapon_index].global_transform.origin
+		missile.look_at(missile.transform.origin - transform.basis.z, transform.basis.y)
+		missile.add_speed(get_linear_velocity().length())
+		if target != null:
+			missile.set_target(target)
 
-	missile_weapon_countdown = missile.fire_delay
-	missile_weapon_index = (missile_weapon_index + 1) % missile_weapon_hardpoints.size()
+		missile_weapon_countdown = missile.fire_delay
+		missile_weapon_index = (missile_weapon_index + 1) % missile_weapon_hardpoints.size()
+
+		return true
+
+	return false
 
 
 func _physics_process(delta):
