@@ -1,9 +1,13 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scripts/HUD.gd" type="Script" id=1]
-[ext_resource path="res://models/fighter_frog/overhead.png" type="Texture" id=2]
-[ext_resource path="res://images/radar_bg.svg" type="Texture" id=3]
-[ext_resource path="res://scripts/EdgeTargetIcon.gd" type="Script" id=4]
+[ext_resource path="res://images/shield_front.png" type="Texture" id=2]
+[ext_resource path="res://images/shield_left.png" type="Texture" id=3]
+[ext_resource path="res://models/fighter_frog/overhead.png" type="Texture" id=4]
+[ext_resource path="res://images/shield_right.png" type="Texture" id=5]
+[ext_resource path="res://images/shield_rear.png" type="Texture" id=6]
+[ext_resource path="res://images/radar_bg.svg" type="Texture" id=7]
+[ext_resource path="res://scripts/EdgeTargetIcon.gd" type="Script" id=8]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.501961, 0.501961, 0.501961, 1 )
@@ -20,31 +24,77 @@ border_color = Color( 1, 1, 1, 1 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 1 )
+player_icon_path = NodePath("Player Icon Rows/Player Icons Center/Ship Icon")
+shield_front_path = NodePath("Player Icon Rows/CenterContainer/Shield Front")
+shield_left_path = NodePath("Player Icon Rows/Player Icons Center/Shield Left")
+shield_rear_path = NodePath("Player Icon Rows/CenterContainer2/Shield Rear")
+shield_right_path = NodePath("Player Icon Rows/Player Icons Center/Shield Right")
 
-[node name="Player Icon" type="VBoxContainer" parent="."]
-editor/display_folded = true
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -91.0
-margin_top = -161.0
-margin_right = -16.0
-margin_bottom = -16.0
-
-[node name="Ship Icon" type="TextureRect" parent="Player Icon"]
-margin_right = 75.0
-margin_bottom = 125.0
-texture = ExtResource( 2 )
-
-[node name="Hull Bar" type="ProgressBar" parent="Player Icon"]
-margin_top = 129.0
-margin_right = 75.0
-margin_bottom = 145.0
+[node name="Hull Bar" type="ProgressBar" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -37.5
+margin_top = 32.0
+margin_right = 37.5
+margin_bottom = 48.0
 custom_styles/fg = SubResource( 1 )
 custom_styles/bg = SubResource( 2 )
 step = 1.0
 value = 50.0
+
+[node name="Player Icon Rows" type="VBoxContainer" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -145.0
+margin_top = -218.0
+margin_right = -16.0
+margin_bottom = -16.0
+
+[node name="CenterContainer" type="CenterContainer" parent="Player Icon Rows"]
+margin_right = 129.0
+margin_bottom = 34.0
+
+[node name="Shield Front" type="TextureRect" parent="Player Icon Rows/CenterContainer"]
+margin_left = 26.0
+margin_right = 103.0
+margin_bottom = 34.0
+texture = ExtResource( 2 )
+
+[node name="Player Icons Center" type="HBoxContainer" parent="Player Icon Rows"]
+margin_top = 38.0
+margin_right = 129.0
+margin_bottom = 163.0
+
+[node name="Shield Left" type="TextureRect" parent="Player Icon Rows/Player Icons Center"]
+margin_right = 23.0
+margin_bottom = 125.0
+texture = ExtResource( 3 )
+
+[node name="Ship Icon" type="TextureRect" parent="Player Icon Rows/Player Icons Center"]
+margin_left = 27.0
+margin_right = 102.0
+margin_bottom = 125.0
+texture = ExtResource( 4 )
+
+[node name="Shield Right" type="TextureRect" parent="Player Icon Rows/Player Icons Center"]
+margin_left = 106.0
+margin_right = 129.0
+margin_bottom = 125.0
+texture = ExtResource( 5 )
+
+[node name="CenterContainer2" type="CenterContainer" parent="Player Icon Rows"]
+margin_top = 167.0
+margin_right = 129.0
+margin_bottom = 202.0
+size_flags_horizontal = 3
+
+[node name="Shield Rear" type="TextureRect" parent="Player Icon Rows/CenterContainer2"]
+margin_left = 26.0
+margin_right = 103.0
+margin_bottom = 35.0
+texture = ExtResource( 6 )
 
 [node name="Radar" type="Control" parent="."]
 editor/display_folded = true
@@ -67,7 +117,7 @@ margin_left = -66.0
 margin_top = -33.0
 margin_right = 66.0
 margin_bottom = 33.0
-texture = ExtResource( 3 )
+texture = ExtResource( 7 )
 
 [node name="Target Reticule" type="Control" parent="."]
 editor/display_folded = true
@@ -130,7 +180,7 @@ texture_mode = -1108771308
 [node name="Edge Target Icon" type="Control" parent="."]
 editor/display_folded = true
 visible = false
-script = ExtResource( 4 )
+script = ExtResource( 8 )
 
 [node name="Arrow Up" type="Control" parent="Edge Target Icon"]
 

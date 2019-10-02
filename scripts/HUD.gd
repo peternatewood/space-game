@@ -2,24 +2,31 @@ extends Control
 
 export (NodePath) var camera_path
 export (NodePath) var enemies_container_path
+export (NodePath) var player_icon_path
 export (NodePath) var player_path
+export (NodePath) var shield_front_path
+export (NodePath) var shield_left_path
+export (NodePath) var shield_rear_path
+export (NodePath) var shield_right_path
 
 onready var debug = get_node("Debug")
 onready var edge_target_icon = get_node("Edge Target Icon")
 onready var loader = get_node("/root/SceneLoader")
-onready var player_icon = get_node("Player Icon")
+onready var player_icon = get_node(player_icon_path)
+onready var player_hull_bar = get_node("Hull Bar")
 onready var radar = get_node("Radar")
+onready var shield_front = get_node(shield_front_path)
+onready var shield_left = get_node(shield_left_path)
+onready var shield_rear = get_node(shield_rear_path)
+onready var shield_right = get_node(shield_right_path)
 onready var target_icon = get_node("Target Icon")
 onready var viewport = get_viewport()
 
 var camera
 var player
-var player_hull_bar
 var radar_icons: Array
 
 func _ready():
-	player_hull_bar = player_icon.get_node("Hull Bar")
-
 	loader.connect("scene_loaded", self, "_on_scene_loaded")
 	set_process(false)
 
