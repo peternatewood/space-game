@@ -43,6 +43,30 @@ func _on_player_damaged():
 	player_hull_bar.set_value(player.hitpoints)
 
 
+func _on_player_shield_front_changed(percent: float):
+	var current_color = shield_front.modulate
+	current_color.a = percent
+	shield_front.set_modulate(current_color)
+
+
+func _on_player_shield_left_changed(percent: float):
+	var current_color = shield_left.modulate
+	current_color.a = percent
+	shield_left.set_modulate(current_color)
+
+
+func _on_player_shield_rear_changed(percent: float):
+	var current_color = shield_rear.modulate
+	current_color.a = percent
+	shield_rear.set_modulate(current_color)
+
+
+func _on_player_shield_right_changed(percent: float):
+	var current_color = shield_right.modulate
+	current_color.a = percent
+	shield_right.set_modulate(current_color)
+
+
 func _on_scene_loaded():
 	camera = get_node(camera_path)
 	player = get_node(player_path)
@@ -54,6 +78,11 @@ func _on_scene_loaded():
 	player_hull_bar.set_max(player.hitpoints)
 	player_hull_bar.set_value(player.hitpoints)
 	player.connect("damaged", self, "_on_player_damaged")
+
+	player.shield_front.connect("hitpoints_changed", self, "_on_player_shield_front_changed")
+	player.shield_left.connect("hitpoints_changed", self, "_on_player_shield_left_changed")
+	player.shield_rear.connect("hitpoints_changed", self, "_on_player_shield_rear_changed")
+	player.shield_right.connect("hitpoints_changed", self, "_on_player_shield_right_changed")
 
 	for node in get_node(enemies_container_path).get_children():
 		var icon = RADAR_ICON.instance()
