@@ -2,9 +2,10 @@ extends Area
 
 onready var mesh: MeshInstance = get_node("mesh")
 
-var flicker_countdown: float
-var hitpoints: int
-var max_hitpoints: int = 100
+var flicker_countdown: float = 0.0
+var hitpoints: float
+var max_hitpoints: float = 100
+var recovery_countdown: float = 0.0
 
 
 func _ready():
@@ -16,7 +17,7 @@ func _damage(amount: int):
 	hitpoints = max(0, hitpoints - amount)
 	flicker_countdown = FLICKER_DELAY
 	mesh.show()
-	emit_signal("hitpoints_changed", float(hitpoints) / max_hitpoints)
+	emit_signal("hitpoints_changed", hitpoints / max_hitpoints)
 
 
 func _on_body_entered(body):
@@ -39,6 +40,18 @@ func _process(delta):
 		if flicker_countdown <= 0:
 			mesh.hide()
 			flicker_countdown = 0
+			recovery_countdown = RECOVERY_DELAY
+	elif recovery_countdown != 0:
+		recovery_countdown -= delta
+
+		if recovery_countdown <= 0:
+			recovery_countdown = 0
+	elif hitpoints < max_hitpoints:
+		hitpoints += delta * RECOVERY_RATE
+		emit_signal("hitpoints_changed", hitpoints / max_hitpoints)
+
+		if hitpoints > max_hitpoints:
+			hitpoints = max_hitpoints
 
 
 signal hitpoints_changed
@@ -46,3 +59,5 @@ signal hitpoints_changed
 const WeaponBase = preload("WeaponBase.gd")
 
 const FLICKER_DELAY: float = 0.45
+const RECOVERY_DELAY: float = 0.85 # Starts after flicker delay
+const RECOVERY_RATE: float = 5.0 # Hitpoints per second
