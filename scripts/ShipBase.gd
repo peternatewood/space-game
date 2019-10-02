@@ -70,6 +70,13 @@ func _process(delta):
 		missile_weapon_countdown = max(0, missile_weapon_countdown - delta)
 
 
+func _start_destruction():
+	var smoke = DESTRUCTION_SMOKE.instance()
+	add_child(smoke)
+
+	._start_destruction()
+
+
 # PUBLIC
 
 
@@ -81,6 +88,7 @@ func get_overhead_icon():
 
 
 const ACCELERATION: float = 0.1
+const DESTRUCTION_SMOKE = preload("res://models/Destruction_Smoke.tscn")
 const ENERGY_BOLT = preload("res://models/Energy_Bolt.tscn")
 const MISSILE = preload("res://models/missile/missile.dae")
 const MAX_THROTTLE: float = 1.0
