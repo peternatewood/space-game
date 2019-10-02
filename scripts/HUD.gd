@@ -46,6 +46,11 @@ func _on_player_damaged():
 	player_hull_bar.set_value(player.hitpoints)
 
 
+func _on_player_destroyed():
+	hide()
+	set_process(false)
+
+
 func _on_player_shield_front_changed(percent: float):
 	var current_color = shield_front.modulate
 	current_color.a = percent
@@ -86,6 +91,7 @@ func _on_scene_loaded():
 	player_hull_bar.set_max(player.hitpoints)
 	player_hull_bar.set_value(player.hitpoints)
 	player.connect("damaged", self, "_on_player_damaged")
+	player.connect("destroyed", self, "_on_player_destroyed")
 
 	player.shield_front.connect("hitpoints_changed", self, "_on_player_shield_front_changed")
 	player.shield_left.connect("hitpoints_changed", self, "_on_player_shield_left_changed")
