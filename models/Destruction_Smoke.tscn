@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://images/smoke.png" type="Texture" id=1]
+
+[sub_resource type="SpatialMaterial" id=1]
+params_blend_mode = 1
+params_billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+albedo_texture = ExtResource( 1 )
+
+[sub_resource type="ParticlesMaterial" id=2]
+gravity = Vector3( 0, 0, 0 )
+
+[sub_resource type="QuadMesh" id=3]
+
+[node name="Particles" type="Particles"]
+material_override = SubResource( 1 )
+local_coords = false
+process_material = SubResource( 2 )
+draw_pass_1 = SubResource( 3 )
