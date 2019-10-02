@@ -3,10 +3,12 @@ extends Area
 onready var mesh: MeshInstance = get_node("mesh")
 
 var flicker_countdown: float
-var hitpoints: int = 40
+var hitpoints: int
+var max_hitpoints: int = 40
 
 
 func _ready():
+	hitpoints = max_hitpoints
 	self.connect("body_entered", self, "_on_body_entered")
 
 
@@ -14,6 +16,7 @@ func _damage(amount: int):
 	hitpoints = max(0, hitpoints - amount)
 	flicker_countdown = FLICKER_DELAY
 	mesh.show()
+	emit_signal("shield_hitpoints_changed", hitpoints / max_hitpoints)
 
 
 func _on_body_entered(body):
@@ -38,7 +41,7 @@ func _process(delta):
 			flicker_countdown = 0
 
 
-signal shield_hit
+signal shield_hitpoints_changed
 
 const WeaponBase = preload("WeaponBase.gd")
 
