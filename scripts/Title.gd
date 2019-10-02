@@ -9,6 +9,8 @@ func _ready():
 	exit_button.connect("pressed", self, "_on_exit_pressed")
 	new_game_button.connect("pressed", self, "_on_new_game_pressed")
 
+	new_game_button.grab_focus()
+
 
 func _on_new_game_pressed():
 	loader.change_scene("res://mission.tscn")
