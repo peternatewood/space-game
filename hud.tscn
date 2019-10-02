@@ -131,6 +131,10 @@ margin_right = 66.0
 margin_bottom = 33.0
 texture = ExtResource( 7 )
 
+[node name="Radar Icons Container" type="Control" parent="Radar"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
 [node name="Target Reticule" type="Control" parent="."]
 editor/display_folded = true
 modulate = Color( 0.501961, 0.752941, 1, 1 )
@@ -312,6 +316,5 @@ align = 1
 valign = 1
 
 [node name="Debug" type="Label" parent="."]
-visible = false
 margin_right = 726.0
 margin_bottom = 14.0
