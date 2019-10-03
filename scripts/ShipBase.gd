@@ -110,6 +110,10 @@ func get_overhead_icon():
 	return null
 
 
+func get_source_filename():
+	return get_meta("source_file")
+
+
 const EnergyBolt = preload("EnergyBolt.gd")
 
 const ACCELERATION: float = 0.1
