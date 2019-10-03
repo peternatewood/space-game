@@ -7,7 +7,7 @@ export (NodePath) var player_path
 onready var debug = get_node("Debug")
 onready var edge_target_icon = get_node("Edge Target Icon")
 onready var loader = get_node("/root/SceneLoader")
-onready var mission_controller = get_tree().get_root().get_node("MissionController")
+onready var mission_controller = get_tree().get_root().get_node("Mission Controller")
 onready var player_overhead = get_node("Player Overhead")
 onready var player_hull_bar = get_node("Hull Bar")
 onready var radar = get_node("Radar")
@@ -142,6 +142,11 @@ func _on_scene_loaded():
 	for node in get_node(targets_container_path).get_children():
 		var icon = RADAR_ICON.instance()
 		icon.set_target(node)
+		# Set icon color based on alignment
+		var alignment = mission_controller.get_alignment(player.faction, node.faction)
+		if alignment != -1:
+			icon.set_modulate(ALIGNMENT_COLORS[alignment])
+
 		radar_icons_container.add_child(icon)
 
 	set_process(true)
@@ -289,6 +294,6 @@ const EdgeTargetIcon = preload("EdgeTargetIcon.gd")
 const MathHelper = preload("MathHelper.gd")
 const ShipIcon = preload("ShipIcon.gd")
 
-const ALIGNMENT_COLORS: Array = [ "#ffff00", "#00ff00", "#ff0000" ]
+const ALIGNMENT_COLORS: Array = [ Color("#ffff00"), Color("#00ff00"), Color("#ff0000") ]
 const RADAR_ICON = preload("res://icons/radar_icon.tscn")
 const THROTTLE_BAR_SPEED: float = 2.5
