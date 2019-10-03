@@ -4,7 +4,7 @@ export (NodePath) var camera_path
 
 onready var chase_view = get_node("Chase View")
 onready var cockpit_view = get_node("Cockpit View")
-onready var enemies_container = get_tree().get_root().get_node("Scene/Enemies Container")
+onready var targets_container = get_tree().get_root().get_node("Mission Controller/Targets Container")
 
 var cam_dist: float
 var cam_mode: int
@@ -40,17 +40,17 @@ func _input(event):
 			throttle = max(0, throttle - ACCELERATION)
 			emit_signal("throttle_changed")
 		elif event.is_action("target_next") and event.pressed:
-			var enemies = enemies_container.get_children()
+			var targets = targets_container.get_children()
 			var last_target
-			if enemies.size() == 0:
+			if targets.size() == 0:
 				has_target = false
 				current_target = null
 			else:
 				if has_target:
-					last_target = enemies[target_index]
+					last_target = targets[target_index]
 
-				_set_current_target(enemies[target_index])
-				target_index = (target_index + 1) % enemies.size()
+				_set_current_target(targets[target_index])
+				target_index = (target_index + 1) % targets.size()
 
 			emit_signal("target_changed", last_target)
 

@@ -16,7 +16,7 @@ func _is_target_in_range():
 
 
 func _on_scene_loaded():
-	_set_current_target(get_tree().get_root().get_node("Scene/Player"))
+	_set_current_target(get_tree().get_root().get_node("Mission Controller/Player"))
 
 	._on_scene_loaded()
 
