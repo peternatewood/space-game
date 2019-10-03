@@ -289,5 +289,6 @@ const EdgeTargetIcon = preload("EdgeTargetIcon.gd")
 const MathHelper = preload("MathHelper.gd")
 const ShipIcon = preload("ShipIcon.gd")
 
-const RADAR_ICON = preload("res://icons/enemy_icon.tscn")
+const ALIGNMENT_COLORS: Array = [ "#ffff00", "#00ff00", "#ff0000" ]
+const RADAR_ICON = preload("res://icons/radar_icon.tscn")
 const THROTTLE_BAR_SPEED: float = 2.5
