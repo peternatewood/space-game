@@ -12,3 +12,6 @@ func _ready():
 func add_speed(amount: float):
 	speed += amount
 	add_central_force(speed * -transform.basis.z)
+
+
+const RANGE: float = 33.333333
