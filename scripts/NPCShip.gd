@@ -12,7 +12,7 @@ func _is_target_in_range():
 	var angle_to = -transform.basis.z.angle_to(to_target)
 	var distance_from_center = abs(sin(angle_to) * target_distance_sq)
 
-	return distance_from_center <= LINE_OF_FIRE_SQ
+	return distance_from_center <= LINE_OF_FIRE_SQ and target_distance_sq <= pow(_get_energy_weapon_range(), 2)
 
 
 func _on_scene_loaded():

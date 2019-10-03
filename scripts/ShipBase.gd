@@ -60,6 +60,11 @@ func _fire_missile_weapon(target = null):
 	return false
 
 
+func _get_energy_weapon_range():
+	# TODO: update this for more general use after adding more energy weapons
+	return EnergyBolt.RANGE
+
+
 func _on_target_destroyed():
 	has_target = false
 	current_target = null
@@ -104,6 +109,8 @@ func get_overhead_icon():
 
 	return null
 
+
+const EnergyBolt = preload("EnergyBolt.gd")
 
 const ACCELERATION: float = 0.1
 const DESTRUCTION_SMOKE = preload("res://models/Destruction_Smoke.tscn")
