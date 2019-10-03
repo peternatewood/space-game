@@ -8,7 +8,6 @@
 [ext_resource path="res://images/shield_rear.png" type="Texture" id=6]
 
 [node name="Ship Icon" type="VBoxContainer"]
-modulate = Color( 0.501961, 0.752941, 1, 1 )
 margin_right = 70.0
 margin_bottom = 106.0
 script = ExtResource( 1 )

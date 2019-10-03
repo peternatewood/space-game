@@ -12,6 +12,7 @@ onready var player_hull_bar = get_node("Hull Bar")
 onready var radar = get_node("Radar")
 onready var speed_indicator = get_node("Throttle Bar Container/Speed Indicator")
 onready var target_icon = get_node("Target Icon")
+onready var target_overhead = get_node("Target Overhead")
 onready var target_view_container = get_node("Target View Container")
 onready var target_viewport = get_node("Target Viewport")
 onready var throttle_bar = get_node("Throttle Bar Container/Throttle Bar")
@@ -73,6 +74,12 @@ func _on_player_target_changed():
 			print("Missing source file for " + player.current_target.name)
 			return
 
+		var overhead_icon = player.current_target.get_overhead_icon()
+		if overhead_icon == null:
+			print("Missing overhead icon for " + player.current_target.name)
+			return
+
+		target_overhead.set_overhead_icon(overhead_icon)
 		target_view_model = load(source_filename).instance()
 		target_viewport.add_child(target_view_model)
 
@@ -163,6 +170,7 @@ func _process(delta):
 	if player.has_target:
 		if not target_view_container.visible:
 			target_view_container.show()
+			target_overhead.show()
 
 		var to_target = player.current_target.transform.origin - player.transform.origin
 		target_view_cam.transform.origin = -2 * to_target.normalized()
@@ -171,6 +179,7 @@ func _process(delta):
 		target_view_model.set_rotation(player.current_target.rotation)
 	elif target_view_container.visible:
 		target_view_container.hide()
+		target_overhead.hide()
 
 	_update_speed_indicator()
 
