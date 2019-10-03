@@ -22,7 +22,10 @@ func _on_scene_loaded():
 
 
 func get_alignment(factionA: String, factionB: String):
-	if factions.has_key(factionA):
+	if factionA == factionB:
+		return FRIENDLY
+
+	if factions.has(factionA):
 		return factions[factionA].get(factionB, -1)
 
 	return -1
