@@ -22,11 +22,13 @@ onready var viewport = get_viewport()
 var camera
 var player
 var radar_icons_container: Control
+var target_distance
 var target_view_cam
 var target_view_model
 
 func _ready():
 	radar_icons_container = radar.get_node("Radar Icons Container")
+	target_distance = target_view_container.get_node("Target Distance Container/Target Distance")
 	target_view_cam = target_viewport.get_node("Camera")
 	target_view_model = target_viewport.get_node("Frog Fighter")
 
@@ -223,6 +225,8 @@ func _process(delta):
 		target_view_cam.look_at(Vector3.ZERO, player.transform.basis.y)
 
 		target_view_model.set_rotation(player.current_target.rotation)
+
+		target_distance.set_text(str(round(to_target.length())))
 	elif target_view_container.visible:
 		target_view_container.hide()
 		target_overhead.hide()
