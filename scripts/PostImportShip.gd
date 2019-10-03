@@ -56,6 +56,7 @@ func post_import(scene):
 	scene.set_linear_damp(0.85)
 
 	# This is used for loading the data file and other resources
+	scene.set_meta("source_file", get_source_file())
 	scene.set_meta("directory", get_source_folder())
 
 	return .post_import(scene)
