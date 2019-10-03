@@ -52,66 +52,67 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -145.0
-margin_top = -218.0
+margin_left = -86.0
+margin_top = -122.0
 margin_right = -16.0
 margin_bottom = -16.0
 
 [node name="CenterContainer" type="CenterContainer" parent="Player Icon Rows"]
-margin_right = 129.0
-margin_bottom = 34.0
+margin_right = 70.0
+margin_bottom = 17.0
 
 [node name="Shield Front" type="TextureRect" parent="Player Icon Rows/CenterContainer"]
-margin_left = 26.0
-margin_right = 103.0
-margin_bottom = 34.0
+margin_left = 15.0
+margin_right = 54.0
+margin_bottom = 17.0
 texture = ExtResource( 2 )
 
 [node name="Player Icons Center" type="HBoxContainer" parent="Player Icon Rows"]
-margin_top = 38.0
-margin_right = 129.0
-margin_bottom = 163.0
+margin_top = 21.0
+margin_right = 70.0
+margin_bottom = 84.0
 
 [node name="CenterContainer2" type="CenterContainer" parent="Player Icon Rows/Player Icons Center"]
-margin_right = 23.0
-margin_bottom = 125.0
+margin_right = 12.0
+margin_bottom = 63.0
 
 [node name="Shield Left" type="TextureRect" parent="Player Icon Rows/Player Icons Center/CenterContainer2"]
-margin_top = 6.0
-margin_right = 23.0
-margin_bottom = 119.0
+margin_top = 3.0
+margin_right = 12.0
+margin_bottom = 60.0
 texture = ExtResource( 3 )
 
 [node name="Ship Icon" type="TextureRect" parent="Player Icon Rows/Player Icons Center"]
-margin_left = 27.0
-margin_right = 102.0
-margin_bottom = 125.0
+margin_left = 16.0
+margin_right = 54.0
+margin_bottom = 63.0
 texture = ExtResource( 4 )
 
 [node name="CenterContainer" type="CenterContainer" parent="Player Icon Rows/Player Icons Center"]
-margin_left = 106.0
-margin_right = 129.0
-margin_bottom = 125.0
+margin_left = 58.0
+margin_right = 70.0
+margin_bottom = 63.0
 
 [node name="Shield Right" type="TextureRect" parent="Player Icon Rows/Player Icons Center/CenterContainer"]
-margin_top = 6.0
-margin_right = 23.0
-margin_bottom = 119.0
+margin_top = 3.0
+margin_right = 12.0
+margin_bottom = 60.0
 texture = ExtResource( 5 )
 
 [node name="CenterContainer2" type="CenterContainer" parent="Player Icon Rows"]
-margin_top = 167.0
-margin_right = 129.0
-margin_bottom = 202.0
+margin_top = 88.0
+margin_right = 70.0
+margin_bottom = 106.0
 size_flags_horizontal = 3
 
 [node name="Shield Rear" type="TextureRect" parent="Player Icon Rows/CenterContainer2"]
-margin_left = 26.0
-margin_right = 103.0
-margin_bottom = 35.0
+margin_left = 15.0
+margin_right = 54.0
+margin_bottom = 18.0
 texture = ExtResource( 6 )
 
 [node name="Throttle Bar Container" type="Control" parent="."]
+editor/display_folded = true
 modulate = Color( 0.501961, 0.752941, 1, 1 )
 anchor_left = 0.5
 anchor_top = 0.5
@@ -138,8 +139,10 @@ fill_mode = 3
 points = PoolVector2Array( 0, 0, 12, 0 )
 width = 2.0
 default_color = Color( 0.25098, 0.25098, 0.25098, 1 )
+texture_mode = 717882032
 
 [node name="Radar" type="Control" parent="."]
+editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
