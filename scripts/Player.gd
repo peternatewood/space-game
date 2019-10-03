@@ -48,6 +48,8 @@ func _input(event):
 				_set_current_target(enemies[target_index])
 				target_index = (target_index + 1) % enemies.size()
 
+			emit_signal("target_changed")
+
 
 func _on_scene_loaded():
 	camera = get_node(camera_path)
@@ -100,6 +102,7 @@ func _set_cam_mode(mode: int):
 			show()
 
 
+signal target_changed
 signal throttle_changed
 
 enum { COCKPIT, CHASE }
