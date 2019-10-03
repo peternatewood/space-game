@@ -1,5 +1,7 @@
 extends "res://scripts/ActorBase.gd"
 
+export (int) var alignment = 0
+
 onready var directory = get_meta("directory")
 onready var energy_weapon_hardpoints = get_node("Energy Weapon Hardpoints 1").get_children()
 onready var missile_weapon_hardpoints = get_node("Missile Weapon Hardpoints").get_children()
