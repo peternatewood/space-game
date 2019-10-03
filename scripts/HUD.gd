@@ -20,6 +20,8 @@ onready var shield_left = get_node(shield_left_path)
 onready var shield_rear = get_node(shield_rear_path)
 onready var shield_right = get_node(shield_right_path)
 onready var target_icon = get_node("Target Icon")
+onready var target_view_container = get_node("Target View Container")
+onready var target_viewport = get_node("Target Viewport")
 onready var throttle_bar = get_node("Throttle Bar Container/Throttle Bar")
 onready var throttle_line = get_node("Throttle Bar Container/Throttle Line")
 onready var viewport = get_viewport()
@@ -27,10 +29,15 @@ onready var viewport = get_viewport()
 var camera
 var player
 var radar_icons_container: Control
+var target_view_cam
+var target_view_model
 var throttle_target: float
 
 func _ready():
 	radar_icons_container = radar.get_node("Radar Icons Container")
+	target_view_cam = target_viewport.get_node("Camera")
+	target_view_model = target_viewport.get_node("Frog Fighter")
+
 	loader.connect("scene_loaded", self, "_on_scene_loaded")
 	set_process(false)
 
@@ -75,6 +82,18 @@ func _on_player_shield_right_changed(percent: float):
 	shield_right.set_modulate(current_color)
 
 
+func _on_player_target_changed():
+	if player.has_target:
+		target_viewport.remove_child(target_view_model)
+		var source_filename = player.current_target.get_source_filename()
+		if source_filename == null:
+			print("Missing source file for " + player.current_target.name)
+			return
+
+		target_view_model = load(source_filename).instance()
+		target_viewport.add_child(target_view_model)
+
+
 func _on_player_throttle_changed(throttle: float):
 	throttle_target = 100 * throttle
 	_set_throttle_line_position(throttle)
@@ -92,6 +111,7 @@ func _on_scene_loaded():
 	player_hull_bar.set_value(player.hitpoints)
 	player.connect("damaged", self, "_on_player_damaged")
 	player.connect("destroyed", self, "_on_player_destroyed")
+	player.connect("target_changed", self, "_on_player_target_changed")
 
 	player.shield_front.connect("hitpoints_changed", self, "_on_player_shield_front_changed")
 	player.shield_left.connect("hitpoints_changed", self, "_on_player_shield_left_changed")
@@ -155,6 +175,19 @@ func _process(delta):
 
 	if throttle_bar.value != throttle_target:
 		throttle_bar.set_value(lerp(throttle_bar.value, throttle_target, delta * THROTTLE_BAR_SPEED))
+
+	# Update target view
+	if player.has_target:
+		if not target_view_container.visible:
+			target_view_container.show()
+
+		var to_target = player.current_target.transform.origin - player.transform.origin
+		target_view_cam.transform.origin = -2 * to_target.normalized()
+		target_view_cam.look_at(Vector3.ZERO, player.transform.basis.y)
+
+		target_view_model.set_rotation(player.current_target.rotation)
+	elif target_view_container.visible:
+		target_view_container.hide()
 
 
 func _set_throttle_line_position(throttle: float):

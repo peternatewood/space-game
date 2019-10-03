@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://scripts/HUD.gd" type="Script" id=1]
 [ext_resource path="res://images/shield_front.png" type="Texture" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://images/throttle_bar_progress.png" type="Texture" id=9]
 [ext_resource path="res://images/radar_bg.svg" type="Texture" id=10]
 [ext_resource path="res://scripts/EdgeTargetIcon.gd" type="Script" id=11]
+[ext_resource path="res://models/fighter_frog/fighter_frog.dae" type="PackedScene" id=12]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.501961, 0.501961, 0.501961, 1 )
@@ -22,6 +23,24 @@ border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
 border_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 1, 1, 1, 1 )
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="ViewportTexture" id=3]
+viewport_path = NodePath("Target Viewport")
+
+[sub_resource type="Environment" id=4]
+background_mode = 1
+ambient_light_color = Color( 1, 1, 1, 1 )
+ambient_light_energy = 0.25
+ambient_light_sky_contribution = 0.5
 
 [node name="HUD" type="Control"]
 anchor_right = 1.0
@@ -47,6 +66,7 @@ step = 1.0
 value = 50.0
 
 [node name="Player Icon Rows" type="VBoxContainer" parent="."]
+editor/display_folded = true
 modulate = Color( 0.501961, 0.752941, 1, 1 )
 anchor_left = 1.0
 anchor_top = 1.0
@@ -353,3 +373,40 @@ valign = 1
 visible = false
 margin_right = 726.0
 margin_bottom = 14.0
+
+[node name="Target View Container" type="PanelContainer" parent="."]
+self_modulate = Color( 0.501961, 0.752941, 1, 1 )
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 16.0
+margin_top = -110.0
+margin_right = 180.0
+margin_bottom = -16.0
+custom_styles/panel = SubResource( 5 )
+
+[node name="Target View" type="TextureRect" parent="Target View Container"]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 162.0
+margin_bottom = 92.0
+texture = SubResource( 3 )
+
+[node name="Target Viewport" type="Viewport" parent="."]
+size = Vector2( 160, 90 )
+own_world = true
+render_target_v_flip = true
+
+[node name="Camera" type="Camera" parent="Target Viewport"]
+environment = SubResource( 4 )
+projection = 1
+size = 3.0
+far = 10.0
+
+[node name="Frog Fighter" parent="Target Viewport" instance=ExtResource( 12 )]
+input_ray_pickable = false
+collision_layer = 0
+collision_mask = 0
+sleeping = true
+
+[node name="DirectionalLight" type="DirectionalLight" parent="Target Viewport"]
+transform = Transform( 0.866025, 0.482963, -0.129409, 0, 0.258819, 0.965926, 0.5, -0.836516, 0.224144, 0, 8, 2 )
