@@ -2,23 +2,14 @@ extends Control
 
 export (NodePath) var camera_path
 export (NodePath) var enemies_container_path
-export (NodePath) var player_icon_path
 export (NodePath) var player_path
-export (NodePath) var shield_front_path
-export (NodePath) var shield_left_path
-export (NodePath) var shield_rear_path
-export (NodePath) var shield_right_path
 
 onready var debug = get_node("Debug")
 onready var edge_target_icon = get_node("Edge Target Icon")
 onready var loader = get_node("/root/SceneLoader")
-onready var player_icon = get_node(player_icon_path)
+onready var player_overhead = get_node("Player Overhead")
 onready var player_hull_bar = get_node("Hull Bar")
 onready var radar = get_node("Radar")
-onready var shield_front = get_node(shield_front_path)
-onready var shield_left = get_node(shield_left_path)
-onready var shield_rear = get_node(shield_rear_path)
-onready var shield_right = get_node(shield_right_path)
 onready var speed_indicator = get_node("Throttle Bar Container/Speed Indicator")
 onready var target_icon = get_node("Target Icon")
 onready var target_view_container = get_node("Target View Container")
@@ -59,27 +50,19 @@ func _on_player_destroyed():
 
 
 func _on_player_shield_front_changed(percent: float):
-	var current_color = shield_front.modulate
-	current_color.a = percent
-	shield_front.set_modulate(current_color)
+	player_overhead.set_shield_alpha(ShipIcon.FRONT, percent)
 
 
 func _on_player_shield_left_changed(percent: float):
-	var current_color = shield_left.modulate
-	current_color.a = percent
-	shield_left.set_modulate(current_color)
+	player_overhead.set_shield_alpha(ShipIcon.LEFT, percent)
 
 
 func _on_player_shield_rear_changed(percent: float):
-	var current_color = shield_rear.modulate
-	current_color.a = percent
-	shield_rear.set_modulate(current_color)
+	player_overhead.set_shield_alpha(ShipIcon.REAR, percent)
 
 
 func _on_player_shield_right_changed(percent: float):
-	var current_color = shield_right.modulate
-	current_color.a = percent
-	shield_right.set_modulate(current_color)
+	player_overhead.set_shield_alpha(ShipIcon.RIGHT, percent)
 
 
 func _on_player_target_changed():
@@ -106,10 +89,11 @@ func _on_scene_loaded():
 
 	var overhead_icon = player.get_overhead_icon()
 	if overhead_icon != null:
-		player_icon.set_texture(overhead_icon)
+		player_overhead.set_overhead_icon(overhead_icon)
 
 	player_hull_bar.set_max(player.hitpoints)
 	player_hull_bar.set_value(player.hitpoints)
+
 	player.connect("target_changed", self, "_on_player_target_changed")
 	player.connect("speed_changed", self, "_on_player_speed_changed")
 	player.connect("damaged", self, "_on_player_damaged")
@@ -241,6 +225,7 @@ func _update_speed_indicator():
 
 const EdgeTargetIcon = preload("EdgeTargetIcon.gd")
 const MathHelper = preload("MathHelper.gd")
+const ShipIcon = preload("ShipIcon.gd")
 
 const RADAR_ICON = preload("res://icons/enemy_icon.tscn")
 const THROTTLE_BAR_SPEED: float = 2.5

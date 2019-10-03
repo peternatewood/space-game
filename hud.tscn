@@ -1,17 +1,13 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://scripts/HUD.gd" type="Script" id=1]
-[ext_resource path="res://images/shield_front.png" type="Texture" id=2]
-[ext_resource path="res://images/shield_left.png" type="Texture" id=3]
-[ext_resource path="res://models/fighter_frog/overhead.png" type="Texture" id=4]
-[ext_resource path="res://images/shield_right.png" type="Texture" id=5]
-[ext_resource path="res://images/shield_rear.png" type="Texture" id=6]
-[ext_resource path="res://images/throttle_bar_under.png" type="Texture" id=7]
-[ext_resource path="res://images/throttle_bar_over.png" type="Texture" id=8]
-[ext_resource path="res://images/throttle_bar_progress.png" type="Texture" id=9]
-[ext_resource path="res://images/radar_bg.svg" type="Texture" id=10]
-[ext_resource path="res://scripts/EdgeTargetIcon.gd" type="Script" id=11]
-[ext_resource path="res://models/fighter_frog/fighter_frog.dae" type="PackedScene" id=12]
+[ext_resource path="res://icons/ship_icon.tscn" type="PackedScene" id=2]
+[ext_resource path="res://images/throttle_bar_under.png" type="Texture" id=3]
+[ext_resource path="res://images/throttle_bar_over.png" type="Texture" id=4]
+[ext_resource path="res://images/throttle_bar_progress.png" type="Texture" id=5]
+[ext_resource path="res://images/radar_bg.svg" type="Texture" id=6]
+[ext_resource path="res://scripts/EdgeTargetIcon.gd" type="Script" id=7]
+[ext_resource path="res://models/fighter_frog/fighter_frog.dae" type="PackedScene" id=8]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.501961, 0.501961, 0.501961, 1 )
@@ -46,11 +42,6 @@ ambient_light_sky_contribution = 0.5
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 1 )
-player_icon_path = NodePath("Player Icon Rows/Player Icons Center/Ship Icon")
-shield_front_path = NodePath("Player Icon Rows/CenterContainer/Shield Front")
-shield_left_path = NodePath("Player Icon Rows/Player Icons Center/CenterContainer2/Shield Left")
-shield_rear_path = NodePath("Player Icon Rows/CenterContainer2/Shield Rear")
-shield_right_path = NodePath("Player Icon Rows/Player Icons Center/CenterContainer/Shield Right")
 
 [node name="Hull Bar" type="ProgressBar" parent="."]
 modulate = Color( 0.501961, 0.752941, 1, 1 )
@@ -65,71 +56,11 @@ custom_styles/bg = SubResource( 2 )
 step = 1.0
 value = 50.0
 
-[node name="Player Icon Rows" type="VBoxContainer" parent="."]
-editor/display_folded = true
-modulate = Color( 0.501961, 0.752941, 1, 1 )
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -86.0
-margin_top = -122.0
-margin_right = -16.0
-margin_bottom = -16.0
-
-[node name="CenterContainer" type="CenterContainer" parent="Player Icon Rows"]
-margin_right = 70.0
-margin_bottom = 17.0
-
-[node name="Shield Front" type="TextureRect" parent="Player Icon Rows/CenterContainer"]
-margin_left = 15.0
-margin_right = 54.0
-margin_bottom = 17.0
-texture = ExtResource( 2 )
-
-[node name="Player Icons Center" type="HBoxContainer" parent="Player Icon Rows"]
-margin_top = 21.0
-margin_right = 70.0
-margin_bottom = 84.0
-
-[node name="CenterContainer2" type="CenterContainer" parent="Player Icon Rows/Player Icons Center"]
-margin_right = 12.0
-margin_bottom = 63.0
-
-[node name="Shield Left" type="TextureRect" parent="Player Icon Rows/Player Icons Center/CenterContainer2"]
-margin_top = 3.0
-margin_right = 12.0
-margin_bottom = 60.0
-texture = ExtResource( 3 )
-
-[node name="Ship Icon" type="TextureRect" parent="Player Icon Rows/Player Icons Center"]
-margin_left = 16.0
-margin_right = 54.0
-margin_bottom = 63.0
-texture = ExtResource( 4 )
-
-[node name="CenterContainer" type="CenterContainer" parent="Player Icon Rows/Player Icons Center"]
-margin_left = 58.0
-margin_right = 70.0
-margin_bottom = 63.0
-
-[node name="Shield Right" type="TextureRect" parent="Player Icon Rows/Player Icons Center/CenterContainer"]
-margin_top = 3.0
-margin_right = 12.0
-margin_bottom = 60.0
-texture = ExtResource( 5 )
-
-[node name="CenterContainer2" type="CenterContainer" parent="Player Icon Rows"]
-margin_top = 88.0
-margin_right = 70.0
-margin_bottom = 106.0
-size_flags_horizontal = 3
-
-[node name="Shield Rear" type="TextureRect" parent="Player Icon Rows/CenterContainer2"]
-margin_left = 15.0
-margin_right = 54.0
-margin_bottom = 18.0
-texture = ExtResource( 6 )
+[node name="Player Overhead" parent="." instance=ExtResource( 2 )]
+margin_left = 938.0
+margin_top = 478.0
+margin_right = 1008.0
+margin_bottom = 584.0
 
 [node name="Throttle Bar Container" type="Control" parent="."]
 modulate = Color( 0.501961, 0.752941, 1, 1 )
@@ -148,14 +79,14 @@ margin_right = 32.0
 margin_bottom = 64.0
 step = 0.1
 value = 50.0
-texture_under = ExtResource( 7 )
-texture_over = ExtResource( 8 )
-texture_progress = ExtResource( 9 )
+texture_under = ExtResource( 3 )
+texture_over = ExtResource( 4 )
+texture_progress = ExtResource( 5 )
 fill_mode = 3
 
 [node name="Throttle Line Mask" type="Light2D" parent="Throttle Bar Container"]
 light_mask = 2
-texture = ExtResource( 9 )
+texture = ExtResource( 5 )
 offset = Vector2( 16, 32 )
 mode = 3
 range_item_cull_mask = 2
@@ -199,7 +130,7 @@ margin_left = -66.0
 margin_top = -33.0
 margin_right = 66.0
 margin_bottom = 33.0
-texture = ExtResource( 10 )
+texture = ExtResource( 6 )
 
 [node name="Radar Icons Container" type="Control" parent="Radar"]
 anchor_right = 1.0
@@ -267,7 +198,7 @@ texture_mode = -1108771308
 [node name="Edge Target Icon" type="Control" parent="."]
 editor/display_folded = true
 visible = false
-script = ExtResource( 11 )
+script = ExtResource( 7 )
 
 [node name="Arrow Up" type="Control" parent="Edge Target Icon"]
 
@@ -419,7 +350,7 @@ current = true
 size = 3.0
 far = 10.0
 
-[node name="Frog Fighter" parent="Target Viewport" instance=ExtResource( 12 )]
+[node name="Frog Fighter" parent="Target Viewport" instance=ExtResource( 8 )]
 input_ray_pickable = false
 collision_layer = 0
 collision_mask = 0
