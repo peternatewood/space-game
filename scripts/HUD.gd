@@ -34,6 +34,16 @@ func _ready():
 	set_process(false)
 
 
+func _disconnect_target_signals(target):
+	target.disconnect("damaged", self, "_on_target_damaged")
+	target.disconnect("destroyed", self, "_on_target_destroyed")
+
+	target.shield_front.disconnect("destroyed", self, "_on_target_shield_front_changed")
+	target.shield_left.disconnect("destroyed", self, "_on_target_shield_left_changed")
+	target.shield_rear.disconnect("destroyed", self, "_on_target_shield_rear_changed")
+	target.shield_right.disconnect("destroyed", self, "_on_target_shield_right_changed")
+
+
 func _is_position_in_view(pos: Vector3):
 	if camera.is_position_behind(pos):
 		return false
@@ -66,7 +76,7 @@ func _on_player_shield_right_changed(percent: float):
 	player_overhead.set_shield_alpha(ShipIcon.RIGHT, percent)
 
 
-func _on_player_target_changed():
+func _on_player_target_changed(last_target):
 	if player.has_target:
 		target_viewport.remove_child(target_view_model)
 		var source_filename = player.current_target.get_source_filename()
@@ -78,6 +88,18 @@ func _on_player_target_changed():
 		if overhead_icon == null:
 			print("Missing overhead icon for " + player.current_target.name)
 			return
+
+		# Disconnect signals from old target
+		if last_target != null:
+			_disconnect_target_signals(last_target)
+
+		player.current_target.connect("damaged", self, "_on_target_damaged")
+		player.current_target.connect("destroyed", self, "_on_target_destroyed", [ player.current_target ])
+
+		player.current_target.shield_front.connect("destroyed", self, "_on_target_shield_front_changed")
+		player.current_target.shield_left.connect("destroyed", self, "_on_target_shield_left_changed")
+		player.current_target.shield_rear.connect("destroyed", self, "_on_target_shield_rear_changed")
+		player.current_target.shield_right.connect("destroyed", self, "_on_target_shield_right_changed")
 
 		target_overhead.set_overhead_icon(overhead_icon)
 		target_view_model = load(source_filename).instance()
@@ -102,7 +124,6 @@ func _on_scene_loaded():
 	player_hull_bar.set_value(player.hitpoints)
 
 	player.connect("target_changed", self, "_on_player_target_changed")
-	player.connect("speed_changed", self, "_on_player_speed_changed")
 	player.connect("damaged", self, "_on_player_damaged")
 	player.connect("destroyed", self, "_on_player_destroyed")
 
@@ -121,6 +142,31 @@ func _on_scene_loaded():
 		radar_icons_container.add_child(icon)
 
 	set_process(true)
+
+
+func _on_target_damaged():
+	pass
+
+
+func _on_target_destroyed(target):
+	_disconnect_target_signals(target)
+
+
+func _on_target_shield_front_changed(percent: float):
+	target_overhead.set_shield_alpha(ShipIcon.FRONT, percent)
+
+
+func _on_target_shield_left_changed(percent: float):
+	target_overhead.set_shield_alpha(ShipIcon.LEFT, percent)
+
+
+func _on_target_shield_rear_changed(percent: float):
+	target_overhead.set_shield_alpha(ShipIcon.REAR, percent)
+
+
+func _on_target_shield_right_changed(percent: float):
+	target_overhead.set_shield_alpha(ShipIcon.RIGHT, percent)
+
 
 
 func _process(delta):

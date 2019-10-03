@@ -41,14 +41,18 @@ func _input(event):
 			emit_signal("throttle_changed")
 		elif event.is_action("target_next") and event.pressed:
 			var enemies = enemies_container.get_children()
+			var last_target
 			if enemies.size() == 0:
 				has_target = false
 				current_target = null
 			else:
+				if has_target:
+					last_target = enemies[target_index]
+
 				_set_current_target(enemies[target_index])
 				target_index = (target_index + 1) % enemies.size()
 
-			emit_signal("target_changed")
+			emit_signal("target_changed", last_target)
 
 
 func _on_scene_loaded():
