@@ -104,9 +104,17 @@ func _on_player_target_changed(last_target):
 		player.current_target.shield_rear.connect("destroyed", self, "_on_target_shield_rear_changed")
 		player.current_target.shield_right.connect("destroyed", self, "_on_target_shield_right_changed")
 
+		# Update icons
 		target_overhead.set_overhead_icon(overhead_icon)
 		target_view_model = load(source_filename).instance()
 		target_viewport.add_child(target_view_model)
+		var alignment = mission_controller.get_alignment(player.faction, player.current_target.faction)
+		if alignment != -1:
+			edge_target_icon.set_modulate(ALIGNMENT_COLORS[alignment])
+			target_icon.set_modulate(ALIGNMENT_COLORS[alignment])
+		else:
+			edge_target_icon.set_modulate(Color.white)
+			target_icon.set_modulate(Color.white)
 
 
 func _on_player_throttle_changed():
@@ -146,6 +154,8 @@ func _on_scene_loaded():
 		var alignment = mission_controller.get_alignment(player.faction, node.faction)
 		if alignment != -1:
 			icon.set_modulate(ALIGNMENT_COLORS[alignment])
+		else:
+			icon.set_modulate(Color.white)
 
 		radar_icons_container.add_child(icon)
 
