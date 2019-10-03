@@ -21,8 +21,7 @@ border_width_bottom = 1
 border_color = Color( 1, 1, 1, 1 )
 
 [sub_resource type="StyleBoxFlat" id=3]
-bg_color = Color( 1, 1, 1, 1 )
-draw_center = false
+bg_color = Color( 0, 0, 0, 0.501961 )
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -368,6 +367,7 @@ self_modulate = Color( 0.501961, 0.752941, 1, 1 )
 margin_top = 18.0
 margin_right = 164.0
 margin_bottom = 112.0
+rect_min_size = Vector2( 164, 94 )
 custom_styles/panel = SubResource( 3 )
 
 [node name="Target View" type="TextureRect" parent="Target View Container/Target View Panel"]
@@ -385,6 +385,7 @@ margin_bottom = 14.0
 [node name="Target Viewport" type="Viewport" parent="."]
 size = Vector2( 160, 90 )
 own_world = true
+transparent_bg = true
 render_target_v_flip = true
 
 [node name="Camera" type="Camera" parent="Target Viewport"]
