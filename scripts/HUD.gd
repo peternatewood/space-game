@@ -226,6 +226,7 @@ func _process(delta):
 
 		target_view_model.set_rotation(player.current_target.rotation)
 
+		# Multiply all units by 10 to get meters
 		target_distance.set_text(str(round(10 * to_target.length())))
 	elif target_view_container.visible:
 		target_view_container.hide()
@@ -277,7 +278,8 @@ func _update_speed_indicator():
 	if throttle_bar.value != speed:
 		throttle_bar.set_value(speed)
 
-		speed_indicator.set_text(str(round(speed)))
+		# Multiply all units by 10 to get meters
+		speed_indicator.set_text(str(round(10 * speed)))
 		var indicator_pos = Vector2(speed_indicator.rect_position.x, throttle_bar.rect_size.y - (speed_indicator.rect_size.y / 2) - (throttle_bar.value / throttle_bar.max_value) * throttle_bar.rect_size.y)
 		speed_indicator.set_position(indicator_pos)
 
