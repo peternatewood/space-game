@@ -226,7 +226,7 @@ func _process(delta):
 
 		target_view_model.set_rotation(player.current_target.rotation)
 
-		target_distance.set_text(str(round(to_target.length())))
+		target_distance.set_text(str(round(10 * to_target.length())))
 	elif target_view_container.visible:
 		target_view_container.hide()
 		target_overhead.hide()
