@@ -3,6 +3,7 @@ extends RigidBody
 export (int) var hitpoints
 
 onready var loader = get_node("/root/SceneLoader")
+onready var mission_controller = get_tree().get_root().get_node("Mission Controller")
 
 var destruction_countdown: float
 var destruction_delay: float = 0.0
