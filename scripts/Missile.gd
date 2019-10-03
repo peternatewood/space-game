@@ -33,4 +33,4 @@ func _process(delta):
 # Avg speed when accelerating: (max_speed - acceleration) / 2 | Seconds to reach max speed: max_speed / acceleration | Add max speed multiplied by remaining seconds
 # Avg accel speed: (100 - 20) / 2 = 40 | Seconds to max speed: 100 / 20 = 5
 # 40 * 5 + 100 * (12 - 5)
-const RANGE: float = 900
+const RANGE: float = 900.0
