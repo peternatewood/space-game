@@ -62,18 +62,20 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -266.0
-margin_top = -122.0
-margin_right = -196.0
+margin_left = -255.0
+margin_top = -107.0
+margin_right = -192.0
 margin_bottom = -16.0
 
 [node name="Target Overhead" parent="." instance=ExtResource( 2 )]
 visible = false
 modulate = Color( 0.501961, 0.752941, 1, 1 )
-margin_left = 196.0
-margin_top = 478.0
-margin_right = 266.0
-margin_bottom = 584.0
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 192.0
+margin_top = -107.0
+margin_right = 255.0
+margin_bottom = -16.0
 
 [node name="Throttle Bar Container" type="Control" parent="."]
 modulate = Color( 0.501961, 0.752941, 1, 1 )
@@ -109,7 +111,7 @@ light_mask = 2
 points = PoolVector2Array( 0, 0, 32, 0 )
 width = 1.0
 default_color = Color( 0.454902, 0.454902, 0.454902, 1 )
-texture_mode = 0
+texture_mode = 1065353216
 
 [node name="Speed Indicator" type="Label" parent="Throttle Bar Container"]
 anchor_left = 1.0
@@ -183,6 +185,7 @@ texture_mode = 50
 
 [node name="Target Icon" type="Control" parent="."]
 editor/display_folded = true
+visible = false
 
 [node name="Line2D" type="Line2D" parent="Target Icon"]
 points = PoolVector2Array( -16, -2, -16, -10, -10, -16, -2, -16 )
@@ -329,12 +332,8 @@ text = "100"
 align = 1
 valign = 1
 
-[node name="Debug" type="Label" parent="."]
-visible = false
-margin_right = 726.0
-margin_bottom = 14.0
-
 [node name="Target View Container" type="VBoxContainer" parent="."]
+visible = false
 anchor_top = 1.0
 anchor_bottom = 1.0
 margin_left = 16.0
@@ -377,6 +376,11 @@ margin_top = 2.0
 margin_right = 162.0
 margin_bottom = 92.0
 texture = SubResource( 4 )
+
+[node name="Debug" type="Label" parent="."]
+visible = false
+margin_right = 726.0
+margin_bottom = 14.0
 
 [node name="Target Viewport" type="Viewport" parent="."]
 size = Vector2( 160, 90 )

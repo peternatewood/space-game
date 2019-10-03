@@ -1,11 +1,11 @@
-extends VBoxContainer
+extends Control
 
-onready var overhead_icon = get_node("Ship Icons Center/Overhead Icon")
+onready var overhead_icon = get_node("Overhead Icon")
 onready var shield_icons: Array = [
-	get_node("Shield Front Container/Shield Front"),
-	get_node("Shield Rear Container/Shield Rear"),
-	get_node("Ship Icons Center/Shield Left Container/Shield Left"),
-	get_node("Ship Icons Center/Shield Right Container/Shield Right")
+	get_node("Shield Front"),
+	get_node("Shield Rear"),
+	get_node("Shield Left"),
+	get_node("Shield Right")
 ]
 
 
