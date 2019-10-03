@@ -19,6 +19,7 @@ onready var shield_front = get_node(shield_front_path)
 onready var shield_left = get_node(shield_left_path)
 onready var shield_rear = get_node(shield_rear_path)
 onready var shield_right = get_node(shield_right_path)
+onready var speed_indicator = get_node("Throttle Bar Container/Speed Indicator")
 onready var target_icon = get_node("Target Icon")
 onready var target_view_container = get_node("Target View Container")
 onready var target_viewport = get_node("Target Viewport")
@@ -31,7 +32,6 @@ var player
 var radar_icons_container: Control
 var target_view_cam
 var target_view_model
-var throttle_target: float
 
 func _ready():
 	radar_icons_container = radar.get_node("Radar Icons Container")
@@ -94,9 +94,10 @@ func _on_player_target_changed():
 		target_viewport.add_child(target_view_model)
 
 
-func _on_player_throttle_changed(throttle: float):
-	throttle_target = 100 * throttle
-	_set_throttle_line_position(throttle)
+func _on_player_throttle_changed():
+	var line_pos: Vector2 = Vector2(0, throttle_bar.rect_size.y) + player.throttle * throttle_bar.rect_size.y * Vector2.UP
+	line_pos.y = min(line_pos.y, throttle_bar.rect_size.y - 1)
+	throttle_line.set_position(line_pos)
 
 
 func _on_scene_loaded():
@@ -109,17 +110,18 @@ func _on_scene_loaded():
 
 	player_hull_bar.set_max(player.hitpoints)
 	player_hull_bar.set_value(player.hitpoints)
+	player.connect("target_changed", self, "_on_player_target_changed")
+	player.connect("speed_changed", self, "_on_player_speed_changed")
 	player.connect("damaged", self, "_on_player_damaged")
 	player.connect("destroyed", self, "_on_player_destroyed")
-	player.connect("target_changed", self, "_on_player_target_changed")
 
 	player.shield_front.connect("hitpoints_changed", self, "_on_player_shield_front_changed")
 	player.shield_left.connect("hitpoints_changed", self, "_on_player_shield_left_changed")
 	player.shield_rear.connect("hitpoints_changed", self, "_on_player_shield_rear_changed")
 	player.shield_right.connect("hitpoints_changed", self, "_on_player_shield_right_changed")
 
-	throttle_bar.set_value(player.throttle)
-	_set_throttle_line_position(player.throttle)
+	throttle_bar.set_max(player.max_speed)
+	_on_player_throttle_changed()
 	player.connect("throttle_changed", self, "_on_player_throttle_changed")
 
 	for node in get_node(enemies_container_path).get_children():
@@ -173,9 +175,6 @@ func _process(delta):
 
 			icon.set_position(radar.rect_size / 2 + radar_position)
 
-	if throttle_bar.value != throttle_target:
-		throttle_bar.set_value(lerp(throttle_bar.value, throttle_target, delta * THROTTLE_BAR_SPEED))
-
 	# Update target view
 	if player.has_target:
 		if not target_view_container.visible:
@@ -189,10 +188,7 @@ func _process(delta):
 	elif target_view_container.visible:
 		target_view_container.hide()
 
-
-func _set_throttle_line_position(throttle: float):
-	var line_pos: Vector2 = Vector2(0, throttle_bar.rect_size.y) + throttle * throttle_bar.rect_size.y * Vector2.UP
-	throttle_line.set_position(line_pos)
+	_update_speed_indicator()
 
 
 func _update_edge_icon():
@@ -230,6 +226,17 @@ func _update_edge_icon():
 
 	var angle_to = (-player.transform.basis.z).angle_to(player.current_target.transform.origin - player.transform.origin)
 	edge_target_icon.update_angle_label(angle_to)
+
+
+func _update_speed_indicator():
+	var speed = player.linear_velocity.length()
+
+	if throttle_bar.value != speed:
+		throttle_bar.set_value(speed)
+
+		speed_indicator.set_text(str(round(speed)))
+		var indicator_pos = Vector2(speed_indicator.rect_position.x, throttle_bar.rect_size.y - (speed_indicator.rect_size.y / 2) - (throttle_bar.value / throttle_bar.max_value) * throttle_bar.rect_size.y)
+		speed_indicator.set_position(indicator_pos)
 
 
 const EdgeTargetIcon = preload("EdgeTargetIcon.gd")

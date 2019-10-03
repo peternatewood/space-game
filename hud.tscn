@@ -24,7 +24,7 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color( 1, 1, 1, 1 )
 
-[sub_resource type="StyleBoxFlat" id=5]
+[sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 1, 1, 1, 1 )
 draw_center = false
 border_width_left = 2
@@ -33,10 +33,10 @@ border_width_right = 2
 border_width_bottom = 2
 border_color = Color( 1, 1, 1, 1 )
 
-[sub_resource type="ViewportTexture" id=3]
+[sub_resource type="ViewportTexture" id=4]
 viewport_path = NodePath("Target Viewport")
 
-[sub_resource type="Environment" id=4]
+[sub_resource type="Environment" id=5]
 background_mode = 1
 ambient_light_color = Color( 1, 1, 1, 1 )
 ambient_light_energy = 0.25
@@ -132,34 +132,50 @@ margin_bottom = 18.0
 texture = ExtResource( 6 )
 
 [node name="Throttle Bar Container" type="Control" parent="."]
-editor/display_folded = true
 modulate = Color( 0.501961, 0.752941, 1, 1 )
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = 170.0
-margin_top = -24.0
-margin_right = 182.0
-margin_bottom = 24.0
-rect_min_size = Vector2( 12, 48 )
+margin_left = 184.0
+margin_top = -32.0
+margin_right = 216.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 56, 64 )
 
 [node name="Throttle Bar" type="TextureProgress" parent="Throttle Bar Container"]
-margin_right = 12.0
-margin_bottom = 48.0
-rect_min_size = Vector2( 12, 48 )
-step = 0.01
-value = 45.0
+margin_right = 32.0
+margin_bottom = 64.0
+step = 0.1
+value = 50.0
 texture_under = ExtResource( 7 )
 texture_over = ExtResource( 8 )
 texture_progress = ExtResource( 9 )
 fill_mode = 3
 
+[node name="Throttle Line Mask" type="Light2D" parent="Throttle Bar Container"]
+light_mask = 2
+texture = ExtResource( 9 )
+offset = Vector2( 16, 32 )
+mode = 3
+range_item_cull_mask = 2
+
 [node name="Throttle Line" type="Line2D" parent="Throttle Bar Container"]
-points = PoolVector2Array( 0, 0, 12, 0 )
-width = 2.0
-default_color = Color( 0.25098, 0.25098, 0.25098, 1 )
-texture_mode = 717882032
+light_mask = 2
+points = PoolVector2Array( 0, 0, 32, 0 )
+width = 1.0
+default_color = Color( 0.454902, 0.454902, 0.454902, 1 )
+texture_mode = 0
+
+[node name="Speed Indicator" type="Label" parent="Throttle Bar Container"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -24.0
+margin_top = -14.0
+rect_min_size = Vector2( 24, 14 )
+text = "100"
 
 [node name="Radar" type="Control" parent="."]
 editor/display_folded = true
@@ -382,14 +398,14 @@ margin_left = 16.0
 margin_top = -110.0
 margin_right = 180.0
 margin_bottom = -16.0
-custom_styles/panel = SubResource( 5 )
+custom_styles/panel = SubResource( 3 )
 
 [node name="Target View" type="TextureRect" parent="Target View Container"]
 margin_left = 2.0
 margin_top = 2.0
 margin_right = 162.0
 margin_bottom = 92.0
-texture = SubResource( 3 )
+texture = SubResource( 4 )
 
 [node name="Target Viewport" type="Viewport" parent="."]
 size = Vector2( 160, 90 )
@@ -397,8 +413,9 @@ own_world = true
 render_target_v_flip = true
 
 [node name="Camera" type="Camera" parent="Target Viewport"]
-environment = SubResource( 4 )
+environment = SubResource( 5 )
 projection = 1
+current = true
 size = 3.0
 far = 10.0
 

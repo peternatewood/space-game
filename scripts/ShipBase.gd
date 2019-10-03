@@ -12,6 +12,8 @@ var current_target
 var energy_weapon_countdown: float = 0.0
 var energy_weapon_index: int = 0
 var has_target: bool = false
+# TODO: figure out how to accurately calculate this
+var max_speed: float = 32.0
 var missile_weapon_countdown: float = 0.0
 var missile_weapon_index: int = 0
 var target_index: int = 0
