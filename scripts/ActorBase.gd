@@ -54,6 +54,13 @@ func _start_destruction():
 	destruction_countdown = destruction_delay
 
 
+# PUBLIC
+
+
+func get_mesh_size():
+	return get_meta("mesh_size")
+
+
 signal damaged
 signal destroyed
 
