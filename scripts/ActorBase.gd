@@ -2,6 +2,7 @@ extends RigidBody
 
 export (int) var hitpoints
 
+onready var bounding_box_extents = get_meta("bounding_box_extents")
 onready var loader = get_node("/root/SceneLoader")
 onready var mission_controller = get_tree().get_root().get_node("Mission Controller")
 
@@ -57,8 +58,12 @@ func _start_destruction():
 # PUBLIC
 
 
-func get_mesh_size():
-	return get_meta("mesh_size")
+func get_bounding_box():
+	var vertices: Array = []
+	for vertex in bounding_box_extents:
+		vertices.append(global_transform.xform(vertex))
+
+	return vertices
 
 
 signal damaged

@@ -3,8 +3,7 @@ extends EditorScenePostImport
 
 
 func post_import(scene):
-	var max_mesh_size: Vector2
-	var min_mesh_size: Vector2
+	var max_mesh_size: Vector3
 
 	for child in scene.get_children():
 		if child is StaticBody:
@@ -19,20 +18,29 @@ func post_import(scene):
 			# Remove unused StaticBody
 			scene.remove_child(child)
 
-		elif child is MeshInstance and not child.name.begins_with("Shield"):
+		elif child is MeshInstance:
 			for vertex in child.mesh.get_faces():
-				if vertex.x > max_mesh_size.x:
+				var adjusted_vertex = vertex - child.transform.origin
+				if adjusted_vertex.x > max_mesh_size.x:
 					max_mesh_size.x = vertex.x
-				if vertex.y > max_mesh_size.y:
+				if adjusted_vertex.y > max_mesh_size.y:
 					max_mesh_size.y = vertex.y
+				if adjusted_vertex.z > max_mesh_size.z:
+					max_mesh_size.z = vertex.z
 
-				if vertex.x < min_mesh_size.x:
-					min_mesh_size.x = vertex.x
-				if vertex.y < min_mesh_size.y:
-					min_mesh_size.y = vertex.y
-
-	var mesh_size = abs(max(min_mesh_size.length(), max_mesh_size.length()))
-	scene.set_meta("mesh_size", mesh_size)
+	var cube_mesh = CubeMesh.new()
+	cube_mesh.set_size(2 * max_mesh_size)
+	var bounding_box_extents = [
+		max_mesh_size,
+		Vector3(-max_mesh_size.x, max_mesh_size.y, max_mesh_size.z),
+		Vector3(-max_mesh_size.x,-max_mesh_size.y, max_mesh_size.z),
+		Vector3(-max_mesh_size.x, max_mesh_size.y,-max_mesh_size.z),
+		Vector3(-max_mesh_size.x,-max_mesh_size.y,-max_mesh_size.z),
+		Vector3( max_mesh_size.x,-max_mesh_size.y, max_mesh_size.z),
+		Vector3( max_mesh_size.x, max_mesh_size.y,-max_mesh_size.z),
+		Vector3( max_mesh_size.x,-max_mesh_size.y,-max_mesh_size.z)
+	]
+	scene.set_meta("bounding_box_extents", bounding_box_extents)
 
 	scene.set_contact_monitor(true)
 	scene.set_max_contacts_reported(4)

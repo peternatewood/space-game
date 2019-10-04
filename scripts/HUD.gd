@@ -198,7 +198,6 @@ func _on_target_shield_right_changed(percent: float):
 	target_overhead.set_shield_alpha(ShipIcon.RIGHT, percent)
 
 
-
 func _process(delta):
 	# Update radar icons
 	var viewport_rect: Rect2 = viewport.get_visible_rect()
@@ -234,13 +233,29 @@ func _process(delta):
 		var to_target = player.current_target.transform.origin - player.transform.origin
 		var cam_target_dist = (player.current_target.transform.origin - camera.transform.origin).length()
 		var icon_pos: Vector2 = camera.unproject_position(player.current_target.transform.origin)
+		# Multiply all units by 10 to get meters
+		var target_dist = 10 * to_target.length()
 
 		if _is_position_in_view(player.current_target.transform.origin):
 			if not target_icon.visible:
 				target_icon.show()
 
-			var icon_scale = player.current_target.get_mesh_size() * camera.fov / (1e-9 if cam_target_dist == 0 else cam_target_dist)
-			target_icon.update_icon(icon_pos, icon_scale)
+			var max_pos = Vector2.ZERO
+			var min_pos = viewport_rect.size
+			for vertex in player.current_target.get_bounding_box():
+				var vertex_size = camera.unproject_position(vertex) - icon_pos
+				if vertex_size.x > max_pos.x:
+					max_pos.x = vertex_size.x
+				if vertex_size.y > max_pos.y:
+					max_pos.y = vertex_size.y
+
+				if vertex_size.x < min_pos.x:
+					min_pos.x = vertex_size.x
+				if vertex_size.y < min_pos.y:
+					min_pos.y = vertex_size.y
+
+			var bounding_box = Rect2(min_pos, max_pos - min_pos)
+			target_icon.update_icon(icon_pos, bounding_box, target_dist)
 
 			if edge_target_icon.visible:
 				edge_target_icon.hide()
@@ -261,9 +276,7 @@ func _process(delta):
 
 		target_view_model.set_rotation(player.current_target.rotation)
 
-		# Multiply all units by 10 to get meters
-		var target_dist = to_target.length()
-		target_distance.set_text(str(round(10 * target_dist)))
+		target_distance.set_text(str(round(target_dist)))
 	else:
 		if target_icon.visible:
 			target_icon.hide()

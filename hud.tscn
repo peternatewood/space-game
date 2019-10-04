@@ -250,12 +250,11 @@ margin_bottom = 92.0
 texture = SubResource( 4 )
 
 [node name="Target Icon" type="Control" parent="."]
-editor/display_folded = true
 script = ExtResource( 8 )
 
 [node name="Top Left" type="Line2D" parent="Target Icon"]
 position = Vector2( -12, -12 )
-points = PoolVector2Array( 0, 10, 0, 3, 3, 0, 10, 0 )
+points = PoolVector2Array( 0, 10, 0, 5, 5, 0, 10, 0 )
 width = 2.0
 default_color = Color( 1, 1, 1, 1 )
 texture_mode = -644220704
@@ -269,7 +268,7 @@ texture_mode = -1108771308
 
 [node name="Bottom Right" type="Line2D" parent="Target Icon"]
 position = Vector2( 12, 12 )
-points = PoolVector2Array( 0, -10, 0, -3, -3, 0, -10, 0 )
+points = PoolVector2Array( 0, -10, 0, -5, -5, 0, -10, 0 )
 width = 2.0
 default_color = Color( 1, 1, 1, 1 )
 texture_mode = -644220704
@@ -280,6 +279,18 @@ points = PoolVector2Array( 8, 0, 0, 0, 0, -8 )
 width = 2.0
 default_color = Color( 1, 1, 1, 1 )
 texture_mode = -1108771308
+
+[node name="Distance Label" type="Label" parent="Target Icon"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -20.0
+margin_top = -12.0
+margin_right = -12.0
+margin_bottom = 2.0
+rect_min_size = Vector2( 8, 14 )
+text = "0"
+align = 2
+valign = 1
 
 [node name="Edge Target Icon" type="Control" parent="."]
 editor/display_folded = true
