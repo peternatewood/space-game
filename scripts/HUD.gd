@@ -188,26 +188,6 @@ func _on_target_shield_right_changed(percent: float):
 
 
 func _process(delta):
-	if player.has_target:
-		var icon_pos: Vector2 = camera.unproject_position(player.current_target.transform.origin)
-
-		if _is_position_in_view(player.current_target.transform.origin):
-			if not target_icon.visible:
-				target_icon.show()
-			target_icon.set_position(icon_pos)
-
-			if edge_target_icon.visible:
-				edge_target_icon.hide()
-		else:
-			if target_icon.visible:
-				target_icon.hide()
-
-			if not edge_target_icon.visible:
-				edge_target_icon.show()
-			_update_edge_icon()
-	elif target_icon.visible:
-		target_icon.hide()
-
 	# Update radar icons
 	var viewport_rect: Rect2 = viewport.get_visible_rect()
 	var radar_position
@@ -232,21 +212,46 @@ func _process(delta):
 
 	# Update target view
 	if player.has_target:
+		var to_target = player.current_target.transform.origin - player.transform.origin
+		var cam_target_dist = (player.current_target.transform.origin - camera.transform.origin).length()
+		var icon_pos: Vector2 = camera.unproject_position(player.current_target.transform.origin)
+
+		if _is_position_in_view(player.current_target.transform.origin):
+			if not target_icon.visible:
+				target_icon.show()
+
+			var icon_scale = player.current_target.get_mesh_size() * camera.fov / (1e-9 if cam_target_dist == 0 else cam_target_dist)
+			target_icon.update_icon(icon_pos, icon_scale)
+
+			if edge_target_icon.visible:
+				edge_target_icon.hide()
+		else:
+			if target_icon.visible:
+				target_icon.hide()
+
+			if not edge_target_icon.visible:
+				edge_target_icon.show()
+			_update_edge_icon()
+
 		if not target_view_container.visible:
 			target_view_container.show()
 			target_overhead.show()
 
-		var to_target = player.current_target.transform.origin - player.transform.origin
 		target_view_cam.transform.origin = -2 * to_target.normalized()
 		target_view_cam.look_at(Vector3.ZERO, player.transform.basis.y)
 
 		target_view_model.set_rotation(player.current_target.rotation)
 
 		# Multiply all units by 10 to get meters
-		target_distance.set_text(str(round(10 * to_target.length())))
-	elif target_view_container.visible:
-		target_view_container.hide()
-		target_overhead.hide()
+		var target_dist = to_target.length()
+		target_distance.set_text(str(round(10 * target_dist)))
+	else:
+		if target_icon.visible:
+			target_icon.hide()
+
+		if target_view_container.visible:
+			target_view_container.hide()
+			target_overhead.hide()
 
 	_update_speed_indicator()
 
