@@ -92,6 +92,8 @@ func _on_player_target_changed(last_target):
 			print("Missing overhead icon for " + player.current_target.name)
 			return
 
+		var radar_icons = radar_icons_container.get_children()
+
 		# Disconnect signals from old target
 		if last_target != null:
 			_disconnect_target_signals(last_target)
@@ -108,7 +110,17 @@ func _on_player_target_changed(last_target):
 		target_overhead.set_overhead_icon(overhead_icon)
 		target_view_model = load(source_filename).instance()
 		target_viewport.add_child(target_view_model)
+
 		var alignment = mission_controller.get_alignment(player.faction, player.current_target.faction)
+		var icons_updated: int = 1 if last_target == null else 0
+		for icon in radar_icons:
+			if icon.target == player.current_target:
+				icon.set_modulate(Color.white if alignment == -1 else ALIGNMENT_COLORS[alignment])
+				icons_updated += 1
+			else:
+				icon.set_modulate(ALIGNMENT_COLORS_FADED[mission_controller.get_alignment(player.faction, icon.target.faction)])
+				icons_updated += 1
+
 		if alignment != -1:
 			edge_target_icon.set_modulate(ALIGNMENT_COLORS[alignment])
 			target_icon.set_modulate(ALIGNMENT_COLORS[alignment])
@@ -153,7 +165,7 @@ func _on_scene_loaded():
 		# Set icon color based on alignment
 		var alignment = mission_controller.get_alignment(player.faction, node.faction)
 		if alignment != -1:
-			icon.set_modulate(ALIGNMENT_COLORS[alignment])
+			icon.set_modulate(ALIGNMENT_COLORS_FADED[alignment])
 		else:
 			icon.set_modulate(Color.white)
 
@@ -309,6 +321,7 @@ const EdgeTargetIcon = preload("EdgeTargetIcon.gd")
 const MathHelper = preload("MathHelper.gd")
 const ShipIcon = preload("ShipIcon.gd")
 
-const ALIGNMENT_COLORS: Array = [ Color("#ffff00"), Color("#00ff00"), Color("#ff0000") ]
+const ALIGNMENT_COLORS: Array = [ Color(1.0, 1.0, 0.0, 1.0), Color(0.25, 1.0, 0.25, 1.0), Color(1.0, 0.25, 0.25, 1.0) ]
+const ALIGNMENT_COLORS_FADED: Array = [ Color(1.0, 1.0, 0.0, 0.5), Color(0.25, 1.0, 0.25, 0.5), Color(1.0, 0.25, 0.25, 0.5) ]
 const RADAR_ICON = preload("res://icons/radar_icon.tscn")
 const THROTTLE_BAR_SPEED: float = 2.5
