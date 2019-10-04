@@ -205,22 +205,29 @@ func _process(delta):
 	var radar_position
 	for icon in radar_icons_container.get_children():
 		if icon.has_target:
-			var to_target = (icon.target.transform.origin - player.transform.origin).normalized()
-			var unprojected = Vector2(to_target.dot(player.transform.basis.x), -to_target.dot(player.transform.basis.y))
+			var target_dist_sq = (icon.target.transform.origin - player.transform.origin).length_squared()
+			if icon.target == player.current_target or target_dist_sq < RADAR_RANGE_SQ:
+				if not icon.visible:
+					icon.show()
 
-			# Get the radius at this angle so we can project onto the ellipse properly
-			var theta = unprojected.angle_to(Vector2.RIGHT)
-			var radius = radar.rect_size.x / 2 * radar.rect_size.y / 2 / sqrt(pow(radar.rect_size.x / 2, 2) * pow(sin(theta), 2) + pow(radar.rect_size.y / 2, 2) * pow(cos(theta), 2))
+				var to_target = (icon.target.transform.origin - player.transform.origin).normalized()
+				var unprojected = Vector2(to_target.dot(player.transform.basis.x), -to_target.dot(player.transform.basis.y))
 
-			var center_distance = unprojected.length()
-			unprojected = unprojected.normalized() * radius
+				# Get the radius at this angle so we can project onto the ellipse properly
+				var theta = unprojected.angle_to(Vector2.RIGHT)
+				var radius = radar.rect_size.x / 2 * radar.rect_size.y / 2 / sqrt(pow(radar.rect_size.x / 2, 2) * pow(sin(theta), 2) + pow(radar.rect_size.y / 2, 2) * pow(cos(theta), 2))
 
-			if camera.is_position_behind(icon.target.transform.origin):
-				radar_position = unprojected - (unprojected * center_distance / 2)
-			else:
-				radar_position = unprojected * center_distance / 2
+				var center_distance = unprojected.length()
+				unprojected = unprojected.normalized() * radius
 
-			icon.set_position(radar.rect_size / 2 + radar_position)
+				if camera.is_position_behind(icon.target.transform.origin):
+					radar_position = unprojected - (unprojected * center_distance / 2)
+				else:
+					radar_position = unprojected * center_distance / 2
+
+				icon.set_position(radar.rect_size / 2 + radar_position)
+			elif icon.visible:
+				icon.hide()
 
 	# Update target view
 	if player.has_target:
@@ -324,4 +331,5 @@ const ShipIcon = preload("ShipIcon.gd")
 const ALIGNMENT_COLORS: Array = [ Color(1.0, 1.0, 0.0, 1.0), Color(0.25, 1.0, 0.25, 1.0), Color(1.0, 0.25, 0.25, 1.0) ]
 const ALIGNMENT_COLORS_FADED: Array = [ Color(1.0, 1.0, 0.0, 0.5), Color(0.25, 1.0, 0.25, 0.5), Color(1.0, 0.25, 0.25, 0.5) ]
 const RADAR_ICON = preload("res://icons/radar_icon.tscn")
+const RADAR_RANGE_SQ: float = 300.0 * 300.0
 const THROTTLE_BAR_SPEED: float = 2.5
