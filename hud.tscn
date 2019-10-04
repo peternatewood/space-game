@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://scripts/HUD.gd" type="Script" id=1]
 [ext_resource path="res://icons/ship_icon.tscn" type="PackedScene" id=2]
@@ -6,8 +6,9 @@
 [ext_resource path="res://images/throttle_bar_over.png" type="Texture" id=4]
 [ext_resource path="res://images/throttle_bar_progress.png" type="Texture" id=5]
 [ext_resource path="res://images/radar_bg.svg" type="Texture" id=6]
-[ext_resource path="res://scripts/EdgeTargetIcon.gd" type="Script" id=7]
-[ext_resource path="res://models/fighter_frog/fighter_frog.dae" type="PackedScene" id=8]
+[ext_resource path="res://scripts/TargetIcon.gd" type="Script" id=7]
+[ext_resource path="res://scripts/EdgeTargetIcon.gd" type="Script" id=8]
+[ext_resource path="res://models/fighter_frog/fighter_frog.dae" type="PackedScene" id=9]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.501961, 0.501961, 0.501961, 1 )
@@ -235,35 +236,33 @@ margin_right = 162.0
 margin_bottom = 92.0
 texture = SubResource( 4 )
 
-[node name="Debug" type="Label" parent="."]
-visible = false
-margin_right = 726.0
-margin_bottom = 14.0
-
 [node name="Target Icon" type="Control" parent="."]
-editor/display_folded = true
-visible = false
+script = ExtResource( 7 )
 
-[node name="Line2D" type="Line2D" parent="Target Icon"]
-points = PoolVector2Array( -16, -2, -16, -10, -10, -16, -2, -16 )
+[node name="Top Left" type="Line2D" parent="Target Icon"]
+position = Vector2( -12, -12 )
+points = PoolVector2Array( 0, 10, 0, 3, 3, 0, 10, 0 )
 width = 2.0
 default_color = Color( 1, 1, 1, 1 )
 texture_mode = -644220704
 
-[node name="Line2D2" type="Line2D" parent="Target Icon"]
-points = PoolVector2Array( 16, 2, 16, 10, 10, 16, 2, 16 )
-width = 2.0
-default_color = Color( 1, 1, 1, 1 )
-texture_mode = -644220704
-
-[node name="Line2D3" type="Line2D" parent="Target Icon"]
-points = PoolVector2Array( 12, -16, 16, -16, 16, -12 )
+[node name="Top Right" type="Line2D" parent="Target Icon"]
+position = Vector2( 12, -12 )
+points = PoolVector2Array( -8, 0, 0, 0, 0, 8 )
 width = 2.0
 default_color = Color( 1, 1, 1, 1 )
 texture_mode = -1108771308
 
-[node name="Line2D4" type="Line2D" parent="Target Icon"]
-points = PoolVector2Array( -12, 16, -16, 16, -16, 12 )
+[node name="Bottom Right" type="Line2D" parent="Target Icon"]
+position = Vector2( 12, 12 )
+points = PoolVector2Array( 0, -10, 0, -3, -3, 0, -10, 0 )
+width = 2.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = -644220704
+
+[node name="Bottom Left" type="Line2D" parent="Target Icon"]
+position = Vector2( -12, 12 )
+points = PoolVector2Array( 8, 0, 0, 0, 0, -8 )
 width = 2.0
 default_color = Color( 1, 1, 1, 1 )
 texture_mode = -1108771308
@@ -271,7 +270,7 @@ texture_mode = -1108771308
 [node name="Edge Target Icon" type="Control" parent="."]
 editor/display_folded = true
 visible = false
-script = ExtResource( 7 )
+script = ExtResource( 8 )
 
 [node name="Arrow Up" type="Control" parent="Edge Target Icon"]
 
@@ -389,6 +388,11 @@ text = "100"
 align = 1
 valign = 1
 
+[node name="Debug" type="Label" parent="."]
+visible = false
+margin_right = 726.0
+margin_bottom = 14.0
+
 [node name="Target Viewport" type="Viewport" parent="."]
 size = Vector2( 160, 90 )
 own_world = true
@@ -402,7 +406,7 @@ current = true
 size = 3.0
 far = 10.0
 
-[node name="Frog Fighter" parent="Target Viewport" instance=ExtResource( 8 )]
+[node name="Frog Fighter" parent="Target Viewport" instance=ExtResource( 9 )]
 input_ray_pickable = false
 collision_layer = 0
 collision_mask = 0
