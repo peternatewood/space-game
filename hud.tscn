@@ -1,15 +1,16 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
-[ext_resource path="res://scripts/HUD.gd" type="Script" id=1]
-[ext_resource path="res://images/hud_lines.png" type="Texture" id=2]
-[ext_resource path="res://icons/ship_icon.tscn" type="PackedScene" id=3]
-[ext_resource path="res://images/throttle_bar_under.png" type="Texture" id=4]
-[ext_resource path="res://images/throttle_bar_over.png" type="Texture" id=5]
-[ext_resource path="res://images/throttle_bar_progress.png" type="Texture" id=6]
-[ext_resource path="res://images/radar_bg.svg" type="Texture" id=7]
-[ext_resource path="res://scripts/TargetIcon.gd" type="Script" id=8]
+[ext_resource path="res://themes/default_inconsolata.tres" type="Theme" id=1]
+[ext_resource path="res://scripts/HUD.gd" type="Script" id=2]
+[ext_resource path="res://images/hud_lines.png" type="Texture" id=3]
+[ext_resource path="res://icons/ship_icon.tscn" type="PackedScene" id=4]
+[ext_resource path="res://images/throttle_bar_under.png" type="Texture" id=5]
+[ext_resource path="res://images/throttle_bar_over.png" type="Texture" id=6]
+[ext_resource path="res://images/throttle_bar_progress.png" type="Texture" id=7]
+[ext_resource path="res://images/radar_bg.svg" type="Texture" id=8]
 [ext_resource path="res://scripts/EdgeTargetIcon.gd" type="Script" id=9]
-[ext_resource path="res://models/fighter_frog/fighter_frog.dae" type="PackedScene" id=10]
+[ext_resource path="res://scripts/TargetIcon.gd" type="Script" id=10]
+[ext_resource path="res://models/fighter_frog/fighter_frog.dae" type="PackedScene" id=11]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.501961, 0.501961, 0.501961, 1 )
@@ -42,7 +43,8 @@ ambient_light_sky_contribution = 0.5
 [node name="HUD" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = ExtResource( 1 )
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
 
 [node name="HUD Bars" type="TextureRect" parent="."]
 modulate = Color( 0.501961, 0.752941, 1, 1 )
@@ -54,7 +56,7 @@ margin_left = -240.0
 margin_top = -160.0
 margin_right = 240.0
 margin_bottom = 160.0
-texture = ExtResource( 2 )
+texture = ExtResource( 3 )
 
 [node name="Hull Bar" type="ProgressBar" parent="."]
 modulate = Color( 0.501961, 0.752941, 1, 1 )
@@ -69,7 +71,7 @@ custom_styles/bg = SubResource( 2 )
 step = 1.0
 value = 50.0
 
-[node name="Player Overhead" parent="." instance=ExtResource( 3 )]
+[node name="Player Overhead" parent="." instance=ExtResource( 4 )]
 modulate = Color( 0.501961, 0.752941, 1, 1 )
 anchor_left = 1.0
 anchor_top = 1.0
@@ -80,7 +82,7 @@ margin_top = -107.0
 margin_right = -192.0
 margin_bottom = -16.0
 
-[node name="Target Overhead" parent="." instance=ExtResource( 3 )]
+[node name="Target Overhead" parent="." instance=ExtResource( 4 )]
 visible = false
 modulate = Color( 0.501961, 0.752941, 1, 1 )
 anchor_top = 1.0
@@ -107,14 +109,14 @@ margin_right = 32.0
 margin_bottom = 64.0
 step = 0.1
 value = 50.0
-texture_under = ExtResource( 4 )
-texture_over = ExtResource( 5 )
-texture_progress = ExtResource( 6 )
+texture_under = ExtResource( 5 )
+texture_over = ExtResource( 6 )
+texture_progress = ExtResource( 7 )
 fill_mode = 3
 
 [node name="Throttle Line Mask" type="Light2D" parent="Throttle Bar Container"]
 light_mask = 2
-texture = ExtResource( 6 )
+texture = ExtResource( 7 )
 offset = Vector2( 16, 32 )
 mode = 3
 range_item_cull_mask = 2
@@ -158,7 +160,7 @@ margin_left = -66.0
 margin_top = -33.0
 margin_right = 66.0
 margin_bottom = 33.0
-texture = ExtResource( 7 )
+texture = ExtResource( 8 )
 
 [node name="Radar Icons Container" type="Control" parent="Radar"]
 anchor_right = 1.0
@@ -197,7 +199,7 @@ default_color = Color( 1, 1, 1, 1 )
 texture_mode = 50
 
 [node name="Target View Container" type="VBoxContainer" parent="."]
-editor/display_folded = true
+visible = false
 anchor_top = 1.0
 anchor_bottom = 1.0
 margin_left = 16.0
@@ -229,9 +231,8 @@ valign = 1
 
 [node name="Distance Label" type="Label" parent="Target View Container/Target Distance Container"]
 margin_left = 33.0
-margin_top = 2.0
-margin_right = 46.0
-margin_bottom = 16.0
+margin_right = 41.0
+margin_bottom = 18.0
 text = "m"
 
 [node name="Target View Panel" type="PanelContainer" parent="Target View Container"]
@@ -248,49 +249,6 @@ margin_top = 2.0
 margin_right = 162.0
 margin_bottom = 92.0
 texture = SubResource( 4 )
-
-[node name="Target Icon" type="Control" parent="."]
-script = ExtResource( 8 )
-
-[node name="Top Left" type="Line2D" parent="Target Icon"]
-position = Vector2( -12, -12 )
-points = PoolVector2Array( 0, 10, 0, 5, 5, 0, 10, 0 )
-width = 2.0
-default_color = Color( 1, 1, 1, 1 )
-texture_mode = -644220704
-
-[node name="Top Right" type="Line2D" parent="Target Icon"]
-position = Vector2( 12, -12 )
-points = PoolVector2Array( -8, 0, 0, 0, 0, 8 )
-width = 2.0
-default_color = Color( 1, 1, 1, 1 )
-texture_mode = -1108771308
-
-[node name="Bottom Right" type="Line2D" parent="Target Icon"]
-position = Vector2( 12, 12 )
-points = PoolVector2Array( 0, -10, 0, -5, -5, 0, -10, 0 )
-width = 2.0
-default_color = Color( 1, 1, 1, 1 )
-texture_mode = -644220704
-
-[node name="Bottom Left" type="Line2D" parent="Target Icon"]
-position = Vector2( -12, 12 )
-points = PoolVector2Array( 8, 0, 0, 0, 0, -8 )
-width = 2.0
-default_color = Color( 1, 1, 1, 1 )
-texture_mode = -1108771308
-
-[node name="Distance Label" type="Label" parent="Target Icon"]
-anchor_left = 1.0
-anchor_right = 1.0
-margin_left = -20.0
-margin_top = -12.0
-margin_right = -12.0
-margin_bottom = 2.0
-rect_min_size = Vector2( 8, 14 )
-text = "0"
-align = 2
-valign = 1
 
 [node name="Edge Target Icon" type="Control" parent="."]
 editor/display_folded = true
@@ -413,6 +371,50 @@ text = "100"
 align = 1
 valign = 1
 
+[node name="Target Icon" type="Control" parent="."]
+visible = false
+script = ExtResource( 10 )
+
+[node name="Top Left" type="Line2D" parent="Target Icon"]
+position = Vector2( -12, -12 )
+points = PoolVector2Array( 0, 10, 0, 5, 5, 0, 10, 0 )
+width = 2.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = -644220704
+
+[node name="Top Right" type="Line2D" parent="Target Icon"]
+position = Vector2( 12, -12 )
+points = PoolVector2Array( -8, 0, 0, 0, 0, 8 )
+width = 2.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = -1108771308
+
+[node name="Bottom Right" type="Line2D" parent="Target Icon"]
+position = Vector2( 12, 12 )
+points = PoolVector2Array( 0, -10, 0, -5, -5, 0, -10, 0 )
+width = 2.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = -644220704
+
+[node name="Bottom Left" type="Line2D" parent="Target Icon"]
+position = Vector2( -12, 12 )
+points = PoolVector2Array( 8, 0, 0, 0, 0, -8 )
+width = 2.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = -1108771308
+
+[node name="Distance Label" type="Label" parent="Target Icon"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -24.0
+margin_top = -12.0
+margin_right = -16.0
+margin_bottom = 2.0
+rect_min_size = Vector2( 8, 14 )
+text = "0"
+align = 2
+valign = 1
+
 [node name="Debug" type="Label" parent="."]
 visible = false
 margin_right = 726.0
@@ -432,7 +434,7 @@ current = true
 size = 3.0
 far = 10.0
 
-[node name="Frog Fighter" parent="Target Viewport" instance=ExtResource( 10 )]
+[node name="Frog Fighter" parent="Target Viewport" instance=ExtResource( 11 )]
 input_ray_pickable = false
 collision_layer = 0
 collision_mask = 0
