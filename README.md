@@ -51,3 +51,13 @@ There are three categories for mission objectives: Primary, Secondary, and Secre
 - Primary: These are typically critical for mission success, and result in mission failure if even one is failed. If not marked as critical, it can be allowed to fail, maybe for story reasons.
 - Secondary: These are non-critical objectives that will give the player an advantage of some kind in either the next mission or a future one, like an additional wing of ships, reduced enemy presence, etc.
 - Secret: Unlike Primary and Secondary Objectives, Secret Objectives are not visible from the briefing menu, and only appear once special conditions are met during the mission. These can unlock ships/weapons early, as well as ship skins or alternate models maybe?
+
+## Resources
+
+Here I'll list all resources I'm using for various assets, such as sound effects and typefaces.
+
+### Typefaces
+
+__Game Logo typeface__: Nulshock by Typodermic Fonts https://www.dafont.com/nulshock.font?l[]=10&l[]=1
+Open Dyslexic: https://gumroad.com/l/OpenDyslexic
+Inconsolata: https://www.1001fonts.com/inconsolata-font.html
