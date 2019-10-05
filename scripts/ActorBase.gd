@@ -9,6 +9,7 @@ onready var mission_controller = get_tree().get_root().get_node("Mission Control
 var destruction_countdown: float
 var destruction_delay: float = 0.0
 var is_alive: bool = true
+var max_hitpoints: int
 
 
 func _ready():
@@ -38,6 +39,7 @@ func _on_body_entered(body):
 
 
 func _on_scene_loaded():
+	max_hitpoints = hitpoints
 	set_process(true)
 
 
@@ -64,6 +66,10 @@ func get_bounding_box():
 		vertices.append(global_transform.xform(vertex))
 
 	return vertices
+
+
+func get_hull_percent():
+	return 100 * float(hitpoints) / float(max_hitpoints)
 
 
 signal damaged

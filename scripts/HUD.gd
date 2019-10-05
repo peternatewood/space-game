@@ -24,12 +24,14 @@ var camera
 var player
 var radar_icons_container: Control
 var target_distance
+var target_hull
 var target_view_cam
 var target_view_model
 
 func _ready():
 	radar_icons_container = radar.get_node("Radar Icons Container")
 	target_distance = target_view_container.get_node("Target View Rows/Target Distance Container/Target Distance")
+	target_hull = target_view_container.get_node("Target View Rows/Target View Panel Container/Target Hull Container/Target Hull")
 	target_view_cam = target_viewport.get_node("Camera")
 	target_view_model = target_viewport.get_node("Frog Fighter")
 
@@ -108,8 +110,6 @@ func _on_player_target_changed(last_target):
 
 		# Update icons
 		target_overhead.set_overhead_icon(overhead_icon)
-		target_view_model = load(source_filename).instance()
-		target_viewport.add_child(target_view_model)
 
 		var alignment = mission_controller.get_alignment(player.faction, player.current_target.faction)
 		var icons_updated: int = 1 if last_target == null else 0
@@ -127,6 +127,11 @@ func _on_player_target_changed(last_target):
 		else:
 			edge_target_icon.set_modulate(Color.white)
 			target_icon.set_modulate(Color.white)
+
+		# Update target viewport
+		target_view_model = load(source_filename).instance()
+		target_viewport.add_child(target_view_model)
+		target_hull.set_text(str(player.current_target.get_hull_percent()))
 
 
 func _on_player_throttle_changed():
@@ -175,7 +180,7 @@ func _on_scene_loaded():
 
 
 func _on_target_damaged():
-	pass
+	target_hull.set_text(str(player.current_target.get_hull_percent()))
 
 
 func _on_target_destroyed(target):

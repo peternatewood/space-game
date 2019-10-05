@@ -34,7 +34,7 @@ border_color = Color( 1, 1, 1, 1 )
 [sub_resource type="ViewportTexture" id=4]
 viewport_path = NodePath("Target Viewport")
 
-[sub_resource type="Environment" id=5]
+[sub_resource type="Environment" id=6]
 background_mode = 1
 ambient_light_color = Color( 1, 1, 1, 1 )
 ambient_light_energy = 0.25
@@ -202,13 +202,11 @@ default_color = Color( 1, 1, 1, 1 )
 texture_mode = 50
 
 [node name="Target View Container" type="MarginContainer" parent="."]
-editor/display_folded = true
-visible = false
 anchor_top = 1.0
 anchor_bottom = 1.0
 margin_left = 16.0
 margin_top = -128.0
-margin_right = 164.0
+margin_right = 180.0
 margin_bottom = -16.0
 
 [node name="Target View Rows" type="VBoxContainer" parent="Target View Container"]
@@ -217,6 +215,7 @@ margin_bottom = 112.0
 custom_constants/separation = 0
 
 [node name="Target Distance Container" type="HBoxContainer" parent="Target View Container/Target View Rows"]
+editor/display_folded = true
 modulate = Color( 0.501961, 0.752941, 1, 1 )
 margin_right = 164.0
 margin_bottom = 18.0
@@ -249,20 +248,49 @@ margin_right = 41.0
 margin_bottom = 18.0
 text = "m"
 
-[node name="Target View Panel" type="PanelContainer" parent="Target View Container/Target View Rows"]
-self_modulate = Color( 0.501961, 0.752941, 1, 1 )
+[node name="Target View Panel Container" type="Control" parent="Target View Container/Target View Rows"]
 margin_top = 18.0
 margin_right = 164.0
 margin_bottom = 112.0
 rect_min_size = Vector2( 164, 94 )
+
+[node name="Target View Panel" type="PanelContainer" parent="Target View Container/Target View Rows/Target View Panel Container"]
+editor/display_folded = true
+self_modulate = Color( 0.501961, 0.752941, 1, 1 )
+margin_right = 164.0
+margin_bottom = 94.0
+rect_min_size = Vector2( 164, 94 )
 custom_styles/panel = SubResource( 3 )
 
-[node name="Target View" type="TextureRect" parent="Target View Container/Target View Rows/Target View Panel"]
+[node name="Target View" type="TextureRect" parent="Target View Container/Target View Rows/Target View Panel Container/Target View Panel"]
 margin_left = 2.0
 margin_top = 2.0
 margin_right = 162.0
 margin_bottom = 92.0
 texture = SubResource( 4 )
+
+[node name="Target Hull Container" type="HBoxContainer" parent="Target View Container/Target View Rows/Target View Panel Container"]
+modulate = Color( 0.501961, 0.752941, 1, 1 )
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -35.0
+margin_top = 2.0
+margin_right = -3.0
+margin_bottom = 20.0
+custom_constants/separation = 0
+alignment = 2
+
+[node name="Target Hull" type="Label" parent="Target View Container/Target View Rows/Target View Panel Container/Target Hull Container"]
+margin_right = 24.0
+margin_bottom = 18.0
+text = "100"
+align = 2
+
+[node name="Target Hull Percent" type="Label" parent="Target View Container/Target View Rows/Target View Panel Container/Target Hull Container"]
+margin_left = 24.0
+margin_right = 32.0
+margin_bottom = 18.0
+text = "%"
 
 [node name="Edge Target Icon" type="Control" parent="."]
 editor/display_folded = true
@@ -464,7 +492,7 @@ transparent_bg = true
 render_target_v_flip = true
 
 [node name="Camera" type="Camera" parent="Target Viewport"]
-environment = SubResource( 5 )
+environment = SubResource( 6 )
 projection = 1
 current = true
 size = 3.0
