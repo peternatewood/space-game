@@ -29,7 +29,7 @@ var target_view_model
 
 func _ready():
 	radar_icons_container = radar.get_node("Radar Icons Container")
-	target_distance = target_view_container.get_node("Target Distance Container/Target Distance")
+	target_distance = target_view_container.get_node("Target View Rows/Target Distance Container/Target Distance")
 	target_view_cam = target_viewport.get_node("Camera")
 	target_view_model = target_viewport.get_node("Frog Fighter")
 
