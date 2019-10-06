@@ -11,11 +11,11 @@ Here I'll be keeping track of the all the features I want to implement, and chec
 - [x] Basic Energy Weapons
 - [x] Hull Damage
 - [x] Shield Damage
-- [ ] Head's Up Display (HUD)
+- [x] Head's Up Display (HUD)
 - [ ] Power Distribution
 - [ ] Reroute power to Shields by quadrant
 - [ ] Alliance Groups
-- [ ] Title Screen
+- [x] Title Screen
 - [ ] Options Menu
 - [ ] Mission Objectives and Warp Out
 - [ ] Communications Menu (in-game)
