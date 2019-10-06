@@ -131,7 +131,7 @@ func _on_player_target_changed(last_target):
 		# Update target viewport
 		target_view_model = load(source_filename).instance()
 		target_viewport.add_child(target_view_model)
-		target_hull.set_text(str(player.current_target.get_hull_percent()))
+		target_hull.set_text(str(round(player.current_target.get_hull_percent())))
 
 
 func _on_player_throttle_changed():
@@ -180,7 +180,7 @@ func _on_scene_loaded():
 
 
 func _on_target_damaged():
-	target_hull.set_text(str(player.current_target.get_hull_percent()))
+	target_hull.set_text(str(round(player.current_target.get_hull_percent())))
 
 
 func _on_target_destroyed(target):
