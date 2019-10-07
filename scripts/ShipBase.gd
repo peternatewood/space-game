@@ -18,6 +18,11 @@ var has_target: bool = false
 var max_speed: float = 32.0
 var missile_weapon_countdown: float = 0.0
 var missile_weapon_index: int = 0
+var power_distribution: Array = [
+	float(TOTAL_SYSTEM_POWER / 3),
+	float(TOTAL_SYSTEM_POWER / 3),
+	float(TOTAL_SYSTEM_POWER / 3)
+]
 var target_index: int = 0
 var throttle: float
 var torque_vector: Vector3
@@ -69,6 +74,33 @@ func _get_energy_weapon_range():
 	return EnergyBolt.RANGE
 
 
+func _increment_power_level(system: int, direction: int):
+	if system >= 0 and system < TOTAL_POWER_LEVELS:
+		var previous_level: float = power_distribution[system]
+		power_distribution[system] = clamp(previous_level + direction * POWER_INCREMENT, 0, MAX_SYSTEM_POWER)
+
+		var power_diff: float = abs(previous_level - power_distribution[system])
+		if power_diff != 0:
+			# Redistribute power to other systems
+			var increment = power_diff / 2
+			var other_system: int = (system + 1) % TOTAL_POWER_LEVELS
+			var steps: int = 0
+
+			while power_diff != 0:
+				previous_level = power_distribution[other_system]
+				power_distribution[other_system] = clamp(previous_level - direction * min(increment, power_diff), 0, MAX_SYSTEM_POWER)
+				power_diff -= abs(power_distribution[other_system] - previous_level)
+
+				other_system = (other_system + 1) % TOTAL_POWER_LEVELS
+				if other_system == system:
+					other_system = (other_system + 1) % TOTAL_POWER_LEVELS
+
+				steps += 1
+				if steps > 10:
+					print("Too many steps!")
+					return
+
+
 func _on_target_destroyed():
 	has_target = false
 	current_target = null
@@ -118,11 +150,16 @@ func get_source_filename():
 	return get_meta("source_file")
 
 
+enum { WEAPON, SHIELD, ENGINE, TOTAL_POWER_LEVELS }
+
 const EnergyBolt = preload("EnergyBolt.gd")
 
 const ACCELERATION: float = 0.1
 const DESTRUCTION_SMOKE = preload("res://models/Destruction_Smoke.tscn")
 const ENERGY_BOLT = preload("res://models/Energy_Bolt.tscn")
 const MISSILE = preload("res://models/missile/missile.dae")
+const MAX_SYSTEM_POWER: float = 60.0
 const MAX_THROTTLE: float = 1.0
+const POWER_INCREMENT: int = 10
+const TOTAL_SYSTEM_POWER: float = 120.0
 const TURN_SPEED: float = 2.5
