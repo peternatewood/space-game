@@ -14,7 +14,7 @@ Here I'll be keeping track of the all the features I want to implement, and chec
 - [x] Head's Up Display (HUD)
 - [ ] Power Distribution
 - [ ] Reroute power to Shields by quadrant
-- [ ] Alliance Groups
+- [x] Alliance Groups
 - [x] Title Screen
 - [ ] Options Menu
 - [ ] Mission Objectives and Warp Out
