@@ -1,0 +1,508 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://themes/default_inconsolata.tres" type="Theme" id=1]
+[ext_resource path="res://scripts/HUD.gd" type="Script" id=2]
+[ext_resource path="res://images/hud_lines.png" type="Texture" id=3]
+[ext_resource path="res://icons/ship_icon.tscn" type="PackedScene" id=4]
+[ext_resource path="res://images/throttle_bar_under.png" type="Texture" id=5]
+[ext_resource path="res://images/throttle_bar_over.png" type="Texture" id=6]
+[ext_resource path="res://images/throttle_bar_progress.png" type="Texture" id=7]
+[ext_resource path="res://images/radar_bg.svg" type="Texture" id=8]
+[ext_resource path="res://scripts/EdgeTargetIcon.gd" type="Script" id=9]
+[ext_resource path="res://scripts/TargetIcon.gd" type="Script" id=10]
+[ext_resource path="res://models/fighter_frog/fighter_frog.dae" type="PackedScene" id=11]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.501961, 0.501961, 0.501961, 1 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0, 0, 0, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0, 0, 0, 0.501961 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="ViewportTexture" id=4]
+viewport_path = NodePath("Target Viewport")
+
+[sub_resource type="Environment" id=6]
+background_mode = 1
+ambient_light_color = Color( 1, 1, 1, 1 )
+ambient_light_energy = 0.25
+ambient_light_sky_contribution = 0.5
+
+[node name="HUD" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
+
+[node name="HUD Bars" type="TextureRect" parent="."]
+modulate = Color( 0.501961, 0.752941, 1, 1 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -240.0
+margin_top = -160.0
+margin_right = 240.0
+margin_bottom = 160.0
+texture = ExtResource( 3 )
+
+[node name="Hull Bar" type="ProgressBar" parent="."]
+modulate = Color( 0.501961, 0.752941, 1, 1 )
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -37.5
+margin_top = 32.0
+margin_right = 37.5
+margin_bottom = 48.0
+custom_styles/fg = SubResource( 1 )
+custom_styles/bg = SubResource( 2 )
+step = 1.0
+value = 50.0
+
+[node name="Player Overhead" parent="." instance=ExtResource( 4 )]
+modulate = Color( 0.501961, 0.752941, 1, 1 )
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -255.0
+margin_top = -107.0
+margin_right = -192.0
+margin_bottom = -16.0
+
+[node name="Target Overhead" parent="." instance=ExtResource( 4 )]
+visible = false
+modulate = Color( 0.501961, 0.752941, 1, 1 )
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 192.0
+margin_top = -107.0
+margin_right = 255.0
+margin_bottom = -16.0
+
+[node name="Throttle Bar Container" type="Control" parent="."]
+editor/display_folded = true
+modulate = Color( 0.501961, 0.752941, 1, 1 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 184.0
+margin_top = -32.0
+margin_right = 216.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 56, 64 )
+
+[node name="Throttle Bar" type="TextureProgress" parent="Throttle Bar Container"]
+margin_right = 32.0
+margin_bottom = 64.0
+step = 0.1
+value = 50.0
+texture_under = ExtResource( 5 )
+texture_over = ExtResource( 6 )
+texture_progress = ExtResource( 7 )
+fill_mode = 3
+
+[node name="Throttle Line Mask" type="Light2D" parent="Throttle Bar Container"]
+light_mask = 2
+texture = ExtResource( 7 )
+offset = Vector2( 16, 32 )
+mode = 3
+range_item_cull_mask = 2
+
+[node name="Throttle Line" type="Line2D" parent="Throttle Bar Container"]
+light_mask = 2
+position = Vector2( 0, 32 )
+points = PoolVector2Array( 0, 0, 32, 0 )
+width = 1.0
+default_color = Color( 0.454902, 0.454902, 0.454902, 1 )
+texture_mode = 1065353216
+
+[node name="Speed Indicator" type="Label" parent="Throttle Bar Container"]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -24.0
+margin_top = -9.0
+margin_bottom = 9.0
+rect_min_size = Vector2( 24, 14 )
+text = "100"
+
+[node name="Radar" type="Control" parent="."]
+editor/display_folded = true
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -66.0
+margin_top = -98.0
+margin_right = 66.0
+margin_bottom = -32.0
+rect_min_size = Vector2( 132, 66 )
+
+[node name="TextureRect" type="TextureRect" parent="Radar"]
+modulate = Color( 0.501961, 0.752941, 1, 1 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -66.0
+margin_top = -33.0
+margin_right = 66.0
+margin_bottom = 33.0
+texture = ExtResource( 8 )
+
+[node name="Radar Icons Container" type="Control" parent="Radar"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Target Reticule" type="Control" parent="."]
+editor/display_folded = true
+modulate = Color( 0.501961, 0.752941, 1, 1 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+
+[node name="Line2D" type="Line2D" parent="Target Reticule"]
+points = PoolVector2Array( 4, 4, 8, 8, 12, 8 )
+width = 2.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = 50
+
+[node name="Line2D2" type="Line2D" parent="Target Reticule"]
+points = PoolVector2Array( -4, 4, -8, 8, -12, 8 )
+width = 2.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = 50
+
+[node name="Line2D3" type="Line2D" parent="Target Reticule"]
+points = PoolVector2Array( 4, -4, 8, -8, 12, -8 )
+width = 2.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = 50
+
+[node name="Line2D4" type="Line2D" parent="Target Reticule"]
+points = PoolVector2Array( -4, -4, -8, -8, -12, -8 )
+width = 2.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = 50
+
+[node name="Target View Container" type="MarginContainer" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 16.0
+margin_top = -128.0
+margin_right = 180.0
+margin_bottom = -16.0
+
+[node name="Target View Rows" type="VBoxContainer" parent="Target View Container"]
+margin_right = 164.0
+margin_bottom = 112.0
+custom_constants/separation = 0
+
+[node name="Target Distance Container" type="HBoxContainer" parent="Target View Container/Target View Rows"]
+editor/display_folded = true
+modulate = Color( 0.501961, 0.752941, 1, 1 )
+margin_right = 164.0
+margin_bottom = 18.0
+
+[node name="Control" type="CenterContainer" parent="Target View Container/Target View Rows/Target Distance Container"]
+margin_right = 9.0
+margin_bottom = 18.0
+rect_min_size = Vector2( 9, 18 )
+
+[node name="Control" type="Control" parent="Target View Container/Target View Rows/Target Distance Container/Control"]
+margin_left = 4.0
+margin_top = 9.0
+margin_right = 4.0
+margin_bottom = 9.0
+
+[node name="Polygon2D" type="Polygon2D" parent="Target View Container/Target View Rows/Target Distance Container/Control/Control"]
+polygon = PoolVector2Array( -4, 22, -4, 4, 0, 0, 5, 0, 5, 2, 1, 2, -2, 5, -2, 22 )
+
+[node name="Target Distance" type="Label" parent="Target View Container/Target View Rows/Target Distance Container"]
+margin_left = 13.0
+margin_right = 29.0
+margin_bottom = 18.0
+rect_min_size = Vector2( 0, 18 )
+text = "10"
+valign = 1
+
+[node name="Distance Label" type="Label" parent="Target View Container/Target View Rows/Target Distance Container"]
+margin_left = 33.0
+margin_right = 41.0
+margin_bottom = 18.0
+text = "m"
+
+[node name="Target View Panel Container" type="Control" parent="Target View Container/Target View Rows"]
+margin_top = 18.0
+margin_right = 164.0
+margin_bottom = 112.0
+rect_min_size = Vector2( 164, 94 )
+
+[node name="Target View Panel" type="PanelContainer" parent="Target View Container/Target View Rows/Target View Panel Container"]
+editor/display_folded = true
+self_modulate = Color( 0.501961, 0.752941, 1, 1 )
+margin_right = 164.0
+margin_bottom = 94.0
+rect_min_size = Vector2( 164, 94 )
+custom_styles/panel = SubResource( 3 )
+
+[node name="Target View" type="TextureRect" parent="Target View Container/Target View Rows/Target View Panel Container/Target View Panel"]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 162.0
+margin_bottom = 92.0
+texture = SubResource( 4 )
+
+[node name="Target Hull Container" type="HBoxContainer" parent="Target View Container/Target View Rows/Target View Panel Container"]
+modulate = Color( 0.501961, 0.752941, 1, 1 )
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -35.0
+margin_top = 2.0
+margin_right = -3.0
+margin_bottom = 20.0
+custom_constants/separation = 0
+alignment = 2
+
+[node name="Target Hull" type="Label" parent="Target View Container/Target View Rows/Target View Panel Container/Target Hull Container"]
+margin_right = 24.0
+margin_bottom = 18.0
+text = "100"
+align = 2
+
+[node name="Target Hull Percent" type="Label" parent="Target View Container/Target View Rows/Target View Panel Container/Target Hull Container"]
+margin_left = 24.0
+margin_right = 32.0
+margin_bottom = 18.0
+text = "%"
+
+[node name="Edge Target Icon" type="Control" parent="."]
+editor/display_folded = true
+visible = false
+script = ExtResource( 9 )
+
+[node name="Arrow Up" type="Control" parent="Edge Target Icon"]
+
+[node name="Arrow Up Poly" type="Polygon2D" parent="Edge Target Icon/Arrow Up"]
+polygon = PoolVector2Array( 0, 2, -6, 8, 6, 8 )
+
+[node name="Label" type="Label" parent="Edge Target Icon/Arrow Up"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -12.0
+margin_top = 12.0
+margin_right = 12.0
+margin_bottom = 30.0
+text = "100"
+align = 1
+valign = 1
+
+[node name="Arrow Up Right" type="Control" parent="Edge Target Icon"]
+
+[node name="Arrow Up Right Poly" type="Polygon2D" parent="Edge Target Icon/Arrow Up Right"]
+rotation = 0.785398
+polygon = PoolVector2Array( 0, 2, -6, 8, 6, 8 )
+
+[node name="Label" type="Label" parent="Edge Target Icon/Arrow Up Right"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -32.0
+margin_top = 12.0
+margin_right = -8.0
+margin_bottom = 30.0
+text = "100"
+align = 1
+valign = 1
+
+[node name="Arrow Right" type="Control" parent="Edge Target Icon"]
+
+[node name="Arrow Right Poly" type="Polygon2D" parent="Edge Target Icon/Arrow Right"]
+polygon = PoolVector2Array( -2, 0, -8, -6, -8, 6 )
+
+[node name="Label" type="Label" parent="Edge Target Icon/Arrow Right"]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -36.0
+margin_top = -9.0
+margin_right = -12.0
+margin_bottom = 9.0
+text = "100"
+align = 1
+valign = 1
+
+[node name="Arrow Down Right" type="Control" parent="Edge Target Icon"]
+
+[node name="Arrow Down Right Poly" type="Polygon2D" parent="Edge Target Icon/Arrow Down Right"]
+rotation = 2.35619
+polygon = PoolVector2Array( 0, 2, -6, 8, 6, 8 )
+
+[node name="Label" type="Label" parent="Edge Target Icon/Arrow Down Right"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -32.0
+margin_top = -28.0
+margin_right = -8.0
+margin_bottom = -10.0
+text = "100"
+align = 1
+valign = 1
+
+[node name="Arrow Down" type="Control" parent="Edge Target Icon"]
+
+[node name="Arrow Down Poly" type="Polygon2D" parent="Edge Target Icon/Arrow Down"]
+polygon = PoolVector2Array( 0, -2, -6, -8, 6, -8 )
+
+[node name="Label" type="Label" parent="Edge Target Icon/Arrow Down"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -12.0
+margin_top = -28.0
+margin_right = 12.0
+margin_bottom = -10.0
+text = "100"
+align = 1
+valign = 1
+
+[node name="Arrow Down Left" type="Control" parent="Edge Target Icon"]
+
+[node name="Arrow Down Left Poly" type="Polygon2D" parent="Edge Target Icon/Arrow Down Left"]
+rotation = 3.92699
+polygon = PoolVector2Array( 0, 2, -6, 8, 6, 8 )
+
+[node name="Label" type="Label" parent="Edge Target Icon/Arrow Down Left"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = -28.0
+margin_right = 32.0
+margin_bottom = -10.0
+text = "100"
+align = 1
+valign = 1
+
+[node name="Arrow Left" type="Control" parent="Edge Target Icon"]
+
+[node name="Arrow Left Poly" type="Polygon2D" parent="Edge Target Icon/Arrow Left"]
+polygon = PoolVector2Array( 2, 0, 8, -6, 8, 6 )
+
+[node name="Label" type="Label" parent="Edge Target Icon/Arrow Left"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 12.0
+margin_top = -9.0
+margin_right = 36.0
+margin_bottom = 9.0
+text = "100"
+align = 1
+valign = 1
+
+[node name="Arrow Up Left" type="Control" parent="Edge Target Icon"]
+
+[node name="Arrow  Up Left Poly" type="Polygon2D" parent="Edge Target Icon/Arrow Up Left"]
+rotation = 5.49779
+polygon = PoolVector2Array( 0, 2, -6, 8, 6, 8 )
+
+[node name="Label" type="Label" parent="Edge Target Icon/Arrow Up Left"]
+margin_left = 8.0
+margin_top = 12.0
+margin_right = 32.0
+margin_bottom = 30.0
+text = "100"
+align = 1
+valign = 1
+
+[node name="Target Icon" type="Control" parent="."]
+editor/display_folded = true
+visible = false
+script = ExtResource( 10 )
+
+[node name="Top Left" type="Line2D" parent="Target Icon"]
+position = Vector2( -12, -12 )
+points = PoolVector2Array( 0, 10, 0, 5, 5, 0, 10, 0 )
+width = 2.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = -644220704
+
+[node name="Top Right" type="Line2D" parent="Target Icon"]
+position = Vector2( 12, -12 )
+points = PoolVector2Array( -8, 0, 0, 0, 0, 8 )
+width = 2.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = -1108771308
+
+[node name="Bottom Right" type="Line2D" parent="Target Icon"]
+position = Vector2( 12, 12 )
+points = PoolVector2Array( 0, -10, 0, -5, -5, 0, -10, 0 )
+width = 2.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = -644220704
+
+[node name="Bottom Left" type="Line2D" parent="Target Icon"]
+position = Vector2( -12, 12 )
+points = PoolVector2Array( 8, 0, 0, 0, 0, -8 )
+width = 2.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = -1108771308
+
+[node name="Distance Label" type="Label" parent="Target Icon"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -24.0
+margin_top = -18.0
+margin_right = -16.0
+rect_min_size = Vector2( 8, 14 )
+text = "0"
+align = 2
+valign = 1
+
+[node name="Debug" type="Label" parent="."]
+visible = false
+margin_right = 726.0
+margin_bottom = 14.0
+
+[node name="Target Viewport" type="Viewport" parent="."]
+editor/display_folded = true
+size = Vector2( 160, 90 )
+own_world = true
+transparent_bg = true
+render_target_v_flip = true
+
+[node name="Camera" type="Camera" parent="Target Viewport"]
+environment = SubResource( 6 )
+projection = 1
+current = true
+size = 3.0
+far = 10.0
+
+[node name="Frog Fighter" parent="Target Viewport" instance=ExtResource( 11 )]
+input_ray_pickable = false
+collision_layer = 0
+collision_mask = 0
+sleeping = true
+
+[node name="DirectionalLight" type="DirectionalLight" parent="Target Viewport"]
+transform = Transform( 0.866025, 0.482963, -0.129409, 0, 0.258819, 0.965926, 0.5, -0.836516, 0.224144, 0, 8, 2 )

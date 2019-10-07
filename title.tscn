@@ -1,0 +1,50 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://themes/default_dyslexic.tres" type="Theme" id=1]
+[ext_resource path="res://scripts/Title.gd" type="Script" id=2]
+[ext_resource path="res://images/title_text.png" type="Texture" id=3]
+
+[node name="Title" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
+
+[node name="Container" type="VBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -198.0
+margin_top = -72.5
+margin_right = 198.0
+margin_bottom = 72.5
+
+[node name="Title Container" type="CenterContainer" parent="Container"]
+margin_right = 396.0
+margin_bottom = 97.0
+
+[node name="Title" type="TextureRect" parent="Container/Title Container"]
+margin_left = 73.0
+margin_right = 323.0
+margin_bottom = 97.0
+texture = ExtResource( 3 )
+
+[node name="HSeparator" type="HSeparator" parent="Container"]
+margin_top = 101.0
+margin_right = 396.0
+margin_bottom = 113.0
+rect_min_size = Vector2( 0, 12 )
+size_flags_horizontal = 3
+
+[node name="New Game" type="Button" parent="Container"]
+margin_top = 117.0
+margin_right = 396.0
+margin_bottom = 151.0
+text = "New Game"
+
+[node name="Exit" type="Button" parent="Container"]
+margin_top = 155.0
+margin_right = 396.0
+margin_bottom = 189.0
+text = "Exit"

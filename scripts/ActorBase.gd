@@ -2,31 +2,77 @@ extends RigidBody
 
 export (int) var hitpoints
 
+onready var bounding_box_extents = get_meta("bounding_box_extents")
+onready var loader = get_node("/root/SceneLoader")
+onready var mission_controller = get_tree().get_root().get_node("Mission Controller")
+
+var destruction_countdown: float
+var destruction_delay: float = 0.0
+var is_alive: bool = true
+var max_hitpoints: int
+
 
 func _ready():
 	self.connect("body_entered", self, "_on_body_entered")
+	loader.connect("scene_loaded", self, "_on_scene_loaded")
+
+	set_process(false)
 
 
 func _deal_damage(amount: int):
 	hitpoints -= amount
+	emit_signal("damaged")
 	if hitpoints <= 0:
-		_destroy()
+		_start_destruction()
 
 
 func _destroy():
-	emit_signal("destroyed")
 	queue_free()
 
 
 func _on_body_entered(body):
-	if body is EnergyBolt or body is Missile:
-		_deal_damage(body.DAMAGE_HULL)
+	if body is WeaponBase:
+		_deal_damage(body.damage_hull)
 		body.destroy()
 	else:
 		_deal_damage(1)
 
 
+func _on_scene_loaded():
+	max_hitpoints = hitpoints
+	set_process(true)
+
+
+func _process(delta):
+	if not is_alive:
+		destruction_countdown -= delta
+		if destruction_countdown <= 0:
+			set_process(false)
+			_destroy()
+
+
+func _start_destruction():
+	emit_signal("destroyed")
+	is_alive = false
+	destruction_countdown = destruction_delay
+
+
+# PUBLIC
+
+
+func get_bounding_box():
+	var vertices: Array = []
+	for vertex in bounding_box_extents:
+		vertices.append(global_transform.xform(vertex))
+
+	return vertices
+
+
+func get_hull_percent():
+	return 100 * float(hitpoints) / float(max_hitpoints)
+
+
+signal damaged
 signal destroyed
 
-const EnergyBolt = preload("EnergyBolt.gd")
-const Missile = preload("Missile.gd")
+const WeaponBase = preload("WeaponBase.gd")

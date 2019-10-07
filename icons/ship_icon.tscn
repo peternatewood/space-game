@@ -1,0 +1,61 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://scripts/ShipIcon.gd" type="Script" id=1]
+[ext_resource path="res://models/fighter_frog/overhead.png" type="Texture" id=2]
+[ext_resource path="res://images/shield_front.png" type="Texture" id=3]
+[ext_resource path="res://images/shield_left.png" type="Texture" id=4]
+[ext_resource path="res://images/shield_right.png" type="Texture" id=5]
+[ext_resource path="res://images/shield_rear.png" type="Texture" id=6]
+
+[node name="Ship Icon" type="Control"]
+margin_right = 63.0
+margin_bottom = 91.0
+rect_min_size = Vector2( 63, 91 )
+script = ExtResource( 1 )
+
+[node name="Overhead Icon" type="TextureRect" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -19.0
+margin_top = -31.5
+margin_right = 19.0
+margin_bottom = 31.5
+texture = ExtResource( 2 )
+
+[node name="Shield Front" type="TextureRect" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -19.5
+margin_right = 19.5
+margin_bottom = 17.0
+texture = ExtResource( 3 )
+
+[node name="Shield Left" type="TextureRect" parent="."]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_top = -28.5
+margin_right = 12.0
+margin_bottom = 28.5
+texture = ExtResource( 4 )
+
+[node name="Shield Right" type="TextureRect" parent="."]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -12.0
+margin_top = -28.5
+margin_bottom = 28.5
+texture = ExtResource( 5 )
+
+[node name="Shield Rear" type="TextureRect" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -19.5
+margin_top = -18.0
+margin_right = 19.5
+texture = ExtResource( 6 )
