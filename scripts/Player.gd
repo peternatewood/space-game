@@ -53,6 +53,30 @@ func _input(event):
 				target_index = (target_index + 1) % targets.size()
 
 			emit_signal("target_changed", last_target)
+		elif event.is_action("increment_weapon_power") and event.pressed:
+			_increment_power_level(ShipBase.WEAPON, 1)
+			emit_signal("power_distribution_changed")
+		elif event.is_action("decrement_weapon_power") and event.pressed:
+			_increment_power_level(ShipBase.WEAPON, -1)
+			emit_signal("power_distribution_changed")
+		elif event.is_action("increment_shield_power") and event.pressed:
+			_increment_power_level(ShipBase.SHIELD, 1)
+			emit_signal("power_distribution_changed")
+		elif event.is_action("decrement_shield_power") and event.pressed:
+			_increment_power_level(ShipBase.SHIELD, -1)
+			emit_signal("power_distribution_changed")
+		elif event.is_action("increment_engine_power") and event.pressed:
+			_increment_power_level(ShipBase.ENGINE, 1)
+			emit_signal("power_distribution_changed")
+		elif event.is_action("decrement_engine_power") and event.pressed:
+			_increment_power_level(ShipBase.ENGINE, -1)
+			emit_signal("power_distribution_changed")
+		elif event.is_action("equalize_power") and event.pressed:
+			power_distribution[WEAPON] = TOTAL_SYSTEM_POWER / 3
+			power_distribution[SHIELD] = TOTAL_SYSTEM_POWER / 3
+			power_distribution[ENGINE] = TOTAL_SYSTEM_POWER / 3
+
+			emit_signal("power_distribution_changed")
 
 
 func _on_scene_loaded():
@@ -106,10 +130,13 @@ func _set_cam_mode(mode: int):
 			show()
 
 
+signal power_distribution_changed
 signal target_changed
 signal throttle_changed
 
 enum { COCKPIT, CHASE }
+
+const ShipBase = preload("ShipBase.gd")
 
 const CAM_ROLL_MOD: float = 0.25
 const CAM_THROTTLE_MOD: float = 1.5
