@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://themes/default_dyslexic.tres" type="Theme" id=1]
+[ext_resource path="res://themes/default_inconsolata.tres" type="Theme" id=1]
 [ext_resource path="res://scripts/Title.gd" type="Script" id=2]
 [ext_resource path="res://images/title_text.png" type="Texture" id=3]
 
@@ -40,11 +40,11 @@ size_flags_horizontal = 3
 [node name="New Game" type="Button" parent="Container"]
 margin_top = 117.0
 margin_right = 396.0
-margin_bottom = 151.0
+margin_bottom = 119.0
 text = "New Game"
 
 [node name="Exit" type="Button" parent="Container"]
-margin_top = 155.0
+margin_top = 123.0
 margin_right = 396.0
-margin_bottom = 189.0
+margin_bottom = 125.0
 text = "Exit"
