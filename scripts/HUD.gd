@@ -10,6 +10,7 @@ onready var loader = get_node("/root/SceneLoader")
 onready var mission_controller = get_tree().get_root().get_node("Mission Controller")
 onready var player_overhead = get_node("Player Overhead")
 onready var player_hull_bar = get_node("Hull Bar")
+onready var power_container = get_node("Power Container")
 onready var radar = get_node("Radar")
 onready var speed_indicator = get_node("Throttle Bar Container/Speed Indicator")
 onready var target_icon = get_node("Target Icon")
@@ -63,6 +64,10 @@ func _on_player_damaged():
 func _on_player_destroyed():
 	hide()
 	set_process(false)
+
+
+func _on_player_power_distribution_changed():
+	power_container.set_power_bars(player.power_distribution)
 
 
 func _on_player_shield_front_changed(percent: float):
@@ -151,6 +156,7 @@ func _on_scene_loaded():
 	player_hull_bar.set_max(player.hitpoints)
 	player_hull_bar.set_value(player.hitpoints)
 
+	player.connect("power_distribution_changed", self, "_on_player_power_distribution_changed")
 	player.connect("target_changed", self, "_on_player_target_changed")
 	player.connect("damaged", self, "_on_player_damaged")
 	player.connect("destroyed", self, "_on_player_destroyed")
@@ -163,6 +169,8 @@ func _on_scene_loaded():
 	throttle_bar.set_max(player.max_speed)
 	_on_player_throttle_changed()
 	player.connect("throttle_changed", self, "_on_player_throttle_changed")
+
+	power_container.set_power_bars(player.power_distribution)
 
 	for node in get_node(targets_container_path).get_children():
 		var icon = RADAR_ICON.instance()
