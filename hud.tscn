@@ -1,16 +1,19 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://themes/default_inconsolata.tres" type="Theme" id=1]
 [ext_resource path="res://scripts/HUD.gd" type="Script" id=2]
 [ext_resource path="res://images/hud_lines.png" type="Texture" id=3]
 [ext_resource path="res://icons/ship_icon.tscn" type="PackedScene" id=4]
-[ext_resource path="res://images/throttle_bar_under.png" type="Texture" id=5]
-[ext_resource path="res://images/throttle_bar_over.png" type="Texture" id=6]
-[ext_resource path="res://images/throttle_bar_progress.png" type="Texture" id=7]
-[ext_resource path="res://images/radar_bg.svg" type="Texture" id=8]
-[ext_resource path="res://scripts/EdgeTargetIcon.gd" type="Script" id=9]
-[ext_resource path="res://scripts/TargetIcon.gd" type="Script" id=10]
-[ext_resource path="res://models/fighter_frog/fighter_frog.dae" type="PackedScene" id=11]
+[ext_resource path="res://scripts/PowerDistribution.gd" type="Script" id=5]
+[ext_resource path="res://images/power_bar_under.png" type="Texture" id=6]
+[ext_resource path="res://images/power_bar_progress.png" type="Texture" id=7]
+[ext_resource path="res://images/throttle_bar_under.png" type="Texture" id=8]
+[ext_resource path="res://images/throttle_bar_over.png" type="Texture" id=9]
+[ext_resource path="res://images/throttle_bar_progress.png" type="Texture" id=10]
+[ext_resource path="res://images/radar_bg.svg" type="Texture" id=11]
+[ext_resource path="res://scripts/EdgeTargetIcon.gd" type="Script" id=12]
+[ext_resource path="res://scripts/TargetIcon.gd" type="Script" id=13]
+[ext_resource path="res://models/fighter_frog/fighter_frog.dae" type="PackedScene" id=14]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.501961, 0.501961, 0.501961, 1 )
@@ -34,7 +37,7 @@ border_color = Color( 1, 1, 1, 1 )
 [sub_resource type="ViewportTexture" id=4]
 viewport_path = NodePath("Target Viewport")
 
-[sub_resource type="Environment" id=6]
+[sub_resource type="Environment" id=5]
 background_mode = 1
 ambient_light_color = Color( 1, 1, 1, 1 )
 ambient_light_energy = 0.25
@@ -82,6 +85,77 @@ margin_top = -107.0
 margin_right = -192.0
 margin_bottom = -16.0
 
+[node name="Power Container" type="HBoxContainer" parent="."]
+modulate = Color( 0.501961, 0.752941, 1, 1 )
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -176.0
+margin_top = -98.0
+margin_right = -144.0
+margin_bottom = -16.0
+script = ExtResource( 5 )
+
+[node name="Weapon Container" type="VBoxContainer" parent="Power Container"]
+margin_right = 8.0
+margin_bottom = 82.0
+
+[node name="TextureProgress" type="TextureProgress" parent="Power Container/Weapon Container"]
+margin_right = 8.0
+margin_bottom = 60.0
+max_value = 60.0
+value = 30.0
+texture_under = ExtResource( 6 )
+texture_progress = ExtResource( 7 )
+fill_mode = 3
+
+[node name="Label" type="Label" parent="Power Container/Weapon Container"]
+margin_top = 64.0
+margin_right = 8.0
+margin_bottom = 82.0
+text = "W"
+
+[node name="Shield Container" type="VBoxContainer" parent="Power Container"]
+margin_left = 12.0
+margin_right = 20.0
+margin_bottom = 82.0
+
+[node name="TextureProgress" type="TextureProgress" parent="Power Container/Shield Container"]
+margin_right = 8.0
+margin_bottom = 60.0
+max_value = 60.0
+value = 15.0
+texture_under = ExtResource( 6 )
+texture_progress = ExtResource( 7 )
+fill_mode = 3
+
+[node name="Label" type="Label" parent="Power Container/Shield Container"]
+margin_top = 64.0
+margin_right = 8.0
+margin_bottom = 82.0
+text = "S"
+
+[node name="Engine Container" type="VBoxContainer" parent="Power Container"]
+margin_left = 24.0
+margin_right = 32.0
+margin_bottom = 82.0
+
+[node name="TextureProgress" type="TextureProgress" parent="Power Container/Engine Container"]
+margin_right = 8.0
+margin_bottom = 60.0
+max_value = 60.0
+value = 45.0
+texture_under = ExtResource( 6 )
+texture_progress = ExtResource( 7 )
+fill_mode = 3
+
+[node name="Label" type="Label" parent="Power Container/Engine Container"]
+margin_top = 64.0
+margin_right = 8.0
+margin_bottom = 82.0
+text = "E"
+
 [node name="Target Overhead" parent="." instance=ExtResource( 4 )]
 visible = false
 modulate = Color( 0.501961, 0.752941, 1, 1 )
@@ -110,14 +184,14 @@ margin_right = 32.0
 margin_bottom = 64.0
 step = 0.1
 value = 50.0
-texture_under = ExtResource( 5 )
-texture_over = ExtResource( 6 )
-texture_progress = ExtResource( 7 )
+texture_under = ExtResource( 8 )
+texture_over = ExtResource( 9 )
+texture_progress = ExtResource( 10 )
 fill_mode = 3
 
 [node name="Throttle Line Mask" type="Light2D" parent="Throttle Bar Container"]
 light_mask = 2
-texture = ExtResource( 7 )
+texture = ExtResource( 10 )
 offset = Vector2( 16, 32 )
 mode = 3
 range_item_cull_mask = 2
@@ -163,7 +237,7 @@ margin_left = -66.0
 margin_top = -33.0
 margin_right = 66.0
 margin_bottom = 33.0
-texture = ExtResource( 8 )
+texture = ExtResource( 11 )
 
 [node name="Radar Icons Container" type="Control" parent="Radar"]
 anchor_right = 1.0
@@ -202,6 +276,8 @@ default_color = Color( 1, 1, 1, 1 )
 texture_mode = 50
 
 [node name="Target View Container" type="MarginContainer" parent="."]
+editor/display_folded = true
+visible = false
 anchor_top = 1.0
 anchor_bottom = 1.0
 margin_left = 16.0
@@ -295,7 +371,7 @@ text = "%"
 [node name="Edge Target Icon" type="Control" parent="."]
 editor/display_folded = true
 visible = false
-script = ExtResource( 9 )
+script = ExtResource( 12 )
 
 [node name="Arrow Up" type="Control" parent="Edge Target Icon"]
 
@@ -436,7 +512,7 @@ valign = 1
 [node name="Target Icon" type="Control" parent="."]
 editor/display_folded = true
 visible = false
-script = ExtResource( 10 )
+script = ExtResource( 13 )
 
 [node name="Top Left" type="Line2D" parent="Target Icon"]
 position = Vector2( -12, -12 )
@@ -492,13 +568,13 @@ transparent_bg = true
 render_target_v_flip = true
 
 [node name="Camera" type="Camera" parent="Target Viewport"]
-environment = SubResource( 6 )
+environment = SubResource( 5 )
 projection = 1
 current = true
 size = 3.0
 far = 10.0
 
-[node name="Frog Fighter" parent="Target Viewport" instance=ExtResource( 11 )]
+[node name="Frog Fighter" parent="Target Viewport" instance=ExtResource( 14 )]
 input_ray_pickable = false
 collision_layer = 0
 collision_mask = 0
