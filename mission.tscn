@@ -21,7 +21,6 @@ transform = Transform( 0.866025, 0.482963, -0.12941, 0, 0.258819, 0.965926, 0.5,
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
 script = ExtResource( 3 )
-hitpoints = 100
 faction = "spider"
 camera_path = NodePath("../../Mission Controller/Camera")
 
@@ -30,19 +29,16 @@ camera_path = NodePath("../../Mission Controller/Camera")
 [node name="Frog Fighter" parent="Targets Container" instance=ExtResource( 4 )]
 transform = Transform( 0.478177, -0.0391645, 0.87739, 0.696631, 0.62528, -0.351753, -0.534838, 0.779417, 0.326278, 0, 0, -7.69467 )
 script = ExtResource( 5 )
-hitpoints = 60
 faction = "frog"
 
 [node name="Spider Fighter" parent="Targets Container" instance=ExtResource( 2 )]
 transform = Transform( 0.787268, 0.302992, 0.537034, -0.226817, 0.95218, -0.204713, -0.573379, 0.0393554, 0.818344, 4.66133, 2.33831, -2.32113 )
 script = ExtResource( 6 )
-hitpoints = 60
 faction = "spider"
 
 [node name="Hawk Fighter" parent="Targets Container" instance=ExtResource( 7 )]
 transform = Transform( 0.836961, -0.335142, -0.432639, 0, 0.79055, -0.612397, 0.547263, 0.512552, 0.66166, -6.00805, -1.47702, -5.09553 )
 script = ExtResource( 6 )
-hitpoints = 60
 faction = "hawk"
 
 [node name="Asteroids Container" type="Node" parent="."]
@@ -50,27 +46,22 @@ faction = "hawk"
 [node name="Asteroid" parent="Asteroids Container" instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11.9108, 0, -8.19799 )
 script = ExtResource( 9 )
-hitpoints = 20
 
 [node name="Asteroid2" parent="Asteroids Container" instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.89396, -6.71257, 7.66448 )
 script = ExtResource( 9 )
-hitpoints = 20
 
 [node name="Asteroid3" parent="Asteroids Container" instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.10207, -3.187, 4.12244 )
 script = ExtResource( 9 )
-hitpoints = 20
 
 [node name="Asteroid4" parent="Asteroids Container" instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15.0285, 9.41962, -26.4233 )
 script = ExtResource( 9 )
-hitpoints = 20
 
 [node name="Asteroid5" parent="Asteroids Container" instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.18502, 5.07815, -14.7815 )
 script = ExtResource( 9 )
-hitpoints = 20
 
 [node name="HUD" parent="." instance=ExtResource( 10 )]
 camera_path = NodePath("../../Mission Controller/Camera")

@@ -59,7 +59,7 @@ func _is_position_in_view(pos: Vector3):
 
 
 func _on_player_damaged():
-	player_hull_bar.set_value(player.hitpoints)
+	player_hull_bar.set_value(player.hull_hitpoints)
 
 
 func _on_player_destroyed():
@@ -154,8 +154,8 @@ func _on_scene_loaded():
 	if overhead_icon != null:
 		player_overhead.set_overhead_icon(overhead_icon)
 
-	player_hull_bar.set_max(player.hitpoints)
-	player_hull_bar.set_value(player.hitpoints)
+	player_hull_bar.set_max(player.hull_hitpoints)
+	player_hull_bar.set_value(player.hull_hitpoints)
 
 	player.connect("power_distribution_changed", self, "_on_player_power_distribution_changed")
 	player.connect("target_changed", self, "_on_player_target_changed")

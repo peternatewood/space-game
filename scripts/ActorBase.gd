@@ -1,6 +1,6 @@
 extends RigidBody
 
-export (int) var hitpoints
+export (int) var hull_hitpoints
 
 onready var bounding_box_extents = get_meta("bounding_box_extents")
 onready var loader = get_node("/root/SceneLoader")
@@ -9,7 +9,7 @@ onready var mission_controller = get_tree().get_root().get_node("Mission Control
 var destruction_countdown: float
 var destruction_delay: float = 0.0
 var is_alive: bool = true
-var max_hitpoints: int
+var max_hull_hitpoints: int = 100
 
 
 func _ready():
@@ -20,9 +20,9 @@ func _ready():
 
 
 func _deal_damage(amount: int):
-	hitpoints -= amount
+	hull_hitpoints -= amount
 	emit_signal("damaged")
-	if hitpoints <= 0:
+	if hull_hitpoints <= 0:
 		_start_destruction()
 
 
@@ -39,7 +39,8 @@ func _on_body_entered(body):
 
 
 func _on_scene_loaded():
-	max_hitpoints = hitpoints
+	if not hull_hitpoints:
+		hull_hitpoints = max_hull_hitpoints
 	set_process(true)
 
 
@@ -69,7 +70,7 @@ func get_bounding_box():
 
 
 func get_hull_percent():
-	return 100 * float(hitpoints) / float(max_hitpoints)
+	return 100 * float(hull_hitpoints) / float(max_hull_hitpoints)
 
 
 signal damaged
