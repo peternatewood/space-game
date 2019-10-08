@@ -176,6 +176,27 @@ func _start_destruction():
 	._start_destruction()
 
 
+# Loops through the given array of possible targets; if one is found, set it as the current target and return true, otherwise do nothing and return false
+func _target_next_of_alignment(possible_targets: Array, alignment: int):
+	var targets_count = possible_targets.size()
+	var steps: int = 0
+	if has_target:
+		target_index = (target_index + 1) % targets_count
+		steps += 1
+
+	# Ensures we loop through all targets just once
+	while steps < targets_count:
+		var target = possible_targets[target_index]
+		if mission_controller.get_alignment(faction, target.faction) == alignment:
+			_set_current_target(target)
+			return true
+
+		target_index = (target_index + 1) % targets_count
+		steps += 1
+
+	return false
+
+
 # PUBLIC
 
 
