@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://themes/default_inconsolata.tres" type="Theme" id=1]
 [ext_resource path="res://scripts/HUD.gd" type="Script" id=2]
@@ -10,10 +10,13 @@
 [ext_resource path="res://images/throttle_bar_under.png" type="Texture" id=8]
 [ext_resource path="res://images/throttle_bar_over.png" type="Texture" id=9]
 [ext_resource path="res://images/throttle_bar_progress.png" type="Texture" id=10]
-[ext_resource path="res://images/radar_bg.svg" type="Texture" id=11]
-[ext_resource path="res://scripts/EdgeTargetIcon.gd" type="Script" id=12]
-[ext_resource path="res://scripts/TargetIcon.gd" type="Script" id=13]
-[ext_resource path="res://models/fighter_frog/fighter_frog.dae" type="PackedScene" id=14]
+[ext_resource path="res://images/weapon_battery_under.png" type="Texture" id=11]
+[ext_resource path="res://images/weapon_battery_over.png" type="Texture" id=12]
+[ext_resource path="res://images/weapon_battery_progress.png" type="Texture" id=13]
+[ext_resource path="res://images/radar_bg.svg" type="Texture" id=14]
+[ext_resource path="res://scripts/EdgeTargetIcon.gd" type="Script" id=15]
+[ext_resource path="res://scripts/TargetIcon.gd" type="Script" id=16]
+[ext_resource path="res://models/fighter_frog/fighter_frog.dae" type="PackedScene" id=17]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.501961, 0.501961, 0.501961, 1 )
@@ -168,6 +171,7 @@ margin_right = 255.0
 margin_bottom = -16.0
 
 [node name="Throttle Bar Container" type="Control" parent="."]
+editor/display_folded = true
 modulate = Color( 0.501961, 0.752941, 1, 1 )
 anchor_left = 0.5
 anchor_top = 0.5
@@ -215,6 +219,22 @@ margin_bottom = 9.0
 rect_min_size = Vector2( 24, 14 )
 text = "100"
 
+[node name="Weapon Battery Bar" type="TextureProgress" parent="."]
+modulate = Color( 0.501961, 0.752941, 1, 1 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -212.0
+margin_top = -32.0
+margin_right = -192.0
+margin_bottom = 32.0
+value = 50.0
+texture_under = ExtResource( 11 )
+texture_over = ExtResource( 12 )
+texture_progress = ExtResource( 13 )
+fill_mode = 3
+
 [node name="Radar" type="Control" parent="."]
 editor/display_folded = true
 anchor_left = 0.5
@@ -237,7 +257,7 @@ margin_left = -66.0
 margin_top = -33.0
 margin_right = 66.0
 margin_bottom = 33.0
-texture = ExtResource( 11 )
+texture = ExtResource( 14 )
 
 [node name="Radar Icons Container" type="Control" parent="Radar"]
 anchor_right = 1.0
@@ -371,7 +391,7 @@ text = "%"
 [node name="Edge Target Icon" type="Control" parent="."]
 editor/display_folded = true
 visible = false
-script = ExtResource( 12 )
+script = ExtResource( 15 )
 
 [node name="Arrow Up" type="Control" parent="Edge Target Icon"]
 
@@ -512,7 +532,7 @@ valign = 1
 [node name="Target Icon" type="Control" parent="."]
 editor/display_folded = true
 visible = false
-script = ExtResource( 13 )
+script = ExtResource( 16 )
 
 [node name="Top Left" type="Line2D" parent="Target Icon"]
 position = Vector2( -12, -12 )
@@ -574,7 +594,7 @@ current = true
 size = 3.0
 far = 10.0
 
-[node name="Frog Fighter" parent="Target Viewport" instance=ExtResource( 14 )]
+[node name="Frog Fighter" parent="Target Viewport" instance=ExtResource( 17 )]
 input_ray_pickable = false
 collision_layer = 0
 collision_mask = 0
