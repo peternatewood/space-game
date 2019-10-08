@@ -20,6 +20,7 @@ onready var target_viewport = get_node("Target Viewport")
 onready var throttle_bar = get_node("Throttle Bar Container/Throttle Bar")
 onready var throttle_line = get_node("Throttle Bar Container/Throttle Line")
 onready var viewport = get_viewport()
+onready var weapon_battery_bar = get_node("Weapon Battery Bar")
 
 var camera
 var player
@@ -298,6 +299,8 @@ func _process(delta):
 			target_overhead.hide()
 
 	_update_speed_indicator()
+
+	weapon_battery_bar.set_value(100 * player.get_weapon_battery_percent())
 
 
 func _update_edge_icon():
