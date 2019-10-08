@@ -4,6 +4,7 @@ extends "res://scripts/WeaponBase.gd"
 func _ready():
 	damage_hull = 15
 	damage_shield = 10
+	fire_delay = 0.45
 
 
 # PUBLIC
