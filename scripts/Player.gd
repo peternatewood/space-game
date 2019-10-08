@@ -39,6 +39,12 @@ func _input(event):
 		elif event.is_action("throttle_down") and event.pressed:
 			throttle = max(0, throttle - ACCELERATION)
 			emit_signal("throttle_changed")
+		elif event.is_action("set_throttle_zero") and event.pressed:
+			throttle = 0
+			emit_signal("throttle_changed")
+		elif event.is_action("set_throttle_full") and event.pressed:
+			throttle = MAX_THROTTLE
+			emit_signal("throttle_changed")
 		elif event.is_action("target_next") and event.pressed:
 			var targets = targets_container.get_children()
 			var last_target
