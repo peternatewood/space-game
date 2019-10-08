@@ -207,6 +207,10 @@ func _on_target_damaged():
 
 func _on_target_destroyed(target):
 	_disconnect_target_signals(target)
+	target_icon.hide()
+	edge_target_icon.hide()
+	target_view_container.hide()
+	target_overhead.hide()
 
 
 func _on_target_shield_front_changed(percent: float):
