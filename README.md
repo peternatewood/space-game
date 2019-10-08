@@ -12,7 +12,7 @@ Here I'll be keeping track of the all the features I want to implement, and chec
 - [x] Hull Damage
 - [x] Shield Damage
 - [x] Head's Up Display (HUD)
-- [ ] Power Distribution
+- [x] Power Distribution
 - [ ] Reroute power to Shields by quadrant
 - [x] Alliance Groups
 - [x] Title Screen
