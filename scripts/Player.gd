@@ -58,9 +58,9 @@ func _input(event):
 			else:
 				if has_target:
 					last_target = targets[target_index]
+					target_index = (target_index + 1) % targets.size()
 
 				_set_current_target(targets[target_index])
-				target_index = (target_index + 1) % targets.size()
 
 			emit_signal("target_changed", last_target)
 		elif event.is_action("increment_weapon_power") and event.pressed:
