@@ -26,6 +26,7 @@ var power_distribution: Array = [
 var target_index: int = 0
 var throttle: float
 var torque_vector: Vector3
+var weapon_battery: float = MAX_WEAPON_BATTERY
 
 
 func _ready():
@@ -38,7 +39,7 @@ func _ready():
 
 
 func _fire_energy_weapon():
-	if energy_weapon_countdown == 0:
+	if energy_weapon_countdown == 0 and weapon_battery >= EnergyBolt.COST:
 		# Instance bolt and set its layer and mask so it doesn't immediately collide with the ship firing it
 		var bolt = ENERGY_BOLT.instance()
 		bolt.add_collision_exception_with(self)
@@ -51,6 +52,8 @@ func _fire_energy_weapon():
 
 		energy_weapon_countdown = bolt.fire_delay
 		energy_weapon_index = (energy_weapon_index + 1) % energy_weapon_hardpoints.size()
+
+		weapon_battery -= EnergyBolt.COST
 
 		return true
 
@@ -174,6 +177,10 @@ func get_source_filename():
 	return get_meta("source_file")
 
 
+func get_weapon_battery_percent():
+	return weapon_battery / MAX_WEAPON_BATTERY
+
+
 enum { WEAPON, SHIELD, ENGINE, TOTAL_POWER_LEVELS }
 
 const EnergyBolt = preload("EnergyBolt.gd")
@@ -185,6 +192,7 @@ const MISSILE = preload("res://models/missile/missile.dae")
 const MASS_TO_MAX_SPEED_FACTOR: float = 32.129448
 const MAX_SYSTEM_POWER: float = 60.0
 const MAX_THROTTLE: float = 1.0
+const MAX_WEAPON_BATTERY: float = 100.0
 const POWER_INCREMENT: int = 10
 const TOTAL_SYSTEM_POWER: float = 120.0
 const TURN_SPEED: float = 2.5
