@@ -45,7 +45,7 @@ func _set_new_scene():
 
 
 func _update_progress(loader):
-	emit_signal("loading_progressed", loader.get_stage())
+	emit_signal("loading_progressed", 100 * float(loader.get_stage()) / loader.get_stage_count())
 
 
 # PUBLIC
@@ -60,7 +60,6 @@ func change_scene(path: String):
 		tree.set_pause(false)
 
 	var loader = ResourceLoader.load_interactive(path)
-	emit_signal("stage_count", loader.get_stage_count())
 	thread.start(self, "_load_scene", loader)
 
 
