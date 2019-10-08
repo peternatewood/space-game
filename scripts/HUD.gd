@@ -339,7 +339,7 @@ func _update_edge_icon():
 
 func _update_speed_indicator():
 	var speed = player.linear_velocity.length()
-	var speed_percent = 100 * speed / player.max_speed
+	var speed_percent = 100 * speed / player.get_max_speed()
 
 	if throttle_bar.value != speed_percent:
 		throttle_bar.set_value(speed_percent)

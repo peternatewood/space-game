@@ -80,6 +80,11 @@ func _get_energy_weapon_range():
 	return EnergyBolt.RANGE
 
 
+# Ranges from 0.75 to 1.25
+func _get_engine_factor():
+	return 0.75 + 0.5 * (power_distribution[ENGINE] / MAX_SYSTEM_POWER)
+
+
 func _increment_power_level(system: int, direction: int):
 	if system >= 0 and system < TOTAL_POWER_LEVELS:
 		var previous_level: float = power_distribution[system]
@@ -115,7 +120,7 @@ func _on_target_destroyed():
 
 func _physics_process(delta):
 	add_torque(TURN_SPEED * torque_vector)
-	apply_central_impulse(throttle * -transform.basis.z)
+	apply_central_impulse(throttle * _get_engine_factor() * -transform.basis.z)
 
 
 func _process(delta):
@@ -150,6 +155,10 @@ func get_overhead_icon():
 		return load(directory + "/overhead.png")
 
 	return null
+
+
+func get_max_speed():
+	return max_speed * _get_engine_factor()
 
 
 func get_source_filename():
