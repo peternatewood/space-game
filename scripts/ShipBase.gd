@@ -2,20 +2,21 @@ extends "res://scripts/ActorBase.gd"
 
 export (String) var faction
 
-onready var directory = get_meta("directory")
 onready var energy_weapon_hardpoints = get_node("Energy Weapon Hardpoints 1").get_children()
+onready var max_speed: float = get_meta("max_speed")
 onready var missile_weapon_hardpoints = get_node("Missile Weapon Hardpoints").get_children()
 onready var shield_front = get_node("Shield Front")
 onready var shield_left = get_node("Shield Left")
 onready var shield_rear = get_node("Shield Rear")
 onready var shield_right = get_node("Shield Right")
+onready var ship_class: String = get_meta("ship_class")
+onready var source_folder = get_meta("source_folder")
 
 var current_target
 var energy_weapon_countdown: float = 0.0
 var energy_weapon_index: int = 0
 var has_target: bool = false
 # TODO: figure out how to accurately calculate this
-var max_speed
 var missile_weapon_countdown: float = 0.0
 var missile_weapon_index: int = 0
 var power_distribution: Array = [
@@ -30,12 +31,23 @@ var weapon_battery: float = MAX_WEAPON_BATTERY
 
 
 func _ready():
+	max_hull_hitpoints = get_meta("hull_hitpoints")
 	max_speed = MASS_TO_MAX_SPEED_FACTOR * mass
 
+	var shield_hitpoints = get_meta("shield_hitpoints")
+	shield_front.set_max_hitpoints(shield_hitpoints)
+	shield_left.set_max_hitpoints(shield_hitpoints)
+	shield_rear.set_max_hitpoints(shield_hitpoints)
+	shield_right.set_max_hitpoints(shield_hitpoints)
 	shield_front.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
 	shield_left.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
 	shield_rear.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
 	shield_right.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
+
+	print(ship_class)
+	print(max_speed)
+	print(max_hull_hitpoints)
+	print(shield_hitpoints)
 
 
 func _fire_energy_weapon():
@@ -168,8 +180,8 @@ func _start_destruction():
 
 
 func get_overhead_icon():
-	if directory != null:
-		return load(directory + "/overhead.png")
+	if source_folder != null:
+		return load(source_folder + "/overhead.png")
 
 	return null
 
