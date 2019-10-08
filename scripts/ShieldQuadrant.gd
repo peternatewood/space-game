@@ -5,6 +5,7 @@ onready var mesh: MeshInstance = get_node("mesh")
 var flicker_countdown: float = 0.0
 var hitpoints: float
 var max_hitpoints: float = 100.0
+var recovery_boost: int = 0
 var recovery_countdown: float = 0.0
 var recovery_rate: float # Hitpoints per second
 
@@ -48,7 +49,7 @@ func _process(delta):
 		if recovery_countdown <= 0:
 			recovery_countdown = 0
 	elif hitpoints < max_hitpoints:
-		hitpoints += delta * recovery_rate
+		hitpoints += delta * (recovery_rate + recovery_boost * RECOVERY_BOOST)
 		emit_signal("hitpoints_changed", hitpoints / max_hitpoints)
 
 		if hitpoints > max_hitpoints:
@@ -63,6 +64,10 @@ func set_max_hitpoints(amount: float):
 	hitpoints = amount
 
 
+func set_recovery_boost(boost_direction: int):
+	recovery_boost = boost_direction
+
+
 func set_recovery_rate(system_power: float):
 	recovery_rate = MIN_RECOVERY_RATE + system_power * (MAX_RECOVERY_RATE - MIN_RECOVERY_RATE)
 
@@ -75,3 +80,4 @@ const FLICKER_DELAY: float = 0.45
 const MAX_RECOVERY_RATE: float = 10.0
 const MIN_RECOVERY_RATE: float = 2.0
 const RECOVERY_DELAY: float = 0.85 # Starts after flicker delay
+const RECOVERY_BOOST: float = 1.5
