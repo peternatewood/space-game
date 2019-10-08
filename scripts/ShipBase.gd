@@ -42,6 +42,19 @@ func _ready():
 		quadrant.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
 
 
+func _boost_shield_quadrant(quadrant: int):
+	if shields[quadrant].recovery_boost == 1:
+		# Reset the boost
+		for quadrant in shields:
+			quadrant.set_recovery_boost(0)
+	else:
+		for index in range(QUADRANT_COUNT):
+			if index == quadrant:
+				shields[index].set_recovery_boost(1)
+			else:
+				shields[index].set_recovery_boost(-1)
+
+
 func _fire_energy_weapon():
 	if energy_weapon_countdown == 0 and weapon_battery >= EnergyBolt.COST:
 		# Instance bolt and set its layer and mask so it doesn't immediately collide with the ship firing it
