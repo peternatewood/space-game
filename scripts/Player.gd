@@ -49,6 +49,30 @@ func _input(event):
 			has_target = false
 			emit_signal("target_changed", current_target)
 			current_target = null
+		elif event.is_action("target_next_hostile") and event.pressed:
+			var last_target
+			if has_target:
+				last_target = current_target
+
+			if _target_next_of_alignment(targets_container.get_children(), mission_controller.HOSTILE):
+				has_target = true
+				emit_signal("target_changed", last_target)
+		elif event.is_action("target_next_friendly") and event.pressed:
+			var last_target
+			if has_target:
+				last_target = current_target
+
+			if _target_next_of_alignment(targets_container.get_children(), mission_controller.FRIENDLY):
+				has_target = true
+				emit_signal("target_changed", last_target)
+		elif event.is_action("target_next_neutral") and event.pressed:
+			var last_target
+			if has_target:
+				last_target = current_target
+
+			if _target_next_of_alignment(targets_container.get_children(), mission_controller.NEUTRAL):
+				has_target = true
+				emit_signal("target_changed", last_target)
 		elif event.is_action("target_next") and event.pressed:
 			var targets = targets_container.get_children()
 			var last_target
@@ -57,7 +81,7 @@ func _input(event):
 				current_target = null
 			else:
 				if has_target:
-					last_target = targets[target_index]
+					last_target = current_target
 					target_index = (target_index + 1) % targets.size()
 
 				_set_current_target(targets[target_index])
