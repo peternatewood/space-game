@@ -75,6 +75,10 @@ func _on_player_shield_changed(percent: float, quadrant: int):
 	player_overhead.set_shield_alpha(quadrant, percent)
 
 
+func _on_player_shield_boost_changed():
+	player_overhead.set_shield_boosted(player.shields)
+
+
 func _on_player_target_changed(last_target):
 	var radar_icons = radar_icons_container.get_children()
 
@@ -153,6 +157,7 @@ func _on_scene_loaded():
 	player_hull_bar.set_max(player.hull_hitpoints)
 	player_hull_bar.set_value(player.hull_hitpoints)
 
+	player.connect("shield_boost_changed", self, "_on_player_shield_boost_changed")
 	player.connect("power_distribution_changed", self, "_on_player_power_distribution_changed")
 	player.connect("target_changed", self, "_on_player_target_changed")
 	player.connect("damaged", self, "_on_player_damaged")
