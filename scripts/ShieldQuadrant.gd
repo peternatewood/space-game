@@ -58,6 +58,11 @@ func _process(delta):
 # PUBLIC
 
 
+func set_max_hitpoints(amount: float):
+	max_hitpoints = amount
+	hitpoints = amount
+
+
 func set_recovery_rate(system_power: float):
 	recovery_rate = MIN_RECOVERY_RATE + system_power * (MAX_RECOVERY_RATE - MIN_RECOVERY_RATE)
 
