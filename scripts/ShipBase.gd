@@ -44,11 +44,6 @@ func _ready():
 	shield_rear.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
 	shield_right.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
 
-	print(ship_class)
-	print(max_speed)
-	print(max_hull_hitpoints)
-	print(shield_hitpoints)
-
 
 func _fire_energy_weapon():
 	if energy_weapon_countdown == 0 and weapon_battery >= EnergyBolt.COST:
