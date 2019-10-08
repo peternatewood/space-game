@@ -27,7 +27,15 @@ func set_overhead_icon(icon):
 	overhead_icon.set_texture(icon)
 
 
-func set_shield_alpha(direction, alpha):
-	var current_color = shield_icons[direction].modulate
+func set_shield_alpha(quadrant, alpha):
+	var current_color = shield_icons[quadrant].modulate
 	current_color.a = alpha
-	shield_icons[direction].set_modulate(current_color)
+	shield_icons[quadrant].set_modulate(current_color)
+
+
+func set_shield_boosted(shields: Array):
+	for index in range(shield_outline_icons.size()):
+		if shields[index].recovery_boost == 1:
+			shield_outline_icons[index].show()
+		else:
+			shield_outline_icons[index].hide()
