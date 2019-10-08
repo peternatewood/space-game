@@ -47,6 +47,7 @@ func _input(event):
 		elif event.is_action("set_throttle_full") and event.pressed:
 			throttle = MAX_THROTTLE
 			emit_signal("throttle_changed")
+		# Targeting
 		elif event.is_action("deselect_target") and event.pressed:
 			has_target = false
 			emit_signal("target_changed", current_target)
@@ -89,6 +90,23 @@ func _input(event):
 				_set_current_target(targets[target_index])
 
 			emit_signal("target_changed", last_target)
+		# Shield Boosting
+		elif event.is_action("boost_shield_front") and event.pressed:
+			_boost_shield_quadrant(FRONT)
+			emit_signal("shield_boost_changed")
+		elif event.is_action("boost_shield_rear") and event.pressed:
+			_boost_shield_quadrant(REAR)
+			emit_signal("shield_boost_changed")
+		elif event.is_action("boost_shield_left") and event.pressed:
+			_boost_shield_quadrant(LEFT)
+			emit_signal("shield_boost_changed")
+		elif event.is_action("boost_shield_right") and event.pressed:
+			_boost_shield_quadrant(RIGHT)
+			emit_signal("shield_boost_changed")
+		elif event.is_action("clear_shield_boost") and event.pressed:
+			_boost_shield_quadrant(-1)
+			emit_signal("shield_boost_changed")
+		# System power distribution
 		elif event.is_action("increment_weapon_power") and event.pressed:
 			_increment_power_level(ShipBase.WEAPON, 1)
 			emit_signal("power_distribution_changed")
@@ -175,6 +193,7 @@ func _toggle_ship_mesh(show_meshes: bool):
 				child.hide()
 
 
+signal shield_boost_changed
 signal power_distribution_changed
 signal target_changed
 signal throttle_changed
