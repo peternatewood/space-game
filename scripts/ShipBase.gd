@@ -31,7 +31,10 @@ var torque_vector: Vector3
 func _ready():
 	max_speed = MASS_TO_MAX_SPEED_FACTOR * mass
 
-	._ready()
+	shield_front.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
+	shield_left.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
+	shield_rear.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
+	shield_right.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
 
 
 func _fire_energy_weapon():
@@ -110,6 +113,12 @@ func _increment_power_level(system: int, direction: int):
 				if steps > 10:
 					print("Too many steps!")
 					return
+
+			# Update shields' recovery rate
+			shield_front.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
+			shield_left.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
+			shield_rear.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
+			shield_right.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
 
 
 func _on_target_destroyed():
