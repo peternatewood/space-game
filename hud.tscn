@@ -301,20 +301,26 @@ visible = false
 anchor_top = 1.0
 anchor_bottom = 1.0
 margin_left = 16.0
-margin_top = -128.0
+margin_top = -146.0
 margin_right = 180.0
 margin_bottom = -16.0
 
 [node name="Target View Rows" type="VBoxContainer" parent="Target View Container"]
 margin_right = 164.0
-margin_bottom = 112.0
+margin_bottom = 130.0
 custom_constants/separation = 0
+
+[node name="Target Class" type="Label" parent="Target View Container/Target View Rows"]
+margin_right = 164.0
+margin_bottom = 18.0
+text = "ship"
 
 [node name="Target Distance Container" type="HBoxContainer" parent="Target View Container/Target View Rows"]
 editor/display_folded = true
 modulate = Color( 0.501961, 0.752941, 1, 1 )
+margin_top = 18.0
 margin_right = 164.0
-margin_bottom = 18.0
+margin_bottom = 36.0
 
 [node name="Control" type="CenterContainer" parent="Target View Container/Target View Rows/Target Distance Container"]
 margin_right = 9.0
@@ -345,9 +351,9 @@ margin_bottom = 18.0
 text = "m"
 
 [node name="Target View Panel Container" type="Control" parent="Target View Container/Target View Rows"]
-margin_top = 18.0
+margin_top = 36.0
 margin_right = 164.0
-margin_bottom = 112.0
+margin_bottom = 130.0
 rect_min_size = Vector2( 164, 94 )
 
 [node name="Target View Panel" type="PanelContainer" parent="Target View Container/Target View Rows/Target View Panel Container"]

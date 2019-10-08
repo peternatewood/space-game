@@ -25,6 +25,7 @@ onready var weapon_battery_bar = get_node("Weapon Battery Bar")
 var camera
 var player
 var radar_icons_container: Control
+var target_class
 var target_distance
 var target_hull
 var target_view_cam
@@ -32,6 +33,7 @@ var target_view_model
 
 func _ready():
 	radar_icons_container = radar.get_node("Radar Icons Container")
+	target_class = target_view_container.get_node("Target View Rows/Target Class")
 	target_distance = target_view_container.get_node("Target View Rows/Target Distance Container/Target Distance")
 	target_hull = target_view_container.get_node("Target View Rows/Target View Panel Container/Target Hull Container/Target Hull")
 	target_view_cam = target_viewport.get_node("Camera")
@@ -128,13 +130,16 @@ func _on_player_target_changed(last_target):
 				icons_updated += 1
 
 		if alignment != -1:
+			target_class.set_modulate(ALIGNMENT_COLORS[alignment])
 			edge_target_icon.set_modulate(ALIGNMENT_COLORS[alignment])
 			target_icon.set_modulate(ALIGNMENT_COLORS[alignment])
 		else:
+			target_class.set_modulate(Color.white)
 			edge_target_icon.set_modulate(Color.white)
 			target_icon.set_modulate(Color.white)
 
 		# Update target viewport
+		target_class.set_text(player.current_target.ship_class)
 		target_view_model = load(source_filename).instance()
 		target_viewport.add_child(target_view_model)
 		target_hull.set_text(str(round(player.current_target.get_hull_percent())))
