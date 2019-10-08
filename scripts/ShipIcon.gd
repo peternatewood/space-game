@@ -31,6 +31,3 @@ func set_shield_alpha(direction, alpha):
 	var current_color = shield_icons[direction].modulate
 	current_color.a = alpha
 	shield_icons[direction].set_modulate(current_color)
-
-
-enum { FRONT, REAR, LEFT, RIGHT }

@@ -47,10 +47,8 @@ func _disconnect_target_signals(target):
 	target.disconnect("damaged", self, "_on_target_damaged")
 	target.disconnect("destroyed", self, "_on_target_destroyed")
 
-	target.shield_front.disconnect("destroyed", self, "_on_target_shield_front_changed")
-	target.shield_left.disconnect("destroyed", self, "_on_target_shield_left_changed")
-	target.shield_rear.disconnect("destroyed", self, "_on_target_shield_rear_changed")
-	target.shield_right.disconnect("destroyed", self, "_on_target_shield_right_changed")
+	for index in range(target.QUADRANT_COUNT):
+		target.shields[index].disconnect("hitpoints_changed", self, "_on_target_shield_changed", [ index ])
 
 
 func _is_position_in_view(pos: Vector3):
@@ -73,20 +71,8 @@ func _on_player_power_distribution_changed():
 	power_container.set_power_bars(player.power_distribution)
 
 
-func _on_player_shield_front_changed(percent: float):
-	player_overhead.set_shield_alpha(ShipIcon.FRONT, percent)
-
-
-func _on_player_shield_left_changed(percent: float):
-	player_overhead.set_shield_alpha(ShipIcon.LEFT, percent)
-
-
-func _on_player_shield_rear_changed(percent: float):
-	player_overhead.set_shield_alpha(ShipIcon.REAR, percent)
-
-
-func _on_player_shield_right_changed(percent: float):
-	player_overhead.set_shield_alpha(ShipIcon.RIGHT, percent)
+func _on_player_shield_changed(percent: float, quadrant: int):
+	player_overhead.set_shield_alpha(quadrant, percent)
 
 
 func _on_player_target_changed(last_target):
@@ -112,10 +98,8 @@ func _on_player_target_changed(last_target):
 		player.current_target.connect("damaged", self, "_on_target_damaged")
 		player.current_target.connect("destroyed", self, "_on_target_destroyed", [ player.current_target ])
 
-		player.current_target.shield_front.connect("hitpoints_changed", self, "_on_target_shield_front_changed")
-		player.current_target.shield_left.connect("hitpoints_changed", self, "_on_target_shield_left_changed")
-		player.current_target.shield_rear.connect("hitpoints_changed", self, "_on_target_shield_rear_changed")
-		player.current_target.shield_right.connect("hitpoints_changed", self, "_on_target_shield_right_changed")
+		for index in range(player.current_target.QUADRANT_COUNT):
+			player.current_target.shields[index].connect("hitpoints_changed", self, "_on_target_shield_changed", [ index ])
 
 		# Update icons
 		target_overhead.set_overhead_icon(overhead_icon)
@@ -174,10 +158,8 @@ func _on_scene_loaded():
 	player.connect("damaged", self, "_on_player_damaged")
 	player.connect("destroyed", self, "_on_player_destroyed")
 
-	player.shield_front.connect("hitpoints_changed", self, "_on_player_shield_front_changed")
-	player.shield_left.connect("hitpoints_changed", self, "_on_player_shield_left_changed")
-	player.shield_rear.connect("hitpoints_changed", self, "_on_player_shield_rear_changed")
-	player.shield_right.connect("hitpoints_changed", self, "_on_player_shield_right_changed")
+	for index in range(player.QUADRANT_COUNT):
+		player.shields[index].connect("hitpoints_changed", self, "_on_player_shield_changed", [ index ])
 
 	_on_player_throttle_changed()
 	player.connect("throttle_changed", self, "_on_player_throttle_changed")
@@ -211,20 +193,8 @@ func _on_target_destroyed(target):
 	target_overhead.hide()
 
 
-func _on_target_shield_front_changed(percent: float):
-	target_overhead.set_shield_alpha(ShipIcon.FRONT, percent)
-
-
-func _on_target_shield_left_changed(percent: float):
-	target_overhead.set_shield_alpha(ShipIcon.LEFT, percent)
-
-
-func _on_target_shield_rear_changed(percent: float):
-	target_overhead.set_shield_alpha(ShipIcon.REAR, percent)
-
-
-func _on_target_shield_right_changed(percent: float):
-	target_overhead.set_shield_alpha(ShipIcon.RIGHT, percent)
+func _on_target_shield_changed(percent: float, quadrant: int):
+	target_overhead.set_shield_alpha(quadrant, percent)
 
 
 func _process(delta):

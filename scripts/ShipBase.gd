@@ -5,10 +5,12 @@ export (String) var faction
 onready var energy_weapon_hardpoints = get_node("Energy Weapon Hardpoints 1").get_children()
 onready var max_speed: float = get_meta("max_speed")
 onready var missile_weapon_hardpoints = get_node("Missile Weapon Hardpoints").get_children()
-onready var shield_front = get_node("Shield Front")
-onready var shield_left = get_node("Shield Left")
-onready var shield_rear = get_node("Shield Rear")
-onready var shield_right = get_node("Shield Right")
+onready var shields: Array = [
+	get_node("Shield Front"),
+	get_node("Shield Rear"),
+	get_node("Shield Left"),
+	get_node("Shield Right")
+]
 onready var ship_class: String = get_meta("ship_class")
 onready var source_folder = get_meta("source_folder")
 
@@ -35,14 +37,9 @@ func _ready():
 	max_speed = MASS_TO_MAX_SPEED_FACTOR * mass
 
 	var shield_hitpoints = get_meta("shield_hitpoints")
-	shield_front.set_max_hitpoints(shield_hitpoints)
-	shield_left.set_max_hitpoints(shield_hitpoints)
-	shield_rear.set_max_hitpoints(shield_hitpoints)
-	shield_right.set_max_hitpoints(shield_hitpoints)
-	shield_front.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
-	shield_left.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
-	shield_rear.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
-	shield_right.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
+	for quadrant in shields:
+		quadrant.set_max_hitpoints(shield_hitpoints)
+		quadrant.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
 
 
 func _fire_energy_weapon():
@@ -125,10 +122,8 @@ func _increment_power_level(system: int, direction: int):
 					return
 
 			# Update shields' recovery rate
-			shield_front.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
-			shield_left.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
-			shield_rear.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
-			shield_right.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
+			for quadrant in shields:
+				quadrant.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
 
 
 func _on_target_destroyed():
@@ -215,6 +210,7 @@ func get_weapon_battery_percent():
 
 
 enum { WEAPON, SHIELD, ENGINE, TOTAL_POWER_LEVELS }
+enum { FRONT, REAR, LEFT, RIGHT, QUADRANT_COUNT }
 
 const EnergyBolt = preload("EnergyBolt.gd")
 
