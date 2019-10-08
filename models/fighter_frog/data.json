@@ -1,0 +1,6 @@
+{
+  "ship_class": "Frog Fighter",
+  "hull_hitpoints": 110.0,
+  "shield_hitpoints": 120.0,
+  "max_speed": 30.0
+}
