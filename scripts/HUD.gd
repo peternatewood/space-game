@@ -101,10 +101,8 @@ func _on_player_target_changed(last_target):
 
 	if player.has_target:
 		target_viewport.remove_child(target_view_model)
-		var source_filename = player.current_target.get_source_filename()
-		if source_filename == null:
-			print("Missing source file for " + player.current_target.name)
-			return
+		# Duplicating the target node turns out to be much faster than trying to load a new model, though the viewport is blank for a second or two
+		target_view_model = player.current_target.duplicate(Node.DUPLICATE_USE_INSTANCING)
 
 		var overhead_icon = player.current_target.get_overhead_icon()
 		if overhead_icon == null:
@@ -139,8 +137,8 @@ func _on_player_target_changed(last_target):
 
 		# Update target viewport
 		target_class.set_text(player.current_target.ship_class)
-		target_view_model = load(source_filename).instance()
 		target_viewport.add_child(target_view_model)
+		target_view_model.transform.origin = Vector3.ZERO
 		target_hull.set_text(str(round(player.current_target.get_hull_percent())))
 
 		if not target_view_container.visible:
