@@ -142,6 +142,11 @@ func _process(delta):
 	if missile_weapon_countdown != 0:
 		missile_weapon_countdown = max(0, missile_weapon_countdown - delta)
 
+	if weapon_battery < MAX_WEAPON_BATTERY:
+		# Ranges from half recovery rate to full recovery rate (0.5 - 1.0)
+		var battery_recovery_rate: float = WEAPON_BATTERY_RECOVERY_RATE * (0.5 + 0.5 * power_distribution[WEAPON] / MAX_SYSTEM_POWER)
+		weapon_battery = min(MAX_WEAPON_BATTERY, weapon_battery + delta * battery_recovery_rate)
+
 
 func _set_current_target(node):
 	if has_target:
@@ -196,6 +201,7 @@ const MAX_WEAPON_BATTERY: float = 100.0
 const POWER_INCREMENT: int = 10
 const TOTAL_SYSTEM_POWER: float = 120.0
 const TURN_SPEED: float = 2.5
+const WEAPON_BATTERY_RECOVERY_RATE: float = 1.0
 
 """
 TODO: figure out the curve for this conversion; for now we're just expecting 0.85 damping for all ships
