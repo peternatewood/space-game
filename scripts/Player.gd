@@ -14,6 +14,8 @@ var input_velocity: Vector3
 
 
 func _ready():
+	var debris = DEBRIS_PARTICLES.instance()
+	add_child(debris)
 	destruction_delay = 2.0
 
 
@@ -158,10 +160,19 @@ func _set_cam_mode(mode: int):
 	match mode:
 		COCKPIT:
 			cam_mode = COCKPIT
-			hide()
+			_toggle_ship_mesh(false)
 		CHASE:
 			cam_mode = CHASE
-			show()
+			_toggle_ship_mesh(true)
+
+
+func _toggle_ship_mesh(show_meshes: bool):
+	for child in get_children():
+		if child is MeshInstance:
+			if show_meshes:
+				child.show()
+			else:
+				child.hide()
 
 
 signal power_distribution_changed
@@ -174,3 +185,4 @@ const ShipBase = preload("ShipBase.gd")
 
 const CAM_ROLL_MOD: float = 0.25
 const CAM_THROTTLE_MOD: float = 1.5
+const DEBRIS_PARTICLES = preload("res://models/Debris_Particles.tscn")
