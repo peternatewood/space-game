@@ -90,6 +90,15 @@ func _on_player_shield_right_changed(percent: float):
 
 
 func _on_player_target_changed(last_target):
+	var radar_icons = radar_icons_container.get_children()
+
+	# Disconnect signals from old target
+	if last_target != null:
+		_disconnect_target_signals(last_target)
+
+		for icon in radar_icons:
+			icon.set_modulate(ALIGNMENT_COLORS_FADED[mission_controller.get_alignment(player.faction, icon.target.faction)])
+
 	if player.has_target:
 		target_viewport.remove_child(target_view_model)
 		var source_filename = player.current_target.get_source_filename()
@@ -101,12 +110,6 @@ func _on_player_target_changed(last_target):
 		if overhead_icon == null:
 			print("Missing overhead icon for " + player.current_target.name)
 			return
-
-		var radar_icons = radar_icons_container.get_children()
-
-		# Disconnect signals from old target
-		if last_target != null:
-			_disconnect_target_signals(last_target)
 
 		player.current_target.connect("damaged", self, "_on_target_damaged")
 		player.current_target.connect("destroyed", self, "_on_target_destroyed", [ player.current_target ])
@@ -120,14 +123,10 @@ func _on_player_target_changed(last_target):
 		target_overhead.set_overhead_icon(overhead_icon)
 
 		var alignment = mission_controller.get_alignment(player.faction, player.current_target.faction)
-		var icons_updated: int = 1 if last_target == null else 0
 		for icon in radar_icons:
 			if icon.target == player.current_target:
 				icon.set_modulate(Color.white if alignment == -1 else ALIGNMENT_COLORS[alignment])
-				icons_updated += 1
-			else:
-				icon.set_modulate(ALIGNMENT_COLORS_FADED[mission_controller.get_alignment(player.faction, icon.target.faction)])
-				icons_updated += 1
+				break
 
 		if alignment != -1:
 			target_class.set_modulate(ALIGNMENT_COLORS[alignment])
@@ -143,6 +142,16 @@ func _on_player_target_changed(last_target):
 		target_view_model = load(source_filename).instance()
 		target_viewport.add_child(target_view_model)
 		target_hull.set_text(str(round(player.current_target.get_hull_percent())))
+
+		if not target_view_container.visible:
+			target_view_container.show()
+			target_overhead.show()
+	else:
+		# No target selected
+		target_icon.hide()
+		edge_target_icon.hide()
+		target_view_container.hide()
+		target_overhead.hide()
 
 
 func _on_player_throttle_changed():
@@ -285,10 +294,6 @@ func _process(delta):
 				edge_target_icon.show()
 			_update_edge_icon()
 
-		if not target_view_container.visible:
-			target_view_container.show()
-			target_overhead.show()
-
 		target_view_cam.transform.origin = -2 * to_target.normalized()
 		target_view_cam.look_at(Vector3.ZERO, player.transform.basis.y)
 
@@ -298,10 +303,6 @@ func _process(delta):
 	else:
 		if target_icon.visible:
 			target_icon.hide()
-
-		if target_view_container.visible:
-			target_view_container.hide()
-			target_overhead.hide()
 
 	_update_speed_indicator()
 
