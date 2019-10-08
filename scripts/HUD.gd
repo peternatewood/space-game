@@ -108,10 +108,10 @@ func _on_player_target_changed(last_target):
 		player.current_target.connect("damaged", self, "_on_target_damaged")
 		player.current_target.connect("destroyed", self, "_on_target_destroyed", [ player.current_target ])
 
-		player.current_target.shield_front.connect("destroyed", self, "_on_target_shield_front_changed")
-		player.current_target.shield_left.connect("destroyed", self, "_on_target_shield_left_changed")
-		player.current_target.shield_rear.connect("destroyed", self, "_on_target_shield_rear_changed")
-		player.current_target.shield_right.connect("destroyed", self, "_on_target_shield_right_changed")
+		player.current_target.shield_front.connect("hitpoints_changed", self, "_on_target_shield_front_changed")
+		player.current_target.shield_left.connect("hitpoints_changed", self, "_on_target_shield_left_changed")
+		player.current_target.shield_rear.connect("hitpoints_changed", self, "_on_target_shield_rear_changed")
+		player.current_target.shield_right.connect("hitpoints_changed", self, "_on_target_shield_right_changed")
 
 		# Update icons
 		target_overhead.set_overhead_icon(overhead_icon)
