@@ -15,7 +15,7 @@ var energy_weapon_countdown: float = 0.0
 var energy_weapon_index: int = 0
 var has_target: bool = false
 # TODO: figure out how to accurately calculate this
-var max_speed: float = 32.0
+var max_speed
 var missile_weapon_countdown: float = 0.0
 var missile_weapon_index: int = 0
 var power_distribution: Array = [
@@ -26,6 +26,12 @@ var power_distribution: Array = [
 var target_index: int = 0
 var throttle: float
 var torque_vector: Vector3
+
+
+func _ready():
+	max_speed = MASS_TO_MAX_SPEED_FACTOR * mass
+
+	._ready()
 
 
 func _fire_energy_weapon():
@@ -158,8 +164,26 @@ const ACCELERATION: float = 0.1
 const DESTRUCTION_SMOKE = preload("res://models/Destruction_Smoke.tscn")
 const ENERGY_BOLT = preload("res://models/Energy_Bolt.tscn")
 const MISSILE = preload("res://models/missile/missile.dae")
+const MASS_TO_MAX_SPEED_FACTOR: float = 32.129448
 const MAX_SYSTEM_POWER: float = 60.0
 const MAX_THROTTLE: float = 1.0
 const POWER_INCREMENT: int = 10
 const TOTAL_SYSTEM_POWER: float = 120.0
 const TURN_SPEED: float = 2.5
+
+"""
+TODO: figure out the curve for this conversion; for now we're just expecting 0.85 damping for all ships
+Damping: 0.25 | Mass: 1.0 | Max Speed: 209.063675
+
+Damping: 0.50 | Mass: 0.5 | Max Speed: 124.124451
+Damping: 0.50 | Mass: 1.0 | Max Speed:  87.062263
+Damping: 0.50 | Mass: 2.0 | Max Speed:  43.531090
+Damping: 0.50 | Mass:10.0 | Max Speed:   8.706212
+
+Damping: 0.85 | Mass: 0.5 | Max Speed:  64.258858
+Damping: 0.85 | Mass: 1.0 | Max Speed:  32.129448
+Damping: 0.85 | Mass: 2.0 | Max Speed:  16.064760
+Damping: 0.85 | Mass:10.0 | Max Speed:   3.212944
+
+Damping: 0.95 | Mass: 1.0 | Max Speed:  20.532631
+"""

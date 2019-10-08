@@ -166,7 +166,6 @@ func _on_scene_loaded():
 	player.shield_rear.connect("hitpoints_changed", self, "_on_player_shield_rear_changed")
 	player.shield_right.connect("hitpoints_changed", self, "_on_player_shield_right_changed")
 
-	throttle_bar.set_max(player.max_speed)
 	_on_player_throttle_changed()
 	player.connect("throttle_changed", self, "_on_player_throttle_changed")
 
@@ -340,9 +339,10 @@ func _update_edge_icon():
 
 func _update_speed_indicator():
 	var speed = player.linear_velocity.length()
+	var speed_percent = 100 * speed / player.max_speed
 
-	if throttle_bar.value != speed:
-		throttle_bar.set_value(speed)
+	if throttle_bar.value != speed_percent:
+		throttle_bar.set_value(speed_percent)
 
 		# Multiply all units by 10 to get meters
 		speed_indicator.set_text(str(round(10 * speed)))

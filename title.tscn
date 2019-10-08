@@ -40,11 +40,11 @@ size_flags_horizontal = 3
 [node name="New Game" type="Button" parent="Container"]
 margin_top = 117.0
 margin_right = 396.0
-margin_bottom = 119.0
+margin_bottom = 135.0
 text = "New Game"
 
 [node name="Exit" type="Button" parent="Container"]
-margin_top = 123.0
+margin_top = 139.0
 margin_right = 396.0
-margin_bottom = 125.0
+margin_bottom = 157.0
 text = "Exit"
