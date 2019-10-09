@@ -40,10 +40,10 @@ func _ready():
 
 	# TODO: figure out how to assign weapons from the editor for npc ships, and from the loadout menu for the player and wingmates
 	for energy_weapon in energy_weapon_hardpoints:
-		energy_weapon.weapon = ENERGY_BOLT
+		energy_weapon.set_weapon(ENERGY_BOLT)
 
 	for missile_weapon in missile_weapon_hardpoints:
-		missile_weapon.weapon = MISSILE
+		missile_weapon.set_weapon(MISSILE)
 
 
 func _fire_energy_weapon():

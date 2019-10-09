@@ -241,20 +241,19 @@ modulate = Color( 0.501961, 0.752941, 1, 1 )
 anchor_top = 0.5
 anchor_bottom = 0.5
 margin_left = 32.0
-margin_top = -20.0
-margin_right = 112.0
-margin_bottom = 34.0
-rect_min_size = Vector2( 80, 0 )
+margin_top = -31.0
+margin_right = 146.0
+margin_bottom = 31.0
 
 [node name="Weapons Rows" type="VBoxContainer" parent="Weapons Container"]
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 107.0
-margin_bottom = 113.0
+margin_bottom = 55.0
 
 [node name="Energy Weapons" type="VBoxContainer" parent="Weapons Container/Weapons Rows"]
 margin_right = 100.0
-margin_bottom = 40.0
+margin_bottom = 18.0
 
 [node name="Energy Weapon 1" type="Label" parent="Weapons Container/Weapons Rows/Energy Weapons"]
 margin_right = 100.0
@@ -262,15 +261,21 @@ margin_bottom = 18.0
 text = "wep 1"
 
 [node name="Energy Weapon 2" type="Label" parent="Weapons Container/Weapons Rows/Energy Weapons"]
+visible = false
 margin_top = 22.0
 margin_right = 100.0
 margin_bottom = 40.0
 text = "wep 2"
 
-[node name="Missile Weapons" type="VBoxContainer" parent="Weapons Container/Weapons Rows"]
-margin_top = 44.0
+[node name="HSeparator" type="HSeparator" parent="Weapons Container/Weapons Rows"]
+margin_top = 22.0
 margin_right = 100.0
-margin_bottom = 106.0
+margin_bottom = 26.0
+
+[node name="Missile Weapons" type="VBoxContainer" parent="Weapons Container/Weapons Rows"]
+margin_top = 30.0
+margin_right = 100.0
+margin_bottom = 48.0
 
 [node name="Missile Weapon Container 1" type="HBoxContainer" parent="Weapons Container/Weapons Rows/Missile Weapons"]
 editor/display_folded = true
@@ -296,6 +301,7 @@ text = "10"
 
 [node name="Missile Weapon Container 2" type="HBoxContainer" parent="Weapons Container/Weapons Rows/Missile Weapons"]
 editor/display_folded = true
+visible = false
 margin_top = 22.0
 margin_right = 100.0
 margin_bottom = 40.0
@@ -319,6 +325,7 @@ text = "10"
 
 [node name="Missile Weapon Container 3" type="HBoxContainer" parent="Weapons Container/Weapons Rows/Missile Weapons"]
 editor/display_folded = true
+visible = false
 margin_top = 44.0
 margin_right = 100.0
 margin_bottom = 62.0
