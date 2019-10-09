@@ -90,17 +90,7 @@ func _input(event):
 				_set_current_target(targets[target_index])
 
 			emit_signal("target_changed", last_target)
-		# Shield Redirecting/Boosting
-		elif event.is_action("redirect_shield_to_front") and event.pressed:
-			ShieldQuadrant.redirect_hitpoints_to_quadrant(shields, FRONT)
-		elif event.is_action("redirect_shield_to_rear") and event.pressed:
-			ShieldQuadrant.redirect_hitpoints_to_quadrant(shields, REAR)
-		elif event.is_action("redirect_shield_to_left") and event.pressed:
-			ShieldQuadrant.redirect_hitpoints_to_quadrant(shields, LEFT)
-		elif event.is_action("redirect_shield_to_right") and event.pressed:
-			ShieldQuadrant.redirect_hitpoints_to_quadrant(shields, RIGHT)
-		elif event.is_action("equalize_shields") and event.pressed:
-			ShieldQuadrant.equalize_shields(shields)
+		# Shield Boosting/Redirecting
 		elif event.is_action("boost_shield_front") and event.pressed:
 			_boost_shield_quadrant(FRONT)
 			emit_signal("shield_boost_changed")
@@ -116,6 +106,16 @@ func _input(event):
 		elif event.is_action("clear_shield_boost") and event.pressed:
 			_boost_shield_quadrant(-1)
 			emit_signal("shield_boost_changed")
+		elif event.is_action("redirect_shield_to_front") and event.pressed:
+			ShieldQuadrant.redirect_hitpoints_to_quadrant(shields, FRONT)
+		elif event.is_action("redirect_shield_to_rear") and event.pressed:
+			ShieldQuadrant.redirect_hitpoints_to_quadrant(shields, REAR)
+		elif event.is_action("redirect_shield_to_left") and event.pressed:
+			ShieldQuadrant.redirect_hitpoints_to_quadrant(shields, LEFT)
+		elif event.is_action("redirect_shield_to_right") and event.pressed:
+			ShieldQuadrant.redirect_hitpoints_to_quadrant(shields, RIGHT)
+		elif event.is_action("equalize_shields") and event.pressed:
+			ShieldQuadrant.equalize_shields(shields)
 		# System power distribution
 		elif event.is_action("increment_weapon_power") and event.pressed:
 			_increment_power_level(ShipBase.WEAPON, 1)
