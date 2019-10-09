@@ -77,6 +77,15 @@ func set_recovery_rate(system_power: float):
 	recovery_rate = MIN_RECOVERY_RATE + system_power * (MAX_RECOVERY_RATE - MIN_RECOVERY_RATE)
 
 
+static func equalize_shields(shields: Array):
+	var total_hitpoints: float = 0.0
+	for quadrant in shields:
+		total_hitpoints += quadrant.hitpoints
+
+	for quadrant in shields:
+		quadrant.set_hitpoints(total_hitpoints / 4)
+
+
 static func redirect_hitpoints_to_quadrant(shields: Array, quadrant: int):
 	var redirect_amount: float = REDIRECT_FRACTION * shields[quadrant].max_hitpoints
 	var previous_hitpoints: float = shields[quadrant].hitpoints

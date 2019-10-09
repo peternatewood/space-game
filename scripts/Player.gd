@@ -99,6 +99,8 @@ func _input(event):
 			ShieldQuadrant.redirect_hitpoints_to_quadrant(shields, LEFT)
 		elif event.is_action("redirect_shield_to_right") and event.pressed:
 			ShieldQuadrant.redirect_hitpoints_to_quadrant(shields, RIGHT)
+		elif event.is_action("equalize_shields") and event.pressed:
+			ShieldQuadrant.equalize_shields(shields)
 		elif event.is_action("boost_shield_front") and event.pressed:
 			_boost_shield_quadrant(FRONT)
 			emit_signal("shield_boost_changed")
