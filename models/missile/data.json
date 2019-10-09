@@ -1,0 +1,10 @@
+{
+  "name": "Heat Seeker",
+  "damage_hull": 25.0,
+  "damage_shield": 5.0,
+  "fire_delay": 1.0,
+  "life": 12.0,
+  "acceleration": 20.0,
+  "max_speed": 100.0,
+  "turn_speed": 1.5
+}
