@@ -6,6 +6,7 @@ onready var chase_view = get_node("Chase View")
 onready var cockpit_view = get_node("Cockpit View")
 onready var targets_container = get_tree().get_root().get_node("Mission Controller/Targets Container")
 
+var allow_input: bool = false
 var cam_dist: float
 var cam_mode: int
 var cam_offset: Vector3
@@ -28,7 +29,7 @@ func _start_destruction():
 
 
 func _input(event):
-	if is_alive:
+	if allow_input and is_alive:
 		if event.is_action("change_cam") and event.pressed:
 			match cam_mode:
 				COCKPIT:
@@ -76,6 +77,21 @@ func _input(event):
 			if _target_next_of_alignment(targets_container.get_children(), mission_controller.NEUTRAL):
 				has_target = true
 				emit_signal("target_changed", last_target)
+		elif event.is_action("target_next_in_reticule") and event.pressed:
+			var targets_in_view: Array = []
+			for target in targets_container.get_children():
+				if camera.is_position_in_view(target.transform.origin):
+					targets_in_view.append(target)
+
+			var last_target
+			if targets_in_view.size() != 0:
+				if has_target:
+					last_target = current_target
+					target_index = (target_index + 1) % targets_in_view.size()
+
+				_set_current_target(targets_in_view[target_index])
+
+			emit_signal("target_changed", last_target)
 		elif event.is_action("target_next") and event.pressed:
 			var targets = targets_container.get_children()
 			var last_target
@@ -148,6 +164,8 @@ func _on_scene_loaded():
 	_set_cam_mode(COCKPIT)
 
 	._on_scene_loaded()
+
+	allow_input = true
 
 
 func _process(delta):
