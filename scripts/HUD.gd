@@ -48,7 +48,7 @@ func _disconnect_target_signals(target):
 	target.disconnect("destroyed", self, "_on_target_destroyed")
 
 	for index in range(target.QUADRANT_COUNT):
-		target.shields[index].disconnect("hitpoints_changed", self, "_on_target_shield_changed", [ index ])
+		target.shields[index].disconnect("hitpoints_changed", self, "_on_target_shield_changed")
 
 
 func _is_position_in_view(pos: Vector3):
