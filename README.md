@@ -61,3 +61,18 @@ Here I'll list all resources I'm using for various assets, such as sound effects
 __Game Logo typeface__: Nulshock by Typodermic Fonts https://www.dafont.com/nulshock.font?l[]=10&l[]=1
 Open Dyslexic: https://gumroad.com/l/OpenDyslexic
 Inconsolata: https://www.1001fonts.com/inconsolata-font.html
+
+## Style Guide
+
+I've followed the official [GDScript style guide](https://docs.godotengine.org/en/3.1/getting_started/scripting/gdscript/gdscript_styleguide.html) for the most part, but it doesn't say anything about ordering member declarations, signals, enums, etc. I've come up with an ordering scheme that lines up with the Godot documentation. Each section is listed in order below; private properties and methods come before public ones, and every member of each section is ordered alphabetically. The only exception is that `_ready` comes first in the methods, just for convenience.
+
+1. Properties
+2. export Properties (properties assigned from the editor)
+3. onready Properties (properties assigned on `_ready` using the `onready` flag)
+4. Theme Properties
+5. Methods
+6. static Methods
+7. Signals
+8. Enumerations
+9. script Constants (custom scripts get loaded in pascal case instead of capital snake like other constants)
+10. Constants
