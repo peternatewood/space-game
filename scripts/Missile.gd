@@ -1,17 +1,6 @@
 extends "res://scripts/MissileBase.gd"
 
 
-func _ready():
-	acceleration = 20.0
-	damage_hull = 25
-	damage_shield = 5
-	fire_delay = 1.0
-	life = 12.0
-	max_speed = 100.0
-	speed = 0.0
-	turn_speed = 1.5
-
-
 func _process(delta):
 	if has_target:
 		var to_target = target.transform.origin - transform.origin
