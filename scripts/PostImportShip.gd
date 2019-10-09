@@ -54,6 +54,13 @@ func post_import(scene):
 	if exhaust_points != null:
 		exhaust_points.set_surface_material(0, EXHAUST_LIGHT_MATERIAL)
 
+	# Add script to weapon hardpoints groups
+	for energy_hardpoints in scene.get_node("Energy Weapon Groups").get_children():
+		energy_hardpoints.set_script(WeaponHardpoints)
+
+	for missile_hardpoints in scene.get_node("Missile Weapon Groups").get_children():
+		missile_hardpoints.set_script(WeaponHardpoints)
+
 	# Some common physics settings
 	scene.set_angular_damp(0.85)
 	scene.set_linear_damp(0.85)
@@ -108,6 +115,7 @@ func post_import(scene):
 
 
 const ShieldQuadrant = preload("ShieldQuadrant.gd")
+const WeaponHardpoints = preload("WeaponHardpoints.gd")
 
 const BLUE_EXHAUST_MATERIAL = preload("res://materials/blue_exhaust.tres")
 const BLUE_SHIELD_MATERIAL = preload("res://materials/blue_shield.tres")

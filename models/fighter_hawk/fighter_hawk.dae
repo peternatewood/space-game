@@ -5,8 +5,8 @@
 		<author>Anonymous</author>
 		<authoring_tool>Collada Exporter for Blender 2.6+, by Juan Linietsky (juan@codenix.com)</authoring_tool>
 	</contributor>
-	<created>2019-09-30T16:17:34Z</created>
-	<modified>2019-09-30T16:17:34Z</modified>
+	<created>2019-10-09T13:24:01Z</created>
+	<modified>2019-10-09T13:24:01Z</modified>
 	<unit meter="1.0" name="meter"/>
 	<up_axis>Z_UP</up_axis>
 </asset>
@@ -1049,28 +1049,36 @@
 					</technique>
 				</extra>
 		</node>
-		<node id="Energy Weapon Hardpoints 1" name="Energy Weapon Hardpoints 1" type="NODE">
+		<node id="Energy Weapon Groups" name="Energy Weapon Groups" type="NODE">
 			<matrix sid="transform"> 1.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 1.0  </matrix>
 				<extra>
 					<technique profile="GODOT">
 						<empty_draw_type>PLAIN_AXES</empty_draw_type>
 					</technique>
 				</extra>
-			<node id="Empty" name="Empty" type="NODE">
-				<matrix sid="transform"> 1.0 0.0 0.0 -0.15863199532032013 0.0 1.0 0.0 0.45983999967575073 0.0 0.0 1.0 0.14705854654312134 0.0 0.0 0.0 1.0  </matrix>
+			<node id="Energy Weapon Hardpoints 1" name="Energy Weapon Hardpoints 1" type="NODE">
+				<matrix sid="transform"> 1.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 1.0  </matrix>
 				<extra>
 					<technique profile="GODOT">
 						<empty_draw_type>PLAIN_AXES</empty_draw_type>
 					</technique>
 				</extra>
-			</node>
-			<node id="Empty.001" name="Empty.001" type="NODE">
-				<matrix sid="transform"> 1.0 0.0 0.0 0.15863199532032013 0.0 1.0 0.0 0.45983999967575073 0.0 0.0 1.0 0.14705854654312134 0.0 0.0 0.0 1.0  </matrix>
+				<node id="Empty" name="Empty" type="NODE">
+					<matrix sid="transform"> 1.0 0.0 0.0 -0.15863199532032013 0.0 1.0 0.0 0.45983999967575073 0.0 0.0 1.0 0.14705854654312134 0.0 0.0 0.0 1.0  </matrix>
 				<extra>
 					<technique profile="GODOT">
 						<empty_draw_type>PLAIN_AXES</empty_draw_type>
 					</technique>
 				</extra>
+				</node>
+				<node id="Empty.001" name="Empty.001" type="NODE">
+					<matrix sid="transform"> 1.0 0.0 0.0 0.15863199532032013 0.0 1.0 0.0 0.45983999967575073 0.0 0.0 1.0 0.14705854654312134 0.0 0.0 0.0 1.0  </matrix>
+				<extra>
+					<technique profile="GODOT">
+						<empty_draw_type>PLAIN_AXES</empty_draw_type>
+					</technique>
+				</extra>
+				</node>
 			</node>
 		</node>
 		<node id="Engines-convcolonly." name="Engines-convcolonly." type="NODE">
@@ -1118,28 +1126,36 @@
 			<instance_geometry url="#id-mesh-15">
 			</instance_geometry>
 		</node>
-		<node id="Missile Weapon Hardpoints" name="Missile Weapon Hardpoints" type="NODE">
+		<node id="Missile Weapon Groups" name="Missile Weapon Groups" type="NODE">
 			<matrix sid="transform"> 1.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 1.0  </matrix>
 				<extra>
 					<technique profile="GODOT">
 						<empty_draw_type>PLAIN_AXES</empty_draw_type>
 					</technique>
 				</extra>
-			<node id="Empty.002" name="Empty.002" type="NODE">
-				<matrix sid="transform"> 1.0 0.0 0.0 -0.22785599529743195 0.0 1.0 0.0 -0.23256400227546692 0.0 0.0 1.0 0.16500671207904816 0.0 0.0 0.0 1.0  </matrix>
+			<node id="Missile Weapon Hardpoints" name="Missile Weapon Hardpoints" type="NODE">
+				<matrix sid="transform"> 1.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 1.0  </matrix>
 				<extra>
 					<technique profile="GODOT">
 						<empty_draw_type>PLAIN_AXES</empty_draw_type>
 					</technique>
 				</extra>
-			</node>
-			<node id="Empty.003" name="Empty.003" type="NODE">
-				<matrix sid="transform"> 1.0 0.0 0.0 0.22785599529743195 0.0 1.0 0.0 -0.23256400227546692 0.0 0.0 1.0 0.16500671207904816 0.0 0.0 0.0 1.0  </matrix>
+				<node id="Empty.002" name="Empty.002" type="NODE">
+					<matrix sid="transform"> 1.0 0.0 0.0 -0.22785599529743195 0.0 1.0 0.0 -0.23256400227546692 0.0 0.0 1.0 0.16500671207904816 0.0 0.0 0.0 1.0  </matrix>
 				<extra>
 					<technique profile="GODOT">
 						<empty_draw_type>PLAIN_AXES</empty_draw_type>
 					</technique>
 				</extra>
+				</node>
+				<node id="Empty.003" name="Empty.003" type="NODE">
+					<matrix sid="transform"> 1.0 0.0 0.0 0.22785599529743195 0.0 1.0 0.0 -0.23256400227546692 0.0 0.0 1.0 0.16500671207904816 0.0 0.0 0.0 1.0  </matrix>
+				<extra>
+					<technique profile="GODOT">
+						<empty_draw_type>PLAIN_AXES</empty_draw_type>
+					</technique>
+				</extra>
+				</node>
 			</node>
 		</node>
 		<node id="Shield Front" name="Shield Front" type="NODE">
