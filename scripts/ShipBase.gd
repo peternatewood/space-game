@@ -226,6 +226,7 @@ enum { WEAPON, SHIELD, ENGINE, TOTAL_POWER_LEVELS }
 enum { FRONT, REAR, LEFT, RIGHT, QUADRANT_COUNT }
 
 const EnergyBolt = preload("EnergyBolt.gd")
+const ShieldQuadrant = preload("ShieldQuadrant.gd")
 
 const ACCELERATION: float = 0.1
 const DESTRUCTION_SMOKE = preload("res://models/Destruction_Smoke.tscn")
