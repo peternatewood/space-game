@@ -37,20 +37,20 @@ I'd like to implement these, but I'm not sure whether they're feasible.
 
 Here are some more in-depth descriptions for certain features.
 
-- Power Distribution: Allocate power between Energy Weapons Battery, Shield Power, and Engine Power. Energy Weapons Battery determines how quickly energy weapons power recovers (maybe also the maximum battery too?) Shield Power determines recovery rate (maybe also max strength?) Engine Power determines acceleration and max speed.
-- Alliance Groups: Every ship belongs to a designated group (probably best to default to a given group). Each group just contains a mapping to every other group determining its alliances with other groups. We then use each ship's group to determine whether they're allied with, neutral to, or an enemy of other ships.
-- Mission Objectives and Warp Out: Once all critical objectives are complete, the player warps out to end the mission.
-- Communications Menu: This is a staple of old space games, used to issue orders to wingmen, call in reinforcements, request repairs/reloading, and more.
-- Loadout Menu: The player chooses their ship and loadout before launching the mission.
-- Carrier Ships: Ship that can launch small ships (fighters/bombers.) Maybe the player can land there to repair/reload?
+- __Power Distribution__: Allocate power between Energy Weapons Battery, Shield Power, and Engine Power. Energy Weapons Battery determines how quickly energy weapons power recovers (maybe also the maximum battery too?) Shield Power determines recovery rate (maybe also max strength?) Engine Power determines acceleration and max speed.
+- __Alliance Groups__: Every ship belongs to a designated group (probably best to default to a given group). Each group just contains a mapping to every other group determining its alliances with other groups. We then use each ship's group to determine whether they're allied with, neutral to, or an enemy of other ships.
+- __Mission Objectives and Warp Out__: Once all critical objectives are complete, the player warps out to end the mission.
+- __Communications Menu__: This is a staple of old space games, used to issue orders to wingmen, call in reinforcements, request repairs/reloading, and more.
+- __Loadout Menu__: The player chooses their ship and loadout before launching the mission.
+- __Carrier Ships__: Ship that can launch small ships (fighters/bombers.) Maybe the player can land there to repair/reload?
 
 ## Mission Objectives
 
 There are three categories for mission objectives: Primary, Secondary, and Secret.
 
-- Primary: These are typically critical for mission success, and result in mission failure if even one is failed. If not marked as critical, it can be allowed to fail, maybe for story reasons.
-- Secondary: These are non-critical objectives that will give the player an advantage of some kind in either the next mission or a future one, like an additional wing of ships, reduced enemy presence, etc.
-- Secret: Unlike Primary and Secondary Objectives, Secret Objectives are not visible from the briefing menu, and only appear once special conditions are met during the mission. These can unlock ships/weapons early, as well as ship skins or alternate models maybe?
+- __Primary__: These are typically critical for mission success, and result in mission failure if even one is failed. If not marked as critical, it can be allowed to fail, maybe for story reasons.
+- __Secondary__: These are non-critical objectives that will give the player an advantage of some kind in either the next mission or a future one, like an additional wing of ships, reduced enemy presence, etc.
+- __Secret__: Unlike Primary and Secondary Objectives, Secret Objectives are not visible from the briefing menu, and only appear once special conditions are met during the mission. These can unlock ships/weapons early, as well as ship skins or alternate models maybe?
 
 ## Resources
 
@@ -58,9 +58,9 @@ Here I'll list all resources I'm using for various assets, such as sound effects
 
 ### Typefaces
 
-__Game Logo typeface__: Nulshock by Typodermic Fonts https://www.dafont.com/nulshock.font?l[]=10&l[]=1
-Open Dyslexic: https://gumroad.com/l/OpenDyslexic
-Inconsolata: https://www.1001fonts.com/inconsolata-font.html
+- __Game Logo typeface__: Nulshock by Typodermic Fonts https://www.dafont.com/nulshock.font?l[]=10&l[]=1
+- Open Dyslexic: https://gumroad.com/l/OpenDyslexic
+- Inconsolata: https://www.1001fonts.com/inconsolata-font.html
 
 ## Style Guide
 
@@ -69,7 +69,7 @@ I've followed the official [GDScript style guide](https://docs.godotengine.org/e
 1. Properties
 2. export Properties (properties assigned from the editor)
 3. onready Properties (properties assigned on `_ready` using the `onready` flag)
-4. Theme Properties
+4. local Properties
 5. Methods
 6. static Methods
 7. Signals
