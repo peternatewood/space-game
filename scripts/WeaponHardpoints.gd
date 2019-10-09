@@ -2,10 +2,12 @@ extends Spatial
 
 onready var hardpoints = get_children()
 
+var ammo_capacity: int = 0
 var countdown: float = 0
 var hardpoint_index: int = 0
 var hardpoint_count: int
 var weapon
+var weapon_name: String = "weapon" # TODO: get the weapon's name when we assign it... somehow
 
 
 func _ready():
