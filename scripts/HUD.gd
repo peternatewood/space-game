@@ -6,7 +6,9 @@ export (NodePath) var player_path
 
 onready var debug = get_node("Debug")
 onready var edge_target_icon = get_node("Edge Target Icon")
+onready var energy_weapon_rows = get_node("Weapons Container/Weapons Rows/Energy Weapons").get_children()
 onready var loader = get_node("/root/SceneLoader")
+onready var missile_weapon_rows = get_node("Weapons Container/Weapons Rows/Missile Weapons").get_children()
 onready var mission_controller = get_tree().get_root().get_node("Mission Controller")
 onready var player_overhead = get_node("Player Overhead")
 onready var player_hull_bar = get_node("Hull Bar")
@@ -175,6 +177,24 @@ func _on_scene_loaded():
 			icon.set_modulate(Color.white)
 
 		radar_icons_container.add_child(icon)
+
+	# Set up weapons display based on player loadout
+	var energy_hardpoint_count = player.energy_weapon_hardpoints.size()
+	for index in range(energy_weapon_rows.size()):
+		if index < energy_hardpoint_count:
+			energy_weapon_rows[index].show()
+			energy_weapon_rows[index].set_text(player.energy_weapon_hardpoints[index].weapon_name)
+		else:
+			energy_weapon_rows[index].hide()
+
+	var missile_hardpoint_count = player.missile_weapon_hardpoints.size()
+	for index in range(missile_weapon_rows.size()):
+		if index < missile_hardpoint_count:
+			missile_weapon_rows[index].show()
+			missile_weapon_rows[index].set_ammo(player.missile_weapon_hardpoints[index].ammo_capacity)
+			missile_weapon_rows[index].set_name(player.missile_weapon_hardpoints[index].weapon_name)
+		else:
+			missile_weapon_rows[index].hide()
 
 	set_process(true)
 
