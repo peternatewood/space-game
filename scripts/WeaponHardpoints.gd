@@ -60,4 +60,15 @@ func get_weapon_cost():
 	return 1.0
 
 
+func set_weapon(weapon_scene):
+	weapon = weapon_scene
+
+	var weapon_instance = weapon.instance()
+	if weapon_instance.has_meta("weapon_name"):
+		weapon_name = weapon_instance.get_meta("weapon_name")
+	else:
+		weapon_name = "weapon"
+	weapon_instance.free()
+
+
 signal countdown_completed
