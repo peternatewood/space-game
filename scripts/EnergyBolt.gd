@@ -4,7 +4,8 @@ extends "res://scripts/WeaponBase.gd"
 func _ready():
 	damage_hull = 15
 	damage_shield = 10
-	fire_delay = 0.45
+	fire_delay = 0.4
+	weapon_name = "Energy Bolt"
 
 
 # PUBLIC
