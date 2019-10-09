@@ -92,19 +92,19 @@ func _input(event):
 			emit_signal("target_changed", last_target)
 		# Shield Boosting/Redirecting
 		elif event.is_action("boost_shield_front") and event.pressed:
-			_boost_shield_quadrant(FRONT)
+			ShieldQuadrant.boost_shield_quadrant(shields, FRONT)
 			emit_signal("shield_boost_changed")
 		elif event.is_action("boost_shield_rear") and event.pressed:
-			_boost_shield_quadrant(REAR)
+			ShieldQuadrant.boost_shield_quadrant(shields, REAR)
 			emit_signal("shield_boost_changed")
 		elif event.is_action("boost_shield_left") and event.pressed:
-			_boost_shield_quadrant(LEFT)
+			ShieldQuadrant.boost_shield_quadrant(shields, LEFT)
 			emit_signal("shield_boost_changed")
 		elif event.is_action("boost_shield_right") and event.pressed:
-			_boost_shield_quadrant(RIGHT)
+			ShieldQuadrant.boost_shield_quadrant(shields, RIGHT)
 			emit_signal("shield_boost_changed")
 		elif event.is_action("clear_shield_boost") and event.pressed:
-			_boost_shield_quadrant(-1)
+			ShieldQuadrant.boost_shield_quadrant(shields, -1)
 			emit_signal("shield_boost_changed")
 		elif event.is_action("redirect_shield_to_front") and event.pressed:
 			ShieldQuadrant.redirect_hitpoints_to_quadrant(shields, FRONT)

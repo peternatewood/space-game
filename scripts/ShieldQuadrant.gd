@@ -77,6 +77,19 @@ func set_recovery_rate(system_power: float):
 	recovery_rate = MIN_RECOVERY_RATE + system_power * (MAX_RECOVERY_RATE - MIN_RECOVERY_RATE)
 
 
+static func boost_shield_quadrant(shields: Array, quadrant: int):
+	if shields[quadrant].recovery_boost == 1:
+		# Reset the boost
+		for quadrant in shields:
+			quadrant.set_recovery_boost(0)
+	else:
+		for index in range(shields.size()):
+			if index == quadrant:
+				shields[index].set_recovery_boost(1)
+			else:
+				shields[index].set_recovery_boost(-1)
+
+
 static func equalize_shields(shields: Array):
 	var total_hitpoints: float = 0.0
 	for quadrant in shields:
