@@ -51,13 +51,6 @@ func _disconnect_target_signals(target):
 		target.shields[index].disconnect("hitpoints_changed", self, "_on_target_shield_changed")
 
 
-func _is_position_in_view(pos: Vector3):
-	if camera.is_position_behind(pos):
-		return false
-
-	return viewport.get_visible_rect().has_point(camera.unproject_position(pos))
-
-
 func _on_player_damaged():
 	player_hull_bar.set_value(player.hull_hitpoints)
 
@@ -240,7 +233,7 @@ func _process(delta):
 		# Multiply all units by 10 to get meters
 		var target_dist = 10 * to_target.length()
 
-		if _is_position_in_view(player.current_target.transform.origin):
+		if camera.is_position_in_view(player.current_target.transform.origin):
 			if not target_icon.visible:
 				target_icon.show()
 
