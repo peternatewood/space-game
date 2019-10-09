@@ -6,6 +6,7 @@ var fire_delay: float = 0.3 # In seconds
 var life: float = 5.0 # In seconds
 var owner_ship
 var speed: float = 80.0
+var weapon_name: String = "weapon"
 
 
 func _process(delta):
