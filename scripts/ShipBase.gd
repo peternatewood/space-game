@@ -2,24 +2,21 @@ extends "res://scripts/ActorBase.gd"
 
 export (String) var faction
 
-onready var energy_weapon_hardpoints = get_node("Energy Weapon Hardpoints 1").get_children()
+onready var energy_weapon_hardpoints = get_node("Energy Weapon Groups").get_children()
 onready var max_speed: float = get_meta("max_speed")
-onready var missile_weapon_hardpoints = get_node("Missile Weapon Hardpoints").get_children()
 onready var shields: Array = [
 	get_node("Shield Front"),
 	get_node("Shield Rear"),
 	get_node("Shield Left"),
 	get_node("Shield Right")
 ]
+onready var missile_weapon_hardpoints = get_node("Missile Weapon Groups").get_children()
 onready var ship_class: String = get_meta("ship_class")
 onready var source_folder = get_meta("source_folder")
 
 var current_target
-var energy_weapon_countdown: float = 0.0
 var energy_weapon_index: int = 0
 var has_target: bool = false
-# TODO: figure out how to accurately calculate this
-var missile_weapon_countdown: float = 0.0
 var missile_weapon_index: int = 0
 var power_distribution: Array = [
 	float(TOTAL_SYSTEM_POWER / 3),
@@ -41,23 +38,18 @@ func _ready():
 		quadrant.set_max_hitpoints(shield_hitpoints)
 		quadrant.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
 
+	# TODO: figure out how to assign weapons from the editor for npc ships, and from the loadout menu for the player and wingmates
+	for energy_weapon in energy_weapon_hardpoints:
+		energy_weapon.weapon = ENERGY_BOLT
+
+	for missile_weapon in missile_weapon_hardpoints:
+		missile_weapon.weapon = MISSILE
+
 
 func _fire_energy_weapon():
-	if energy_weapon_countdown == 0 and weapon_battery >= EnergyBolt.COST:
-		# Instance bolt and set its layer and mask so it doesn't immediately collide with the ship firing it
-		var bolt = ENERGY_BOLT.instance()
-		bolt.add_collision_exception_with(self)
-		bolt.owner_ship = self
-
-		get_tree().get_root().add_child(bolt)
-		bolt.transform.origin = energy_weapon_hardpoints[energy_weapon_index].global_transform.origin
-		bolt.look_at(bolt.transform.origin - transform.basis.z, transform.basis.y)
-		bolt.add_speed(get_linear_velocity().length())
-
-		energy_weapon_countdown = bolt.fire_delay
-		energy_weapon_index = (energy_weapon_index + 1) % energy_weapon_hardpoints.size()
-
-		weapon_battery -= EnergyBolt.COST
+	if energy_weapon_hardpoints[energy_weapon_index].countdown == 0 and weapon_battery >= energy_weapon_hardpoints[energy_weapon_index].get_weapon_cost():
+		energy_weapon_hardpoints[energy_weapon_index].fire_weapon(self)
+		weapon_battery -= energy_weapon_hardpoints[energy_weapon_index].get_weapon_cost()
 
 		return true
 
@@ -65,20 +57,9 @@ func _fire_energy_weapon():
 
 
 func _fire_missile_weapon(target = null):
-	if missile_weapon_countdown == 0:
-		var missile = MISSILE.instance()
-		missile.add_collision_exception_with(self)
-		missile.owner_ship = self
-
-		get_tree().get_root().add_child(missile)
-		missile.transform.origin = missile_weapon_hardpoints[missile_weapon_index].global_transform.origin
-		missile.look_at(missile.transform.origin - transform.basis.z, transform.basis.y)
-		missile.add_speed(get_linear_velocity().length())
-		if target != null:
-			missile.set_target(target)
-
-		missile_weapon_countdown = missile.fire_delay
-		missile_weapon_index = (missile_weapon_index + 1) % missile_weapon_hardpoints.size()
+	if missile_weapon_hardpoints[missile_weapon_index].countdown == 0:
+		missile_weapon_hardpoints[missile_weapon_index].fire_missile_weapon(self, target)
+		# TODO: subtract from missile weapon ammo
 
 		return true
 
@@ -138,12 +119,6 @@ func _physics_process(delta):
 
 
 func _process(delta):
-	if energy_weapon_countdown != 0:
-		energy_weapon_countdown = max(0, energy_weapon_countdown - delta)
-
-	if missile_weapon_countdown != 0:
-		missile_weapon_countdown = max(0, missile_weapon_countdown - delta)
-
 	if weapon_battery < MAX_WEAPON_BATTERY:
 		# Ranges from half recovery rate to full recovery rate (0.5 - 1.0)
 		var battery_recovery_rate: float = WEAPON_BATTERY_RECOVERY_RATE * (0.5 + 0.5 * power_distribution[WEAPON] / MAX_SYSTEM_POWER)
