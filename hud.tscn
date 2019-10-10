@@ -319,31 +319,60 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 
-[node name="Line2D" type="Line2D" parent="Target Reticule"]
+[node name="Bottom Right" type="Line2D" parent="Target Reticule"]
 points = PoolVector2Array( 4, 4, 8, 8, 12, 8 )
 width = 2.0
 default_color = Color( 1, 1, 1, 1 )
 texture_mode = 50
 
-[node name="Line2D2" type="Line2D" parent="Target Reticule"]
+[node name="Bottom Left" type="Line2D" parent="Target Reticule"]
 points = PoolVector2Array( -4, 4, -8, 8, -12, 8 )
 width = 2.0
 default_color = Color( 1, 1, 1, 1 )
 texture_mode = 50
 
-[node name="Line2D3" type="Line2D" parent="Target Reticule"]
+[node name="Top Right" type="Line2D" parent="Target Reticule"]
 points = PoolVector2Array( 4, -4, 8, -8, 12, -8 )
 width = 2.0
 default_color = Color( 1, 1, 1, 1 )
 texture_mode = 50
 
-[node name="Line2D4" type="Line2D" parent="Target Reticule"]
+[node name="Top Left" type="Line2D" parent="Target Reticule"]
 points = PoolVector2Array( -4, -4, -8, -8, -12, -8 )
 width = 2.0
 default_color = Color( 1, 1, 1, 1 )
 texture_mode = 50
 
+[node name="In Range Indicator" type="Control" parent="Target Reticule"]
+visible = false
+
+[node name="Bottom Right" type="Line2D" parent="Target Reticule/In Range Indicator"]
+points = PoolVector2Array( 6, 2, 9, 5, 11, 5 )
+width = 1.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = 1956128256
+
+[node name="Bottom Left" type="Line2D" parent="Target Reticule/In Range Indicator"]
+points = PoolVector2Array( -6, 2, -9, 5, -11, 5 )
+width = 1.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = 1956128256
+
+[node name="Top Right" type="Line2D" parent="Target Reticule/In Range Indicator"]
+points = PoolVector2Array( 6, -2, 9, -5, 11, -5 )
+width = 1.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = 1956128256
+
+[node name="Top Left" type="Line2D" parent="Target Reticule/In Range Indicator"]
+points = PoolVector2Array( -6, -2, -9, -5, -11, -5 )
+width = 1.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = 1956128256
+
 [node name="Target Details Minimal" type="CenterContainer" parent="."]
+editor/display_folded = true
+visible = false
 modulate = Color( 0.501961, 0.752941, 1, 1 )
 anchor_left = 0.5
 anchor_top = 0.5

@@ -7,6 +7,7 @@ export (NodePath) var player_path
 onready var debug = get_node("Debug")
 onready var edge_target_icon = get_node("Edge Target Icon")
 onready var energy_weapon_rows = get_node("Weapons Container/Weapons Rows/Energy Weapons").get_children()
+onready var in_range_icon = get_node("Target Reticule/In Range Indicator")
 onready var loader = get_node("/root/SceneLoader")
 onready var missile_weapon_rows = get_node("Weapons Container/Weapons Rows/Missile Weapons").get_children()
 onready var mission_controller = get_tree().get_root().get_node("Mission Controller")
@@ -330,6 +331,14 @@ func _process(delta):
 			target_icon.hide()
 
 	_update_speed_indicator()
+
+	# Toggle in-range indicator
+	if player.target_raycast.is_colliding():
+		if not in_range_icon.visible:
+			in_range_icon.show()
+	else:
+		if in_range_icon.visible:
+			in_range_icon.hide()
 
 	weapon_battery_bar.set_value(100 * player.get_weapon_battery_percent())
 
