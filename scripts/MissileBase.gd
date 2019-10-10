@@ -12,7 +12,6 @@ func _ready():
 	damage_hull = get_meta("damage_hull")
 	damage_shield = get_meta("damage_shield")
 	fire_delay = get_meta("fire_delay")
-	firing_range = get_meta("firing_range")
 	life = get_meta("life")
 	max_speed = get_meta("max_speed")
 	turn_speed = get_meta("turn_speed")
