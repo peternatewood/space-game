@@ -5,5 +5,5 @@
   "fire_delay": 0.25,
   "life": 5.0,
   "mass": 0.01,
-  "speed": 0.1
+  "speed": 200
 }

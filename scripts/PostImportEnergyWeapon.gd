@@ -67,7 +67,8 @@ func post_import(scene):
 	scene.set_meta("damage_shield", energy_data["damage_shield"])
 	scene.set_meta("fire_delay", energy_data["fire_delay"])
 	scene.set_meta("life", energy_data["life"])
-	scene.set_meta("speed", energy_data["speed"])
+	# Convert m/s speed from data file to "speed" property that goes to add_central_force
+	scene.set_meta("firing_force", MathHelper.get_force_from_mass_and_speed(energy_data["mass"], energy_data["speed"]))
 	scene.set_meta("weapon_name", energy_data["weapon_name"])
 
 	# TODO: calculate what the "speed" property should be to top out at the given speed value in m/s based on mass
@@ -78,3 +79,4 @@ func post_import(scene):
 
 
 const EnergyBolt = preload("EnergyBolt.gd")
+const MathHelper = preload("MathHelper.gd")

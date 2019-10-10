@@ -3,6 +3,7 @@ extends RigidBody
 var damage_hull: int = 15
 var damage_shield: int = 10
 var fire_delay: float = 0.3 # In seconds
+var firing_force: float = 1.0
 var life: float = 5.0 # In seconds
 var owner_ship
 var speed: float = 80.0
