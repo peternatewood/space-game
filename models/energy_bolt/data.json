@@ -1,0 +1,8 @@
+{
+  "name": "Energy Bolt",
+  "damage_hull": 15.0,
+  "damage_shield": 10.0,
+  "fire_delay": 0.4,
+  "life": 5.0,
+  "speed": 80.0
+}
