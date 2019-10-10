@@ -8,6 +8,7 @@ var hardpoint_index: int = 0
 var hardpoint_count: int
 var weapon
 var weapon_name: String = "weapon" # TODO: get the weapon's name when we assign it... somehow
+var weapon_range: float
 
 
 func _ready():
@@ -68,6 +69,12 @@ func set_weapon(weapon_scene):
 		weapon_name = weapon_instance.get_meta("weapon_name")
 	else:
 		weapon_name = "weapon"
+
+	if weapon_instance.has_meta("firing_range"):
+		weapon_range = weapon_instance.get_meta("firing_range")
+	else:
+		weapon_range = weapon_instance.firing_range
+
 	weapon_instance.free()
 
 
