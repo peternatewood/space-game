@@ -2,6 +2,7 @@
   "name": "Energy Bolt",
   "damage_hull": 15.0,
   "damage_shield": 10.0,
+  "cost": 1.5,
   "fire_delay": 0.25,
   "life": 5.0,
   "mass": 0.01,

@@ -17,6 +17,7 @@ func post_import(scene):
 
 	# Set defaults to be overridden by data file
 	var energy_data: Dictionary = {
+		"cost": 1.0,
 		"damage_hull": 10.0,
 		"damage_shield": 5.0,
 		"fire_delay": 1.0,
@@ -31,6 +32,10 @@ func post_import(scene):
 
 		var data_parsed = JSON.parse(data_file.get_as_text())
 		if data_parsed.error == OK:
+			var cost = data_parsed.result.get("cost")
+			if cost != null and typeof(cost) == TYPE_REAL:
+				energy_data["cost"] = cost
+
 			var damage_hull = data_parsed.result.get("damage_hull")
 			if damage_hull != null and typeof(damage_hull) == TYPE_REAL:
 				energy_data["damage_hull"] = damage_hull
@@ -63,6 +68,7 @@ func post_import(scene):
 	else:
 		print("No such file: " + data_file_name)
 
+	scene.set_meta("cost", energy_data["cost"])
 	scene.set_meta("damage_hull", energy_data["damage_hull"])
 	scene.set_meta("damage_shield", energy_data["damage_shield"])
 	scene.set_meta("fire_delay", energy_data["fire_delay"])
