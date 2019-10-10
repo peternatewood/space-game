@@ -77,10 +77,6 @@ func _fire_missile_weapon(target = null):
 	return false
 
 
-func _get_energy_weapon_range():
-	return energy_weapon_hardpoints[energy_weapon_index].get_weapon_data("firing_range")
-
-
 # Ranges from 0.75 to 1.25
 func _get_engine_factor():
 	return 0.75 + 0.5 * (power_distribution[ENGINE] / MAX_SYSTEM_POWER)
@@ -173,6 +169,10 @@ func _target_next_of_alignment(possible_targets: Array, alignment: int):
 
 
 # PUBLIC
+
+
+func get_energy_weapon_range():
+	return energy_weapon_hardpoints[energy_weapon_index].get_weapon_data("firing_range")
 
 
 func get_overhead_icon():
