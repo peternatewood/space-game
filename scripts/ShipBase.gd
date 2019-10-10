@@ -77,8 +77,7 @@ func _fire_missile_weapon(target = null):
 
 
 func _get_energy_weapon_range():
-	# TODO: update this for more general use after adding more energy weapons
-	return EnergyBolt.RANGE
+	return energy_weapon_hardpoints[energy_weapon_index].weapon_range
 
 
 # Ranges from 0.75 to 1.25

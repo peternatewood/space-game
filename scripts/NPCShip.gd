@@ -23,7 +23,7 @@ func _on_scene_loaded():
 
 func _process(delta):
 	if has_target and _is_target_in_range():
-			_fire_energy_weapon()
+		_fire_energy_weapon()
 
 	._process(delta)
 

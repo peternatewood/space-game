@@ -19,4 +19,3 @@ func add_speed(amount: float):
 
 
 const COST: float = 1.0
-const RANGE: float = 33.333333
