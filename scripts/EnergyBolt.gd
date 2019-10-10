@@ -2,10 +2,12 @@ extends "res://scripts/WeaponBase.gd"
 
 
 func _ready():
-	damage_hull = 15
-	damage_shield = 10
-	fire_delay = 0.4
-	weapon_name = "Energy Bolt"
+	damage_hull = get_meta("damage_hull")
+	damage_shield = get_meta("damage_shield")
+	fire_delay = get_meta("fire_delay")
+	life = get_meta("life")
+	speed = get_meta("speed")
+	weapon_name = get_meta("weapon_name")
 
 
 # PUBLIC
