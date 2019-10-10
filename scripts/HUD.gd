@@ -25,6 +25,8 @@ onready var viewport = get_viewport()
 onready var weapon_battery_bar = get_node("Weapon Battery Bar")
 
 var camera
+var energy_hardpoint_count: int
+var missile_hardpoint_count: int
 var player
 var radar_icons_container: Control
 var target_class
@@ -60,6 +62,18 @@ func _on_player_damaged():
 func _on_player_destroyed():
 	hide()
 	set_process(false)
+
+
+func _on_player_energy_weapon_changed():
+	energy_hardpoint_count = player.energy_weapon_hardpoints.size()
+	for index in range(energy_weapon_rows.size()):
+		energy_weapon_rows[index].toggle_arrow(index == player.energy_weapon_index)
+
+
+func _on_player_missile_weapon_changed():
+	missile_hardpoint_count = player.missile_weapon_hardpoints.size()
+	for index in range(missile_weapon_rows.size()):
+		missile_weapon_rows[index].toggle_arrow(index == player.missile_weapon_index)
 
 
 func _on_player_power_distribution_changed():
@@ -163,6 +177,8 @@ func _on_scene_loaded():
 
 	_on_player_throttle_changed()
 	player.connect("throttle_changed", self, "_on_player_throttle_changed")
+	player.connect("energy_weapon_changed", self, "_on_player_energy_weapon_changed")
+	player.connect("missile_weapon_changed", self, "_on_player_missile_weapon_changed")
 
 	power_container.set_power_bars(player.power_distribution)
 
@@ -179,7 +195,7 @@ func _on_scene_loaded():
 		radar_icons_container.add_child(icon)
 
 	# Set up weapons display based on player loadout
-	var energy_hardpoint_count = player.energy_weapon_hardpoints.size()
+	energy_hardpoint_count = player.energy_weapon_hardpoints.size()
 	for index in range(energy_weapon_rows.size()):
 		if index < energy_hardpoint_count:
 			energy_weapon_rows[index].show()
@@ -189,7 +205,7 @@ func _on_scene_loaded():
 
 		energy_weapon_rows[index].toggle_arrow(index == 0)
 
-	var missile_hardpoint_count = player.missile_weapon_hardpoints.size()
+	missile_hardpoint_count = player.missile_weapon_hardpoints.size()
 	for index in range(missile_weapon_rows.size()):
 		if index < missile_hardpoint_count:
 			missile_weapon_rows[index].show()
