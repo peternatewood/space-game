@@ -1,7 +1,7 @@
 extends HBoxContainer
 
 onready var ammo_label = get_node("Missile Ammo")
-onready var arrow = get_node("Arrow")
+onready var arrow = get_node("Arrow/Polygon2D")
 onready var name_label = get_node("Missile Name")
 
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://themes/default_inconsolata.tres" type="Theme" id=1]
 [ext_resource path="res://scripts/HUD.gd" type="Script" id=2]
@@ -13,11 +13,12 @@
 [ext_resource path="res://images/weapon_battery_under.png" type="Texture" id=11]
 [ext_resource path="res://images/weapon_battery_over.png" type="Texture" id=12]
 [ext_resource path="res://images/weapon_battery_progress.png" type="Texture" id=13]
-[ext_resource path="res://icons/missile_weapon_container.tscn" type="PackedScene" id=14]
-[ext_resource path="res://images/radar_bg.svg" type="Texture" id=15]
-[ext_resource path="res://scripts/EdgeTargetIcon.gd" type="Script" id=16]
-[ext_resource path="res://scripts/TargetIcon.gd" type="Script" id=17]
-[ext_resource path="res://models/fighter_frog/fighter_frog.dae" type="PackedScene" id=18]
+[ext_resource path="res://icons/energy_weapon_container.tscn" type="PackedScene" id=14]
+[ext_resource path="res://icons/missile_weapon_container.tscn" type="PackedScene" id=15]
+[ext_resource path="res://images/radar_bg.svg" type="Texture" id=16]
+[ext_resource path="res://scripts/EdgeTargetIcon.gd" type="Script" id=17]
+[ext_resource path="res://scripts/TargetIcon.gd" type="Script" id=18]
+[ext_resource path="res://models/fighter_frog/fighter_frog.dae" type="PackedScene" id=19]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.501961, 0.501961, 0.501961, 1 )
@@ -266,23 +267,18 @@ custom_styles/panel = SubResource( 3 )
 margin_left = 4.0
 margin_top = 4.0
 margin_right = 114.0
-margin_bottom = 52.0
+margin_bottom = 74.0
 
 [node name="Energy Weapons" type="VBoxContainer" parent="Weapons Container/Weapons Rows"]
 margin_right = 110.0
 margin_bottom = 18.0
 
-[node name="Energy Weapon 1" type="Label" parent="Weapons Container/Weapons Rows/Energy Weapons"]
-margin_right = 110.0
-margin_bottom = 18.0
-text = "wep 1"
+[node name="Energy Weapon Container 1" parent="Weapons Container/Weapons Rows/Energy Weapons" instance=ExtResource( 14 )]
 
-[node name="Energy Weapon 2" type="Label" parent="Weapons Container/Weapons Rows/Energy Weapons"]
+[node name="Energy Weapon Container 2" parent="Weapons Container/Weapons Rows/Energy Weapons" instance=ExtResource( 14 )]
 visible = false
 margin_top = 22.0
-margin_right = 110.0
 margin_bottom = 40.0
-text = "wep 2"
 
 [node name="HSeparator" type="HSeparator" parent="Weapons Container/Weapons Rows"]
 margin_top = 22.0
@@ -293,18 +289,17 @@ custom_styles/separator = SubResource( 4 )
 [node name="Missile Weapons" type="VBoxContainer" parent="Weapons Container/Weapons Rows"]
 margin_top = 30.0
 margin_right = 110.0
-margin_bottom = 48.0
+margin_bottom = 70.0
 
-[node name="Missile Weapon Container 1" parent="Weapons Container/Weapons Rows/Missile Weapons" instance=ExtResource( 14 )]
+[node name="Missile Weapon Container 1" parent="Weapons Container/Weapons Rows/Missile Weapons" instance=ExtResource( 15 )]
 margin_right = 110.0
 
-[node name="Missile Weapon Container 2" parent="Weapons Container/Weapons Rows/Missile Weapons" instance=ExtResource( 14 )]
-visible = false
+[node name="Missile Weapon Container 2" parent="Weapons Container/Weapons Rows/Missile Weapons" instance=ExtResource( 15 )]
 margin_top = 22.0
 margin_right = 110.0
 margin_bottom = 40.0
 
-[node name="Missile Weapon Container 3" parent="Weapons Container/Weapons Rows/Missile Weapons" instance=ExtResource( 14 )]
+[node name="Missile Weapon Container 3" parent="Weapons Container/Weapons Rows/Missile Weapons" instance=ExtResource( 15 )]
 visible = false
 margin_top = 22.0
 margin_right = 110.0
@@ -332,7 +327,7 @@ margin_left = -66.0
 margin_top = -33.0
 margin_right = 66.0
 margin_bottom = 33.0
-texture = ExtResource( 15 )
+texture = ExtResource( 16 )
 
 [node name="Radar Icons Container" type="Control" parent="Radar"]
 anchor_right = 1.0
@@ -472,7 +467,7 @@ text = "%"
 [node name="Edge Target Icon" type="Control" parent="."]
 editor/display_folded = true
 visible = false
-script = ExtResource( 16 )
+script = ExtResource( 17 )
 
 [node name="Arrow Up" type="Control" parent="Edge Target Icon"]
 
@@ -613,7 +608,7 @@ valign = 1
 [node name="Target Icon" type="Control" parent="."]
 editor/display_folded = true
 visible = false
-script = ExtResource( 17 )
+script = ExtResource( 18 )
 
 [node name="Top Left" type="Line2D" parent="Target Icon"]
 position = Vector2( -12, -12 )
@@ -675,7 +670,7 @@ current = true
 size = 3.0
 far = 10.0
 
-[node name="Frog Fighter" parent="Target Viewport" instance=ExtResource( 18 )]
+[node name="Frog Fighter" parent="Target Viewport" instance=ExtResource( 19 )]
 input_ray_pickable = false
 collision_layer = 0
 collision_mask = 0
