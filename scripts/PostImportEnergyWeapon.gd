@@ -71,7 +71,9 @@ func post_import(scene):
 	scene.set_meta("firing_force", MathHelper.get_force_from_mass_and_speed(energy_data["mass"], energy_data["speed"]))
 	scene.set_meta("weapon_name", energy_data["weapon_name"])
 
-	# TODO: calculate what the "speed" property should be to top out at the given speed value in m/s based on mass
+	# From testing it seems like (desired_speed * life) + 1 = firing_range
+	scene.set_meta("firing_range", (energy_data["speed"] / 10) * energy_data["life"] + 1)
+
 	scene.set_mass(energy_data["mass"])
 	scene.set_script(EnergyBolt)
 
