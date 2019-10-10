@@ -157,6 +157,13 @@ func _input(event):
 			power_distribution[ENGINE] = TOTAL_SYSTEM_POWER / 3
 
 			emit_signal("power_distribution_changed")
+		# Weapons stuff
+		elif event.is_action("cycle_energy_weapon") and event.pressed:
+			_cycle_energy_weapon(1)
+			emit_signal("energy_weapon_changed")
+		elif event.is_action("cycle_missile_weapon") and event.pressed:
+			_cycle_missile_weapon(1)
+			emit_signal("missile_weapon_changed")
 
 
 func _on_scene_loaded():
