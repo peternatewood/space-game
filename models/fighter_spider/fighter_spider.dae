@@ -5,8 +5,8 @@
 		<author>Anonymous</author>
 		<authoring_tool>Collada Exporter for Blender 2.6+, by Juan Linietsky (juan@codenix.com)</authoring_tool>
 	</contributor>
-	<created>2019-10-09T15:23:02Z</created>
-	<modified>2019-10-09T15:23:02Z</modified>
+	<created>2019-10-10T09:46:10Z</created>
+	<modified>2019-10-10T09:46:10Z</modified>
 	<unit meter="1.0" name="meter"/>
 	<up_axis>Z_UP</up_axis>
 </asset>
@@ -1235,6 +1235,30 @@
 				</node>
 				<node id="Empty.003" name="Empty.003" type="NODE">
 					<matrix sid="transform"> 1.0 0.0 0.0 -0.31781208515167236 0.0 1.0 0.0 0.053182072937488556 0.0 0.0 1.0 0.2652915120124817 0.0 0.0 0.0 1.0  </matrix>
+				<extra>
+					<technique profile="GODOT">
+						<empty_draw_type>PLAIN_AXES</empty_draw_type>
+					</technique>
+				</extra>
+				</node>
+			</node>
+			<node id="Missile Weapon Hardpoints 2" name="Missile Weapon Hardpoints 2" type="NODE">
+				<matrix sid="transform"> 1.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 1.0  </matrix>
+				<extra>
+					<technique profile="GODOT">
+						<empty_draw_type>PLAIN_AXES</empty_draw_type>
+					</technique>
+				</extra>
+				<node id="Empty.005" name="Empty.005" type="NODE">
+					<matrix sid="transform"> 1.0 0.0 0.0 -0.31781208515167236 0.0 1.0 0.0 0.053182072937488556 0.0 0.0 1.0 0.2652915120124817 0.0 0.0 0.0 1.0  </matrix>
+				<extra>
+					<technique profile="GODOT">
+						<empty_draw_type>PLAIN_AXES</empty_draw_type>
+					</technique>
+				</extra>
+				</node>
+				<node id="Empty.006" name="Empty.006" type="NODE">
+					<matrix sid="transform"> 1.0 0.0 0.0 0.31781265139579773 0.0 1.0 0.0 0.053182072937488556 0.0 0.0 1.0 0.2652915120124817 0.0 0.0 0.0 1.0  </matrix>
 				<extra>
 					<technique profile="GODOT">
 						<empty_draw_type>PLAIN_AXES</empty_draw_type>
