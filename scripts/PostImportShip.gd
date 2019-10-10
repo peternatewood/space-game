@@ -65,6 +65,14 @@ func post_import(scene):
 	scene.set_angular_damp(0.85)
 	scene.set_linear_damp(0.85)
 
+	# Add raycast for targeting
+	var target_raycast = RayCast.new()
+	scene.add_child(target_raycast)
+	target_raycast.set_owner(scene)
+	target_raycast.set_name("Target Raycast")
+	target_raycast.set_cast_to(200 * Vector3.FORWARD)
+	target_raycast.set_enabled(true)
+
 	# This is used for loading the data file and other resources
 	var source_folder = get_source_folder()
 	var data_file = File.new()

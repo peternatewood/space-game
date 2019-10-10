@@ -13,6 +13,7 @@ onready var shields: Array = [
 onready var missile_weapon_hardpoints = get_node("Missile Weapon Groups").get_children()
 onready var ship_class: String = get_meta("ship_class")
 onready var source_folder = get_meta("source_folder")
+onready var target_raycast = get_node("Target Raycast")
 
 var current_target
 var energy_weapon_index: int = 0
