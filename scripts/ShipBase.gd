@@ -205,7 +205,8 @@ const ShieldQuadrant = preload("ShieldQuadrant.gd")
 
 const ACCELERATION: float = 0.1
 const DESTRUCTION_SMOKE = preload("res://models/Destruction_Smoke.tscn")
-const ENERGY_BOLT = preload("res://models/Energy_Bolt.tscn")
+#const ENERGY_BOLT = preload("res://models/Energy_Bolt.tscn")
+const ENERGY_BOLT = preload("res://models/energy_bolt/energy_bolt.dae")
 const MISSILE = preload("res://models/missile/missile.dae")
 const MASS_TO_MAX_SPEED_FACTOR: float = 32.129448
 const MAX_SYSTEM_POWER: float = 60.0
