@@ -70,6 +70,13 @@ func post_import(scene):
 	scene.set_meta("turn_speed", missile_data["turn_speed"])
 	scene.set_meta("weapon_name", missile_data["weapon_name"])
 
+	# Avg speed when accelerating: (max_speed - acceleration) / 2 | Seconds to reach max speed: max_speed / acceleration | Add max speed multiplied by remaining seconds
+	# Avg accel speed: (100 - 20) / 2 = 40 | Seconds to max speed: 100 / 20 = 5
+	# 40 * 5 + 100 * (12 - 5)
+	var seconds_to_max: float = missile_data["max_speed"] / missile_data["acceleration"]
+	var firing_range: float = ((missile_data["max_speed"] - missile_data["acceleration"]) / 2) * seconds_to_max + missile_data["max_speed"] * (missile_data["life"] - seconds_to_max)
+	scene.set_meta("firing_range", firing_range)
+
 	scene.set_mass(0.2)
 	scene.set_script(Missile)
 
