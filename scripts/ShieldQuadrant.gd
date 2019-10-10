@@ -59,6 +59,10 @@ func _process(delta):
 # PUBLIC
 
 
+func get_hitpoints_fraction():
+	return hitpoints / max_hitpoints
+
+
 func set_hitpoints(amount: float):
 	hitpoints = clamp(amount, 0, max_hitpoints)
 	emit_signal("hitpoints_changed", hitpoints / max_hitpoints)
