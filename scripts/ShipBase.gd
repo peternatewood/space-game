@@ -46,6 +46,16 @@ func _ready():
 		missile_weapon.set_weapon(MISSILE)
 
 
+func _cycle_energy_weapon(direction: int):
+	energy_weapon_index = (energy_weapon_index + direction) % energy_weapon_hardpoints.size()
+	emit_signal("energy_weapon_changed")
+
+
+func _cycle_missile_weapon(direction: int):
+	missile_weapon_index = (missile_weapon_index + direction) % missile_weapon_hardpoints.size()
+	emit_signal("missile_weapon_changed")
+
+
 func _fire_energy_weapon():
 	if energy_weapon_hardpoints[energy_weapon_index].countdown == 0 and weapon_battery >= energy_weapon_hardpoints[energy_weapon_index].get_weapon_cost():
 		energy_weapon_hardpoints[energy_weapon_index].fire_weapon(self)
@@ -183,6 +193,9 @@ func get_source_filename():
 func get_weapon_battery_percent():
 	return weapon_battery / MAX_WEAPON_BATTERY
 
+
+signal energy_weapon_changed
+signal missile_weapon_changed
 
 enum { WEAPON, SHIELD, ENGINE, TOTAL_POWER_LEVELS }
 enum { FRONT, REAR, LEFT, RIGHT, QUADRANT_COUNT }
