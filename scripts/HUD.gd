@@ -196,6 +196,8 @@ func _on_scene_loaded():
 		else:
 			missile_weapon_rows[index].hide()
 
+		missile_weapon_rows[index].toggle_arrow(index == 0)
+
 	set_process(true)
 
 

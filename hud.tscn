@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://themes/default_inconsolata.tres" type="Theme" id=1]
 [ext_resource path="res://scripts/HUD.gd" type="Script" id=2]
@@ -13,7 +13,7 @@
 [ext_resource path="res://images/weapon_battery_under.png" type="Texture" id=11]
 [ext_resource path="res://images/weapon_battery_over.png" type="Texture" id=12]
 [ext_resource path="res://images/weapon_battery_progress.png" type="Texture" id=13]
-[ext_resource path="res://scripts/MissileWeaponContainer.gd" type="Script" id=14]
+[ext_resource path="res://icons/missile_weapon_container.tscn" type="PackedScene" id=14]
 [ext_resource path="res://images/radar_bg.svg" type="Texture" id=15]
 [ext_resource path="res://scripts/EdgeTargetIcon.gd" type="Script" id=16]
 [ext_resource path="res://scripts/TargetIcon.gd" type="Script" id=17]
@@ -31,6 +31,22 @@ border_width_bottom = 1
 border_color = Color( 1, 1, 1, 1 )
 
 [sub_resource type="StyleBoxFlat" id=3]
+content_margin_left = 4.0
+content_margin_right = 4.0
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+bg_color = Color( 0.2, 0.2, 0.2, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 1, 1, 1, 1 )
+corner_detail = 2
+
+[sub_resource type="StyleBoxLine" id=4]
+color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="StyleBoxFlat" id=5]
 bg_color = Color( 0, 0, 0, 0.501961 )
 border_width_left = 2
 border_width_top = 2
@@ -38,10 +54,10 @@ border_width_right = 2
 border_width_bottom = 2
 border_color = Color( 1, 1, 1, 1 )
 
-[sub_resource type="ViewportTexture" id=4]
+[sub_resource type="ViewportTexture" id=6]
 viewport_path = NodePath("Target Viewport")
 
-[sub_resource type="Environment" id=5]
+[sub_resource type="Environment" id=7]
 background_mode = 1
 ambient_light_color = Color( 1, 1, 1, 1 )
 ambient_light_energy = 0.25
@@ -242,110 +258,57 @@ anchor_top = 0.5
 anchor_bottom = 0.5
 margin_left = 32.0
 margin_top = -31.0
-margin_right = 146.0
-margin_bottom = 31.0
+margin_right = 150.0
+margin_bottom = 25.0
+custom_styles/panel = SubResource( 3 )
 
 [node name="Weapons Rows" type="VBoxContainer" parent="Weapons Container"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 107.0
-margin_bottom = 55.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 114.0
+margin_bottom = 52.0
 
 [node name="Energy Weapons" type="VBoxContainer" parent="Weapons Container/Weapons Rows"]
-margin_right = 100.0
+margin_right = 110.0
 margin_bottom = 18.0
 
 [node name="Energy Weapon 1" type="Label" parent="Weapons Container/Weapons Rows/Energy Weapons"]
-margin_right = 100.0
+margin_right = 110.0
 margin_bottom = 18.0
 text = "wep 1"
 
 [node name="Energy Weapon 2" type="Label" parent="Weapons Container/Weapons Rows/Energy Weapons"]
 visible = false
 margin_top = 22.0
-margin_right = 100.0
+margin_right = 110.0
 margin_bottom = 40.0
 text = "wep 2"
 
 [node name="HSeparator" type="HSeparator" parent="Weapons Container/Weapons Rows"]
 margin_top = 22.0
-margin_right = 100.0
+margin_right = 110.0
 margin_bottom = 26.0
+custom_styles/separator = SubResource( 4 )
 
 [node name="Missile Weapons" type="VBoxContainer" parent="Weapons Container/Weapons Rows"]
 margin_top = 30.0
-margin_right = 100.0
+margin_right = 110.0
 margin_bottom = 48.0
 
-[node name="Missile Weapon Container 1" type="HBoxContainer" parent="Weapons Container/Weapons Rows/Missile Weapons"]
-editor/display_folded = true
-margin_right = 100.0
-margin_bottom = 18.0
-script = ExtResource( 14 )
+[node name="Missile Weapon Container 1" parent="Weapons Container/Weapons Rows/Missile Weapons" instance=ExtResource( 14 )]
+margin_right = 110.0
 
-[node name="Missile Name" type="Label" parent="Weapons Container/Weapons Rows/Missile Weapons/Missile Weapon Container 1"]
-margin_right = 72.0
-margin_bottom = 18.0
-text = "missile 1"
-
-[node name="VSeparator" type="VSeparator" parent="Weapons Container/Weapons Rows/Missile Weapons/Missile Weapon Container 1"]
-margin_left = 76.0
-margin_right = 80.0
-margin_bottom = 18.0
-
-[node name="Missile Ammo" type="Label" parent="Weapons Container/Weapons Rows/Missile Weapons/Missile Weapon Container 1"]
-margin_left = 84.0
-margin_right = 100.0
-margin_bottom = 18.0
-text = "10"
-
-[node name="Missile Weapon Container 2" type="HBoxContainer" parent="Weapons Container/Weapons Rows/Missile Weapons"]
-editor/display_folded = true
+[node name="Missile Weapon Container 2" parent="Weapons Container/Weapons Rows/Missile Weapons" instance=ExtResource( 14 )]
 visible = false
 margin_top = 22.0
-margin_right = 100.0
+margin_right = 110.0
 margin_bottom = 40.0
-script = ExtResource( 14 )
 
-[node name="Missile Name" type="Label" parent="Weapons Container/Weapons Rows/Missile Weapons/Missile Weapon Container 2"]
-margin_right = 72.0
-margin_bottom = 18.0
-text = "missile 1"
-
-[node name="VSeparator" type="VSeparator" parent="Weapons Container/Weapons Rows/Missile Weapons/Missile Weapon Container 2"]
-margin_left = 76.0
-margin_right = 80.0
-margin_bottom = 18.0
-
-[node name="Missile Ammo" type="Label" parent="Weapons Container/Weapons Rows/Missile Weapons/Missile Weapon Container 2"]
-margin_left = 84.0
-margin_right = 100.0
-margin_bottom = 18.0
-text = "10"
-
-[node name="Missile Weapon Container 3" type="HBoxContainer" parent="Weapons Container/Weapons Rows/Missile Weapons"]
-editor/display_folded = true
+[node name="Missile Weapon Container 3" parent="Weapons Container/Weapons Rows/Missile Weapons" instance=ExtResource( 14 )]
 visible = false
-margin_top = 44.0
-margin_right = 100.0
-margin_bottom = 62.0
-script = ExtResource( 14 )
-
-[node name="Missile Name" type="Label" parent="Weapons Container/Weapons Rows/Missile Weapons/Missile Weapon Container 3"]
-margin_right = 72.0
-margin_bottom = 18.0
-text = "missile 1"
-
-[node name="VSeparator" type="VSeparator" parent="Weapons Container/Weapons Rows/Missile Weapons/Missile Weapon Container 3"]
-margin_left = 76.0
-margin_right = 80.0
-margin_bottom = 18.0
-
-[node name="Missile Ammo" type="Label" parent="Weapons Container/Weapons Rows/Missile Weapons/Missile Weapon Container 3"]
-margin_left = 84.0
-margin_right = 100.0
-margin_bottom = 18.0
-text = "10"
+margin_top = 22.0
+margin_right = 110.0
+margin_bottom = 40.0
 
 [node name="Radar" type="Control" parent="."]
 editor/display_folded = true
@@ -474,14 +437,14 @@ self_modulate = Color( 0.501961, 0.752941, 1, 1 )
 margin_right = 164.0
 margin_bottom = 94.0
 rect_min_size = Vector2( 164, 94 )
-custom_styles/panel = SubResource( 3 )
+custom_styles/panel = SubResource( 5 )
 
 [node name="Target View" type="TextureRect" parent="Target View Container/Target View Rows/Target View Panel Container/Target View Panel"]
 margin_left = 2.0
 margin_top = 2.0
 margin_right = 162.0
 margin_bottom = 92.0
-texture = SubResource( 4 )
+texture = SubResource( 6 )
 
 [node name="Target Hull Container" type="HBoxContainer" parent="Target View Container/Target View Rows/Target View Panel Container"]
 modulate = Color( 0.501961, 0.752941, 1, 1 )
@@ -706,7 +669,7 @@ transparent_bg = true
 render_target_v_flip = true
 
 [node name="Camera" type="Camera" parent="Target Viewport"]
-environment = SubResource( 5 )
+environment = SubResource( 7 )
 projection = 1
 current = true
 size = 3.0
