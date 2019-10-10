@@ -15,6 +15,7 @@ onready var player_hull_bar = get_node("Hull Bar")
 onready var power_container = get_node("Power Container")
 onready var radar = get_node("Radar")
 onready var speed_indicator = get_node("Throttle Bar Container/Speed Indicator")
+onready var target_details_minimal = get_node("Target Details Minimal")
 onready var target_icon = get_node("Target Icon")
 onready var target_overhead = get_node("Target Overhead")
 onready var target_view_container = get_node("Target View Container")
@@ -34,6 +35,7 @@ var target_distance
 var target_hull
 var target_view_cam
 var target_view_model
+
 
 func _ready():
 	radar_icons_container = radar.get_node("Radar Icons Container")
@@ -132,6 +134,12 @@ func _on_player_target_changed(last_target):
 			edge_target_icon.set_modulate(Color.white)
 			target_icon.set_modulate(Color.white)
 
+		if not target_details_minimal.visible:
+			target_details_minimal.set_hull(player.current_target.get_hull_percent())
+			for index in range(player.current_target.QUADRANT_COUNT):
+				target_details_minimal.set_shield_alpha(index, player.current_target.shields[index].get_hitpoints_fraction())
+			target_details_minimal.show()
+
 		# Update target viewport
 		target_class.set_text(player.current_target.ship_class)
 		target_viewport.add_child(target_view_model)
@@ -143,6 +151,7 @@ func _on_player_target_changed(last_target):
 			target_overhead.show()
 	else:
 		# No target selected
+		target_details_minimal.hide()
 		target_icon.hide()
 		edge_target_icon.hide()
 		target_view_container.hide()
@@ -216,11 +225,16 @@ func _on_scene_loaded():
 
 		missile_weapon_rows[index].toggle_arrow(index == 0)
 
+	if not player.has_target:
+		target_details_minimal.hide()
+
 	set_process(true)
 
 
 func _on_target_damaged():
-	target_hull.set_text(str(round(player.current_target.get_hull_percent())))
+	var hull_percent = player.current_target.get_hull_percent()
+	target_details_minimal.set_hull(hull_percent)
+	target_hull.set_text(str(round(hull_percent)))
 
 
 func _on_target_destroyed(target):
@@ -232,6 +246,7 @@ func _on_target_destroyed(target):
 
 
 func _on_target_shield_changed(percent: float, quadrant: int):
+	target_details_minimal.set_shield_alpha(quadrant, percent)
 	target_overhead.set_shield_alpha(quadrant, percent)
 
 

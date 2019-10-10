@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://themes/default_inconsolata.tres" type="Theme" id=1]
 [ext_resource path="res://scripts/HUD.gd" type="Script" id=2]
@@ -15,10 +15,15 @@
 [ext_resource path="res://images/weapon_battery_progress.png" type="Texture" id=13]
 [ext_resource path="res://icons/energy_weapon_container.tscn" type="PackedScene" id=14]
 [ext_resource path="res://icons/missile_weapon_container.tscn" type="PackedScene" id=15]
-[ext_resource path="res://images/radar_bg.svg" type="Texture" id=16]
-[ext_resource path="res://scripts/EdgeTargetIcon.gd" type="Script" id=17]
-[ext_resource path="res://scripts/TargetIcon.gd" type="Script" id=18]
-[ext_resource path="res://models/fighter_frog/fighter_frog.dae" type="PackedScene" id=19]
+[ext_resource path="res://scripts/TargetDetailsIcon.gd" type="Script" id=16]
+[ext_resource path="res://images/shield_front_small.png" type="Texture" id=17]
+[ext_resource path="res://images/shield_rear_small.png" type="Texture" id=18]
+[ext_resource path="res://images/shield_left_small.png" type="Texture" id=19]
+[ext_resource path="res://images/shield_right_small.png" type="Texture" id=20]
+[ext_resource path="res://images/radar_bg.svg" type="Texture" id=21]
+[ext_resource path="res://scripts/EdgeTargetIcon.gd" type="Script" id=22]
+[ext_resource path="res://scripts/TargetIcon.gd" type="Script" id=23]
+[ext_resource path="res://models/fighter_frog/fighter_frog.dae" type="PackedScene" id=24]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.501961, 0.501961, 0.501961, 1 )
@@ -254,6 +259,7 @@ texture_progress = ExtResource( 13 )
 fill_mode = 3
 
 [node name="Weapons Container" type="PanelContainer" parent="."]
+editor/display_folded = true
 modulate = Color( 0.501961, 0.752941, 1, 1 )
 anchor_top = 0.5
 anchor_bottom = 0.5
@@ -305,34 +311,6 @@ margin_top = 22.0
 margin_right = 110.0
 margin_bottom = 40.0
 
-[node name="Radar" type="Control" parent="."]
-editor/display_folded = true
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -66.0
-margin_top = -98.0
-margin_right = 66.0
-margin_bottom = -32.0
-rect_min_size = Vector2( 132, 66 )
-
-[node name="TextureRect" type="TextureRect" parent="Radar"]
-modulate = Color( 0.501961, 0.752941, 1, 1 )
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -66.0
-margin_top = -33.0
-margin_right = 66.0
-margin_bottom = 33.0
-texture = ExtResource( 16 )
-
-[node name="Radar Icons Container" type="Control" parent="Radar"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-
 [node name="Target Reticule" type="Control" parent="."]
 editor/display_folded = true
 modulate = Color( 0.501961, 0.752941, 1, 1 )
@@ -364,6 +342,75 @@ points = PoolVector2Array( -4, -4, -8, -8, -12, -8 )
 width = 2.0
 default_color = Color( 1, 1, 1, 1 )
 texture_mode = 50
+
+[node name="Target Details Minimal" type="CenterContainer" parent="."]
+modulate = Color( 0.501961, 0.752941, 1, 1 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = 140.0
+margin_right = 20.0
+margin_bottom = 168.0
+script = ExtResource( 16 )
+
+[node name="Shield Front" type="TextureRect" parent="Target Details Minimal"]
+margin_right = 40.0
+margin_bottom = 28.0
+texture = ExtResource( 17 )
+
+[node name="Shield Rear" type="TextureRect" parent="Target Details Minimal"]
+margin_right = 40.0
+margin_bottom = 28.0
+texture = ExtResource( 18 )
+
+[node name="Shield Left" type="TextureRect" parent="Target Details Minimal"]
+margin_right = 40.0
+margin_bottom = 28.0
+texture = ExtResource( 19 )
+
+[node name="Shield Right" type="TextureRect" parent="Target Details Minimal"]
+margin_right = 40.0
+margin_bottom = 28.0
+texture = ExtResource( 20 )
+
+[node name="Hull Percent" type="Label" parent="Target Details Minimal"]
+margin_left = 7.0
+margin_top = 5.0
+margin_right = 33.0
+margin_bottom = 23.0
+rect_min_size = Vector2( 26, 18 )
+text = "100"
+align = 1
+
+[node name="Radar" type="Control" parent="."]
+editor/display_folded = true
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -66.0
+margin_top = -98.0
+margin_right = 66.0
+margin_bottom = -32.0
+rect_min_size = Vector2( 132, 66 )
+
+[node name="TextureRect" type="TextureRect" parent="Radar"]
+modulate = Color( 0.501961, 0.752941, 1, 1 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -66.0
+margin_top = -33.0
+margin_right = 66.0
+margin_bottom = 33.0
+texture = ExtResource( 21 )
+
+[node name="Radar Icons Container" type="Control" parent="Radar"]
+anchor_right = 1.0
+anchor_bottom = 1.0
 
 [node name="Target View Container" type="MarginContainer" parent="."]
 editor/display_folded = true
@@ -467,7 +514,7 @@ text = "%"
 [node name="Edge Target Icon" type="Control" parent="."]
 editor/display_folded = true
 visible = false
-script = ExtResource( 17 )
+script = ExtResource( 22 )
 
 [node name="Arrow Up" type="Control" parent="Edge Target Icon"]
 
@@ -608,7 +655,7 @@ valign = 1
 [node name="Target Icon" type="Control" parent="."]
 editor/display_folded = true
 visible = false
-script = ExtResource( 18 )
+script = ExtResource( 23 )
 
 [node name="Top Left" type="Line2D" parent="Target Icon"]
 position = Vector2( -12, -12 )
@@ -670,7 +717,7 @@ current = true
 size = 3.0
 far = 10.0
 
-[node name="Frog Fighter" parent="Target Viewport" instance=ExtResource( 19 )]
+[node name="Frog Fighter" parent="Target Viewport" instance=ExtResource( 24 )]
 input_ray_pickable = false
 collision_layer = 0
 collision_mask = 0
