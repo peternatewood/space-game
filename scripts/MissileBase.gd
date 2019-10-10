@@ -9,13 +9,8 @@ var turn_speed: float
 
 func _ready():
 	acceleration = get_meta("acceleration")
-	damage_hull = get_meta("damage_hull")
-	damage_shield = get_meta("damage_shield")
-	fire_delay = get_meta("fire_delay")
-	life = get_meta("life")
 	max_speed = get_meta("max_speed")
 	turn_speed = get_meta("turn_speed")
-	weapon_name = get_meta("weapon_name")
 
 	speed = 0.0
 
