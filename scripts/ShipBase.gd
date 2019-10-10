@@ -57,9 +57,10 @@ func _cycle_missile_weapon(direction: int):
 
 
 func _fire_energy_weapon():
-	if energy_weapon_hardpoints[energy_weapon_index].countdown == 0 and weapon_battery >= energy_weapon_hardpoints[energy_weapon_index].get_weapon_cost():
+	var weapon_cost = energy_weapon_hardpoints[energy_weapon_index].get_weapon_data("cost")
+	if energy_weapon_hardpoints[energy_weapon_index].countdown == 0 and weapon_battery >= weapon_cost:
 		energy_weapon_hardpoints[energy_weapon_index].fire_weapon(self)
-		weapon_battery -= energy_weapon_hardpoints[energy_weapon_index].get_weapon_cost()
+		weapon_battery -= weapon_cost
 
 		return true
 
@@ -77,7 +78,7 @@ func _fire_missile_weapon(target = null):
 
 
 func _get_energy_weapon_range():
-	return energy_weapon_hardpoints[energy_weapon_index].weapon_range
+	return energy_weapon_hardpoints[energy_weapon_index].get_weapon_data("firing_range")
 
 
 # Ranges from 0.75 to 1.25

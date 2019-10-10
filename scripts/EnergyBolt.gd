@@ -11,6 +11,3 @@ func _ready():
 func add_speed(amount: float):
 	firing_force += amount
 	add_central_force(firing_force * -transform.basis.z)
-
-
-const COST: float = 1.0

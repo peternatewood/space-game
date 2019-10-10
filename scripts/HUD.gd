@@ -208,7 +208,7 @@ func _on_scene_loaded():
 	for index in range(energy_weapon_rows.size()):
 		if index < energy_hardpoint_count:
 			energy_weapon_rows[index].show()
-			energy_weapon_rows[index].set_name(player.energy_weapon_hardpoints[index].weapon_name)
+			energy_weapon_rows[index].set_name(player.energy_weapon_hardpoints[index].get_weapon_data("weapon_name"))
 		else:
 			energy_weapon_rows[index].hide()
 
@@ -219,7 +219,7 @@ func _on_scene_loaded():
 		if index < missile_hardpoint_count:
 			missile_weapon_rows[index].show()
 			missile_weapon_rows[index].set_ammo(player.missile_weapon_hardpoints[index].ammo_capacity)
-			missile_weapon_rows[index].set_name(player.missile_weapon_hardpoints[index].weapon_name)
+			missile_weapon_rows[index].set_name(player.missile_weapon_hardpoints[index].get_weapon_data("weapon_name"))
 		else:
 			missile_weapon_rows[index].hide()
 

@@ -7,8 +7,7 @@ var countdown: float = 0
 var hardpoint_index: int = 0
 var hardpoint_count: int
 var weapon
-var weapon_name: String = "weapon" # TODO: get the weapon's name when we assign it... somehow
-var weapon_range: float
+var weapon_data: Dictionary = {}
 
 
 func _ready():
@@ -56,26 +55,25 @@ func get_hardpoint_pos():
 	return hardpoints[hardpoint_index].transform.origin
 
 
-func get_weapon_cost():
-	# TODO: figure out how best to get this from the assigned weapon, or how to better assign weapons
-	return 1.0
+func get_weapon_data(name: String):
+	return weapon_data.get(name, 1.0)
 
 
 func set_weapon(weapon_scene):
 	weapon = weapon_scene
 
 	var weapon_instance = weapon.instance()
-	if weapon_instance.has_meta("weapon_name"):
-		weapon_name = weapon_instance.get_meta("weapon_name")
-	else:
-		weapon_name = "weapon"
-
-	if weapon_instance.has_meta("firing_range"):
-		weapon_range = weapon_instance.get_meta("firing_range")
-	else:
-		weapon_range = weapon_instance.firing_range
+	for name in WEAPON_DATA_NAMES:
+		if weapon_instance.has_meta(name):
+			weapon_data[name] = weapon_instance.get_meta(name)
 
 	weapon_instance.free()
 
 
 signal countdown_completed
+
+const WEAPON_DATA_NAMES: Array = [
+	"cost",
+	"firing_range",
+	"weapon_name"
+]
