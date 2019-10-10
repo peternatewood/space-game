@@ -52,3 +52,6 @@ static func get_line_rect_intersect(start: Vector2, end: Vector2, rectangle: Rec
 			else:
 				return Vector2(start.x - (rectangle.size.y / 2) / slope, rectangle.position.y)
 
+
+static func get_force_from_mass_and_speed(mass: float, speed: float):
+	return ((speed / 10) * mass) / (5.0 / 300.0)
