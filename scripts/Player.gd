@@ -36,8 +36,6 @@ func _input(event):
 					_set_cam_mode(CHASE)
 				CHASE:
 					_set_cam_mode(COCKPIT)
-
-			emit_signal("cam_changed", cam_mode)
 		elif event.is_action("throttle_up") and event.pressed:
 			throttle = min(MAX_THROTTLE, throttle + ACCELERATION)
 			emit_signal("throttle_changed")
@@ -220,6 +218,8 @@ func _set_cam_mode(mode: int):
 			cam_mode = CHASE
 			_toggle_ship_mesh(true)
 
+	emit_signal("cam_changed", cam_mode)
+
 
 func _toggle_ship_mesh(show_meshes: bool):
 	for child in get_children():
@@ -228,6 +228,13 @@ func _toggle_ship_mesh(show_meshes: bool):
 				child.show()
 			else:
 				child.hide()
+
+
+# PUBLIC
+
+
+func get_targeting_endpoint():
+	return transform.origin - 100 * transform.basis.z
 
 
 signal cam_changed

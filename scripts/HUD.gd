@@ -21,6 +21,7 @@ onready var speed_indicator = get_node("Throttle Bar Container/Speed Indicator")
 onready var target_details_minimal = get_node("Target Details Minimal")
 onready var target_icon = get_node("Target Icon")
 onready var target_overhead = get_node("Target Overhead")
+onready var target_reticule = get_node("Target Reticule")
 onready var target_view_container = get_node("Target View Container")
 onready var target_viewport = get_node("Target Viewport")
 onready var throttle_bar = get_node("Throttle Bar Container/Throttle Bar")
@@ -67,6 +68,7 @@ func _on_player_ammo_count_changed(ammo_count: int, index: int):
 func _on_player_cam_changed(cam_mode: int):
 	if cam_mode == player.COCKPIT:
 		hud_bars.show()
+		target_reticule.set_position(viewport.get_visible_rect().size / 2)
 	else:
 		hud_bars.hide()
 
@@ -357,6 +359,11 @@ func _process(delta):
 			in_range_icon.hide()
 
 	weapon_battery_bar.set_value(100 * player.get_weapon_battery_percent())
+
+	# Move target reticule to more accurate position
+	if player.cam_mode != player.COCKPIT:
+		var reticule_pos_3: Vector3 = player.get_targeting_endpoint()
+		target_reticule.set_position(camera.unproject_position(reticule_pos_3))
 
 
 func _update_edge_icon():
