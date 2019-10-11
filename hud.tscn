@@ -26,17 +26,17 @@
 [ext_resource path="res://scripts/TargetIcon.gd" type="Script" id=24]
 [ext_resource path="res://models/fighter_frog/fighter_frog.dae" type="PackedScene" id=25]
 
-[sub_resource type="StyleBoxFlat" id=8]
+[sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 4.0
 content_margin_right = 4.0
 content_margin_top = 2.0
 content_margin_bottom = 2.0
 bg_color = Color( 0, 0, 0, 0.501961 )
 
-[sub_resource type="StyleBoxFlat" id=1]
+[sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0.501961, 0.501961, 0.501961, 1 )
 
-[sub_resource type="StyleBoxFlat" id=2]
+[sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 0, 0, 0, 1 )
 border_width_left = 1
 border_width_top = 1
@@ -44,7 +44,7 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color( 1, 1, 1, 1 )
 
-[sub_resource type="StyleBoxFlat" id=3]
+[sub_resource type="StyleBoxFlat" id=4]
 content_margin_left = 4.0
 content_margin_right = 4.0
 content_margin_top = 4.0
@@ -57,10 +57,10 @@ border_width_bottom = 1
 border_color = Color( 1, 1, 1, 1 )
 corner_detail = 2
 
-[sub_resource type="StyleBoxLine" id=4]
+[sub_resource type="StyleBoxLine" id=5]
 color = Color( 1, 1, 1, 1 )
 
-[sub_resource type="StyleBoxFlat" id=5]
+[sub_resource type="StyleBoxFlat" id=6]
 bg_color = Color( 0, 0, 0, 0.501961 )
 border_width_left = 2
 border_width_top = 2
@@ -68,10 +68,10 @@ border_width_right = 2
 border_width_bottom = 2
 border_color = Color( 1, 1, 1, 1 )
 
-[sub_resource type="ViewportTexture" id=6]
+[sub_resource type="ViewportTexture" id=7]
 viewport_path = NodePath("Target Viewport")
 
-[sub_resource type="Environment" id=7]
+[sub_resource type="Environment" id=8]
 background_mode = 1
 ambient_light_color = Color( 1, 1, 1, 1 )
 ambient_light_energy = 0.25
@@ -104,7 +104,7 @@ margin_left = -66.0
 margin_top = 16.0
 margin_right = -16.0
 margin_bottom = 38.0
-custom_styles/panel = SubResource( 8 )
+custom_styles/panel = SubResource( 1 )
 script = ExtResource( 4 )
 
 [node name="Mission Timer Columns" type="HBoxContainer" parent="Mission Timer"]
@@ -140,8 +140,8 @@ margin_left = -37.5
 margin_top = 32.0
 margin_right = 37.5
 margin_bottom = 48.0
-custom_styles/fg = SubResource( 1 )
-custom_styles/bg = SubResource( 2 )
+custom_styles/fg = SubResource( 2 )
+custom_styles/bg = SubResource( 3 )
 step = 1.0
 value = 50.0
 
@@ -312,7 +312,7 @@ margin_left = 32.0
 margin_top = -31.0
 margin_right = 150.0
 margin_bottom = 25.0
-custom_styles/panel = SubResource( 3 )
+custom_styles/panel = SubResource( 4 )
 
 [node name="Weapons Rows" type="VBoxContainer" parent="Weapons Container"]
 margin_left = 4.0
@@ -336,7 +336,7 @@ margin_bottom = 40.0
 margin_top = 22.0
 margin_right = 126.0
 margin_bottom = 26.0
-custom_styles/separator = SubResource( 4 )
+custom_styles/separator = SubResource( 5 )
 
 [node name="Missile Weapons" type="VBoxContainer" parent="Weapons Container/Weapons Rows"]
 margin_top = 30.0
@@ -587,14 +587,14 @@ self_modulate = Color( 0.501961, 0.752941, 1, 1 )
 margin_right = 164.0
 margin_bottom = 94.0
 rect_min_size = Vector2( 164, 94 )
-custom_styles/panel = SubResource( 5 )
+custom_styles/panel = SubResource( 6 )
 
 [node name="Target View" type="TextureRect" parent="Target View Container/Target View Rows/Target View Panel Container/Target View Panel"]
 margin_left = 2.0
 margin_top = 2.0
 margin_right = 162.0
 margin_bottom = 92.0
-texture = SubResource( 6 )
+texture = SubResource( 7 )
 
 [node name="Target Hull Container" type="HBoxContainer" parent="Target View Container/Target View Rows/Target View Panel Container"]
 modulate = Color( 0.501961, 0.752941, 1, 1 )
@@ -819,7 +819,7 @@ transparent_bg = true
 render_target_v_flip = true
 
 [node name="Camera" type="Camera" parent="Target Viewport"]
-environment = SubResource( 7 )
+environment = SubResource( 8 )
 projection = 1
 current = true
 size = 3.0
