@@ -19,7 +19,14 @@ func _on_scene_loaded():
 	targets = get_node("Targets Container").get_children()
 	targets.append(get_node("Player"))
 
+	for index in range(targets.size()):
+		targets[index].connect("destroyed", self, "_on_ship_destroyed", [ index ])
+
 	set_process(true)
+
+
+func _on_ship_destroyed(index: int):
+	targets.remove(index)
 
 
 # PUBLIC
