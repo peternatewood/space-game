@@ -58,6 +58,10 @@ func _disconnect_target_signals(target):
 		target.shields[index].disconnect("hitpoints_changed", self, "_on_target_shield_changed")
 
 
+func _on_player_ammo_count_changed(ammo_count: int, index: int):
+	missile_weapon_rows[index].set_ammo(ammo_count)
+
+
 func _on_player_damaged():
 	player_hull_bar.set_value(player.hull_hitpoints)
 
@@ -221,6 +225,7 @@ func _on_scene_loaded():
 			missile_weapon_rows[index].show()
 			missile_weapon_rows[index].set_ammo(player.missile_weapon_hardpoints[index].ammo_capacity)
 			missile_weapon_rows[index].set_name(player.missile_weapon_hardpoints[index].get_weapon_data("weapon_name"))
+			player.missile_weapon_hardpoints[index].connect("ammo_count_changed", self, "_on_player_ammo_count_changed", [ index ])
 		else:
 			missile_weapon_rows[index].hide()
 

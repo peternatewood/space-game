@@ -3,6 +3,7 @@ extends Spatial
 onready var hardpoints = get_children()
 
 var ammo_capacity: int = 0
+var ammo_count: int = 0
 var countdown: float = 0
 var hardpoint_index: int = 0
 var hardpoint_count: int
@@ -28,6 +29,8 @@ func _process(delta):
 
 func fire_missile_weapon(ship, target = null):
 	var missile = fire_weapon(ship)
+	ammo_count -= 1
+	emit_signal("ammo_count_changed", ammo_count)
 
 	if target != null:
 		missile.set_target(target)
@@ -69,11 +72,13 @@ func set_weapon(weapon_scene, missile_capacity = null):
 
 	if weapon_data.has("ammo_cost") and missile_capacity != null:
 		ammo_capacity = round(missile_capacity / weapon_data["ammo_cost"])
+		ammo_count = ammo_capacity
 
 	weapon_instance.free()
 
 
 signal countdown_completed
+signal ammo_count_changed
 
 const WEAPON_DATA_NAMES: Array = [
 	"ammo_cost",

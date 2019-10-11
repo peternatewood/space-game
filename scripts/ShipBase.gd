@@ -69,7 +69,7 @@ func _fire_energy_weapon():
 
 
 func _fire_missile_weapon(target = null):
-	if missile_weapon_hardpoints[missile_weapon_index].countdown == 0:
+	if missile_weapon_hardpoints[missile_weapon_index].countdown == 0 and missile_weapon_hardpoints[missile_weapon_index].ammo_count > 0:
 		missile_weapon_hardpoints[missile_weapon_index].fire_missile_weapon(self, target)
 		# TODO: subtract from missile weapon ammo
 
