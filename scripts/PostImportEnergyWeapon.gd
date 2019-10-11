@@ -32,37 +32,10 @@ func post_import(scene):
 
 		var data_parsed = JSON.parse(data_file.get_as_text())
 		if data_parsed.error == OK:
-			var cost = data_parsed.result.get("cost")
-			if cost != null and typeof(cost) == TYPE_REAL:
-				energy_data["cost"] = cost
-
-			var damage_hull = data_parsed.result.get("damage_hull")
-			if damage_hull != null and typeof(damage_hull) == TYPE_REAL:
-				energy_data["damage_hull"] = damage_hull
-
-			var damage_shield = data_parsed.result.get("damage_shield")
-			if damage_shield != null and typeof(damage_shield) == TYPE_REAL:
-				energy_data["damage_shield"] = damage_shield
-
-			var fire_delay = data_parsed.result.get("fire_delay")
-			if fire_delay != null and typeof(fire_delay) == TYPE_REAL:
-				energy_data["fire_delay"] = fire_delay
-
-			var life = data_parsed.result.get("life")
-			if life != null and typeof(life) == TYPE_REAL:
-				energy_data["life"] = life
-
-			var mass = data_parsed.result.get("mass")
-			if mass != null and typeof(mass) == TYPE_REAL:
-				energy_data["mass"] = mass
-
-			var speed = data_parsed.result.get("speed")
-			if speed != null and typeof(speed) == TYPE_REAL:
-				energy_data["speed"] = speed
-
-			var weapon_name = data_parsed.result.get("name")
-			if weapon_name != null and typeof(weapon_name) == TYPE_STRING:
-				energy_data["weapon_name"] = weapon_name
+			for key in energy_data.keys():
+				var property = data_parsed.result.get(key)
+				if property != null and typeof(property) == typeof(energy_data[key]):
+					energy_data[key] = property
 		else:
 			print("Error while parsing data file: ", data_file_name + " " + data_parsed.error_string)
 	else:

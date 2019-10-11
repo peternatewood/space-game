@@ -92,35 +92,17 @@ func post_import(scene):
 
 		var data_parsed = JSON.parse(data_file.get_as_text())
 		if data_parsed.error == OK:
-			var hull_hitpoints = data_parsed.result.get("hull_hitpoints")
-			if hull_hitpoints != null and typeof(hull_hitpoints) == TYPE_REAL:
-				ship_data["hull_hitpoints"] = hull_hitpoints
-
-			var max_speed = data_parsed.result.get("max_speed")
-			if max_speed != null and typeof(max_speed) == TYPE_REAL:
-				ship_data["max_speed"] = max_speed
-
-			var missile_capacity = data_parsed.result.get("missile_capacity")
-			if missile_capacity != null and typeof(missile_capacity) == TYPE_REAL:
-				ship_data["missile_capacity"] = missile_capacity
-
-			var shield_hitpoints = data_parsed.result.get("shield_hitpoints")
-			if shield_hitpoints != null and typeof(shield_hitpoints) == TYPE_REAL:
-				ship_data["shield_hitpoints"] = shield_hitpoints
-
-			var ship_class = data_parsed.result.get("ship_class")
-			if ship_class != null and typeof(ship_class) == TYPE_STRING:
-				ship_data["ship_class"] = ship_class
+			for key in ship_data.keys():
+				var property = data_parsed.result.get(key)
+				if property != null and typeof(property) == typeof(ship_data[key]):
+					ship_data[key] = property
 		else:
 			print("Error while parsing data file: ", data_file_name + " " + data_parsed.error_string)
 	else:
 		print("No such file: " + data_file_name)
 
-	scene.set_meta("hull_hitpoints", ship_data["hull_hitpoints"])
-	scene.set_meta("max_speed", ship_data["max_speed"])
-	scene.set_meta("missile_capacity", ship_data["missile_capacity"])
-	scene.set_meta("shield_hitpoints", ship_data["shield_hitpoints"])
-	scene.set_meta("ship_class", ship_data["ship_class"])
+	for key in ship_data.keys():
+		scene.set_meta(key, ship_data[key])
 
 	scene.set_meta("source_file", get_source_file())
 	scene.set_meta("source_folder", source_folder)

@@ -27,60 +27,17 @@ func post_import(scene):
 
 		var data_parsed = JSON.parse(data_file.get_as_text())
 		if data_parsed.error == OK:
-			var acceleration = data_parsed.result.get("acceleration")
-			if acceleration != null and typeof(acceleration) == TYPE_REAL:
-				missile_data["acceleration"] = acceleration
-
-			var ammo_cost = data_parsed.result.get("ammo_cost")
-			if ammo_cost != null and typeof(ammo_cost) == TYPE_REAL:
-				missile_data["ammo_cost"] = ammo_cost
-
-			var damage_hull = data_parsed.result.get("damage_hull")
-			if damage_hull != null and typeof(damage_hull) == TYPE_REAL:
-				missile_data["damage_hull"] = damage_hull
-
-			var damage_shield = data_parsed.result.get("damage_shield")
-			if damage_shield != null and typeof(damage_shield) == TYPE_REAL:
-				missile_data["damage_shield"] = damage_shield
-
-			var fire_delay = data_parsed.result.get("fire_delay")
-			if fire_delay != null and typeof(fire_delay) == TYPE_REAL:
-				missile_data["fire_delay"] = fire_delay
-
-			var life = data_parsed.result.get("life")
-			if life != null and typeof(life) == TYPE_REAL:
-				missile_data["life"] = life
-
-			var max_speed = data_parsed.result.get("max_speed")
-			if max_speed != null and typeof(max_speed) == TYPE_REAL:
-				missile_data["max_speed"] = max_speed
-
-			var search_radius = data_parsed.result.get("search_radius")
-			if search_radius != null and typeof(search_radius) == TYPE_REAL:
-				missile_data["search_radius"] = search_radius
-
-			var turn_speed = data_parsed.result.get("turn_speed")
-			if turn_speed != null and typeof(turn_speed) == TYPE_REAL:
-				missile_data["turn_speed"] = turn_speed
-
-			var weapon_name = data_parsed.result.get("name")
-			if weapon_name != null and typeof(weapon_name) == TYPE_STRING:
-				missile_data["weapon_name"] = weapon_name
+			for key in missile_data.keys():
+				var property = data_parsed.result.get(key)
+				if property != null and typeof(property) == typeof(missile_data[key]):
+					missile_data[key] = property
 		else:
 			print("Error while parsing data file: ", data_file_name + " " + data_parsed.error_string)
 	else:
 		print("No such file: " + data_file_name)
 
-	scene.set_meta("acceleration", missile_data["acceleration"])
-	scene.set_meta("ammo_cost", missile_data["ammo_cost"])
-	scene.set_meta("damage_hull", missile_data["damage_hull"])
-	scene.set_meta("damage_shield", missile_data["damage_shield"])
-	scene.set_meta("fire_delay", missile_data["fire_delay"])
-	scene.set_meta("life", missile_data["life"])
-	scene.set_meta("max_speed", missile_data["max_speed"])
-	scene.set_meta("search_radius", missile_data["search_radius"])
-	scene.set_meta("turn_speed", missile_data["turn_speed"])
-	scene.set_meta("weapon_name", missile_data["weapon_name"])
+	for key in missile_data.keys():
+		scene.set_meta(key, missile_data[key])
 
 	# Avg speed when accelerating: (max_speed - acceleration) / 2 | Seconds to reach max speed: max_speed / acceleration | Add max speed multiplied by remaining seconds
 	# Avg accel speed: (100 - 20) / 2 = 40 | Seconds to max speed: 100 / 20 = 5
