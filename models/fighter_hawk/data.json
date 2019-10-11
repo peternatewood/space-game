@@ -2,6 +2,6 @@
   "ship_class": "Hawk Fighter",
   "hull_hitpoints": 90.0,
   "shield_hitpoints": 90.0,
-  "max_speed": 36.0,
+  "max_speed": 75.0,
   "missile_capacity": 40
 }

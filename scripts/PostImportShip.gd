@@ -79,9 +79,9 @@ func post_import(scene):
 	var data_file_name: String = source_folder + "/data.json"
 
 	# Set defaults to be overridden by data file
+	var max_speed: float = 7.0
 	var ship_data: Dictionary = {
 		"hull_hitpoints": 100.0,
-		"max_speed": 32.0,
 		"missile_capacity": 55,
 		"shield_hitpoints": 100.0,
 		"ship_class": "ship"
@@ -96,6 +96,11 @@ func post_import(scene):
 				var property = data_parsed.result.get(key)
 				if property != null and typeof(property) == typeof(ship_data[key]):
 					ship_data[key] = property
+
+			# Speed in data file is in m/s, so we have to divide by 10 to get actual value
+			var parsed_max_speed = data_parsed.result.get("max_speed")
+			if parsed_max_speed != null and typeof(parsed_max_speed) == TYPE_REAL:
+				max_speed = parsed_max_speed / 10
 		else:
 			print("Error while parsing data file: ", data_file_name + " " + data_parsed.error_string)
 	else:
@@ -104,12 +109,15 @@ func post_import(scene):
 	for key in ship_data.keys():
 		scene.set_meta(key, ship_data[key])
 
+	scene.set_meta("max_speed", max_speed)
+	scene.set_meta("propulsion_force", MathHelper.get_propulsion_force_from_mass_and_speed(max_speed, scene.mass))
 	scene.set_meta("source_file", get_source_file())
 	scene.set_meta("source_folder", source_folder)
 
 	return .post_import(scene)
 
 
+const MathHelper = preload("MathHelper.gd")
 const ShieldQuadrant = preload("ShieldQuadrant.gd")
 const WeaponHardpoints = preload("WeaponHardpoints.gd")
 

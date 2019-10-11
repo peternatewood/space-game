@@ -3,7 +3,6 @@ extends "res://scripts/ActorBase.gd"
 export (String) var faction
 
 onready var energy_weapon_hardpoints = get_node("Energy Weapon Groups").get_children()
-onready var max_speed: float = get_meta("max_speed")
 onready var shields: Array = [
 	get_node("Shield Front"),
 	get_node("Shield Rear"),
@@ -18,12 +17,14 @@ onready var target_raycast = get_node("Target Raycast")
 var current_target
 var energy_weapon_index: int = 0
 var has_target: bool = false
+var max_speed: float
 var missile_weapon_index: int = 0
 var power_distribution: Array = [
 	float(TOTAL_SYSTEM_POWER / 3),
 	float(TOTAL_SYSTEM_POWER / 3),
 	float(TOTAL_SYSTEM_POWER / 3)
 ]
+var propulsion_force: float = 1.0
 var target_index: int = 0
 var throttle: float
 var torque_vector: Vector3
@@ -31,8 +32,12 @@ var weapon_battery: float = MAX_WEAPON_BATTERY
 
 
 func _ready():
-	max_hull_hitpoints = get_meta("hull_hitpoints")
-	max_speed = MASS_TO_MAX_SPEED_FACTOR * mass
+	if has_meta("propulsion_force"):
+		propulsion_force = get_meta("propulsion_force")
+	if has_meta("max_hull_hitpoints"):
+		max_hull_hitpoints = get_meta("hull_hitpoints")
+	if has_meta("max_speed"):
+		max_speed = get_meta("max_speed")
 
 	var shield_hitpoints = get_meta("shield_hitpoints")
 	for quadrant in shields:
@@ -122,7 +127,7 @@ func _on_target_destroyed():
 
 func _physics_process(delta):
 	add_torque(TURN_SPEED * torque_vector)
-	apply_central_impulse(throttle * _get_engine_factor() * -transform.basis.z)
+	apply_central_impulse(throttle * propulsion_force * _get_engine_factor() * -transform.basis.z)
 
 
 func _process(delta):
@@ -208,7 +213,7 @@ const ACCELERATION: float = 0.1
 const DESTRUCTION_SMOKE = preload("res://models/Destruction_Smoke.tscn")
 const ENERGY_BOLT = preload("res://models/energy_bolt/energy_bolt.dae")
 const MISSILE = preload("res://models/missile/missile.dae")
-const MASS_TO_MAX_SPEED_FACTOR: float = 32.129448
+#const MASS_TO_MAX_SPEED_FACTOR: float = 32.129448
 const MAX_SYSTEM_POWER: float = 60.0
 const MAX_THROTTLE: float = 1.0
 const MAX_WEAPON_BATTERY: float = 100.0
@@ -216,20 +221,3 @@ const POWER_INCREMENT: int = 10
 const TOTAL_SYSTEM_POWER: float = 90.0
 const TURN_SPEED: float = 2.5
 const WEAPON_BATTERY_RECOVERY_RATE: float = 1.0
-
-"""
-TODO: figure out the curve for this conversion; for now we're just expecting 0.85 damping for all ships
-Damping: 0.25 | Mass: 1.0 | Max Speed: 209.063675
-
-Damping: 0.50 | Mass: 0.5 | Max Speed: 124.124451
-Damping: 0.50 | Mass: 1.0 | Max Speed:  87.062263
-Damping: 0.50 | Mass: 2.0 | Max Speed:  43.531090
-Damping: 0.50 | Mass:10.0 | Max Speed:   8.706212
-
-Damping: 0.85 | Mass: 0.5 | Max Speed:  64.258858
-Damping: 0.85 | Mass: 1.0 | Max Speed:  32.129448
-Damping: 0.85 | Mass: 2.0 | Max Speed:  16.064760
-Damping: 0.85 | Mass:10.0 | Max Speed:   3.212944
-
-Damping: 0.95 | Mass: 1.0 | Max Speed:  20.532631
-"""
