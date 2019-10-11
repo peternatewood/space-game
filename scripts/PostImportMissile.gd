@@ -11,6 +11,7 @@ func post_import(scene):
 	# Set defaults to be overridden by data file
 	var missile_data: Dictionary = {
 		"acceleration": 1.0,
+		"ammo_cost": 2.0,
 		"damage_hull": 10.0,
 		"damage_shield": 5.0,
 	  "fire_delay": 1.5,
@@ -29,6 +30,10 @@ func post_import(scene):
 			var acceleration = data_parsed.result.get("acceleration")
 			if acceleration != null and typeof(acceleration) == TYPE_REAL:
 				missile_data["acceleration"] = acceleration
+
+			var ammo_cost = data_parsed.result.get("ammo_cost")
+			if ammo_cost != null and typeof(ammo_cost) == TYPE_REAL:
+				missile_data["ammo_cost"] = ammo_cost
 
 			var damage_hull = data_parsed.result.get("damage_hull")
 			if damage_hull != null and typeof(damage_hull) == TYPE_REAL:
@@ -67,6 +72,7 @@ func post_import(scene):
 		print("No such file: " + data_file_name)
 
 	scene.set_meta("acceleration", missile_data["acceleration"])
+	scene.set_meta("ammo_cost", missile_data["ammo_cost"])
 	scene.set_meta("damage_hull", missile_data["damage_hull"])
 	scene.set_meta("damage_shield", missile_data["damage_shield"])
 	scene.set_meta("fire_delay", missile_data["fire_delay"])

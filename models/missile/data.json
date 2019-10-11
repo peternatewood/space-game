@@ -1,5 +1,6 @@
 {
   "name": "Heat Seeker",
+  "ammo_cost": 1.0,
   "damage_hull": 25.0,
   "damage_shield": 5.0,
   "fire_delay": 1.0,
