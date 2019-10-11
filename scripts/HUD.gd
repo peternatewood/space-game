@@ -338,7 +338,7 @@ func _process(delta):
 	_update_speed_indicator()
 
 	# Toggle in-range indicator
-	if player.target_raycast.is_colliding():
+	if player.target_raycast.get_collider() is ActorBase:
 		if not in_range_icon.visible:
 			in_range_icon.show()
 	else:
@@ -398,6 +398,7 @@ func _update_speed_indicator():
 		speed_indicator.set_position(indicator_pos)
 
 
+const ActorBase = preload("ActorBase.gd")
 const EdgeTargetIcon = preload("EdgeTargetIcon.gd")
 const MathHelper = preload("MathHelper.gd")
 const ShipIcon = preload("ShipIcon.gd")
