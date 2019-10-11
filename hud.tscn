@@ -1,29 +1,37 @@
-[gd_scene load_steps=32 format=2]
+[gd_scene load_steps=34 format=2]
 
 [ext_resource path="res://themes/default_inconsolata.tres" type="Theme" id=1]
 [ext_resource path="res://scripts/HUD.gd" type="Script" id=2]
 [ext_resource path="res://images/hud_lines.png" type="Texture" id=3]
-[ext_resource path="res://icons/ship_icon.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scripts/PowerDistribution.gd" type="Script" id=5]
-[ext_resource path="res://images/power_bar_under.png" type="Texture" id=6]
-[ext_resource path="res://images/power_bar_progress.png" type="Texture" id=7]
-[ext_resource path="res://images/throttle_bar_under.png" type="Texture" id=8]
-[ext_resource path="res://images/throttle_bar_over.png" type="Texture" id=9]
-[ext_resource path="res://images/throttle_bar_progress.png" type="Texture" id=10]
-[ext_resource path="res://images/weapon_battery_under.png" type="Texture" id=11]
-[ext_resource path="res://images/weapon_battery_over.png" type="Texture" id=12]
-[ext_resource path="res://images/weapon_battery_progress.png" type="Texture" id=13]
-[ext_resource path="res://icons/energy_weapon_container.tscn" type="PackedScene" id=14]
-[ext_resource path="res://icons/missile_weapon_container.tscn" type="PackedScene" id=15]
-[ext_resource path="res://scripts/TargetDetailsIcon.gd" type="Script" id=16]
-[ext_resource path="res://images/shield_front_small.png" type="Texture" id=17]
-[ext_resource path="res://images/shield_rear_small.png" type="Texture" id=18]
-[ext_resource path="res://images/shield_left_small.png" type="Texture" id=19]
-[ext_resource path="res://images/shield_right_small.png" type="Texture" id=20]
-[ext_resource path="res://images/radar_bg.svg" type="Texture" id=21]
-[ext_resource path="res://scripts/EdgeTargetIcon.gd" type="Script" id=22]
-[ext_resource path="res://scripts/TargetIcon.gd" type="Script" id=23]
-[ext_resource path="res://models/fighter_frog/fighter_frog.dae" type="PackedScene" id=24]
+[ext_resource path="res://scripts/MissionTimer.gd" type="Script" id=4]
+[ext_resource path="res://icons/ship_icon.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scripts/PowerDistribution.gd" type="Script" id=6]
+[ext_resource path="res://images/power_bar_under.png" type="Texture" id=7]
+[ext_resource path="res://images/power_bar_progress.png" type="Texture" id=8]
+[ext_resource path="res://images/throttle_bar_under.png" type="Texture" id=9]
+[ext_resource path="res://images/throttle_bar_over.png" type="Texture" id=10]
+[ext_resource path="res://images/throttle_bar_progress.png" type="Texture" id=11]
+[ext_resource path="res://images/weapon_battery_under.png" type="Texture" id=12]
+[ext_resource path="res://images/weapon_battery_over.png" type="Texture" id=13]
+[ext_resource path="res://images/weapon_battery_progress.png" type="Texture" id=14]
+[ext_resource path="res://icons/energy_weapon_container.tscn" type="PackedScene" id=15]
+[ext_resource path="res://icons/missile_weapon_container.tscn" type="PackedScene" id=16]
+[ext_resource path="res://scripts/TargetDetailsIcon.gd" type="Script" id=17]
+[ext_resource path="res://images/shield_front_small.png" type="Texture" id=18]
+[ext_resource path="res://images/shield_rear_small.png" type="Texture" id=19]
+[ext_resource path="res://images/shield_left_small.png" type="Texture" id=20]
+[ext_resource path="res://images/shield_right_small.png" type="Texture" id=21]
+[ext_resource path="res://images/radar_bg.svg" type="Texture" id=22]
+[ext_resource path="res://scripts/EdgeTargetIcon.gd" type="Script" id=23]
+[ext_resource path="res://scripts/TargetIcon.gd" type="Script" id=24]
+[ext_resource path="res://models/fighter_frog/fighter_frog.dae" type="PackedScene" id=25]
+
+[sub_resource type="StyleBoxFlat" id=8]
+content_margin_left = 4.0
+content_margin_right = 4.0
+content_margin_top = 2.0
+content_margin_bottom = 2.0
+bg_color = Color( 0, 0, 0, 0.501961 )
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.501961, 0.501961, 0.501961, 1 )
@@ -87,6 +95,43 @@ margin_right = 240.0
 margin_bottom = 160.0
 texture = ExtResource( 3 )
 
+[node name="Mission Timer" type="PanelContainer" parent="."]
+editor/display_folded = true
+modulate = Color( 0.501961, 0.752941, 1, 1 )
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -66.0
+margin_top = 16.0
+margin_right = -16.0
+margin_bottom = 38.0
+custom_styles/panel = SubResource( 8 )
+script = ExtResource( 4 )
+
+[node name="Mission Timer Columns" type="HBoxContainer" parent="Mission Timer"]
+editor/display_folded = true
+margin_left = 4.0
+margin_top = 2.0
+margin_right = 46.0
+margin_bottom = 20.0
+custom_constants/separation = 1
+
+[node name="Minutes" type="Label" parent="Mission Timer/Mission Timer Columns"]
+margin_right = 16.0
+margin_bottom = 18.0
+text = "00"
+
+[node name="Separator" type="Label" parent="Mission Timer/Mission Timer Columns"]
+margin_left = 17.0
+margin_right = 25.0
+margin_bottom = 18.0
+text = ":"
+
+[node name="Seconds" type="Label" parent="Mission Timer/Mission Timer Columns"]
+margin_left = 26.0
+margin_right = 42.0
+margin_bottom = 18.0
+text = "00"
+
 [node name="Hull Bar" type="ProgressBar" parent="."]
 modulate = Color( 0.501961, 0.752941, 1, 1 )
 anchor_left = 0.5
@@ -100,7 +145,7 @@ custom_styles/bg = SubResource( 2 )
 step = 1.0
 value = 50.0
 
-[node name="Player Overhead" parent="." instance=ExtResource( 4 )]
+[node name="Player Overhead" parent="." instance=ExtResource( 5 )]
 modulate = Color( 0.501961, 0.752941, 1, 1 )
 anchor_left = 1.0
 anchor_top = 1.0
@@ -122,7 +167,7 @@ margin_left = -176.0
 margin_top = -98.0
 margin_right = -144.0
 margin_bottom = -16.0
-script = ExtResource( 5 )
+script = ExtResource( 6 )
 
 [node name="Weapon Container" type="VBoxContainer" parent="Power Container"]
 margin_right = 8.0
@@ -133,8 +178,8 @@ margin_right = 8.0
 margin_bottom = 60.0
 max_value = 60.0
 value = 30.0
-texture_under = ExtResource( 6 )
-texture_progress = ExtResource( 7 )
+texture_under = ExtResource( 7 )
+texture_progress = ExtResource( 8 )
 fill_mode = 3
 
 [node name="Label" type="Label" parent="Power Container/Weapon Container"]
@@ -153,8 +198,8 @@ margin_right = 8.0
 margin_bottom = 60.0
 max_value = 60.0
 value = 15.0
-texture_under = ExtResource( 6 )
-texture_progress = ExtResource( 7 )
+texture_under = ExtResource( 7 )
+texture_progress = ExtResource( 8 )
 fill_mode = 3
 
 [node name="Label" type="Label" parent="Power Container/Shield Container"]
@@ -173,8 +218,8 @@ margin_right = 8.0
 margin_bottom = 60.0
 max_value = 60.0
 value = 45.0
-texture_under = ExtResource( 6 )
-texture_progress = ExtResource( 7 )
+texture_under = ExtResource( 7 )
+texture_progress = ExtResource( 8 )
 fill_mode = 3
 
 [node name="Label" type="Label" parent="Power Container/Engine Container"]
@@ -183,7 +228,7 @@ margin_right = 8.0
 margin_bottom = 82.0
 text = "E"
 
-[node name="Target Overhead" parent="." instance=ExtResource( 4 )]
+[node name="Target Overhead" parent="." instance=ExtResource( 5 )]
 visible = false
 modulate = Color( 0.501961, 0.752941, 1, 1 )
 anchor_top = 1.0
@@ -211,14 +256,14 @@ margin_right = 32.0
 margin_bottom = 64.0
 step = 0.1
 value = 50.0
-texture_under = ExtResource( 8 )
-texture_over = ExtResource( 9 )
-texture_progress = ExtResource( 10 )
+texture_under = ExtResource( 9 )
+texture_over = ExtResource( 10 )
+texture_progress = ExtResource( 11 )
 fill_mode = 3
 
 [node name="Throttle Line Mask" type="Light2D" parent="Throttle Bar Container"]
 light_mask = 2
-texture = ExtResource( 10 )
+texture = ExtResource( 11 )
 offset = Vector2( 16, 32 )
 mode = 3
 range_item_cull_mask = 2
@@ -253,9 +298,9 @@ margin_top = -32.0
 margin_right = -192.0
 margin_bottom = 32.0
 value = 50.0
-texture_under = ExtResource( 11 )
-texture_over = ExtResource( 12 )
-texture_progress = ExtResource( 13 )
+texture_under = ExtResource( 12 )
+texture_over = ExtResource( 13 )
+texture_progress = ExtResource( 14 )
 fill_mode = 3
 
 [node name="Weapons Container" type="PanelContainer" parent="."]
@@ -279,10 +324,10 @@ margin_bottom = 74.0
 margin_right = 126.0
 margin_bottom = 18.0
 
-[node name="Energy Weapon Container 1" parent="Weapons Container/Weapons Rows/Energy Weapons" instance=ExtResource( 14 )]
+[node name="Energy Weapon Container 1" parent="Weapons Container/Weapons Rows/Energy Weapons" instance=ExtResource( 15 )]
 margin_right = 126.0
 
-[node name="Energy Weapon Container 2" parent="Weapons Container/Weapons Rows/Energy Weapons" instance=ExtResource( 14 )]
+[node name="Energy Weapon Container 2" parent="Weapons Container/Weapons Rows/Energy Weapons" instance=ExtResource( 15 )]
 visible = false
 margin_top = 22.0
 margin_bottom = 40.0
@@ -298,15 +343,15 @@ margin_top = 30.0
 margin_right = 126.0
 margin_bottom = 70.0
 
-[node name="Missile Weapon Container 1" parent="Weapons Container/Weapons Rows/Missile Weapons" instance=ExtResource( 15 )]
+[node name="Missile Weapon Container 1" parent="Weapons Container/Weapons Rows/Missile Weapons" instance=ExtResource( 16 )]
 margin_right = 126.0
 
-[node name="Missile Weapon Container 2" parent="Weapons Container/Weapons Rows/Missile Weapons" instance=ExtResource( 15 )]
+[node name="Missile Weapon Container 2" parent="Weapons Container/Weapons Rows/Missile Weapons" instance=ExtResource( 16 )]
 margin_top = 22.0
 margin_right = 126.0
 margin_bottom = 40.0
 
-[node name="Missile Weapon Container 3" parent="Weapons Container/Weapons Rows/Missile Weapons" instance=ExtResource( 15 )]
+[node name="Missile Weapon Container 3" parent="Weapons Container/Weapons Rows/Missile Weapons" instance=ExtResource( 16 )]
 visible = false
 margin_top = 22.0
 margin_right = 110.0
@@ -383,27 +428,27 @@ margin_left = -20.0
 margin_top = 140.0
 margin_right = 20.0
 margin_bottom = 168.0
-script = ExtResource( 16 )
+script = ExtResource( 17 )
 
 [node name="Shield Front" type="TextureRect" parent="Target Details Minimal"]
 margin_right = 40.0
 margin_bottom = 28.0
-texture = ExtResource( 17 )
+texture = ExtResource( 18 )
 
 [node name="Shield Rear" type="TextureRect" parent="Target Details Minimal"]
 margin_right = 40.0
 margin_bottom = 28.0
-texture = ExtResource( 18 )
+texture = ExtResource( 19 )
 
 [node name="Shield Left" type="TextureRect" parent="Target Details Minimal"]
 margin_right = 40.0
 margin_bottom = 28.0
-texture = ExtResource( 19 )
+texture = ExtResource( 20 )
 
 [node name="Shield Right" type="TextureRect" parent="Target Details Minimal"]
 margin_right = 40.0
 margin_bottom = 28.0
-texture = ExtResource( 20 )
+texture = ExtResource( 21 )
 
 [node name="Hull Percent" type="Label" parent="Target Details Minimal"]
 margin_left = 7.0
@@ -436,7 +481,7 @@ margin_left = -66.0
 margin_top = -33.0
 margin_right = 66.0
 margin_bottom = 33.0
-texture = ExtResource( 21 )
+texture = ExtResource( 22 )
 
 [node name="Radar Icons Container" type="Control" parent="Radar"]
 anchor_right = 1.0
@@ -544,7 +589,7 @@ text = "%"
 [node name="Edge Target Icon" type="Control" parent="."]
 editor/display_folded = true
 visible = false
-script = ExtResource( 22 )
+script = ExtResource( 23 )
 
 [node name="Arrow Up" type="Control" parent="Edge Target Icon"]
 
@@ -685,7 +730,7 @@ valign = 1
 [node name="Target Icon" type="Control" parent="."]
 editor/display_folded = true
 visible = false
-script = ExtResource( 23 )
+script = ExtResource( 24 )
 
 [node name="Top Left" type="Line2D" parent="Target Icon"]
 position = Vector2( -12, -12 )
@@ -729,6 +774,7 @@ align = 2
 valign = 1
 
 [node name="Debug" type="Label" parent="."]
+visible = false
 margin_right = 726.0
 margin_bottom = 14.0
 
@@ -746,7 +792,7 @@ current = true
 size = 3.0
 far = 10.0
 
-[node name="Frog Fighter" parent="Target Viewport" instance=ExtResource( 24 )]
+[node name="Frog Fighter" parent="Target Viewport" instance=ExtResource( 25 )]
 input_ray_pickable = false
 collision_layer = 0
 collision_mask = 0
