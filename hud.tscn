@@ -259,7 +259,6 @@ texture_progress = ExtResource( 13 )
 fill_mode = 3
 
 [node name="Weapons Container" type="PanelContainer" parent="."]
-editor/display_folded = true
 modulate = Color( 0.501961, 0.752941, 1, 1 )
 anchor_top = 0.5
 anchor_bottom = 0.5
@@ -272,14 +271,15 @@ custom_styles/panel = SubResource( 3 )
 [node name="Weapons Rows" type="VBoxContainer" parent="Weapons Container"]
 margin_left = 4.0
 margin_top = 4.0
-margin_right = 114.0
+margin_right = 130.0
 margin_bottom = 74.0
 
 [node name="Energy Weapons" type="VBoxContainer" parent="Weapons Container/Weapons Rows"]
-margin_right = 110.0
+margin_right = 126.0
 margin_bottom = 18.0
 
 [node name="Energy Weapon Container 1" parent="Weapons Container/Weapons Rows/Energy Weapons" instance=ExtResource( 14 )]
+margin_right = 126.0
 
 [node name="Energy Weapon Container 2" parent="Weapons Container/Weapons Rows/Energy Weapons" instance=ExtResource( 14 )]
 visible = false
@@ -288,21 +288,21 @@ margin_bottom = 40.0
 
 [node name="HSeparator" type="HSeparator" parent="Weapons Container/Weapons Rows"]
 margin_top = 22.0
-margin_right = 110.0
+margin_right = 126.0
 margin_bottom = 26.0
 custom_styles/separator = SubResource( 4 )
 
 [node name="Missile Weapons" type="VBoxContainer" parent="Weapons Container/Weapons Rows"]
 margin_top = 30.0
-margin_right = 110.0
+margin_right = 126.0
 margin_bottom = 70.0
 
 [node name="Missile Weapon Container 1" parent="Weapons Container/Weapons Rows/Missile Weapons" instance=ExtResource( 15 )]
-margin_right = 110.0
+margin_right = 126.0
 
 [node name="Missile Weapon Container 2" parent="Weapons Container/Weapons Rows/Missile Weapons" instance=ExtResource( 15 )]
 margin_top = 22.0
-margin_right = 110.0
+margin_right = 126.0
 margin_bottom = 40.0
 
 [node name="Missile Weapon Container 3" parent="Weapons Container/Weapons Rows/Missile Weapons" instance=ExtResource( 15 )]

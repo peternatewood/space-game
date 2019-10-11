@@ -36,6 +36,21 @@ custom_styles/separator = SubResource( 1 )
 [node name="Missile Ammo" type="Label" parent="."]
 margin_left = 81.0
 margin_top = 2.0
-margin_right = 97.0
+margin_right = 89.0
 margin_bottom = 16.0
-text = "10"
+text = "0"
+align = 2
+
+[node name="Separator" type="Label" parent="."]
+margin_left = 93.0
+margin_top = 2.0
+margin_right = 98.0
+margin_bottom = 16.0
+text = "/"
+
+[node name="Missile Capacity" type="Label" parent="."]
+margin_left = 102.0
+margin_top = 2.0
+margin_right = 110.0
+margin_bottom = 16.0
+text = "0"

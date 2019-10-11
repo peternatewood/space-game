@@ -223,7 +223,7 @@ func _on_scene_loaded():
 	for index in range(missile_weapon_rows.size()):
 		if index < missile_hardpoint_count:
 			missile_weapon_rows[index].show()
-			missile_weapon_rows[index].set_ammo(player.missile_weapon_hardpoints[index].ammo_capacity)
+			missile_weapon_rows[index].set_capacity(player.missile_weapon_hardpoints[index].ammo_capacity)
 			missile_weapon_rows[index].set_name(player.missile_weapon_hardpoints[index].get_weapon_data("weapon_name"))
 			player.missile_weapon_hardpoints[index].connect("ammo_count_changed", self, "_on_player_ammo_count_changed", [ index ])
 		else:
