@@ -195,7 +195,7 @@ func _process(delta):
 		match cam_mode:
 			COCKPIT:
 				camera.transform.origin = cockpit_view.global_transform.origin
-				camera.look_at(transform.origin - 5 * transform.basis.z, transform.basis.y)
+				camera.look_at(cockpit_view.global_transform.origin - 5 * transform.basis.z, transform.basis.y)
 			CHASE:
 				cam_offset = cam_offset.linear_interpolate(input_velocity, delta)
 				cam_dist = lerp(cam_dist, throttle * CAM_THROTTLE_MOD, delta)
@@ -237,7 +237,7 @@ func get_targeting_endpoint():
 	if is_a_target_in_range():
 		return target_raycast.get_collision_point()
 
-	return transform.origin - 20 * transform.basis.z
+	return cockpit_view.global_transform.origin - 20 * transform.basis.z
 
 
 func is_a_target_in_range():
