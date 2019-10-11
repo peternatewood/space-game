@@ -66,11 +66,17 @@ func post_import(scene):
 	scene.set_linear_damp(0.85)
 
 	# Add raycast for targeting
+	var raycast_start: Vector3
+	var cockpit_view = scene.get_node("Cockpit View")
+	if cockpit_view != null:
+		raycast_start = cockpit_view.transform.origin
+
 	var target_raycast = RayCast.new()
 	scene.add_child(target_raycast)
 	target_raycast.set_owner(scene)
+	target_raycast.transform.origin = raycast_start
 	target_raycast.set_name("Target Raycast")
-	target_raycast.set_cast_to(200 * Vector3.FORWARD)
+	target_raycast.set_cast_to(raycast_start + 200 * Vector3.FORWARD)
 	target_raycast.set_enabled(true)
 
 	# This is used for loading the data file and other resources
