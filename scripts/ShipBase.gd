@@ -44,7 +44,7 @@ func _ready():
 		energy_weapon.set_weapon(ENERGY_BOLT)
 
 	for missile_weapon in missile_weapon_hardpoints:
-		missile_weapon.set_weapon(MISSILE)
+		missile_weapon.set_weapon(MISSILE, get_meta("missile_capacity"))
 
 
 func _cycle_energy_weapon(direction: int):

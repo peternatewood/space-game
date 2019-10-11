@@ -59,7 +59,7 @@ func get_weapon_data(name: String):
 	return weapon_data.get(name, 1.0)
 
 
-func set_weapon(weapon_scene):
+func set_weapon(weapon_scene, missile_capacity = null):
 	weapon = weapon_scene
 
 	var weapon_instance = weapon.instance()
@@ -67,12 +67,16 @@ func set_weapon(weapon_scene):
 		if weapon_instance.has_meta(name):
 			weapon_data[name] = weapon_instance.get_meta(name)
 
+	if weapon_data.has("ammo_cost") and missile_capacity != null:
+		ammo_capacity = round(missile_capacity / weapon_data["ammo_cost"])
+
 	weapon_instance.free()
 
 
 signal countdown_completed
 
 const WEAPON_DATA_NAMES: Array = [
+	"ammo_cost",
 	"cost",
 	"firing_range",
 	"weapon_name"
