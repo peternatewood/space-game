@@ -112,6 +112,7 @@ margin_right = -192.0
 margin_bottom = -16.0
 
 [node name="Power Container" type="HBoxContainer" parent="."]
+editor/display_folded = true
 modulate = Color( 0.501961, 0.752941, 1, 1 )
 anchor_left = 1.0
 anchor_top = 1.0
@@ -728,7 +729,6 @@ align = 2
 valign = 1
 
 [node name="Debug" type="Label" parent="."]
-visible = false
 margin_right = 726.0
 margin_bottom = 14.0
 

@@ -28,6 +28,7 @@ var propulsion_force: float = 1.0
 var target_index: int = 0
 var throttle: float
 var torque_vector: Vector3
+var turn_speed: float
 var weapon_battery: float = MAX_WEAPON_BATTERY
 
 
@@ -38,6 +39,9 @@ func _ready():
 		max_hull_hitpoints = get_meta("hull_hitpoints")
 	if has_meta("max_speed"):
 		max_speed = get_meta("max_speed")
+
+	# Set turn speed based on mass
+	turn_speed = 2.5 * mass
 
 	var shield_hitpoints = get_meta("shield_hitpoints")
 	for quadrant in shields:
@@ -126,7 +130,7 @@ func _on_target_destroyed():
 
 
 func _physics_process(delta):
-	add_torque(TURN_SPEED * torque_vector)
+	add_torque(turn_speed * torque_vector)
 	apply_central_impulse(throttle * propulsion_force * _get_engine_factor() * -transform.basis.z)
 
 
@@ -213,11 +217,9 @@ const ACCELERATION: float = 0.1
 const DESTRUCTION_SMOKE = preload("res://models/Destruction_Smoke.tscn")
 const ENERGY_BOLT = preload("res://models/energy_bolt/energy_bolt.dae")
 const MISSILE = preload("res://models/missile/missile.dae")
-#const MASS_TO_MAX_SPEED_FACTOR: float = 32.129448
 const MAX_SYSTEM_POWER: float = 60.0
 const MAX_THROTTLE: float = 1.0
 const MAX_WEAPON_BATTERY: float = 100.0
 const POWER_INCREMENT: int = 10
 const TOTAL_SYSTEM_POWER: float = 90.0
-const TURN_SPEED: float = 2.5
 const WEAPON_BATTERY_RECOVERY_RATE: float = 1.0
