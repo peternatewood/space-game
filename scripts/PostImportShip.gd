@@ -82,6 +82,7 @@ func post_import(scene):
 	var ship_data: Dictionary = {
 		"hull_hitpoints": 100.0,
 		"max_speed": 32.0,
+		"missile_capacity": 55,
 		"shield_hitpoints": 100.0,
 		"ship_class": "ship"
 	}
@@ -99,6 +100,10 @@ func post_import(scene):
 			if max_speed != null and typeof(max_speed) == TYPE_REAL:
 				ship_data["max_speed"] = max_speed
 
+			var missile_capacity = data_parsed.result.get("missile_capacity")
+			if missile_capacity != null and typeof(missile_capacity) == TYPE_REAL:
+				ship_data["missile_capacity"] = missile_capacity
+
 			var shield_hitpoints = data_parsed.result.get("shield_hitpoints")
 			if shield_hitpoints != null and typeof(shield_hitpoints) == TYPE_REAL:
 				ship_data["shield_hitpoints"] = shield_hitpoints
@@ -113,6 +118,7 @@ func post_import(scene):
 
 	scene.set_meta("hull_hitpoints", ship_data["hull_hitpoints"])
 	scene.set_meta("max_speed", ship_data["max_speed"])
+	scene.set_meta("missile_capacity", ship_data["missile_capacity"])
 	scene.set_meta("shield_hitpoints", ship_data["shield_hitpoints"])
 	scene.set_meta("ship_class", ship_data["ship_class"])
 

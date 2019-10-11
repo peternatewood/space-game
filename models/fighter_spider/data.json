@@ -2,5 +2,6 @@
   "ship_class": "Spider Fighter",
   "hull_hitpoints": 100.0,
   "shield_hitpoints": 100.0,
-  "max_speed": 32.0
+  "max_speed": 32.0,
+  "missile_capacity": 50
 }
