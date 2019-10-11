@@ -5,8 +5,8 @@
 		<author>Anonymous</author>
 		<authoring_tool>Collada Exporter for Blender 2.6+, by Juan Linietsky (juan@codenix.com)</authoring_tool>
 	</contributor>
-	<created>2019-10-09T13:24:01Z</created>
-	<modified>2019-10-09T13:24:01Z</modified>
+	<created>2019-10-11T15:08:57Z</created>
+	<modified>2019-10-11T15:08:57Z</modified>
 	<unit meter="1.0" name="meter"/>
 	<up_axis>Z_UP</up_axis>
 </asset>
@@ -1133,23 +1133,79 @@
 						<empty_draw_type>PLAIN_AXES</empty_draw_type>
 					</technique>
 				</extra>
-			<node id="Missile Weapon Hardpoints" name="Missile Weapon Hardpoints" type="NODE">
+			<node id="Missile Weapon Hardpoints 1" name="Missile Weapon Hardpoints 1" type="NODE">
 				<matrix sid="transform"> 1.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 1.0  </matrix>
 				<extra>
 					<technique profile="GODOT">
 						<empty_draw_type>PLAIN_AXES</empty_draw_type>
 					</technique>
 				</extra>
-				<node id="Empty.002" name="Empty.002" type="NODE">
-					<matrix sid="transform"> 1.0 0.0 0.0 -0.22785599529743195 0.0 1.0 0.0 -0.23256400227546692 0.0 0.0 1.0 0.16500671207904816 0.0 0.0 0.0 1.0  </matrix>
+				<node id="Point 1" name="Point 1" type="NODE">
+					<matrix sid="transform"> 1.0 0.0 0.0 0.24980799853801727 0.0 1.0 0.0 -0.23256400227546692 0.0 0.0 1.0 0.1988356113433838 0.0 0.0 0.0 1.0  </matrix>
 				<extra>
 					<technique profile="GODOT">
 						<empty_draw_type>PLAIN_AXES</empty_draw_type>
 					</technique>
 				</extra>
 				</node>
-				<node id="Empty.003" name="Empty.003" type="NODE">
-					<matrix sid="transform"> 1.0 0.0 0.0 0.22785599529743195 0.0 1.0 0.0 -0.23256400227546692 0.0 0.0 1.0 0.16500671207904816 0.0 0.0 0.0 1.0  </matrix>
+				<node id="Point 2.001" name="Point 2.001" type="NODE">
+					<matrix sid="transform"> 1.0 0.0 0.0 0.2034991979598999 0.0 1.0 0.0 -0.23256400227546692 0.0 0.0 1.0 0.18395090103149414 0.0 0.0 0.0 1.0  </matrix>
+				<extra>
+					<technique profile="GODOT">
+						<empty_draw_type>PLAIN_AXES</empty_draw_type>
+					</technique>
+				</extra>
+				</node>
+				<node id="Point 3.001" name="Point 3.001" type="NODE">
+					<matrix sid="transform"> 1.0 0.0 0.0 0.2914543151855469 0.0 1.0 0.0 -0.23256400227546692 0.0 0.0 1.0 0.1595940887928009 0.0 0.0 0.0 1.0  </matrix>
+				<extra>
+					<technique profile="GODOT">
+						<empty_draw_type>PLAIN_AXES</empty_draw_type>
+					</technique>
+				</extra>
+				</node>
+				<node id="Point 4.001" name="Point 4.001" type="NODE">
+					<matrix sid="transform"> 1.0 0.0 0.0 0.24680016934871674 0.0 1.0 0.0 -0.23256400227546692 0.0 0.0 1.0 0.1406499147415161 0.0 0.0 0.0 1.0  </matrix>
+				<extra>
+					<technique profile="GODOT">
+						<empty_draw_type>PLAIN_AXES</empty_draw_type>
+					</technique>
+				</extra>
+				</node>
+			</node>
+			<node id="Missile Weapon Hardpoints 2" name="Missile Weapon Hardpoints 2" type="NODE">
+				<matrix sid="transform"> 1.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 1.0  </matrix>
+				<extra>
+					<technique profile="GODOT">
+						<empty_draw_type>PLAIN_AXES</empty_draw_type>
+					</technique>
+				</extra>
+				<node id="Point 1.001" name="Point 1.001" type="NODE">
+					<matrix sid="transform"> 1.0 0.0 0.0 -0.24980799853801727 0.0 1.0 0.0 -0.23256400227546692 0.0 0.0 1.0 0.1988356113433838 0.0 0.0 0.0 1.0  </matrix>
+				<extra>
+					<technique profile="GODOT">
+						<empty_draw_type>PLAIN_AXES</empty_draw_type>
+					</technique>
+				</extra>
+				</node>
+				<node id="Point 2" name="Point 2" type="NODE">
+					<matrix sid="transform"> 1.0 0.0 0.0 -0.20349900424480438 0.0 1.0 0.0 -0.23256400227546692 0.0 0.0 1.0 0.18395090103149414 0.0 0.0 0.0 1.0  </matrix>
+				<extra>
+					<technique profile="GODOT">
+						<empty_draw_type>PLAIN_AXES</empty_draw_type>
+					</technique>
+				</extra>
+				</node>
+				<node id="Point 3" name="Point 3" type="NODE">
+					<matrix sid="transform"> 1.0 0.0 0.0 -0.2914539873600006 0.0 1.0 0.0 -0.23256400227546692 0.0 0.0 1.0 0.1595940887928009 0.0 0.0 0.0 1.0  </matrix>
+				<extra>
+					<technique profile="GODOT">
+						<empty_draw_type>PLAIN_AXES</empty_draw_type>
+					</technique>
+				</extra>
+				</node>
+				<node id="Point 4" name="Point 4" type="NODE">
+					<matrix sid="transform"> 1.0 0.0 0.0 -0.2468000054359436 0.0 1.0 0.0 -0.23256400227546692 0.0 0.0 1.0 0.1406499147415161 0.0 0.0 0.0 1.0  </matrix>
 				<extra>
 					<technique profile="GODOT">
 						<empty_draw_type>PLAIN_AXES</empty_draw_type>
