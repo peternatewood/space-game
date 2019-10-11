@@ -7,6 +7,7 @@ var factions = {
 	"hawk": { "frog": FRIENDLY, "spider": HOSTILE },
 	"spider": { "hawk": HOSTILE, "frog": NEUTRAL }
 }
+var targets: Array
 
 
 func _ready():
@@ -15,6 +16,9 @@ func _ready():
 
 
 func _on_scene_loaded():
+	targets = get_node("Targets Container").get_children()
+	targets.append(get_node("Player"))
+
 	set_process(true)
 
 
