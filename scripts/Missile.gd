@@ -31,8 +31,7 @@ func _process(delta):
 					closest_index = index
 
 		if closest_index != -1:
-			has_target = true
-			target = mission_controller.targets[closest_index]
+			set_target(mission_controller.targets[closest_index])
 
 		# Whether we found a target or not, don't search again
 		searched_for_target = true
