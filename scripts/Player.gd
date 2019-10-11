@@ -2,8 +2,6 @@ extends "res://scripts/ShipBase.gd"
 
 export (NodePath) var camera_path
 
-onready var chase_view = get_node("Chase View")
-onready var cockpit_view = get_node("Cockpit View")
 onready var targets_container = get_tree().get_root().get_node("Mission Controller/Targets Container")
 
 var allow_input: bool = false
@@ -230,20 +228,6 @@ func _toggle_ship_mesh(show_meshes: bool):
 				child.hide()
 
 
-# PUBLIC
-
-
-func get_targeting_endpoint():
-	if is_a_target_in_range():
-		return target_raycast.get_collision_point()
-
-	return cockpit_view.global_transform.origin - 20 * transform.basis.z
-
-
-func is_a_target_in_range():
-	return target_raycast.get_collider() is ActorBase
-
-
 signal cam_changed
 signal power_distribution_changed
 signal shield_boost_changed
@@ -252,7 +236,6 @@ signal throttle_changed
 
 enum { COCKPIT, CHASE }
 
-const ActorBase = preload("ActorBase.gd")
 const ShipBase = preload("ShipBase.gd")
 
 const CAM_ROLL_MOD: float = 0.25

@@ -2,6 +2,8 @@ extends "res://scripts/ActorBase.gd"
 
 export (String) var faction
 
+onready var chase_view = get_node("Chase View")
+onready var cockpit_view = get_node("Cockpit View")
 onready var energy_weapon_hardpoints = get_node("Energy Weapon Groups").get_children()
 onready var shields: Array = [
 	get_node("Shield Front"),
@@ -200,8 +202,19 @@ func get_source_filename():
 	return get_meta("source_file")
 
 
+func get_targeting_endpoint():
+	if is_a_target_in_range():
+		return target_raycast.get_collision_point()
+
+	return cockpit_view.global_transform.origin - 20 * transform.basis.z
+
+
 func get_weapon_battery_percent():
 	return weapon_battery / MAX_WEAPON_BATTERY
+
+
+func is_a_target_in_range():
+	return target_raycast.get_collider() is ActorBase
 
 
 signal energy_weapon_changed
@@ -210,6 +223,7 @@ signal missile_weapon_changed
 enum { WEAPON, SHIELD, ENGINE, TOTAL_POWER_LEVELS }
 enum { FRONT, REAR, LEFT, RIGHT, QUADRANT_COUNT }
 
+const ActorBase = preload("ActorBase.gd")
 const EnergyBolt = preload("EnergyBolt.gd")
 const ShieldQuadrant = preload("ShieldQuadrant.gd")
 
