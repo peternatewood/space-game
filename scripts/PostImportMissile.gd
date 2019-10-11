@@ -16,6 +16,7 @@ func post_import(scene):
 	  "fire_delay": 1.5,
 	  "life": 10.0,
 		"max_speed": 100.0,
+		"search_radius": 10.0,
 		"turn_speed": 1.0,
 		"weapon_name": "missile"
 	}
@@ -49,6 +50,10 @@ func post_import(scene):
 			if max_speed != null and typeof(max_speed) == TYPE_REAL:
 				missile_data["max_speed"] = max_speed
 
+			var search_radius = data_parsed.result.get("search_radius")
+			if search_radius != null and typeof(search_radius) == TYPE_REAL:
+				missile_data["search_radius"] = search_radius
+
 			var turn_speed = data_parsed.result.get("turn_speed")
 			if turn_speed != null and typeof(turn_speed) == TYPE_REAL:
 				missile_data["turn_speed"] = turn_speed
@@ -67,6 +72,7 @@ func post_import(scene):
 	scene.set_meta("fire_delay", missile_data["fire_delay"])
 	scene.set_meta("life", missile_data["life"])
 	scene.set_meta("max_speed", missile_data["max_speed"])
+	scene.set_meta("search_radius", missile_data["search_radius"])
 	scene.set_meta("turn_speed", missile_data["turn_speed"])
 	scene.set_meta("weapon_name", missile_data["weapon_name"])
 

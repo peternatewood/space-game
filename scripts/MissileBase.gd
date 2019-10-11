@@ -3,14 +3,20 @@ extends "res://scripts/WeaponBase.gd"
 var acceleration: float
 var has_target: bool = false
 var max_speed: float
+var search_radius: float
 var target
 var turn_speed: float
 
 
 func _ready():
-	acceleration = get_meta("acceleration")
-	max_speed = get_meta("max_speed")
-	turn_speed = get_meta("turn_speed")
+	if has_meta("acceleration"):
+		acceleration = get_meta("acceleration")
+	if has_meta("max_speed"):
+		max_speed = get_meta("max_speed")
+	if has_meta("search_radius"):
+		search_radius = get_meta("search_radius")
+	if has_meta("turn_speed"):
+		turn_speed = get_meta("turn_speed")
 
 	speed = 0.0
 
