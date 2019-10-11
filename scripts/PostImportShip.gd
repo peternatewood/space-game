@@ -97,6 +97,10 @@ func post_import(scene):
 				if property != null and typeof(property) == typeof(ship_data[key]):
 					ship_data[key] = property
 
+			var mass = data_parsed.result.get("mass")
+			if mass != null and typeof(mass) == TYPE_REAL:
+				scene.set_mass(mass)
+
 			# Speed in data file is in m/s, so we have to divide by 10 to get actual value
 			var parsed_max_speed = data_parsed.result.get("max_speed")
 			if parsed_max_speed != null and typeof(parsed_max_speed) == TYPE_REAL:
