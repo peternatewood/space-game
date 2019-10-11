@@ -22,6 +22,7 @@ onready var target_details_minimal = get_node("Target Details Minimal")
 onready var target_icon = get_node("Target Icon")
 onready var target_overhead = get_node("Target Overhead")
 onready var target_reticule = get_node("Target Reticule")
+onready var target_reticule_outer = get_node("Target Reticule Outer")
 onready var target_view_container = get_node("Target View Container")
 onready var target_viewport = get_node("Target Viewport")
 onready var throttle_bar = get_node("Throttle Bar Container/Throttle Bar")
@@ -69,6 +70,7 @@ func _on_player_cam_changed(cam_mode: int):
 	if cam_mode == player.COCKPIT:
 		hud_bars.show()
 		target_reticule.set_position(viewport.get_visible_rect().size / 2)
+		target_reticule_outer.set_position(target_reticule.rect_position)
 	else:
 		hud_bars.hide()
 
@@ -351,7 +353,7 @@ func _process(delta):
 	_update_speed_indicator()
 
 	# Toggle in-range indicator
-	if player.target_raycast.get_collider() is ActorBase:
+	if player.is_a_target_in_range():
 		if not in_range_icon.visible:
 			in_range_icon.show()
 	else:
@@ -364,6 +366,8 @@ func _process(delta):
 	if player.cam_mode != player.COCKPIT:
 		var reticule_pos_3: Vector3 = player.get_targeting_endpoint()
 		target_reticule.set_position(camera.unproject_position(reticule_pos_3))
+		var reticule_half_pos_3: Vector3 = player.transform.origin + (reticule_pos_3 - player.transform.origin) / 2
+		target_reticule_outer.set_position(camera.unproject_position(reticule_half_pos_3))
 
 
 func _update_edge_icon():
@@ -416,7 +420,6 @@ func _update_speed_indicator():
 		speed_indicator.set_position(indicator_pos)
 
 
-const ActorBase = preload("ActorBase.gd")
 const EdgeTargetIcon = preload("EdgeTargetIcon.gd")
 const MathHelper = preload("MathHelper.gd")
 const ShipIcon = preload("ShipIcon.gd")

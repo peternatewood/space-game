@@ -89,9 +89,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -240.0
+margin_left = -240.211
 margin_top = -160.0
-margin_right = 240.0
+margin_right = 239.789
 margin_bottom = 160.0
 texture = ExtResource( 3 )
 
@@ -422,6 +422,7 @@ default_color = Color( 1, 1, 1, 1 )
 texture_mode = 50
 
 [node name="In Range Indicator" type="Control" parent="Target Reticule"]
+editor/display_folded = true
 visible = false
 
 [node name="Bottom Right" type="Line2D" parent="Target Reticule/In Range Indicator"]

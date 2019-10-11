@@ -234,7 +234,14 @@ func _toggle_ship_mesh(show_meshes: bool):
 
 
 func get_targeting_endpoint():
-	return transform.origin - 100 * transform.basis.z
+	if is_a_target_in_range():
+		return target_raycast.get_collision_point()
+
+	return transform.origin - 20 * transform.basis.z
+
+
+func is_a_target_in_range():
+	return target_raycast.get_collider() is ActorBase
 
 
 signal cam_changed
@@ -245,6 +252,7 @@ signal throttle_changed
 
 enum { COCKPIT, CHASE }
 
+const ActorBase = preload("ActorBase.gd")
 const ShipBase = preload("ShipBase.gd")
 
 const CAM_ROLL_MOD: float = 0.25
