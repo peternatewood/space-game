@@ -7,6 +7,7 @@ export (NodePath) var player_path
 onready var debug = get_node("Debug")
 onready var edge_target_icon = get_node("Edge Target Icon")
 onready var energy_weapon_rows = get_node("Weapons Container/Weapons Rows/Energy Weapons").get_children()
+onready var hud_bars = get_node("HUD Bars")
 onready var in_range_icon = get_node("Target Reticule/In Range Indicator")
 onready var loader = get_node("/root/SceneLoader")
 onready var missile_weapon_rows = get_node("Weapons Container/Weapons Rows/Missile Weapons").get_children()
@@ -61,6 +62,13 @@ func _disconnect_target_signals(target):
 
 func _on_player_ammo_count_changed(ammo_count: int, index: int):
 	missile_weapon_rows[index].set_ammo(ammo_count)
+
+
+func _on_player_cam_changed(cam_mode: int):
+	if cam_mode == player.COCKPIT:
+		hud_bars.show()
+	else:
+		hud_bars.hide()
 
 
 func _on_player_damaged():
@@ -181,9 +189,11 @@ func _on_scene_loaded():
 	player_hull_bar.set_max(player.hull_hitpoints)
 	player_hull_bar.set_value(player.hull_hitpoints)
 
-	player.connect("shield_boost_changed", self, "_on_player_shield_boost_changed")
+	player.connect("cam_changed", self, "_on_player_cam_changed")
 	player.connect("power_distribution_changed", self, "_on_player_power_distribution_changed")
+	player.connect("shield_boost_changed", self, "_on_player_shield_boost_changed")
 	player.connect("target_changed", self, "_on_player_target_changed")
+
 	player.connect("damaged", self, "_on_player_damaged")
 	player.connect("destroyed", self, "_on_player_destroyed")
 
