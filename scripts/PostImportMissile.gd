@@ -31,6 +31,10 @@ func post_import(scene):
 				var property = data_parsed.result.get(key)
 				if property != null and typeof(property) == typeof(missile_data[key]):
 					missile_data[key] = property
+
+			var weapon_name = data_parsed.result.get("name")
+			if weapon_name != null and typeof(weapon_name) == TYPE_STRING:
+				missile_data["weapon_name"] = weapon_name
 		else:
 			print("Error while parsing data file: ", data_file_name + " " + data_parsed.error_string)
 	else:
