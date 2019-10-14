@@ -264,7 +264,7 @@ func _on_target_destroyed(target):
 	edge_target_icon.hide()
 	target_view_container.hide()
 	target_overhead.hide()
-	#target_details_minimal.hide()
+	target_details_minimal.hide()
 
 
 func _on_target_shield_changed(percent: float, quadrant: int):
