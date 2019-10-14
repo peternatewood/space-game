@@ -94,6 +94,12 @@ func _get_engine_factor():
 	return 0.75 + 0.5 * (power_distribution[ENGINE] / MAX_SYSTEM_POWER)
 
 
+func _get_throttle_to_match_target_speed():
+	var target_speed: float = current_target.linear_velocity.length()
+	# The target ship might be flying faster than this ship can
+	return min(target_speed / get_max_speed(), 1)
+
+
 func _increment_power_level(system: int, direction: int):
 	if system >= 0 and system < TOTAL_POWER_LEVELS:
 		var previous_level: float = power_distribution[system]

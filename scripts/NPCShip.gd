@@ -12,6 +12,9 @@ func _on_scene_loaded():
 func _process(delta):
 	if has_target:
 		_turn_towards_target(delta)
+		var desired_throttle: float = _get_throttle_to_match_target_speed()
+		# TODO: turn away from target when too close, so we can always fly at a minimum throttle
+		throttle = desired_throttle
 
 		if behavior_state != PASSIVE:
 			var raycast_collider = target_raycast.get_collider()
