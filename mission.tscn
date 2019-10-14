@@ -35,7 +35,8 @@ faction = "frog"
 
 [node name="Frog Fighter2" parent="Targets Container" instance=ExtResource( 5 )]
 transform = Transform( 0.714087, 0.56136, -0.418275, -0.152566, 0.707917, 0.689621, 0.683229, -0.428635, 0.591159, -8.23028, 0, -14.6645 )
-script = ExtResource( 6 )
+script = ExtResource( 7 )
+hull_hitpoints = 60
 faction = "frog"
 
 [node name="Spider Fighter" parent="Targets Container" instance=ExtResource( 3 )]
