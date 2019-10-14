@@ -253,7 +253,7 @@ func _on_scene_loaded():
 
 
 func _on_target_damaged():
-	var hull_percent = player.current_target.get_hull_percent()
+	var hull_percent = max(0, player.current_target.get_hull_percent())
 	target_details_minimal.set_hull(hull_percent)
 	target_hull.set_text(str(round(hull_percent)))
 
@@ -264,6 +264,7 @@ func _on_target_destroyed(target):
 	edge_target_icon.hide()
 	target_view_container.hide()
 	target_overhead.hide()
+	#target_details_minimal.hide()
 
 
 func _on_target_shield_changed(percent: float, quadrant: int):
