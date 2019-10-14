@@ -49,7 +49,7 @@ content_margin_left = 4.0
 content_margin_right = 4.0
 content_margin_top = 4.0
 content_margin_bottom = 4.0
-bg_color = Color( 0.2, 0.2, 0.2, 1 )
+bg_color = Color( 0.25098, 0.25098, 0.25098, 0.501961 )
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -304,7 +304,6 @@ texture_progress = ExtResource( 14 )
 fill_mode = 3
 
 [node name="Weapons Container" type="PanelContainer" parent="."]
-editor/display_folded = true
 modulate = Color( 0.501961, 0.752941, 1, 1 )
 anchor_top = 0.5
 anchor_bottom = 0.5
