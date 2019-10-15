@@ -7,7 +7,7 @@ var factions = {
 	"hawk": { "frog": FRIENDLY, "spider": HOSTILE },
 	"spider": { "hawk": HOSTILE, "frog": NEUTRAL }
 }
-var targets: Array
+var targets_container
 
 
 func _ready():
@@ -16,17 +16,8 @@ func _ready():
 
 
 func _on_scene_loaded():
-	targets = get_node("Targets Container").get_children()
-	targets.append(get_node("Player"))
-
-	for index in range(targets.size()):
-		targets[index].connect("destroyed", self, "_on_ship_destroyed", [ index ])
-
+	targets_container = get_node("Targets Container")
 	set_process(true)
-
-
-func _on_ship_destroyed(index: int):
-	targets.remove(index)
 
 
 # PUBLIC
@@ -40,6 +31,10 @@ func get_alignment(factionA: String, factionB: String):
 		return factions[factionA].get(factionB, -1)
 
 	return -1
+
+
+func get_targets():
+	return targets_container.get_children()
 
 
 enum { NEUTRAL, FRIENDLY, HOSTILE }

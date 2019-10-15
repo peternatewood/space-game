@@ -2,8 +2,6 @@ extends "res://scripts/ShipBase.gd"
 
 export (NodePath) var camera_path
 
-onready var targets_container = get_tree().get_root().get_node("Mission Controller/Targets Container")
-
 var allow_input: bool = false
 var cam_dist: float
 var cam_mode: int
@@ -56,7 +54,7 @@ func _input(event):
 			if has_target:
 				last_target = current_target
 
-			if _target_next_of_alignment(targets_container.get_children(), mission_controller.HOSTILE):
+			if _target_next_of_alignment(mission_controller.HOSTILE):
 				has_target = true
 				emit_signal("target_changed", last_target)
 		elif event.is_action("target_next_friendly") and event.pressed:
@@ -64,7 +62,7 @@ func _input(event):
 			if has_target:
 				last_target = current_target
 
-			if _target_next_of_alignment(targets_container.get_children(), mission_controller.FRIENDLY):
+			if _target_next_of_alignment(mission_controller.FRIENDLY):
 				has_target = true
 				emit_signal("target_changed", last_target)
 		elif event.is_action("target_next_neutral") and event.pressed:
@@ -72,12 +70,12 @@ func _input(event):
 			if has_target:
 				last_target = current_target
 
-			if _target_next_of_alignment(targets_container.get_children(), mission_controller.NEUTRAL):
+			if _target_next_of_alignment(mission_controller.NEUTRAL):
 				has_target = true
 				emit_signal("target_changed", last_target)
 		elif event.is_action("target_next_in_reticule") and event.pressed:
 			var targets_in_view: Array = []
-			for target in targets_container.get_children():
+			for target in mission_controller.get_targets():
 				if camera.is_position_in_view(target.transform.origin):
 					targets_in_view.append(target)
 
@@ -91,14 +89,18 @@ func _input(event):
 
 			emit_signal("target_changed", last_target)
 		elif event.is_action("target_next") and event.pressed:
-			var targets = targets_container.get_children()
+			var targets = mission_controller.get_targets()
 			var last_target
-			if targets.size() == 0:
+			# One or less since the player is included in the targets collection
+			if targets.size() <= 1:
 				has_target = false
 				current_target = null
 			else:
 				if has_target:
 					last_target = current_target
+					target_index = (target_index + 1) % targets.size()
+
+				if targets[target_index] == self:
 					target_index = (target_index + 1) % targets.size()
 
 				_set_current_target(targets[target_index])

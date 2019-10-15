@@ -1,6 +1,6 @@
 extends "res://scripts/ShipBase.gd"
 
-var behavior_state: int = PASSIVE
+var behavior_state: int = ATTACK
 var is_flying_at_target: bool = true
 
 
@@ -30,16 +30,17 @@ func _process(delta):
 		# Get closest hostile target
 		var closest_distance: float = -1
 		var closest_index: int = -1
+		var targets = mission_controller.get_targets()
 
-		for index in range(mission_controller.targets.size()):
-			if mission_controller.get_alignment(faction, mission_controller.targets[index].faction) == mission_controller.HOSTILE:
-				var distance_squared = (mission_controller.targets[index].transform.origin - transform.origin).length_squared()
+		for index in range(targets.size()):
+			if mission_controller.get_alignment(faction, targets[index].faction) == mission_controller.HOSTILE:
+				var distance_squared = (targets[index].transform.origin - transform.origin).length_squared()
 				if distance_squared < closest_distance or closest_distance == -1:
 					closest_distance = distance_squared
 					closest_index = index
 
 		if closest_index != -1:
-			_set_current_target(mission_controller.targets[closest_index])
+			_set_current_target(targets[closest_index])
 
 	._process(delta)
 

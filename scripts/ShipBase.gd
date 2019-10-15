@@ -153,9 +153,10 @@ func _set_current_target(node):
 	if has_target:
 		current_target.disconnect("destroyed", self, "_on_target_destroyed")
 
-	has_target = true
-	current_target = node
-	current_target.connect("destroyed", self, "_on_target_destroyed")
+	if node.is_alive:
+		has_target = true
+		current_target = node
+		current_target.connect("destroyed", self, "_on_target_destroyed")
 
 
 func _start_destruction():
@@ -166,7 +167,8 @@ func _start_destruction():
 
 
 # Loops through the given array of possible targets; if one is found, set it as the current target and return true, otherwise do nothing and return false
-func _target_next_of_alignment(possible_targets: Array, alignment: int):
+func _target_next_of_alignment(alignment: int):
+	var possible_targets = mission_controller.get_targets()
 	var targets_count = possible_targets.size()
 	var steps: int = 0
 	if has_target:
@@ -176,7 +178,7 @@ func _target_next_of_alignment(possible_targets: Array, alignment: int):
 	# Ensures we loop through all targets just once
 	while steps < targets_count:
 		var target = possible_targets[target_index]
-		if mission_controller.get_alignment(faction, target.faction) == alignment:
+		if self != target and mission_controller.get_alignment(faction, target.faction) == alignment:
 			_set_current_target(target)
 			return true
 

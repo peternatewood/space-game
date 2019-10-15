@@ -53,9 +53,9 @@ func _process(delta):
 
 
 func _start_destruction():
-	emit_signal("destroyed")
 	is_alive = false
 	destruction_countdown = destruction_delay
+	emit_signal("destroyed")
 
 
 # PUBLIC
