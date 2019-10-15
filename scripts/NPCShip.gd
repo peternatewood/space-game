@@ -4,12 +4,6 @@ var behavior_state: int = PASSIVE
 var is_flying_at_target: bool = true
 
 
-func _on_scene_loaded():
-	_set_current_target(get_tree().get_root().get_node("Mission Controller/Player"))
-
-	._on_scene_loaded()
-
-
 func _process(delta):
 	if has_target:
 		_turn_towards_target(delta)
@@ -33,8 +27,19 @@ func _process(delta):
 			if raycast_collider == current_target:
 				_fire_energy_weapon()
 	else:
-		# TODO: find a target, patrol, or do something else
-		pass
+		# Get closest hostile target
+		var closest_distance: float = -1
+		var closest_index: int = -1
+
+		for index in range(mission_controller.targets.size()):
+			if mission_controller.get_alignment(faction, mission_controller.targets[index].faction) == mission_controller.HOSTILE:
+				var distance_squared = (mission_controller.targets[index].transform.origin - transform.origin).length_squared()
+				if distance_squared < closest_distance or closest_distance == -1:
+					closest_distance = distance_squared
+					closest_index = index
+
+		if closest_index != -1:
+			_set_current_target(mission_controller.targets[closest_index])
 
 	._process(delta)
 
