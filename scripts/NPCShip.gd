@@ -28,7 +28,6 @@ func _process(delta):
 			else:
 				throttle = (-transform.basis.z).angle_to(to_target) / PI
 
-
 		if behavior_state != PASSIVE:
 			var raycast_collider = target_raycast.get_collider()
 			if raycast_collider == current_target:
@@ -47,6 +46,13 @@ func _turn_towards_target(delta):
 	var y_dot = transform.basis.y.dot(to_target)
 
 	if is_flying_at_target:
+		# Stop turning if angular vel is high enough
+		var angle_to_target: float = (-transform.basis.z).angle_to(to_target)
+		if abs(angular_velocity.y) > abs(angle_to_target):
+			x_dot /= 2
+		if abs(angular_velocity.x) > abs(angle_to_target):
+			y_dot /= 2
+
 		torque_vector = transform.basis.x * y_dot - transform.basis.y * x_dot
 	else:
 		# Turn away to put distance between self and target
