@@ -304,6 +304,7 @@ texture_progress = ExtResource( 14 )
 fill_mode = 3
 
 [node name="Weapons Container" type="PanelContainer" parent="."]
+editor/display_folded = true
 modulate = Color( 0.501961, 0.752941, 1, 1 )
 anchor_top = 0.5
 anchor_bottom = 0.5
@@ -540,7 +541,6 @@ margin_bottom = 18.0
 text = "ship"
 
 [node name="Target Distance Container" type="HBoxContainer" parent="Target View Container/Target View Rows"]
-editor/display_folded = true
 modulate = Color( 0.501961, 0.752941, 1, 1 )
 margin_top = 18.0
 margin_right = 164.0
@@ -568,11 +568,29 @@ rect_min_size = Vector2( 0, 18 )
 text = "10"
 valign = 1
 
-[node name="Distance Label" type="Label" parent="Target View Container/Target View Rows/Target Distance Container"]
+[node name="Distance Units" type="Label" parent="Target View Container/Target View Rows/Target Distance Container"]
 margin_left = 33.0
 margin_right = 41.0
 margin_bottom = 18.0
 text = "m"
+
+[node name="VSeparator" type="VSeparator" parent="Target View Container/Target View Rows/Target Distance Container"]
+margin_left = 45.0
+margin_right = 61.0
+margin_bottom = 18.0
+rect_min_size = Vector2( 16, 0 )
+
+[node name="Target Speed" type="Label" parent="Target View Container/Target View Rows/Target Distance Container"]
+margin_left = 65.0
+margin_right = 73.0
+margin_bottom = 18.0
+text = "0"
+
+[node name="Speed Units" type="Label" parent="Target View Container/Target View Rows/Target Distance Container"]
+margin_left = 77.0
+margin_right = 101.0
+margin_bottom = 18.0
+text = "m/s"
 
 [node name="Target View Panel Container" type="Control" parent="Target View Container/Target View Rows"]
 margin_top = 36.0

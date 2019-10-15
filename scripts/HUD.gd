@@ -38,6 +38,7 @@ var radar_icons_container: Control
 var target_class
 var target_distance
 var target_hull
+var target_speed
 var target_view_cam
 var target_view_model
 
@@ -47,6 +48,7 @@ func _ready():
 	target_class = target_view_container.get_node("Target View Rows/Target Class")
 	target_distance = target_view_container.get_node("Target View Rows/Target Distance Container/Target Distance")
 	target_hull = target_view_container.get_node("Target View Rows/Target View Panel Container/Target Hull Container/Target Hull")
+	target_speed = target_view_container.get_node("Target View Rows/Target Distance Container/Target Speed")
 	target_view_cam = target_viewport.get_node("Camera")
 	target_view_model = target_viewport.get_node("Frog Fighter")
 
@@ -347,6 +349,7 @@ func _process(delta):
 		target_view_model.set_rotation(player.current_target.rotation)
 
 		target_distance.set_text(str(round(target_dist)))
+		target_speed.set_text(str(round(10 * player.current_target.linear_velocity.length())))
 	else:
 		if target_icon.visible:
 			target_icon.hide()
