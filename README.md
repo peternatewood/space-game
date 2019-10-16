@@ -17,7 +17,7 @@ Here I'll be keeping track of the all the features I want to implement, and chec
 - [x] Alliance Groups
 - [x] Title Screen
 - [ ] NPC Ship Behavior
-- [ ] Communications Menu (in-game)
+- [x] Communications Menu (in-game)
 - [ ] Wingmates
 - [ ] Mission Objectives and Warp Out
 - [ ] Options Menu
