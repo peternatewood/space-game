@@ -6,7 +6,7 @@ var is_flying_at_target: bool = true
 
 func _process(delta):
 	if has_target:
-		_turn_towards_target(delta)
+		_turn_towards_target(current_target.transform.origin)
 
 		var to_target: Vector3 = current_target.transform.origin - transform.origin
 		var target_dist_squared: float = to_target.length_squared()
@@ -45,8 +45,8 @@ func _process(delta):
 	._process(delta)
 
 
-func _turn_towards_target(delta):
-	var to_target: Vector3 = (current_target.transform.origin - transform.origin).normalized()
+func _turn_towards_target(target_pos: Vector3):
+	var to_target: Vector3 = (target_pos - transform.origin).normalized()
 
 	var x_dot = transform.basis.x.dot(to_target)
 	var y_dot = transform.basis.y.dot(to_target)
@@ -65,7 +65,7 @@ func _turn_towards_target(delta):
 		torque_vector = -transform.basis.x * y_dot + transform.basis.y * x_dot
 
 
-enum { PASSIVE, PATROL, DEFEND, ATTACK }
+enum { PASSIVE, PATROL, DEFEND, ATTACK, ATTACK_ANY, IGNORE }
 
 const LINE_OF_FIRE_SQ: float = 4.0 # Squared to make processing faster
 const MAX_TARGET_DIST_SQ: float = pow(15, 2)
