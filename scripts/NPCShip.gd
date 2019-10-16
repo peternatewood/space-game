@@ -2,9 +2,10 @@ extends "res://scripts/ShipBase.gd"
 
 enum ORDER_TYPE { PASSIVE, ATTACK, DEFEND, IGNORE, ATTACK_ANY, PATROL }
 
-export (ORDER_TYPE) var behavior_state = ORDER_TYPE.PASSIVE
+export (Array, ORDER_TYPE) var initial_orders = [ORDER_TYPE.PASSIVE]
 
 var is_flying_at_target: bool = true
+var orders: Array
 var waypoint_pos: Vector3
 var waypoint_index: int = -1
 
@@ -36,46 +37,52 @@ func _get_next_waypoint():
 	waypoint_pos = mission_controller.get_next_waypoint_pos(waypoint_index)
 
 
+func _on_scene_loaded():
+	for order_type in initial_orders:
+		orders.append(Order.new(order_type))
+
+
 func _process(delta):
-	match behavior_state:
-		ORDER_TYPE.PATROL:
-			if waypoint_index == -1:
-				_get_next_waypoint()
-			else:
-				var dist_squared = (waypoint_pos - transform.origin).length_squared()
-				if dist_squared <= 1:
+	for o in orders:
+		match o:
+			ORDER_TYPE.PATROL:
+				if waypoint_index == -1:
 					_get_next_waypoint()
 				else:
-					_turn_towards_target(waypoint_pos)
+					var dist_squared = (waypoint_pos - transform.origin).length_squared()
+					if dist_squared <= 1:
+						_get_next_waypoint()
+					else:
+						_turn_towards_target(waypoint_pos)
 
-				if throttle != PATROL_THROTTLE:
-					throttle = PATROL_THROTTLE
-		ORDER_TYPE.ATTACK:
-			if has_target:
-				_attack_current_target()
-			else:
-				behavior_state = ORDER_TYPE.PASSIVE
-		ORDER_TYPE.ATTACK_ANY:
-			if has_target:
-				_attack_current_target()
-			else:
-				# Get closest hostile target
-				var closest_distance: float = -1
-				var closest_index: int = -1
-				var targets = mission_controller.get_targets()
-
-				for index in range(targets.size()):
-					if mission_controller.get_alignment(faction, targets[index].faction) == mission_controller.HOSTILE:
-						var distance_squared = (targets[index].transform.origin - transform.origin).length_squared()
-						if distance_squared < closest_distance or closest_distance == -1:
-							closest_distance = distance_squared
-							closest_index = index
-
-				if closest_index != -1:
-					_set_current_target(targets[closest_index])
+					if throttle != PATROL_THROTTLE:
+						throttle = PATROL_THROTTLE
+			ORDER_TYPE.ATTACK:
+				if has_target:
+					_attack_current_target()
 				else:
-					# TODO: shift to an appropriate other behavior/order when no targets left
-					behavior_state = ORDER_TYPE.PASSIVE
+					o = ORDER_TYPE.PASSIVE
+			ORDER_TYPE.ATTACK_ANY:
+				if has_target:
+					_attack_current_target()
+				else:
+					# Get closest hostile target
+					var closest_distance: float = -1
+					var closest_index: int = -1
+					var targets = mission_controller.get_targets()
+
+					for index in range(targets.size()):
+						if mission_controller.get_alignment(faction, targets[index].faction) == mission_controller.HOSTILE:
+							var distance_squared = (targets[index].transform.origin - transform.origin).length_squared()
+							if distance_squared < closest_distance or closest_distance == -1:
+								closest_distance = distance_squared
+								closest_index = index
+
+					if closest_index != -1:
+						_set_current_target(targets[closest_index])
+					else:
+						# TODO: shift to an appropriate other behavior/order when no targets left
+						o = ORDER_TYPE.PASSIVE
 
 	._process(delta)
 
@@ -115,7 +122,7 @@ func set_command(command: int, target = null):
 			elif alignment == mission_controller.FRIENDLY:
 				print("Cannot attack a friendly target!")
 			else:
-				behavior_state = ORDER_TYPE.ATTACK
+				orders[0] = ORDER_TYPE.ATTACK
 				_set_current_target(target)
 		ORDER_TYPE.DEFEND:
 			if target == null:
@@ -123,16 +130,16 @@ func set_command(command: int, target = null):
 			elif alignment == mission_controller.HOSTILE:
 				print("Cannot defend a hostile target!")
 			else:
-				behavior_state = ORDER_TYPE.DEFEND
+				orders[0] = ORDER_TYPE.DEFEND
 				print(name + " defending " + target.name)
 		ORDER_TYPE.IGNORE:
 			if target == null:
 				print("No target selected!")
 			else:
-				behavior_state = ORDER_TYPE.IGNORE
+				orders[0] = ORDER_TYPE.IGNORE
 				print(name + " ignoring " + target.name)
 		ORDER_TYPE.ATTACK_ANY:
-			behavior_state = ORDER_TYPE.ATTACK_ANY
+			orders[0] = ORDER_TYPE.ATTACK_ANY
 			print(name + " engaging at will")
 
 
@@ -140,3 +147,15 @@ const LINE_OF_FIRE_SQ: float = 4.0 # Squared to make processing faster
 const MAX_TARGET_DIST_SQ: float = pow(15, 2)
 const MIN_TARGET_DIST_SQ: float = pow(6, 2)
 const PATROL_THROTTLE: float = 0.7
+
+
+class Order:
+	var priority: int
+	var target
+	var type: int
+
+
+	func _init(order_type: int, order_target = null, order_priority: int = 50):
+		priority = order_priority
+		target = order_target
+		type = order_type

@@ -98,3 +98,5 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -22.8941, -5.28593, 1.1059 )
 camera_path = NodePath("../../Mission Controller/Camera")
 targets_container_path = NodePath("../Targets Container")
 player_path = NodePath("../Targets Container/Player")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
