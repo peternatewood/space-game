@@ -160,6 +160,7 @@ step = 1.0
 value = 50.0
 
 [node name="Communications Menu" type="PanelContainer" parent="."]
+editor/display_folded = true
 visible = false
 modulate = Color( 0.501961, 0.752941, 1, 1 )
 anchor_left = 1.0
@@ -176,7 +177,7 @@ editor/display_folded = true
 margin_left = 4.0
 margin_top = 2.0
 margin_right = 164.0
-margin_bottom = 86.0
+margin_bottom = 108.0
 
 [node name="All Ships Label" type="Label" parent="Communications Menu/Root Commands"]
 margin_right = 160.0
