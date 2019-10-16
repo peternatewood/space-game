@@ -38,6 +38,7 @@ var radar_icons_container: Control
 var target_class
 var target_distance
 var target_hull
+var target_name
 var target_speed
 var target_view_cam
 var target_view_model
@@ -48,6 +49,7 @@ func _ready():
 	target_class = target_view_container.get_node("Target View Rows/Target Class")
 	target_distance = target_view_container.get_node("Target View Rows/Target Distance Container/Target Distance")
 	target_hull = target_view_container.get_node("Target View Rows/Target View Panel Container/Target Hull Container/Target Hull")
+	target_name = target_view_container.get_node("Target View Rows/Target Name")
 	target_speed = target_view_container.get_node("Target View Rows/Target Distance Container/Target Speed")
 	target_view_cam = target_viewport.get_node("Camera")
 	target_view_model = target_viewport.get_node("Frog Fighter")
@@ -146,10 +148,12 @@ func _on_player_target_changed(last_target):
 				break
 
 		if alignment != -1:
+			target_name.set_modulate(ALIGNMENT_COLORS[alignment])
 			target_class.set_modulate(ALIGNMENT_COLORS[alignment])
 			edge_target_icon.set_modulate(ALIGNMENT_COLORS[alignment])
 			target_icon.set_modulate(ALIGNMENT_COLORS[alignment])
 		else:
+			target_name.set_modulate(Color.white)
 			target_class.set_modulate(Color.white)
 			edge_target_icon.set_modulate(Color.white)
 			target_icon.set_modulate(Color.white)
@@ -162,6 +166,7 @@ func _on_player_target_changed(last_target):
 
 		# Update target viewport
 		target_class.set_text(player.current_target.ship_class)
+		target_name.set_text(player.current_target.name)
 		target_viewport.add_child(target_view_model)
 		target_view_model.transform.origin = Vector3.ZERO
 		target_hull.set_text(str(round(player.current_target.get_hull_percent())))
