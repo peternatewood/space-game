@@ -164,18 +164,19 @@ visible = false
 modulate = Color( 0.501961, 0.752941, 1, 1 )
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -224.0
+margin_left = -244.0
 margin_top = 16.0
-margin_right = -80.0
-margin_bottom = 104.0
+margin_right = -76.0
+margin_bottom = 126.0
 custom_styles/panel = SubResource( 9 )
 script = ExtResource( 5 )
 
 [node name="Root Commands" type="VBoxContainer" parent="Communications Menu"]
+editor/display_folded = true
 margin_left = 4.0
 margin_top = 2.0
 margin_right = 164.0
-margin_bottom = 86.0
+margin_bottom = 108.0
 
 [node name="All Ships Label" type="Label" parent="Communications Menu/Root Commands"]
 margin_right = 160.0
@@ -200,55 +201,65 @@ margin_right = 160.0
 margin_bottom = 84.0
 text = "4. Reinforcements"
 
-[node name="Wings List" type="VBoxContainer" parent="Communications Menu"]
-visible = false
-margin_right = 96.0
-margin_bottom = 40.0
-
-[node name="Wing Label" type="Label" parent="Communications Menu/Wings List"]
-margin_right = 96.0
-margin_bottom = 18.0
-text = "1. Wing"
-
-[node name="Ships List" type="VBoxContainer" parent="Communications Menu"]
-visible = false
-margin_right = 96.0
-margin_bottom = 40.0
-
-[node name="Wing Label" type="Label" parent="Communications Menu/Ships List"]
-margin_right = 96.0
-margin_bottom = 18.0
-text = "1. Ship"
-
-[node name="Ship Commands" type="VBoxContainer" parent="Communications Menu"]
+[node name="Menus Container" type="VBoxContainer" parent="Communications Menu"]
 visible = false
 margin_left = 4.0
 margin_top = 2.0
 margin_right = 164.0
-margin_bottom = 86.0
+margin_bottom = 108.0
 
-[node name="Attack Label" type="Label" parent="Communications Menu/Ship Commands"]
+[node name="Wings List" type="VBoxContainer" parent="Communications Menu/Menus Container"]
+visible = false
+margin_right = 136.0
+margin_bottom = 18.0
+
+[node name="Wing Label" type="Label" parent="Communications Menu/Menus Container/Wings List"]
+margin_right = 136.0
+margin_bottom = 18.0
+text = "1. Wing"
+
+[node name="Ships List" type="VBoxContainer" parent="Communications Menu/Menus Container"]
+visible = false
+margin_right = 136.0
+margin_bottom = 18.0
+
+[node name="Wing Label" type="Label" parent="Communications Menu/Menus Container/Ships List"]
+margin_right = 136.0
+margin_bottom = 18.0
+text = "1. Ship"
+
+[node name="Ship Commands" type="VBoxContainer" parent="Communications Menu/Menus Container"]
+visible = false
+margin_right = 160.0
+margin_bottom = 84.0
+
+[node name="Attack Label" type="Label" parent="Communications Menu/Menus Container/Ship Commands"]
 margin_right = 160.0
 margin_bottom = 18.0
 text = "1. Attack My Target"
 
-[node name="Protect Label" type="Label" parent="Communications Menu/Ship Commands"]
+[node name="Protect Label" type="Label" parent="Communications Menu/Menus Container/Ship Commands"]
 margin_top = 22.0
 margin_right = 160.0
 margin_bottom = 40.0
 text = "2. Protect My Target"
 
-[node name="Ignore Label" type="Label" parent="Communications Menu/Ship Commands"]
+[node name="Ignore Label" type="Label" parent="Communications Menu/Menus Container/Ship Commands"]
 margin_top = 44.0
 margin_right = 160.0
 margin_bottom = 62.0
 text = "3. Ignore My Target"
 
-[node name="Engage Label" type="Label" parent="Communications Menu/Ship Commands"]
+[node name="Engage Label" type="Label" parent="Communications Menu/Menus Container/Ship Commands"]
 margin_top = 66.0
 margin_right = 160.0
 margin_bottom = 84.0
 text = "4. Engage Enemies"
+
+[node name="Back Label" type="Label" parent="Communications Menu/Menus Container"]
+margin_right = 160.0
+margin_bottom = 18.0
+text = "0. Back"
 
 [node name="Player Overhead" parent="." instance=ExtResource( 6 )]
 modulate = Color( 0.501961, 0.752941, 1, 1 )

@@ -2,15 +2,22 @@ extends PanelContainer
 
 enum { NONE, ALL_SHIPS, WING, SHIP }
 
+onready var menus_container = get_node("Menus Container")
 onready var root_menu = get_node("Root Commands")
-onready var ship_commands = get_node("Ship Commands")
-onready var ships_menu = get_node("Ships List")
-onready var wings_menu = get_node("Wings List")
 
 var command_type: int = NONE
+var ship_commands
 var ship_name: String
+var ships_menu
 var timeout_countdown: float = 0.0
 var wing: int = -1
+var wings_menu
+
+
+func _ready():
+	ship_commands = menus_container.get_node("Ship Commands")
+	ships_menu = menus_container.get_node("Ships List")
+	wings_menu = menus_container.get_node("Wings List")
 
 
 func _handle_number_press(number: int):
@@ -32,6 +39,7 @@ func _handle_number_press(number: int):
 				return
 
 		root_menu.hide()
+		menus_container.show()
 	elif wings_menu.visible:
 		wing = number
 		wings_menu.hide()
@@ -81,6 +89,26 @@ func _input(event):
 				_handle_number_press(6)
 			KEY_7, KEY_KP_7:
 				_handle_number_press(7)
+			KEY_0, KEY_KP_0:
+				if wings_menu.visible:
+					menus_container.hide()
+					wings_menu.hide()
+					root_menu.show()
+				elif ships_menu.visible:
+					menus_container.hide()
+					ships_menu.hide()
+					root_menu.show()
+				elif ship_commands.visible:
+					ship_commands.hide()
+
+					match command_type:
+						ALL_SHIPS:
+							menus_container.hide()
+							root_menu.show()
+						WING:
+							wings_menu.show()
+						SHIP:
+							ships_menu.show()
 
 
 func _process(delta):
@@ -96,6 +124,7 @@ func _process(delta):
 
 func hide():
 	root_menu.show()
+	menus_container.hide()
 	ship_commands.hide()
 	ships_menu.hide()
 	wings_menu.hide()
