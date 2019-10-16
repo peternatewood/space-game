@@ -223,11 +223,6 @@ visible = false
 margin_right = 136.0
 margin_bottom = 18.0
 
-[node name="Ship Label" type="Label" parent="Communications Menu/Menus Container/Ships List"]
-margin_right = 136.0
-margin_bottom = 18.0
-text = "1. Ship"
-
 [node name="Reinforcements List" type="VBoxContainer" parent="Communications Menu/Menus Container"]
 visible = false
 margin_right = 136.0
