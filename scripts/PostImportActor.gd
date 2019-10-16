@@ -42,6 +42,28 @@ func post_import(scene):
 	]
 	scene.set_meta("bounding_box_extents", bounding_box_extents)
 
+	# Skip this step if we already got hull_hitpoints, e.g. in PostImportShip.gd
+	if not scene.has_meta("hull_hitpoints"):
+		# This is used for loading the data file and other resources
+		var source_folder = get_source_folder()
+		var data_file = File.new()
+		var data_file_name: String = source_folder + "/data.json"
+
+		var actor_data: Dictionary = {
+			"hull_hitpoints": 10
+		}
+
+		if data_file.file_exists(data_file_name):
+			data_file.open(data_file_name, File.READ)
+
+			var data_parsed = JSON.parse(data_file.get_as_text())
+			if data_parsed.error == OK:
+				var hull_hitpoints = data_parsed.result.get("hull_hitpoints")
+				if hull_hitpoints != null and typeof(hull_hitpoints) == TYPE_REAL:
+					actor_data["hull_hitpoints"] = hull_hitpoints
+
+		scene.set_meta("hull_hitpoints", actor_data["hull_hitpoints"])
+
 	scene.set_contact_monitor(true)
 	scene.set_max_contacts_reported(4)
 
