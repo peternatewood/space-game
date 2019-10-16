@@ -1,6 +1,9 @@
 extends "res://scripts/ShipBase.gd"
 
-var behavior_state: int = ATTACK
+enum ORDER_TYPE { PASSIVE, PATROL, DEFEND, ATTACK, ATTACK_ANY, IGNORE }
+
+export (ORDER_TYPE) var behavior_state = ORDER_TYPE.PASSIVE
+
 var is_flying_at_target: bool = true
 
 
@@ -22,7 +25,7 @@ func _process(delta):
 			else:
 				throttle = (-transform.basis.z).angle_to(to_target) / PI
 
-		if behavior_state != PASSIVE:
+		if behavior_state != ORDER_TYPE.PASSIVE:
 			var raycast_collider = target_raycast.get_collider()
 			if raycast_collider == current_target:
 				_fire_energy_weapon()
@@ -64,8 +67,6 @@ func _turn_towards_target(target_pos: Vector3):
 		# Turn away to put distance between self and target
 		torque_vector = -transform.basis.x * y_dot + transform.basis.y * x_dot
 
-
-enum { PASSIVE, PATROL, DEFEND, ATTACK, ATTACK_ANY, IGNORE }
 
 const LINE_OF_FIRE_SQ: float = 4.0 # Squared to make processing faster
 const MAX_TARGET_DIST_SQ: float = pow(15, 2)

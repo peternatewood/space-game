@@ -47,11 +47,13 @@ faction = "spider"
 transform = Transform( -0.694721, -0.305488, -0.651183, -0.226817, 0.95218, -0.204713, 0.682581, 0.00548107, -0.730789, -10.4962, -2.45585, 4.0847 )
 script = ExtResource( 7 )
 faction = "spider"
+behavior_state = 4
 
 [node name="Hawk Fighter" parent="Targets Container" instance=ExtResource( 8 )]
 transform = Transform( 0.836961, -0.335142, -0.432639, 0, 0.79055, -0.612397, 0.547263, 0.512552, 0.66166, -13.2328, -1.47702, -5.09553 )
 script = ExtResource( 7 )
 faction = "hawk"
+behavior_state = 4
 
 [node name="Hawk Fighter2" parent="Targets Container" instance=ExtResource( 8 )]
 transform = Transform( 0.396798, -0.180081, 0.900068, 0.382017, 0.924008, 0.0164574, -0.834634, 0.337311, 0.435439, 12.0171, 0.506988, 8.31869 )
