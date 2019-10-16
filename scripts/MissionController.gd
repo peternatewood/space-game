@@ -10,6 +10,7 @@ var factions = {
 	"spider": { "hawk": HOSTILE, "frog": NEUTRAL }
 }
 var targets_container
+var waypoints: Array = []
 var waypoints_container
 # TODO: Multiple groups of waypoints that we can assign to npc ships
 
@@ -22,6 +23,8 @@ func _ready():
 func _on_scene_loaded():
 	targets_container = get_node("Targets Container")
 	waypoints_container = get_node("Waypoints Container")
+	waypoints = waypoints_container.get_children()
+
 	set_process(true)
 
 
@@ -36,6 +39,10 @@ func get_alignment(factionA: String, factionB: String):
 		return factions[factionA].get(factionB, -1)
 
 	return -1
+
+
+func get_next_waypoint_pos(index: int):
+	return waypoints[index].transform.origin
 
 
 func get_targets():
