@@ -2,7 +2,9 @@ extends PanelContainer
 
 enum { NONE, ALL_SHIPS, WING, SHIP }
 
+onready var loader = get_node("/root/SceneLoader")
 onready var menus_container = get_node("Menus Container")
+onready var mission_controller = get_tree().get_root().get_node("Mission Controller")
 onready var root_menu = get_node("Root Commands")
 
 var command_type: int = NONE
@@ -20,6 +22,8 @@ func _ready():
 	ships_menu = menus_container.get_node("Ships List")
 	reinforcements_list = menus_container.get_node("Reinforcements List")
 	wings_menu = menus_container.get_node("Wings List")
+
+	loader.connect("scene_loaded", self, "_on_scene_loaded")
 
 
 func _handle_number_press(number: int):
@@ -49,9 +53,14 @@ func _handle_number_press(number: int):
 		wings_menu.hide()
 		ship_commands.show()
 	elif ships_menu.visible:
-		ship_name =  "ship " + str(number)
-		ships_menu.hide()
-		ship_commands.show()
+		var ship_index = number - 1
+		var ship_labels = ships_menu.get_children()
+
+		if ship_index < ship_labels.size():
+			ship_name = ship_labels[ship_index].ship.name
+			ships_menu.hide()
+			ship_commands.show()
+		# If the number isn't valid, we don't return so the input resets the timeout
 	elif reinforcements_list.visible:
 		print("Calling reinforcements: " + str(number))
 		hide()
@@ -122,6 +131,15 @@ func _input(event):
 							ships_menu.show()
 
 
+func _on_scene_loaded():
+	var index: int = 1
+	for ship in mission_controller.get_commandable_ships():
+		var comm_label = COMMUNICATIONS_LABEL.instance()
+		comm_label.set_ship(ship, index)
+		ships_menu.add_child(comm_label)
+		index += 1
+
+
 func _process(delta):
 	if timeout_countdown > 0:
 		timeout_countdown -= delta
@@ -143,4 +161,5 @@ func hide():
 	.hide()
 
 
-var TIMEOUT_DELAY: float = 4.0 # In seconds
+const COMMUNICATIONS_LABEL = preload("res://icons/communications_label.tscn")
+const TIMEOUT_DELAY: float = 4.0 # In seconds
