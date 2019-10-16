@@ -1,6 +1,6 @@
 extends "res://scripts/ShipBase.gd"
 
-enum ORDER_TYPE { PASSIVE, PATROL, DEFEND, ATTACK, ATTACK_ANY, IGNORE }
+enum ORDER_TYPE { PASSIVE, ATTACK, DEFEND, IGNORE, ATTACK_ANY, PATROL }
 
 export (ORDER_TYPE) var behavior_state = ORDER_TYPE.PASSIVE
 
@@ -86,6 +86,42 @@ func _turn_towards_target(target_pos: Vector3):
 	else:
 		# Turn away to put distance between self and target
 		torque_vector = -transform.basis.x * y_dot + transform.basis.y * x_dot
+
+
+# PUBLIC
+
+
+func set_command(command: int, target = null):
+	var alignment: int = -1
+	if target != null:
+		alignment = mission_controller.get_alignment(faction, target.faction)
+
+	match command:
+		ORDER_TYPE.ATTACK:
+			if target == null:
+				print("No target selected!")
+			elif alignment == mission_controller.FRIENDLY:
+				print("Cannot attack a friendly target!")
+			else:
+				behavior_state = ORDER_TYPE.ATTACK
+				_set_current_target(target)
+		ORDER_TYPE.DEFEND:
+			if target == null:
+				print("No target selected!")
+			elif alignment == mission_controller.HOSTILE:
+				print("Cannot defend a hostile target!")
+			else:
+				behavior_state = ORDER_TYPE.DEFEND
+				print(name + " defending " + target.name)
+		ORDER_TYPE.IGNORE:
+			if target == null:
+				print("No target selected!")
+			else:
+				behavior_state = ORDER_TYPE.IGNORE
+				print(name + " ignoring " + target.name)
+		ORDER_TYPE.ATTACK_ANY:
+			behavior_state = ORDER_TYPE.ATTACK_ANY
+			print(name + " engaging at will")
 
 
 const LINE_OF_FIRE_SQ: float = 4.0 # Squared to make processing faster
