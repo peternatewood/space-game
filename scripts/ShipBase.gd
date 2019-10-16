@@ -31,6 +31,7 @@ var power_distribution: Array = [
 ]
 var propulsion_force: float = 1.0
 var target_index: int = 0
+var targeting_ships: Array = []
 var throttle: float
 var torque_vector: Vector3
 var turn_speed: float
@@ -140,6 +141,15 @@ func _on_target_destroyed():
 	target_index = 0
 
 
+func _on_targeting_ship_destroyed(destroyed_ship):
+	var index: int = 0
+	for ship in targeting_ships:
+		if ship == destroyed_ship:
+			targeting_ships.remove(index)
+			return
+		index += 1
+
+
 func _physics_process(delta):
 	add_torque(turn_speed * torque_vector)
 	apply_central_impulse(throttle * propulsion_force * _get_engine_factor() * -transform.basis.z)
@@ -160,6 +170,7 @@ func _set_current_target(node):
 		has_target = true
 		current_target = node
 		current_target.connect("destroyed", self, "_on_target_destroyed")
+		current_target.handle_being_targeted(self)
 
 
 func _start_destruction():
@@ -222,6 +233,12 @@ func get_targeting_endpoint():
 
 func get_weapon_battery_percent():
 	return weapon_battery / MAX_WEAPON_BATTERY
+
+
+func handle_being_targeted(targeting_ship):
+	print(name + " targeted by " + targeting_ship.name)
+	targeting_ships.append(targeting_ship)
+	targeting_ship.connect("destroyed", self, "_on_targeting_ship_destroyed", [ targeting_ship ])
 
 
 func is_a_target_in_range():
