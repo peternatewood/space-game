@@ -1,5 +1,7 @@
 extends Node
 
+enum { NEUTRAL, FRIENDLY, HOSTILE }
+
 onready var loader = get_node("/root/SceneLoader")
 
 var factions = {
@@ -39,5 +41,3 @@ func get_alignment(factionA: String, factionB: String):
 func get_targets():
 	return targets_container.get_children()
 
-
-enum { NEUTRAL, FRIENDLY, HOSTILE }

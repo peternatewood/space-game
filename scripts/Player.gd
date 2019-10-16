@@ -1,5 +1,7 @@
 extends "res://scripts/ShipBase.gd"
 
+enum { COCKPIT, CHASE }
+
 export (NodePath) var camera_path
 
 var allow_input: bool = false
@@ -235,8 +237,6 @@ signal power_distribution_changed
 signal shield_boost_changed
 signal target_changed
 signal throttle_changed
-
-enum { COCKPIT, CHASE }
 
 const ShipBase = preload("ShipBase.gd")
 

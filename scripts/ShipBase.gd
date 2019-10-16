@@ -1,5 +1,8 @@
 extends "res://scripts/ActorBase.gd"
 
+enum { WEAPON, SHIELD, ENGINE, TOTAL_POWER_LEVELS }
+enum { FRONT, REAR, LEFT, RIGHT, QUADRANT_COUNT }
+
 export (String) var faction
 
 onready var chase_view = get_node("Chase View")
@@ -227,9 +230,6 @@ func is_a_target_in_range():
 
 signal energy_weapon_changed
 signal missile_weapon_changed
-
-enum { WEAPON, SHIELD, ENGINE, TOTAL_POWER_LEVELS }
-enum { FRONT, REAR, LEFT, RIGHT, QUADRANT_COUNT }
 
 const ActorBase = preload("ActorBase.gd")
 const EnergyBolt = preload("EnergyBolt.gd")
