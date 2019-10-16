@@ -1,6 +1,6 @@
 extends PanelContainer
 
-enum { NONE, ALL_SHIPS, WINGS, SHIP }
+enum { NONE, ALL_SHIPS, WING, SHIP }
 
 onready var root_menu = get_node("Root Commands")
 onready var ship_commands = get_node("Ship Commands")
@@ -8,11 +8,52 @@ onready var ships_menu = get_node("Ships List")
 onready var wings_menu = get_node("Wings List")
 
 var command_type: int = NONE
+var ship_name: String
 var timeout_countdown: float = 0.0
+var wing: int = -1
 
 
 func _handle_number_press(number: int):
-	print(str(number))
+	# Handle number press based on current menu
+	if root_menu.visible:
+		match number:
+			1:
+				command_type = ALL_SHIPS
+				ship_commands.show()
+			2:
+				command_type = WING
+				wings_menu.show()
+			3:
+				command_type = SHIP
+				# TODO: populate ships list here?
+				ships_menu.show()
+			_:
+				# Not a valid number, so we do nothing
+				return
+
+		root_menu.hide()
+	elif wings_menu.visible:
+		wing = number
+		wings_menu.hide()
+		ship_commands.show()
+	elif ships_menu.visible:
+		ship_name =  "ship " + str(number)
+		ships_menu.hide()
+		ship_commands.show()
+	elif ship_commands.visible:
+		match command_type:
+			ALL_SHIPS:
+				print("All ships: " + str(number))
+			WING:
+				print("Wing " + str(wing) + ": " + str(number))
+			SHIP:
+				print(ship_name + ": " + str(number))
+			_:
+				# Not a valid number, so we do nothing
+				return
+
+		hide()
+
 	timeout_countdown = TIMEOUT_DELAY
 
 
@@ -48,10 +89,18 @@ func _process(delta):
 
 		if timeout_countdown <= 0:
 			hide()
-			root_menu.show()
-			ship_commands.hide()
-			ships_menu.hide()
-			wings_menu.hide()
+
+
+# PUBLIC
+
+
+func hide():
+	root_menu.show()
+	ship_commands.hide()
+	ships_menu.hide()
+	wings_menu.hide()
+
+	.hide()
 
 
 var TIMEOUT_DELAY: float = 4.0 # In seconds

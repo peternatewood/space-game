@@ -174,29 +174,29 @@ script = ExtResource( 5 )
 [node name="Root Commands" type="VBoxContainer" parent="Communications Menu"]
 margin_left = 4.0
 margin_top = 2.0
-margin_right = 140.0
+margin_right = 164.0
 margin_bottom = 86.0
 
 [node name="All Ships Label" type="Label" parent="Communications Menu/Root Commands"]
-margin_right = 136.0
+margin_right = 160.0
 margin_bottom = 18.0
 text = "1. All Ships"
 
 [node name="Wings Label" type="Label" parent="Communications Menu/Root Commands"]
 margin_top = 22.0
-margin_right = 136.0
+margin_right = 160.0
 margin_bottom = 40.0
 text = "2. Wings"
 
 [node name="Ships Label" type="Label" parent="Communications Menu/Root Commands"]
 margin_top = 44.0
-margin_right = 136.0
+margin_right = 160.0
 margin_bottom = 62.0
 text = "3. Ships"
 
 [node name="Reinforcements Label" type="Label" parent="Communications Menu/Root Commands"]
 margin_top = 66.0
-margin_right = 136.0
+margin_right = 160.0
 margin_bottom = 84.0
 text = "4. Reinforcements"
 
@@ -222,8 +222,10 @@ text = "1. Ship"
 
 [node name="Ship Commands" type="VBoxContainer" parent="Communications Menu"]
 visible = false
-margin_right = 96.0
-margin_bottom = 40.0
+margin_left = 4.0
+margin_top = 2.0
+margin_right = 164.0
+margin_bottom = 86.0
 
 [node name="Attack Label" type="Label" parent="Communications Menu/Ship Commands"]
 margin_right = 160.0
