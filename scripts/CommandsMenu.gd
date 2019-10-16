@@ -6,6 +6,7 @@ onready var menus_container = get_node("Menus Container")
 onready var root_menu = get_node("Root Commands")
 
 var command_type: int = NONE
+var reinforcements_list
 var ship_commands
 var ship_name: String
 var ships_menu
@@ -17,6 +18,7 @@ var wings_menu
 func _ready():
 	ship_commands = menus_container.get_node("Ship Commands")
 	ships_menu = menus_container.get_node("Ships List")
+	reinforcements_list = menus_container.get_node("Reinforcements List")
 	wings_menu = menus_container.get_node("Wings List")
 
 
@@ -34,6 +36,8 @@ func _handle_number_press(number: int):
 				command_type = SHIP
 				# TODO: populate ships list here?
 				ships_menu.show()
+			4:
+				reinforcements_list.show()
 			_:
 				# Not a valid number, so we do nothing
 				return
@@ -48,6 +52,9 @@ func _handle_number_press(number: int):
 		ship_name =  "ship " + str(number)
 		ships_menu.hide()
 		ship_commands.show()
+	elif reinforcements_list.visible:
+		print("Calling reinforcements: " + str(number))
+		hide()
 	elif ship_commands.visible:
 		match command_type:
 			ALL_SHIPS:
@@ -97,6 +104,10 @@ func _input(event):
 				elif ships_menu.visible:
 					menus_container.hide()
 					ships_menu.hide()
+					root_menu.show()
+				elif reinforcements_list.visible:
+					menus_container.hide()
+					reinforcements_list.hide()
 					root_menu.show()
 				elif ship_commands.visible:
 					ship_commands.hide()

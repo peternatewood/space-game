@@ -167,7 +167,7 @@ anchor_right = 1.0
 margin_left = -244.0
 margin_top = 16.0
 margin_right = -76.0
-margin_bottom = 126.0
+margin_bottom = 104.0
 custom_styles/panel = SubResource( 9 )
 script = ExtResource( 5 )
 
@@ -176,7 +176,7 @@ editor/display_folded = true
 margin_left = 4.0
 margin_top = 2.0
 margin_right = 164.0
-margin_bottom = 108.0
+margin_bottom = 86.0
 
 [node name="All Ships Label" type="Label" parent="Communications Menu/Root Commands"]
 margin_right = 160.0
@@ -223,7 +223,17 @@ visible = false
 margin_right = 136.0
 margin_bottom = 18.0
 
-[node name="Wing Label" type="Label" parent="Communications Menu/Menus Container/Ships List"]
+[node name="Ship Label" type="Label" parent="Communications Menu/Menus Container/Ships List"]
+margin_right = 136.0
+margin_bottom = 18.0
+text = "1. Ship"
+
+[node name="Reinforcements List" type="VBoxContainer" parent="Communications Menu/Menus Container"]
+visible = false
+margin_right = 136.0
+margin_bottom = 18.0
+
+[node name="Wing Label" type="Label" parent="Communications Menu/Menus Container/Reinforcements List"]
 margin_right = 136.0
 margin_bottom = 18.0
 text = "1. Ship"
