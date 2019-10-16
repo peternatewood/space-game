@@ -9,6 +9,28 @@ var waypoint_pos: Vector3
 var waypoint_index: int = -1
 
 
+func _attack_current_target():
+	_turn_towards_target(current_target.transform.origin)
+
+	var to_target: Vector3 = current_target.transform.origin - transform.origin
+	var target_dist_squared: float = to_target.length_squared()
+	if is_flying_at_target:
+		if target_dist_squared < MIN_TARGET_DIST_SQ:
+			is_flying_at_target = false
+		else:
+			var desired_throttle: float = _get_throttle_to_match_target_speed()
+			throttle = max(desired_throttle, 0.1)
+	else:
+		if target_dist_squared > MAX_TARGET_DIST_SQ:
+			is_flying_at_target = true
+		else:
+			throttle = (-transform.basis.z).angle_to(to_target) / PI
+
+	var raycast_collider = target_raycast.get_collider()
+	if raycast_collider == current_target:
+		_fire_energy_weapon()
+
+
 func _get_next_waypoint():
 	waypoint_index = (waypoint_index + 1) % mission_controller.waypoints.size()
 	waypoint_pos = mission_controller.get_next_waypoint_pos(waypoint_index)
@@ -28,27 +50,14 @@ func _process(delta):
 
 				if throttle != PATROL_THROTTLE:
 					throttle = PATROL_THROTTLE
+		ORDER_TYPE.ATTACK:
+			if has_target:
+				_attack_current_target()
+			else:
+				behavior_state = ORDER_TYPE.PASSIVE
 		ORDER_TYPE.ATTACK_ANY:
 			if has_target:
-				_turn_towards_target(current_target.transform.origin)
-
-				var to_target: Vector3 = current_target.transform.origin - transform.origin
-				var target_dist_squared: float = to_target.length_squared()
-				if is_flying_at_target:
-					if target_dist_squared < MIN_TARGET_DIST_SQ:
-						is_flying_at_target = false
-					else:
-						var desired_throttle: float = _get_throttle_to_match_target_speed()
-						throttle = max(desired_throttle, 0.1)
-				else:
-					if target_dist_squared > MAX_TARGET_DIST_SQ:
-						is_flying_at_target = true
-					else:
-						throttle = (-transform.basis.z).angle_to(to_target) / PI
-
-				var raycast_collider = target_raycast.get_collider()
-				if raycast_collider == current_target:
-					_fire_energy_weapon()
+				_attack_current_target()
 			else:
 				# Get closest hostile target
 				var closest_distance: float = -1
@@ -64,6 +73,9 @@ func _process(delta):
 
 				if closest_index != -1:
 					_set_current_target(targets[closest_index])
+				else:
+					# TODO: shift to an appropriate other behavior/order when no targets left
+					behavior_state = ORDER_TYPE.PASSIVE
 
 	._process(delta)
 
