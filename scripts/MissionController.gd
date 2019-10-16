@@ -8,6 +8,8 @@ var factions = {
 	"spider": { "hawk": HOSTILE, "frog": NEUTRAL }
 }
 var targets_container
+var waypoints_container
+# TODO: Multiple groups of waypoints that we can assign to npc ships
 
 
 func _ready():
@@ -17,6 +19,7 @@ func _ready():
 
 func _on_scene_loaded():
 	targets_container = get_node("Targets Container")
+	waypoints_container = get_node("Waypoints Container")
 	set_process(true)
 
 

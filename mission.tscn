@@ -80,6 +80,20 @@ script = ExtResource( 10 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.18502, 5.07815, -14.7815 )
 script = ExtResource( 10 )
 
+[node name="Waypoints Container" type="Node" parent="."]
+
+[node name="Waypoint" type="Position3D" parent="Waypoints Container"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.25542, 0, -21.9904 )
+
+[node name="Waypoint2" type="Position3D" parent="Waypoints Container"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6911, 5.35821, -1.04686 )
+
+[node name="Waypoint3" type="Position3D" parent="Waypoints Container"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.69232, 0, 11.3315 )
+
+[node name="Waypoint4" type="Position3D" parent="Waypoints Container"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -22.8941, -5.28593, 1.1059 )
+
 [node name="HUD" parent="." instance=ExtResource( 11 )]
 camera_path = NodePath("../../Mission Controller/Camera")
 targets_container_path = NodePath("../Targets Container")
