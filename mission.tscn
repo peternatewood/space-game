@@ -31,13 +31,11 @@ camera_path = NodePath("../../Camera")
 [node name="Frog Fighter" parent="Targets Container" instance=ExtResource( 5 )]
 transform = Transform( 0.478177, -0.0391645, 0.87739, 0.696631, 0.62528, -0.351753, -0.534838, 0.779417, 0.326278, 0, 0, -7.69467 )
 script = ExtResource( 6 )
-hull_hitpoints = 60
 faction = "frog"
 
 [node name="Frog Fighter2" parent="Targets Container" instance=ExtResource( 5 )]
 transform = Transform( 0.714087, 0.56136, -0.418275, -0.152566, 0.707917, 0.689621, 0.683229, -0.428635, 0.591159, -8.23028, 0, -14.6645 )
 script = ExtResource( 6 )
-hull_hitpoints = 60
 faction = "frog"
 
 [node name="Spider Fighter" parent="Targets Container" instance=ExtResource( 3 )]
@@ -48,7 +46,6 @@ faction = "spider"
 [node name="Spider Fighter2" parent="Targets Container" instance=ExtResource( 3 )]
 transform = Transform( -0.694721, -0.305488, -0.651183, -0.226817, 0.95218, -0.204713, 0.682581, 0.00548107, -0.730789, -10.4962, -2.45585, 4.0847 )
 script = ExtResource( 7 )
-hull_hitpoints = 80
 faction = "spider"
 
 [node name="Hawk Fighter" parent="Targets Container" instance=ExtResource( 8 )]
