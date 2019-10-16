@@ -8,9 +8,9 @@ onready var mission_controller = get_tree().get_root().get_node("Mission Control
 onready var root_menu = get_node("Root Commands")
 
 var command_type: int = NONE
+var commanding_ship
 var reinforcements_list
 var ship_commands
-var ship_name: String
 var ships_menu
 var timeout_countdown: float = 0.0
 var wing: int = -1
@@ -24,6 +24,12 @@ func _ready():
 	wings_menu = menus_container.get_node("Wings List")
 
 	loader.connect("scene_loaded", self, "_on_scene_loaded")
+
+
+func _on_commanding_ship_destroyed():
+	if command_type == SHIP and ship_commands.visible:
+		commanding_ship = null
+		hide()
 
 
 func _handle_number_press(number: int):
@@ -57,7 +63,11 @@ func _handle_number_press(number: int):
 		var ship_labels = ships_menu.get_children()
 
 		if ship_index < ship_labels.size():
-			ship_name = ship_labels[ship_index].ship.name
+			if commanding_ship != null:
+				commanding_ship.disconnect("destroyed", self, "_on_commanding_ship_destroyed")
+
+			commanding_ship = ship_labels[ship_index].ship
+			commanding_ship.connect("destroyed", self, "_on_commanding_ship_destroyed")
 			ships_menu.hide()
 			ship_commands.show()
 		# If the number isn't valid, we don't return so the input resets the timeout
@@ -71,7 +81,7 @@ func _handle_number_press(number: int):
 			WING:
 				print("Wing " + str(wing) + ": " + str(number))
 			SHIP:
-				print(ship_name + ": " + str(number))
+				print(commanding_ship.name + ": " + str(number))
 			_:
 				# Not a valid number, so we do nothing
 				return
@@ -137,6 +147,7 @@ func _on_scene_loaded():
 		var comm_label = COMMUNICATIONS_LABEL.instance()
 		comm_label.set_ship(ship, index)
 		ships_menu.add_child(comm_label)
+		comm_label.connect("ship_destroyed", self, "_update_ships_list")
 		index += 1
 
 
@@ -146,6 +157,14 @@ func _process(delta):
 
 		if timeout_countdown <= 0:
 			hide()
+
+
+func _update_ships_list():
+	var index: int = 1
+	for label in ships_menu.get_children():
+		if not label.ship_destroyed:
+			label.set_number(index)
+			index += 1
 
 
 # PUBLIC
