@@ -39,7 +39,7 @@ func _on_body_entered(body):
 
 
 func _on_scene_loaded():
-	if hull_hitpoints == -1:
+	if hull_hitpoints < 0:
 		hull_hitpoints = max_hull_hitpoints
 	set_process(true)
 

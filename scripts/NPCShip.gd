@@ -4,10 +4,15 @@ enum ORDER_TYPE { PASSIVE, ATTACK, DEFEND, IGNORE, ATTACK_ANY, PATROL }
 
 export (Array, ORDER_TYPE) var initial_orders = [ORDER_TYPE.PASSIVE]
 
+var defend_target
 var is_flying_at_target: bool = true
-var orders: Array
+var orders: Array = []
 var waypoint_pos: Vector3
 var waypoint_index: int = -1
+
+
+func _defended_target_destroyed(order_index):
+	orders.remove(order_index)
 
 
 func _attack_current_target():
@@ -41,10 +46,12 @@ func _on_scene_loaded():
 	for order_type in initial_orders:
 		orders.append(Order.new(order_type))
 
+	._on_scene_loaded()
+
 
 func _process(delta):
 	for o in orders:
-		match o:
+		match o.type:
 			ORDER_TYPE.PATROL:
 				if waypoint_index == -1:
 					_get_next_waypoint()
@@ -61,7 +68,31 @@ func _process(delta):
 				if has_target:
 					_attack_current_target()
 				else:
-					o = ORDER_TYPE.PASSIVE
+					o.type = ORDER_TYPE.PASSIVE
+			ORDER_TYPE.DEFEND:
+				# NOTE: when switching to a DEFEND order, the ship should untarget whatever it's currently targeting
+				if has_target:
+					_attack_current_target()
+				else:
+					var attacking_ships: Array = []
+					for ship in o.target.targeting_ships:
+						var alignment = mission_controller.get_alignment(o.target.faction, ship.faction)
+						if alignment == mission_controller.HOSTILE:
+							attacking_ships.append(ship)
+
+					if attacking_ships.size() == 1:
+						_set_current_target(attacking_ships[0])
+					elif attacking_ships.size() > 1:
+						# Get the closest attacking ship
+						var closest_distance: float = -1
+						var closest_index: int = -1
+						for index in range(attacking_ships.size()):
+							var distance_squared = (attacking_ships[index].transform.origin - transform.origin)
+							if distance_squared < closest_distance or closest_distance == -1:
+								closest_index = index
+								closest_distance = distance_squared
+
+						_set_current_target(attacking_ships[closest_index])
 			ORDER_TYPE.ATTACK_ANY:
 				if has_target:
 					_attack_current_target()
@@ -82,7 +113,7 @@ func _process(delta):
 						_set_current_target(targets[closest_index])
 					else:
 						# TODO: shift to an appropriate other behavior/order when no targets left
-						o = ORDER_TYPE.PASSIVE
+						o.type = ORDER_TYPE.PASSIVE
 
 	._process(delta)
 
@@ -122,7 +153,7 @@ func set_command(command: int, target = null):
 			elif alignment == mission_controller.FRIENDLY:
 				print("Cannot attack a friendly target!")
 			else:
-				orders[0] = ORDER_TYPE.ATTACK
+				orders[0].type = ORDER_TYPE.ATTACK
 				_set_current_target(target)
 		ORDER_TYPE.DEFEND:
 			if target == null:
@@ -130,16 +161,17 @@ func set_command(command: int, target = null):
 			elif alignment == mission_controller.HOSTILE:
 				print("Cannot defend a hostile target!")
 			else:
-				orders[0] = ORDER_TYPE.DEFEND
-				print(name + " defending " + target.name)
+				orders[0].type = ORDER_TYPE.DEFEND
+				orders[0].target = target
+				target.connect("destroyed", self, "_defended_target_destroyed", [ 0 ])
 		ORDER_TYPE.IGNORE:
 			if target == null:
 				print("No target selected!")
 			else:
-				orders[0] = ORDER_TYPE.IGNORE
+				orders[0].type = ORDER_TYPE.IGNORE
 				print(name + " ignoring " + target.name)
 		ORDER_TYPE.ATTACK_ANY:
-			orders[0] = ORDER_TYPE.ATTACK_ANY
+			orders[0].type = ORDER_TYPE.ATTACK_ANY
 			print(name + " engaging at will")
 
 

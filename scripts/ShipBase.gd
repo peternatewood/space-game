@@ -236,7 +236,6 @@ func get_weapon_battery_percent():
 
 
 func handle_being_targeted(targeting_ship):
-	print(name + " targeted by " + targeting_ship.name)
 	targeting_ships.append(targeting_ship)
 	targeting_ship.connect("destroyed", self, "_on_targeting_ship_destroyed", [ targeting_ship ])
 
