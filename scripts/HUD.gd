@@ -1,7 +1,6 @@
 extends Control
 
 export (NodePath) var camera_path
-export (NodePath) var targets_container_path
 export (NodePath) var player_path
 
 onready var debug = get_node("Debug")
@@ -218,17 +217,18 @@ func _on_scene_loaded():
 
 	power_container.set_power_bars(player.power_distribution)
 
-	for node in get_node(targets_container_path).get_children():
-		var icon = RADAR_ICON.instance()
-		icon.set_target(node)
-		# Set icon color based on alignment
-		var alignment = mission_controller.get_alignment(player.faction, node.faction)
-		if alignment != -1:
-			icon.set_modulate(ALIGNMENT_COLORS_FADED[alignment])
-		else:
-			icon.set_modulate(Color.white)
+	for node in mission_controller.get_targets():
+		if node != mission_controller.player:
+			var icon = RADAR_ICON.instance()
+			icon.set_target(node)
+			# Set icon color based on alignment
+			var alignment = mission_controller.get_alignment(player.faction, node.faction)
+			if alignment != -1:
+				icon.set_modulate(ALIGNMENT_COLORS_FADED[alignment])
+			else:
+				icon.set_modulate(Color.white)
 
-		radar_icons_container.add_child(icon)
+			radar_icons_container.add_child(icon)
 
 	# Set up weapons display based on player loadout
 	energy_hardpoint_count = player.energy_weapon_hardpoints.size()
