@@ -178,35 +178,36 @@ func _on_scene_loaded():
 
 
 func _process(delta):
-	if is_alive:
-		input_velocity.x = Input.get_action_strength("pitch_up") - Input.get_action_strength("pitch_down")
-		input_velocity.y = Input.get_action_strength("yaw_left") - Input.get_action_strength("yaw_right")
-		input_velocity.z = Input.get_action_strength("roll_left") - Input.get_action_strength("roll_right")
+	if warping == NONE:
+		if is_alive:
+			input_velocity.x = Input.get_action_strength("pitch_up") - Input.get_action_strength("pitch_down")
+			input_velocity.y = Input.get_action_strength("yaw_left") - Input.get_action_strength("yaw_right")
+			input_velocity.z = Input.get_action_strength("roll_left") - Input.get_action_strength("roll_right")
 
-		torque_vector = transform.basis.x * input_velocity.x + transform.basis.y * input_velocity.y + transform.basis.z * input_velocity.z
+			torque_vector = transform.basis.x * input_velocity.x + transform.basis.y * input_velocity.y + transform.basis.z * input_velocity.z
 
-		if Input.is_action_pressed("fire_energy_weapon"):
-			_fire_energy_weapon()
+			if Input.is_action_pressed("fire_energy_weapon"):
+				_fire_energy_weapon()
 
-		if Input.is_action_pressed("fire_missile_weapon"):
-			if has_target:
-				_fire_missile_weapon(current_target)
-			else:
-				_fire_missile_weapon()
+			if Input.is_action_pressed("fire_missile_weapon"):
+				if has_target:
+					_fire_missile_weapon(current_target)
+				else:
+					_fire_missile_weapon()
 
-		match cam_mode:
-			COCKPIT:
-				camera.transform.origin = cockpit_view.global_transform.origin
-				camera.look_at(cockpit_view.global_transform.origin - 5 * transform.basis.z, transform.basis.y)
-			CHASE:
-				cam_offset = cam_offset.linear_interpolate(input_velocity, delta)
-				cam_dist = lerp(cam_dist, throttle * CAM_THROTTLE_MOD, delta)
-				var cam_up = transform.basis.y + transform.basis.x * CAM_ROLL_MOD * cam_offset.z
+			match cam_mode:
+				COCKPIT:
+					camera.transform.origin = cockpit_view.global_transform.origin
+					camera.look_at(cockpit_view.global_transform.origin - 5 * transform.basis.z, transform.basis.y)
+				CHASE:
+					cam_offset = cam_offset.linear_interpolate(input_velocity, delta)
+					cam_dist = lerp(cam_dist, throttle * CAM_THROTTLE_MOD, delta)
+					var cam_up = transform.basis.y + transform.basis.x * CAM_ROLL_MOD * cam_offset.z
 
-				camera.transform.origin = chase_view.global_transform.origin - transform.basis.x * cam_offset.y + transform.basis.y * cam_offset.x + transform.basis.z * cam_dist
-				camera.look_at(transform.origin - transform.basis.z, cam_up)
-	else:
-		camera.look_at(transform.origin, Vector3.UP)
+					camera.transform.origin = chase_view.global_transform.origin - transform.basis.x * cam_offset.y + transform.basis.y * cam_offset.x + transform.basis.z * cam_dist
+					camera.look_at(transform.origin - transform.basis.z, cam_up)
+		else:
+			camera.look_at(transform.origin, Vector3.UP)
 
 	._process(delta)
 

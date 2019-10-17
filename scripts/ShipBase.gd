@@ -1,5 +1,6 @@
 extends "res://scripts/ActorBase.gd"
 
+enum { NONE, WARP_IN, WARP_OUT }
 enum { WEAPON, SHIELD, ENGINE, TOTAL_POWER_LEVELS }
 enum { FRONT, REAR, LEFT, RIGHT, QUADRANT_COUNT }
 
@@ -37,6 +38,10 @@ var targeting_ships: Array = []
 var throttle: float
 var torque_vector: Vector3
 var turn_speed: float
+var warp_destination: Vector3
+var warp_origin: Vector3
+var warping: int = NONE
+var warping_countdown: float = 0.0
 var weapon_battery: float = MAX_WEAPON_BATTERY
 
 
@@ -167,15 +172,27 @@ func _on_targeting_ship_destroyed(destroyed_ship):
 
 
 func _physics_process(delta):
-	add_torque(turn_speed * torque_vector)
-	apply_central_impulse(throttle * propulsion_force * _get_engine_factor() * -transform.basis.z)
+	if warping == NONE:
+		add_torque(turn_speed * torque_vector)
+		apply_central_impulse(throttle * propulsion_force * _get_engine_factor() * -transform.basis.z)
 
 
 func _process(delta):
-	if weapon_battery < MAX_WEAPON_BATTERY:
-		# Ranges from half recovery rate to full recovery rate (0.5 - 1.0)
-		var battery_recovery_rate: float = WEAPON_BATTERY_RECOVERY_RATE * (0.5 + 0.5 * power_distribution[WEAPON] / MAX_SYSTEM_POWER)
-		weapon_battery = min(MAX_WEAPON_BATTERY, weapon_battery + delta * battery_recovery_rate)
+	match warping:
+		NONE:
+			if weapon_battery < MAX_WEAPON_BATTERY:
+				# Ranges from half recovery rate to full recovery rate (0.5 - 1.0)
+				var battery_recovery_rate: float = WEAPON_BATTERY_RECOVERY_RATE * (0.5 + 0.5 * power_distribution[WEAPON] / MAX_SYSTEM_POWER)
+				weapon_battery = min(MAX_WEAPON_BATTERY, weapon_battery + delta * battery_recovery_rate)
+		WARP_IN:
+			transform.origin = warp_origin.linear_interpolate(warp_destination, 1 - max(0, warping_countdown / WARP_DURATION))
+			warping_countdown -= delta
+			if warping_countdown <= 0:
+				show_and_enable()
+				warping = NONE
+				is_warped_in = true
+		WARP_OUT:
+			pass
 
 
 func _set_current_target(node):
@@ -268,14 +285,14 @@ func handle_target_deselected(targeting_ship):
 
 
 func hide_and_disable():
-		set_process(false)
-		_disable_shapes(true)
+	set_process(false)
+	_disable_shapes(true)
 
-		for quadrant in shields:
-			quadrant.set_monitorable(false)
-			quadrant.set_monitoring(false)
+	for quadrant in shields:
+		quadrant.set_monitorable(false)
+		quadrant.set_monitoring(false)
 
-		hide()
+	hide()
 
 
 func is_a_target_in_range():
@@ -283,14 +300,29 @@ func is_a_target_in_range():
 
 
 func show_and_enable():
+	set_process(true)
+	_disable_shapes(false)
+
+	for quadrant in shields:
+		quadrant.set_monitorable(true)
+		quadrant.set_monitoring(true)
+
+	show()
+
+
+func warp(warp_in: bool):
+	if warp_in:
+		warping = WARP_IN
+		warp_destination = transform.origin
+		translate(WARP_IN_DISTANCE * Vector3.BACK)
+		warp_origin = transform.origin
+
 		set_process(true)
-		_disable_shapes(false)
-
-		for quadrant in shields:
-			quadrant.set_monitorable(true)
-			quadrant.set_monitoring(true)
-
 		show()
+	else:
+		warping = WARP_OUT
+
+	warping_countdown = WARP_DURATION
 
 
 signal energy_weapon_changed
@@ -309,4 +341,6 @@ const MAX_THROTTLE: float = 1.0
 const MAX_WEAPON_BATTERY: float = 100.0
 const POWER_INCREMENT: int = 10
 const TOTAL_SYSTEM_POWER: float = 90.0
+const WARP_DURATION: float = 2.5
+const WARP_IN_DISTANCE: float = 200.0
 const WEAPON_BATTERY_RECOVERY_RATE: float = 1.0

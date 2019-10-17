@@ -50,48 +50,49 @@ func _on_scene_loaded():
 
 
 func _process(delta):
-	for o in orders:
-		match o.type:
-			ORDER_TYPE.PATROL:
-				if waypoint_index == -1:
-					_get_next_waypoint()
-				else:
-					var dist_squared = (waypoint_pos - transform.origin).length_squared()
-					if dist_squared <= 1:
+	if warping == NONE:
+		for o in orders:
+			match o.type:
+				ORDER_TYPE.PATROL:
+					if waypoint_index == -1:
 						_get_next_waypoint()
 					else:
-						_turn_towards_target(waypoint_pos)
+						var dist_squared = (waypoint_pos - transform.origin).length_squared()
+						if dist_squared <= 1:
+							_get_next_waypoint()
+						else:
+							_turn_towards_target(waypoint_pos)
 
-					if throttle != PATROL_THROTTLE:
-						throttle = PATROL_THROTTLE
-			ORDER_TYPE.ATTACK:
-				if has_target:
-					_attack_current_target()
-				else:
-					_set_current_target(o.target)
-			ORDER_TYPE.DEFEND, ORDER_TYPE.COVER_ME:
-				# NOTE: when switching to a DEFEND order, the ship should untarget whatever it's currently targeting
-				if has_target:
-					_attack_current_target()
-				else:
-					var closest_target = mission_controller.get_closest_target(self, o.target.targeting_ships, mission_controller.HOSTILE)
-					if closest_target != null:
-						_set_current_target(closest_target)
+						if throttle != PATROL_THROTTLE:
+							throttle = PATROL_THROTTLE
+				ORDER_TYPE.ATTACK:
+					if has_target:
+						_attack_current_target()
 					else:
-						o.type = ORDER_TYPE.PASSIVE
-			ORDER_TYPE.IGNORE:
-				if has_target and current_target == o.target:
-					_deselect_current_target()
-			ORDER_TYPE.ATTACK_ANY:
-				if has_target:
-					_attack_current_target()
-				else:
-					# Get closest hostile target
-					var closest_target = mission_controller.get_closest_target(self, mission_controller.get_targets(), mission_controller.HOSTILE)
-					if closest_target != null:
-						_set_current_target(closest_target)
+						_set_current_target(o.target)
+				ORDER_TYPE.DEFEND, ORDER_TYPE.COVER_ME:
+					# NOTE: when switching to a DEFEND order, the ship should untarget whatever it's currently targeting
+					if has_target:
+						_attack_current_target()
 					else:
-						o.type = ORDER_TYPE.PASSIVE
+						var closest_target = mission_controller.get_closest_target(self, o.target.targeting_ships, mission_controller.HOSTILE)
+						if closest_target != null:
+							_set_current_target(closest_target)
+						else:
+							o.type = ORDER_TYPE.PASSIVE
+				ORDER_TYPE.IGNORE:
+					if has_target and current_target == o.target:
+						_deselect_current_target()
+				ORDER_TYPE.ATTACK_ANY:
+					if has_target:
+						_attack_current_target()
+					else:
+						# Get closest hostile target
+						var closest_target = mission_controller.get_closest_target(self, mission_controller.get_targets(), mission_controller.HOSTILE)
+						if closest_target != null:
+							_set_current_target(closest_target)
+						else:
+							o.type = ORDER_TYPE.PASSIVE
 
 	._process(delta)
 
