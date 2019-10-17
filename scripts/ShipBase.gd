@@ -4,6 +4,7 @@ enum { WEAPON, SHIELD, ENGINE, TOTAL_POWER_LEVELS }
 enum { FRONT, REAR, LEFT, RIGHT, QUADRANT_COUNT }
 
 export (String) var faction
+export (String) var wing_name
 
 onready var chase_view = get_node("Chase View")
 onready var cockpit_view = get_node("Cockpit View")
