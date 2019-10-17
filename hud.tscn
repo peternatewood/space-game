@@ -45,7 +45,7 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color( 1, 1, 1, 1 )
 
-[sub_resource type="StyleBoxFlat" id=9]
+[sub_resource type="StyleBoxFlat" id=4]
 content_margin_left = 4.0
 content_margin_right = 4.0
 content_margin_top = 2.0
@@ -58,7 +58,7 @@ border_width_bottom = 1
 border_color = Color( 1, 1, 1, 1 )
 corner_detail = 2
 
-[sub_resource type="StyleBoxFlat" id=4]
+[sub_resource type="StyleBoxFlat" id=5]
 content_margin_left = 4.0
 content_margin_right = 4.0
 content_margin_top = 4.0
@@ -71,10 +71,10 @@ border_width_bottom = 1
 border_color = Color( 1, 1, 1, 1 )
 corner_detail = 2
 
-[sub_resource type="StyleBoxLine" id=5]
+[sub_resource type="StyleBoxLine" id=6]
 color = Color( 1, 1, 1, 1 )
 
-[sub_resource type="StyleBoxFlat" id=6]
+[sub_resource type="StyleBoxFlat" id=7]
 bg_color = Color( 0, 0, 0, 0.501961 )
 border_width_left = 2
 border_width_top = 2
@@ -82,10 +82,10 @@ border_width_right = 2
 border_width_bottom = 2
 border_color = Color( 1, 1, 1, 1 )
 
-[sub_resource type="ViewportTexture" id=7]
+[sub_resource type="ViewportTexture" id=8]
 viewport_path = NodePath("Target Viewport")
 
-[sub_resource type="Environment" id=8]
+[sub_resource type="Environment" id=9]
 background_mode = 1
 ambient_light_color = Color( 1, 1, 1, 1 )
 ambient_light_energy = 0.25
@@ -167,38 +167,38 @@ anchor_left = 1.0
 anchor_right = 1.0
 margin_left = -244.0
 margin_top = 16.0
-margin_right = -76.0
+margin_right = -100.0
 margin_bottom = 104.0
-custom_styles/panel = SubResource( 9 )
+custom_styles/panel = SubResource( 4 )
 script = ExtResource( 5 )
 
 [node name="Root Commands" type="VBoxContainer" parent="Communications Menu"]
 editor/display_folded = true
 margin_left = 4.0
 margin_top = 2.0
-margin_right = 164.0
-margin_bottom = 108.0
+margin_right = 140.0
+margin_bottom = 86.0
 
 [node name="All Ships Label" type="Label" parent="Communications Menu/Root Commands"]
-margin_right = 160.0
+margin_right = 136.0
 margin_bottom = 18.0
 text = "1. All Ships"
 
 [node name="Wings Label" type="Label" parent="Communications Menu/Root Commands"]
 margin_top = 22.0
-margin_right = 160.0
+margin_right = 136.0
 margin_bottom = 40.0
 text = "2. Wings"
 
 [node name="Ships Label" type="Label" parent="Communications Menu/Root Commands"]
 margin_top = 44.0
-margin_right = 160.0
+margin_right = 136.0
 margin_bottom = 62.0
 text = "3. Ships"
 
 [node name="Reinforcements Label" type="Label" parent="Communications Menu/Root Commands"]
 margin_top = 66.0
-margin_right = 160.0
+margin_right = 136.0
 margin_bottom = 84.0
 text = "4. Reinforcements"
 
@@ -207,7 +207,7 @@ visible = false
 margin_left = 4.0
 margin_top = 2.0
 margin_right = 164.0
-margin_bottom = 108.0
+margin_bottom = 130.0
 
 [node name="Wings List" type="VBoxContainer" parent="Communications Menu/Menus Container"]
 visible = false
@@ -237,7 +237,7 @@ text = "1. Ship"
 [node name="Ship Commands" type="VBoxContainer" parent="Communications Menu/Menus Container"]
 visible = false
 margin_right = 160.0
-margin_bottom = 84.0
+margin_bottom = 106.0
 
 [node name="Attack Label" type="Label" parent="Communications Menu/Menus Container/Ship Commands"]
 margin_right = 160.0
@@ -256,11 +256,17 @@ margin_right = 160.0
 margin_bottom = 62.0
 text = "3. Ignore My Target"
 
-[node name="Engage Label" type="Label" parent="Communications Menu/Menus Container/Ship Commands"]
+[node name="Cover Label" type="Label" parent="Communications Menu/Menus Container/Ship Commands"]
 margin_top = 66.0
 margin_right = 160.0
 margin_bottom = 84.0
-text = "4. Engage Enemies"
+text = "4. Cover Me"
+
+[node name="Engage Label" type="Label" parent="Communications Menu/Menus Container/Ship Commands"]
+margin_top = 88.0
+margin_right = 160.0
+margin_bottom = 106.0
+text = "5. Engage Enemies"
 
 [node name="Back Label" type="Label" parent="Communications Menu/Menus Container"]
 margin_right = 160.0
@@ -434,7 +440,7 @@ margin_left = 32.0
 margin_top = -31.0
 margin_right = 150.0
 margin_bottom = 25.0
-custom_styles/panel = SubResource( 4 )
+custom_styles/panel = SubResource( 5 )
 
 [node name="Weapons Rows" type="VBoxContainer" parent="Weapons Container"]
 margin_left = 4.0
@@ -458,7 +464,7 @@ margin_bottom = 40.0
 margin_top = 22.0
 margin_right = 126.0
 margin_bottom = 26.0
-custom_styles/separator = SubResource( 5 )
+custom_styles/separator = SubResource( 6 )
 
 [node name="Missile Weapons" type="VBoxContainer" parent="Weapons Container/Weapons Rows"]
 margin_top = 30.0
@@ -732,14 +738,14 @@ self_modulate = Color( 0.501961, 0.752941, 1, 1 )
 margin_right = 164.0
 margin_bottom = 94.0
 rect_min_size = Vector2( 164, 94 )
-custom_styles/panel = SubResource( 6 )
+custom_styles/panel = SubResource( 7 )
 
 [node name="Target View" type="TextureRect" parent="Target View Container/Target View Rows/Target View Panel Container/Target View Panel"]
 margin_left = 2.0
 margin_top = 2.0
 margin_right = 162.0
 margin_bottom = 92.0
-texture = SubResource( 7 )
+texture = SubResource( 8 )
 
 [node name="Target Hull Container" type="HBoxContainer" parent="Target View Container/Target View Rows/Target View Panel Container"]
 modulate = Color( 0.501961, 0.752941, 1, 1 )
@@ -964,7 +970,7 @@ transparent_bg = true
 render_target_v_flip = true
 
 [node name="Camera" type="Camera" parent="Target Viewport"]
-environment = SubResource( 8 )
+environment = SubResource( 9 )
 projection = 1
 current = true
 size = 3.0

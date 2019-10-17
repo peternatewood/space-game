@@ -78,11 +78,11 @@ func _handle_number_press(number: int):
 		match command_type:
 			ALL_SHIPS:
 				for ship in mission_controller.get_commandable_ships():
-					ship.set_command(number, mission_controller.player.current_target)
+					ship.set_command(number, mission_controller.player)
 			WING:
 				print("Wing " + str(wing) + ": " + str(number))
 			SHIP:
-				commanding_ship.set_command(number, mission_controller.player.current_target)
+				commanding_ship.set_command(number, mission_controller.player)
 			_:
 				# Not a valid number, so we do nothing
 				return
