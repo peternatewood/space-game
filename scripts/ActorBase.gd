@@ -30,6 +30,12 @@ func _destroy():
 	queue_free()
 
 
+func _disable_shapes(disable: bool):
+	for child in get_children():
+		if child is CollisionShape:
+			child.set_disabled(disable)
+
+
 func _on_body_entered(body):
 	if body is WeaponBase:
 		_deal_damage(body.damage_hull)
