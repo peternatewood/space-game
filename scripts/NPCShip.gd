@@ -1,6 +1,6 @@
 extends "res://scripts/ShipBase.gd"
 
-enum ORDER_TYPE { PASSIVE, ATTACK, DEFEND, IGNORE, COVER_ME, ATTACK_ANY, PATROL }
+enum ORDER_TYPE { PASSIVE, ATTACK, DEFEND, IGNORE, COVER_ME, ATTACK_ANY, DEPART, PATROL }
 
 export (Array, ORDER_TYPE) var initial_orders = [ORDER_TYPE.PASSIVE]
 
@@ -149,6 +149,7 @@ func set_command(command: int, commander):
 				return false
 			else:
 				commander.current_target.connect("destroyed", self, "_defended_target_destroyed", [ 0 ])
+				commander.current_target.connect("warped_out", self, "_defended_target_destroyed", [ 0 ])
 		ORDER_TYPE.IGNORE:
 			if not commander.has_target:
 				print("No target selected!")
@@ -157,6 +158,9 @@ func set_command(command: int, commander):
 			if alignment == mission_controller.HOSTILE:
 				print("Cannot cover a hostile target!")
 				return false
+		ORDER_TYPE.DEPART:
+			warp(false)
+			return true
 
 	orders[0] = new_order
 	return true

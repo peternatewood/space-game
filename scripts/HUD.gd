@@ -60,6 +60,7 @@ func _ready():
 func _disconnect_target_signals(target):
 	target.disconnect("damaged", self, "_on_target_damaged")
 	target.disconnect("destroyed", self, "_on_target_destroyed")
+	target.disconnect("warped_out", self, "_on_target_destroyed")
 
 	for index in range(target.QUADRANT_COUNT):
 		target.shields[index].disconnect("hitpoints_changed", self, "_on_target_shield_changed")
@@ -133,6 +134,7 @@ func _on_player_target_changed(last_target):
 
 		player.current_target.connect("damaged", self, "_on_target_damaged")
 		player.current_target.connect("destroyed", self, "_on_target_destroyed", [ player.current_target ])
+		player.current_target.connect("warped_out", self, "_on_target_destroyed", [ player.current_target ])
 
 		for index in range(player.current_target.QUADRANT_COUNT):
 			player.current_target.shields[index].connect("hitpoints_changed", self, "_on_target_shield_changed", [ index ])
@@ -212,6 +214,7 @@ func _on_scene_loaded():
 
 	player.connect("damaged", self, "_on_player_damaged")
 	player.connect("destroyed", self, "_on_player_destroyed")
+	player.connect("warped_out", self, "_on_player_destroyed")
 
 	for index in range(player.QUADRANT_COUNT):
 		player.shields[index].connect("hitpoints_changed", self, "_on_player_shield_changed", [ index ])

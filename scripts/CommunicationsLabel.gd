@@ -43,6 +43,7 @@ func set_number(number: int):
 func set_ship(node, number: int):
 	ship = node
 	ship.connect("destroyed", self, "_on_ship_destroyed")
+	ship.connect("warped_out", self, "_on_ship_destroyed")
 	set_number(number)
 
 
@@ -50,6 +51,7 @@ func set_wing(name, ships, number: int):
 	for ship in ships:
 		wing_ships.append(ship)
 		ship.connect("destroyed", self, "_on_wing_ship_destroyed", [ ship ])
+		ship.connect("warped_out", self, "_on_wing_ship_destroyed", [ ship ])
 
 	wing_name = name
 	set_text(str(number) + ". " + name)

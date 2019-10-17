@@ -40,6 +40,7 @@ var torque_vector: Vector3
 var turn_speed: float
 var warp_destination: Vector3
 var warp_origin: Vector3
+var warp_speed: float
 var warping: int = NONE
 var warping_countdown: float = 0.0
 var weapon_battery: float = MAX_WEAPON_BATTERY
@@ -82,6 +83,7 @@ func _cycle_missile_weapon(direction: int):
 func _deselect_current_target():
 	has_target = false
 	current_target.disconnect("destroyed", self, "_on_target_destroyed")
+	current_target.disconnect("warped_out", self, "_on_target_destroyed")
 	current_target.handle_target_deselected(self)
 	current_target = null
 
@@ -192,18 +194,28 @@ func _process(delta):
 				warping = NONE
 				is_warped_in = true
 		WARP_OUT:
-			pass
+			warping_countdown -= delta
+
+			if warping_countdown <= 0:
+				translate(delta * warp_speed * Vector3.FORWARD)
+
+				if warping_countdown <= -WARP_DURATION:
+					hide_and_disable()
+					emit_signal("warped_out")
+					queue_free()
 
 
 func _set_current_target(node):
 	if has_target:
 		current_target.disconnect("destroyed", self, "_on_target_destroyed")
+		current_target.disconnect("warped_out", self, "_on_target_destroyed")
 		current_target.handle_target_deselected(self)
 
 	if node.is_alive:
 		has_target = true
 		current_target = node
 		current_target.connect("destroyed", self, "_on_target_destroyed")
+		current_target.connect("warped_out", self, "_on_target_destroyed")
 		current_target.handle_being_targeted(self)
 
 
@@ -272,6 +284,7 @@ func get_weapon_battery_percent():
 func handle_being_targeted(targeting_ship):
 	targeting_ships.append(targeting_ship)
 	targeting_ship.connect("destroyed", self, "_on_targeting_ship_destroyed", [ targeting_ship ])
+	targeting_ship.connect("warped_out", self, "_on_targeting_ship_destroyed", [ targeting_ship ])
 
 
 func handle_target_deselected(targeting_ship):
@@ -321,12 +334,14 @@ func warp(warp_in: bool):
 		show()
 	else:
 		warping = WARP_OUT
+		warp_speed = WARP_IN_DISTANCE / WARP_DURATION
 
 	warping_countdown = WARP_DURATION
 
 
 signal energy_weapon_changed
 signal missile_weapon_changed
+signal warped_out
 
 const ActorBase = preload("ActorBase.gd")
 const EnergyBolt = preload("EnergyBolt.gd")
