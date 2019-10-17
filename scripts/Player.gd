@@ -261,7 +261,7 @@ func warp_out():
 	warp_speed = WARP_IN_DISTANCE / WARP_DURATION
 	warping_countdown = WARP_DURATION
 	warping = WARP_OUT
-	emit_signal("warped_out")
+	emit_signal("began_warp_out")
 
 
 signal cam_changed
@@ -269,7 +269,7 @@ signal power_distribution_changed
 signal shield_boost_changed
 signal target_changed
 signal throttle_changed
-signal warped_out
+signal began_warp_out
 
 const ShipBase = preload("ShipBase.gd")
 

@@ -188,7 +188,7 @@ func _on_player_throttle_changed():
 	throttle_line.set_position(line_pos)
 
 
-func _on_player_warped_out():
+func _on_player_began_warp_out():
 	hide()
 	set_process(false)
 
@@ -208,7 +208,7 @@ func _on_scene_loaded():
 	player.connect("power_distribution_changed", self, "_on_player_power_distribution_changed")
 	player.connect("shield_boost_changed", self, "_on_player_shield_boost_changed")
 	player.connect("target_changed", self, "_on_player_target_changed")
-	player.connect("warped_out", self, "_on_player_warped_out")
+	player.connect("began_warp_out", self, "_on_player_began_warp_out")
 
 	player.connect("damaged", self, "_on_player_damaged")
 	player.connect("destroyed", self, "_on_player_destroyed")
