@@ -72,9 +72,11 @@ func _handle_number_press(number: int):
 		if ship_index < ship_labels.size():
 			if commanding_ship != null:
 				commanding_ship.disconnect("destroyed", self, "_on_commanding_ship_destroyed")
+				commanding_ship.disconnect("warped_out", self, "_on_commanding_ship_destroyed")
 
 			commanding_ship = ship_labels[ship_index].ship
 			commanding_ship.connect("destroyed", self, "_on_commanding_ship_destroyed")
+			commanding_ship.connect("warped_out", self, "_on_commanding_ship_destroyed")
 			ships_menu.hide()
 			ship_commands.show()
 		# If the number isn't valid, we don't return so the input resets the timeout
@@ -109,6 +111,7 @@ func _handle_number_press(number: int):
 					ship.set_command(number, mission_controller.player)
 			SHIP:
 				commanding_ship.set_command(number, mission_controller.player)
+				commanding_ship = null
 			_:
 				# Not a valid number, so we do nothing
 				return

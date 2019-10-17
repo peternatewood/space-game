@@ -176,29 +176,29 @@ script = ExtResource( 5 )
 editor/display_folded = true
 margin_left = 4.0
 margin_top = 2.0
-margin_right = 140.0
-margin_bottom = 86.0
+margin_right = 164.0
+margin_bottom = 152.0
 
 [node name="All Ships Label" type="Label" parent="Communications Menu/Root Commands"]
-margin_right = 136.0
+margin_right = 160.0
 margin_bottom = 18.0
 text = "1. All Ships"
 
 [node name="Wings Label" type="Label" parent="Communications Menu/Root Commands"]
 margin_top = 22.0
-margin_right = 136.0
+margin_right = 160.0
 margin_bottom = 40.0
 text = "2. Wings"
 
 [node name="Ships Label" type="Label" parent="Communications Menu/Root Commands"]
 margin_top = 44.0
-margin_right = 136.0
+margin_right = 160.0
 margin_bottom = 62.0
 text = "3. Ships"
 
 [node name="Reinforcements Label" type="Label" parent="Communications Menu/Root Commands"]
 margin_top = 66.0
-margin_right = 136.0
+margin_right = 160.0
 margin_bottom = 84.0
 text = "4. Reinforcements"
 
@@ -206,8 +206,8 @@ text = "4. Reinforcements"
 visible = false
 margin_left = 4.0
 margin_top = 2.0
-margin_right = 140.0
-margin_bottom = 86.0
+margin_right = 164.0
+margin_bottom = 152.0
 
 [node name="Wings List" type="VBoxContainer" parent="Communications Menu/Menus Container"]
 visible = false
@@ -223,9 +223,10 @@ visible = false
 margin_right = 136.0
 
 [node name="Ship Commands" type="VBoxContainer" parent="Communications Menu/Menus Container"]
+editor/display_folded = true
 visible = false
 margin_right = 160.0
-margin_bottom = 106.0
+margin_bottom = 128.0
 
 [node name="Attack Label" type="Label" parent="Communications Menu/Menus Container/Ship Commands"]
 margin_right = 160.0
@@ -256,8 +257,14 @@ margin_right = 160.0
 margin_bottom = 106.0
 text = "5. Engage Enemies"
 
+[node name="Depart Label" type="Label" parent="Communications Menu/Menus Container/Ship Commands"]
+margin_top = 110.0
+margin_right = 160.0
+margin_bottom = 128.0
+text = "6. Depart"
+
 [node name="Back Label" type="Label" parent="Communications Menu/Menus Container"]
-margin_right = 136.0
+margin_right = 160.0
 margin_bottom = 18.0
 text = "0. Back"
 

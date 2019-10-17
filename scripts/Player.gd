@@ -10,7 +10,6 @@ var cam_mode: int
 var cam_offset: Vector3
 var camera
 var input_velocity: Vector3
-var warp_speed: float
 
 
 func _ready():
@@ -214,16 +213,10 @@ func _process(delta):
 			else:
 				camera.look_at(transform.origin, Vector3.UP)
 
-			._process(delta)
 		WARP_OUT:
 			camera.look_at(transform.origin, transform.basis.y)
-			warping_countdown -= delta
 
-			if warping_countdown <= 0:
-				translate(delta * warp_speed * Vector3.FORWARD)
-
-				if warping_countdown <= -WARP_DURATION:
-					hide_and_disable()
+	._process(delta)
 
 
 func _set_cam_mode(mode: int):
