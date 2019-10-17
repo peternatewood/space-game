@@ -82,20 +82,20 @@ func get_next_waypoint_pos(index: int):
 	return waypoints[index].transform.origin
 
 
-func get_ships_in_wing(wing_name: String, exclude_ship = null):
+func get_ships_in_wing(wing_name: String, exclude_ship = null, include_warped_out: bool = false):
 	var ships: Array = []
 
-	for ship in get_targets():
+	for ship in get_targets(include_warped_out):
 		if ship != exclude_ship and ship.wing_name == wing_name:
 			ships.append(ship)
 
 	return ships
 
 
-func get_targets():
+func get_targets(include_warped_out: bool = false):
 	var warped_in_targets: Array = []
 	for child in targets_container.get_children():
-		if child.is_warped_in:
+		if include_warped_out or child.is_warped_in:
 			warped_in_targets.append(child)
 
 	return warped_in_targets
