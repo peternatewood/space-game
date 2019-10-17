@@ -16,9 +16,9 @@ Here I'll be keeping track of the all the features I want to implement, and chec
 - [x] Reroute power to Shields by quadrant
 - [x] Alliance Groups
 - [x] Title Screen
-- [ ] NPC Ship Behavior
+- [x] NPC Ship Behavior
 - [x] Communications Menu (in-game)
-- [ ] Group ships into Wings
+- [x] Group ships into Wings
 - [ ] Mission Objectives and Warp Out
 - [ ] Options Menu
 - [ ] Mission Briefing
