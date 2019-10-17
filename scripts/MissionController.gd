@@ -3,6 +3,7 @@ extends Node
 enum { NEUTRAL, FRIENDLY, HOSTILE }
 
 export (NodePath) var player_path
+export (Array, String) var reinforcement_wings = []
 
 onready var loader = get_node("/root/SceneLoader")
 
