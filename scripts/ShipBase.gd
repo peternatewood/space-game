@@ -72,6 +72,13 @@ func _cycle_missile_weapon(direction: int):
 	emit_signal("missile_weapon_changed")
 
 
+func _deselect_current_target():
+	has_target = false
+	current_target.disconnect("destroyed", self, "_on_target_destroyed")
+	current_target.handle_target_deselected(self)
+	current_target = null
+
+
 func _fire_energy_weapon():
 	var weapon_cost = energy_weapon_hardpoints[energy_weapon_index].get_weapon_data("cost")
 	if energy_weapon_hardpoints[energy_weapon_index].countdown == 0 and weapon_battery >= weapon_cost:
@@ -165,6 +172,7 @@ func _process(delta):
 func _set_current_target(node):
 	if has_target:
 		current_target.disconnect("destroyed", self, "_on_target_destroyed")
+		current_target.handle_target_deselected(self)
 
 	if node.is_alive:
 		has_target = true
@@ -238,6 +246,16 @@ func get_weapon_battery_percent():
 func handle_being_targeted(targeting_ship):
 	targeting_ships.append(targeting_ship)
 	targeting_ship.connect("destroyed", self, "_on_targeting_ship_destroyed", [ targeting_ship ])
+
+
+func handle_target_deselected(targeting_ship):
+	var index: int = 0
+	for ship in targeting_ships:
+		if ship == targeting_ship:
+			targeting_ships.remove(index)
+			return
+
+		index += 1
 
 
 func is_a_target_in_range():

@@ -1,6 +1,6 @@
 extends "res://scripts/ShipBase.gd"
 
-enum ORDER_TYPE { PASSIVE, ATTACK, DEFEND, IGNORE, ATTACK_ANY, PATROL }
+enum ORDER_TYPE { PASSIVE, ATTACK, DEFEND, IGNORE, COVER_ME, ATTACK_ANY, PATROL }
 
 export (Array, ORDER_TYPE) var initial_orders = [ORDER_TYPE.PASSIVE]
 
@@ -93,6 +93,9 @@ func _process(delta):
 								closest_distance = distance_squared
 
 						_set_current_target(attacking_ships[closest_index])
+			ORDER_TYPE.IGNORE:
+				if has_target and current_target == o.target:
+					_deselect_current_target()
 			ORDER_TYPE.ATTACK_ANY:
 				if has_target:
 					_attack_current_target()
@@ -169,7 +172,7 @@ func set_command(command: int, target = null):
 				print("No target selected!")
 			else:
 				orders[0].type = ORDER_TYPE.IGNORE
-				print(name + " ignoring " + target.name)
+				orders[0].target = target
 		ORDER_TYPE.ATTACK_ANY:
 			orders[0].type = ORDER_TYPE.ATTACK_ANY
 			print(name + " engaging at will")
