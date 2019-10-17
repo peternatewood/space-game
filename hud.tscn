@@ -206,18 +206,12 @@ text = "4. Reinforcements"
 visible = false
 margin_left = 4.0
 margin_top = 2.0
-margin_right = 164.0
-margin_bottom = 130.0
+margin_right = 140.0
+margin_bottom = 86.0
 
 [node name="Wings List" type="VBoxContainer" parent="Communications Menu/Menus Container"]
 visible = false
 margin_right = 136.0
-margin_bottom = 18.0
-
-[node name="Wing Label" type="Label" parent="Communications Menu/Menus Container/Wings List"]
-margin_right = 136.0
-margin_bottom = 18.0
-text = "1. Wing"
 
 [node name="Ships List" type="VBoxContainer" parent="Communications Menu/Menus Container"]
 visible = false
@@ -269,7 +263,7 @@ margin_bottom = 106.0
 text = "5. Engage Enemies"
 
 [node name="Back Label" type="Label" parent="Communications Menu/Menus Container"]
-margin_right = 160.0
+margin_right = 136.0
 margin_bottom = 18.0
 text = "0. Back"
 

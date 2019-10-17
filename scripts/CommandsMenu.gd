@@ -143,6 +143,7 @@ func _input(event):
 
 
 func _on_scene_loaded():
+	# Build ships list
 	var index: int = 1
 	for ship in mission_controller.get_commandable_ships():
 		var comm_label = COMMUNICATIONS_LABEL.instance()
@@ -150,6 +151,19 @@ func _on_scene_loaded():
 		ships_menu.add_child(comm_label)
 		comm_label.connect("ship_destroyed", self, "_update_ships_list")
 		index += 1
+
+	index = 1
+	for wing in mission_controller.wings:
+		var wing_ships = mission_controller.get_ships_in_wing(wing, mission_controller.player)
+
+		if wing_ships.size() > 0:
+			var alignment = mission_controller.get_alignment(mission_controller.player.faction, wing_ships[0].faction)
+
+			if alignment == mission_controller.FRIENDLY:
+				var comm_label = COMMUNICATIONS_LABEL.instance()
+				comm_label.set_wing(wing, wing_ships, index)
+				wings_menu.add_child(comm_label)
+				index += 1
 
 
 func _process(delta):
