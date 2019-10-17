@@ -93,7 +93,12 @@ func get_ships_in_wing(wing_name: String, exclude_ship = null):
 
 
 func get_targets():
-	return targets_container.get_children()
+	var warped_in_targets: Array = []
+	for child in targets_container.get_children():
+		if child.is_warped_in:
+			warped_in_targets.append(child)
+
+	return warped_in_targets
 
 
 func get_targets_by_distance(ship, targets: Array, only_alignment: int = -1):
