@@ -160,8 +160,14 @@ func _on_scene_loaded():
 		comm_label.connect("ship_destroyed", self, "_update_ships_list")
 		index += 1
 
+	# Build wings list
+	var friendly_wings: Array = []
+	for ship in mission_controller.get_commandable_ships():
+		if not friendly_wings.has(ship.wing_name):
+			friendly_wings.append(ship.wing_name)
+
 	index = 1
-	for wing in mission_controller.wings:
+	for wing in friendly_wings:
 		var wing_ships = mission_controller.get_ships_in_wing(wing, mission_controller.player)
 
 		if wing_ships.size() > 0:

@@ -3,7 +3,6 @@ extends Node
 enum { NEUTRAL, FRIENDLY, HOSTILE }
 
 export (NodePath) var player_path
-export (Array, String) var wings = []
 
 onready var loader = get_node("/root/SceneLoader")
 
@@ -86,10 +85,9 @@ func get_next_waypoint_pos(index: int):
 func get_ships_in_wing(wing_name: String, exclude_ship = null):
 	var ships: Array = []
 
-	if wings.has(wing_name):
-		for ship in get_targets():
-			if ship != exclude_ship and ship.wing_name == wing_name:
-				ships.append(ship)
+	for ship in get_targets():
+		if ship != exclude_ship and ship.wing_name == wing_name:
+			ships.append(ship)
 
 	return ships
 
