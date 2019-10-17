@@ -342,5 +342,5 @@ const MAX_WEAPON_BATTERY: float = 100.0
 const POWER_INCREMENT: int = 10
 const TOTAL_SYSTEM_POWER: float = 90.0
 const WARP_DURATION: float = 2.5
-const WARP_IN_DISTANCE: float = 200.0
+const WARP_IN_DISTANCE: float = 400.0
 const WEAPON_BATTERY_RECOVERY_RATE: float = 1.0
