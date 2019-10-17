@@ -14,7 +14,6 @@
 [node name="Mission Controller" type="Spatial"]
 script = ExtResource( 1 )
 player_path = NodePath("Targets Container/Player")
-wings = [ "Alpha", "Hyla", "Buteo" ]
 
 [node name="Sun Light" type="DirectionalLight" parent="."]
 transform = Transform( 0.866025, 0.482963, -0.12941, 0, 0.258819, 0.965926, 0.5, -0.836516, 0.224144, 0, 8, 2 )
@@ -38,6 +37,7 @@ camera_path = NodePath("../../Camera")
 transform = Transform( 0.478177, -0.0391645, 0.87739, 0.696631, 0.62528, -0.351753, -0.534838, 0.779417, 0.326278, 0, 0, -7.69467 )
 script = ExtResource( 6 )
 faction = "frog"
+starts_warped_in = false
 wing_name = "Hyla"
 
 [node name="Hyla 2" parent="Targets Container" groups=[

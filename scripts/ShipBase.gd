@@ -259,8 +259,30 @@ func handle_target_deselected(targeting_ship):
 		index += 1
 
 
+func hide_and_disable():
+		set_process(false)
+		_disable_shapes(true)
+
+		for quadrant in shields:
+			quadrant.set_monitorable(false)
+			quadrant.set_monitoring(false)
+
+		hide()
+
+
 func is_a_target_in_range():
 	return target_raycast.get_collider() is ActorBase
+
+
+func show_and_enable():
+		set_process(true)
+		_disable_shapes(false)
+
+		for quadrant in shields:
+			quadrant.set_monitorable(true)
+			quadrant.set_monitoring(true)
+
+		show()
 
 
 signal energy_weapon_changed
