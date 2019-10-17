@@ -3,8 +3,9 @@ extends Label
 var enabled: bool = true
 var ship
 var ship_destroyed: bool = false
-var wing_ships: Array = []
 var wing_destroyed: bool = false
+var wing_name: String
+var wing_ships: Array = []
 
 
 func _on_ship_destroyed():
@@ -50,6 +51,7 @@ func set_wing(name, ships, number: int):
 		wing_ships.append(ship)
 		ship.connect("destroyed", self, "_on_wing_ship_destroyed", [ ship ])
 
+	wing_name = name
 	set_text(str(number) + ". " + name)
 
 
