@@ -63,3 +63,41 @@ func get_next_waypoint_pos(index: int):
 func get_targets():
 	return targets_container.get_children()
 
+
+func get_targets_by_distance(ship, targets: Array, only_alignment: int = -1):
+	var alignment: int
+	var pivot: float
+	var ordered_targets: Array
+
+	if only_alignment == -1:
+		pivot = (ship.transform.origin - targets[0].transform.origin).length_squared()
+		ordered_targets = [ targets[0] ]
+	else:
+		# Find the first target of this alignment
+		var found_target: bool = false
+		for target in targets:
+			if get_alignment(ship.faction, target.faction) == only_alignment:
+				pivot = (ship.transform.origin - target.transform.origin).length_squared()
+				ordered_targets = [ target ]
+				found_target = true
+				break
+
+		# In case no targets match this alignment
+		if not found_target:
+			return []
+
+	var index: int = 1
+	for index in range(targets.size()):
+		# Skip this target if not the desired alignment
+		if only_alignment != -1:
+			alignment = get_alignment(ship.faction, targets[index].faction)
+			if alignment != only_alignment:
+				continue
+
+		var distance_squared = (ship.transform.origin - targets[index].transform.origin).length_squared()
+		if distance_squared < pivot:
+			ordered_targets.push_front(targets[index])
+		else:
+			ordered_targets.push_back(targets[index])
+
+	return ordered_targets
