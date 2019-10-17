@@ -18,7 +18,7 @@ Here I'll be keeping track of the all the features I want to implement, and chec
 - [x] Title Screen
 - [ ] NPC Ship Behavior
 - [x] Communications Menu (in-game)
-- [ ] Wingmates
+- [ ] Group ships into Wings
 - [ ] Mission Objectives and Warp Out
 - [ ] Options Menu
 - [ ] Mission Briefing
