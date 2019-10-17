@@ -13,7 +13,7 @@ var reinforcements_list
 var ship_commands
 var ships_menu
 var timeout_countdown: float = 0.0
-var wing: int = -1
+var wing
 var wings_menu
 
 
@@ -55,7 +55,14 @@ func _handle_number_press(number: int):
 		root_menu.hide()
 		menus_container.show()
 	elif wings_menu.visible:
-		wing = number
+		if number > wings_menu.get_child_count():
+			# Not a valid number, so we do nothing
+			return
+
+		wing = wings_menu.get_child(number - 1)
+		if wing.wing_destroyed:
+			return
+
 		wings_menu.hide()
 		ship_commands.show()
 	elif ships_menu.visible:
@@ -80,7 +87,8 @@ func _handle_number_press(number: int):
 				for ship in mission_controller.get_commandable_ships():
 					ship.set_command(number, mission_controller.player)
 			WING:
-				print("Wing " + str(wing) + ": " + str(number))
+				for ship in wing.wing_ships:
+					ship.set_command(number, mission_controller.player)
 			SHIP:
 				commanding_ship.set_command(number, mission_controller.player)
 			_:
