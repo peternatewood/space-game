@@ -79,8 +79,16 @@ func _handle_number_press(number: int):
 			ship_commands.show()
 		# If the number isn't valid, we don't return so the input resets the timeout
 	elif reinforcements_list.visible:
-		print("Calling reinforcements: " + str(number))
-		hide()
+		var wing_index = number - 1
+		var wing_labels = reinforcements_list.get_children()
+
+		if wing_index < wing_labels.size():
+			for ship in wing_labels[wing_index].wing_ships:
+				ship.show_and_enable()
+			hide()
+		else:
+			# Not a valid number, so we do nothing
+			return
 	elif ship_commands.visible:
 		match command_type:
 			ALL_SHIPS:
