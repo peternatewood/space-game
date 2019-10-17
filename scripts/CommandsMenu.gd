@@ -82,9 +82,19 @@ func _handle_number_press(number: int):
 		var wing_index = number - 1
 		var wing_labels = reinforcements_list.get_children()
 
-		if wing_index < wing_labels.size():
+		if wing_index < wing_labels.size() and wing_labels[wing_index].enabled:
 			for ship in wing_labels[wing_index].wing_ships:
-				ship.show_and_enable()
+				ship.warp(true)
+
+			# Add wing under wings list
+			var arrived_wing = COMMUNICATIONS_LABEL.instance()
+			arrived_wing.set_wing(wing_labels[wing_index].wing_name, wing_labels[wing_index].wing_ships, wings_menu.get_child_count() + 1)
+			wings_menu.add_child(arrived_wing)
+
+			# Disable now warped-in wing
+			wing_labels[wing_index].disable()
+
+			reinforcements_list.hide()
 			hide()
 		else:
 			# Not a valid number, so we do nothing
