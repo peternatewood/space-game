@@ -4,6 +4,7 @@ enum { WEAPON, SHIELD, ENGINE, TOTAL_POWER_LEVELS }
 enum { FRONT, REAR, LEFT, RIGHT, QUADRANT_COUNT }
 
 export (String) var faction
+export (bool) var is_warped_in = true
 export (String) var wing_name
 
 onready var chase_view = get_node("Chase View")
@@ -141,6 +142,13 @@ func _increment_power_level(system: int, direction: int):
 			# Update shields' recovery rate
 			for quadrant in shields:
 				quadrant.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
+
+
+func _on_scene_loaded():
+	._on_scene_loaded()
+
+	if not is_warped_in:
+		hide_and_disable()
 
 
 func _on_target_destroyed():

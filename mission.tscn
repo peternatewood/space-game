@@ -37,7 +37,7 @@ camera_path = NodePath("../../Camera")
 transform = Transform( 0.478177, -0.0391645, 0.87739, 0.696631, 0.62528, -0.351753, -0.534838, 0.779417, 0.326278, 0, 0, -7.69467 )
 script = ExtResource( 6 )
 faction = "frog"
-starts_warped_in = false
+is_warped_in = false
 wing_name = "Hyla"
 
 [node name="Hyla 2" parent="Targets Container" groups=[
