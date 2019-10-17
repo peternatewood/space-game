@@ -179,6 +179,17 @@ func _on_scene_loaded():
 				wings_menu.add_child(comm_label)
 				index += 1
 
+	# Build reinforcements list
+	index = 1
+	for wing in mission_controller.reinforcement_wings:
+		var wing_ships = mission_controller.get_ships_in_wing(wing, mission_controller.player, true)
+
+		if wing_ships.size() > 0:
+			var comm_label = COMMUNICATIONS_LABEL.instance()
+			comm_label.set_wing(wing, wing_ships, index)
+			reinforcements_list.add_child(comm_label)
+			index += 1
+
 
 func _process(delta):
 	if timeout_countdown > 0:

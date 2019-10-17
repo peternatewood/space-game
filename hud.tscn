@@ -221,12 +221,6 @@ margin_bottom = 18.0
 [node name="Reinforcements List" type="VBoxContainer" parent="Communications Menu/Menus Container"]
 visible = false
 margin_right = 136.0
-margin_bottom = 18.0
-
-[node name="Wing Label" type="Label" parent="Communications Menu/Menus Container/Reinforcements List"]
-margin_right = 136.0
-margin_bottom = 18.0
-text = "1. Ship"
 
 [node name="Ship Commands" type="VBoxContainer" parent="Communications Menu/Menus Container"]
 visible = false
