@@ -1,5 +1,6 @@
 extends Label
 
+var enabled: bool = true
 var ship
 var ship_destroyed: bool = false
 var wing_ships: Array = []
@@ -23,10 +24,15 @@ func _on_wing_ship_destroyed(destroyed_ship):
 
 	if wing_ships.size() < 1:
 		wing_destroyed = true
-		set_modulate(HALF_OPACITY_WHITE)
+		disable()
 
 
 # PUBLIC
+
+
+func disable():
+	enabled = false
+	set_modulate(HALF_OPACITY_WHITE)
 
 
 func set_number(number: int):
