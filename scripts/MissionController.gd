@@ -45,6 +45,28 @@ func get_alignment(factionA: String, factionB: String):
 	return -1
 
 
+func get_closest_target(ship, targets: Array, only_alignment: int = -1):
+	var closest_distance: float = -1
+	var closest_index: int = -1
+
+	for index in range(targets.size()):
+		if only_alignment != -1:
+			var alignment = get_alignment(ship.faction, targets[index].faction)
+			if alignment != only_alignment:
+				continue
+
+		var distance_squared = (targets[index].transform.origin - ship.transform.origin).length_squared()
+		if distance_squared < closest_distance or closest_distance == -1:
+			closest_index = index
+			closest_distance = distance_squared
+
+	if closest_index == -1:
+		# No targets found
+		return null
+
+	return targets[closest_index]
+
+
 func get_commandable_ships():
 	var commandable_ships: Array = []
 
