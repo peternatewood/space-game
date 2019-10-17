@@ -14,6 +14,7 @@
 [node name="Mission Controller" type="Spatial"]
 script = ExtResource( 1 )
 player_path = NodePath("Targets Container/Player")
+wings = [ "Alpha", "Hyla", "Buteo" ]
 
 [node name="Sun Light" type="DirectionalLight" parent="."]
 transform = Transform( 0.866025, 0.482963, -0.12941, 0, 0.258819, 0.965926, 0.5, -0.836516, 0.224144, 0, 8, 2 )
@@ -23,40 +24,61 @@ script = ExtResource( 2 )
 
 [node name="Targets Container" type="Node" parent="."]
 
-[node name="Player" parent="Targets Container" instance=ExtResource( 3 )]
+[node name="Player" parent="Targets Container" groups=[
+"Spider Alpha",
+] instance=ExtResource( 3 )]
 script = ExtResource( 4 )
 faction = "spider"
+wing_name = "Alpha"
 camera_path = NodePath("../../Camera")
 
-[node name="Frog Alpha 1" parent="Targets Container" instance=ExtResource( 5 )]
+[node name="Hyla 1" parent="Targets Container" groups=[
+"Frog Alpha",
+] instance=ExtResource( 5 )]
 transform = Transform( 0.478177, -0.0391645, 0.87739, 0.696631, 0.62528, -0.351753, -0.534838, 0.779417, 0.326278, 0, 0, -7.69467 )
 script = ExtResource( 6 )
 faction = "frog"
+wing_name = "Hyla"
 
-[node name="Frog Alpha 2" parent="Targets Container" instance=ExtResource( 5 )]
+[node name="Hyla 2" parent="Targets Container" groups=[
+"Frog Alpha",
+] instance=ExtResource( 5 )]
 transform = Transform( 0.714087, 0.56136, -0.418275, -0.152566, 0.707917, 0.689621, 0.683229, -0.428635, 0.591159, -8.23028, 0, -14.6645 )
 script = ExtResource( 6 )
 faction = "frog"
+wing_name = "Hyla"
 
-[node name="Spider Alpha 1" parent="Targets Container" instance=ExtResource( 3 )]
+[node name="Alpha 2" parent="Targets Container" groups=[
+"Spider Alpha",
+] instance=ExtResource( 3 )]
 transform = Transform( 0.787268, 0.302992, 0.537034, -0.226817, 0.95218, -0.204713, -0.573379, 0.0393554, 0.818344, 4.66133, 2.33831, -2.32113 )
 script = ExtResource( 6 )
 faction = "spider"
+wing_name = "Alpha"
 
-[node name="Spider Alpha 2" parent="Targets Container" instance=ExtResource( 3 )]
+[node name="Alpha 3" parent="Targets Container" groups=[
+"Spider Alpha",
+] instance=ExtResource( 3 )]
 transform = Transform( -0.694721, -0.305488, -0.651183, -0.226817, 0.95218, -0.204713, 0.682581, 0.00548107, -0.730789, -10.4962, -2.45585, 4.0847 )
 script = ExtResource( 6 )
 faction = "spider"
+wing_name = "Alpha"
 
-[node name="Hawk Alpha 1" parent="Targets Container" instance=ExtResource( 7 )]
+[node name="Buteo 1" parent="Targets Container" groups=[
+"Hawk Alpha",
+] instance=ExtResource( 7 )]
 transform = Transform( 0.836961, -0.335142, -0.432639, 0, 0.79055, -0.612397, 0.547263, 0.512552, 0.66166, -13.2328, -1.47702, -5.09553 )
 script = ExtResource( 6 )
 faction = "hawk"
+wing_name = "Buteo"
 
-[node name="Hawk Alpha 2" parent="Targets Container" instance=ExtResource( 7 )]
+[node name="Buteo 2" parent="Targets Container" groups=[
+"Hawk Alpha",
+] instance=ExtResource( 7 )]
 transform = Transform( 0.396798, -0.180081, 0.900068, 0.382017, 0.924008, 0.0164574, -0.834634, 0.337311, 0.435439, 12.0171, 0.506988, 8.31869 )
 script = ExtResource( 6 )
 faction = "hawk"
+wing_name = "Buteo"
 
 [node name="Asteroids Container" type="Node" parent="."]
 
