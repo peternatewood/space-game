@@ -74,25 +74,11 @@ func _process(delta):
 				if has_target:
 					_attack_current_target()
 				else:
-					var attacking_ships: Array = []
-					for ship in o.target.targeting_ships:
-						var alignment = mission_controller.get_alignment(o.target.faction, ship.faction)
-						if alignment == mission_controller.HOSTILE:
-							attacking_ships.append(ship)
-
-					if attacking_ships.size() == 1:
-						_set_current_target(attacking_ships[0])
-					elif attacking_ships.size() > 1:
-						# Get the closest attacking ship
-						var closest_distance: float = -1
-						var closest_index: int = -1
-						for index in range(attacking_ships.size()):
-							var distance_squared = (attacking_ships[index].transform.origin - transform.origin)
-							if distance_squared < closest_distance or closest_distance == -1:
-								closest_index = index
-								closest_distance = distance_squared
-
-						_set_current_target(attacking_ships[closest_index])
+					var closest_target = mission_controller.get_closest_target(self, o.target.targeting_ships, mission_controller.HOSTILE)
+					if closest_target != null:
+						_set_current_target(closest_target)
+					else:
+						o.type = ORDER_TYPE.PASSIVE
 			ORDER_TYPE.IGNORE:
 				if has_target and current_target == o.target:
 					_deselect_current_target()
@@ -101,21 +87,10 @@ func _process(delta):
 					_attack_current_target()
 				else:
 					# Get closest hostile target
-					var closest_distance: float = -1
-					var closest_index: int = -1
-					var targets = mission_controller.get_targets()
-
-					for index in range(targets.size()):
-						if mission_controller.get_alignment(faction, targets[index].faction) == mission_controller.HOSTILE:
-							var distance_squared = (targets[index].transform.origin - transform.origin).length_squared()
-							if distance_squared < closest_distance or closest_distance == -1:
-								closest_distance = distance_squared
-								closest_index = index
-
-					if closest_index != -1:
-						_set_current_target(targets[closest_index])
+					var closest_target = mission_controller.get_closest_target(self, mission_controller.get_targets(), mission_controller.HOSTILE)
+					if closest_target != null:
+						_set_current_target(closest_target)
 					else:
-						# TODO: shift to an appropriate other behavior/order when no targets left
 						o.type = ORDER_TYPE.PASSIVE
 
 	._process(delta)
