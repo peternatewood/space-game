@@ -1,12 +1,13 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scripts/LoadoutController.gd" type="Script" id=1]
 [ext_resource path="res://images/metal_bricks.png" type="Texture" id=2]
 [ext_resource path="res://models/fighter_spider/loadout_overhead.png" type="Texture" id=3]
 [ext_resource path="res://button_groups/loadout_wing_group.tres" type="ButtonGroup" id=4]
-[ext_resource path="res://icons/wing_ship_icon.tscn" type="PackedScene" id=5]
-[ext_resource path="res://scripts/LoadoutShipPreview.gd" type="Script" id=6]
-[ext_resource path="res://models/fighter_frog/fighter_frog.dae" type="PackedScene" id=7]
+[ext_resource path="res://scripts/WingContainer.gd" type="Script" id=5]
+[ext_resource path="res://icons/wing_ship_icon.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scripts/LoadoutShipPreview.gd" type="Script" id=7]
+[ext_resource path="res://models/fighter_frog/fighter_frog.dae" type="PackedScene" id=8]
 
 [sub_resource type="ViewportTexture" id=1]
 viewport_path = NodePath("Ship Preview Viewport")
@@ -133,18 +134,41 @@ rect_min_size = Vector2( 120, 180 )
 margin_right = 120.0
 margin_bottom = 180.0
 rect_min_size = Vector2( 120, 180 )
+script = ExtResource( 5 )
 
-[node name="Alpha Icon 1" parent="Wing Ships Container/Alpha Wing Container" instance=ExtResource( 5 )]
-position = Vector2( 60, 31.5 )
+[node name="Alpha Icon 1" parent="Wing Ships Container/Alpha Wing Container" instance=ExtResource( 6 )]
+position = Vector2( 60, 32 )
 
-[node name="Alpha Icon 2" parent="Wing Ships Container/Alpha Wing Container" instance=ExtResource( 5 )]
+[node name="Alpha Icon 2" parent="Wing Ships Container/Alpha Wing Container" instance=ExtResource( 6 )]
 position = Vector2( 19, 90 )
 
-[node name="Alpha Icon 3" parent="Wing Ships Container/Alpha Wing Container" instance=ExtResource( 5 )]
+[node name="Alpha Icon 3" parent="Wing Ships Container/Alpha Wing Container" instance=ExtResource( 6 )]
 position = Vector2( 101, 90 )
 
-[node name="Alpha Icon 4" parent="Wing Ships Container/Alpha Wing Container" instance=ExtResource( 5 )]
-position = Vector2( 60, 148.5 )
+[node name="Alpha Icon 4" parent="Wing Ships Container/Alpha Wing Container" instance=ExtResource( 6 )]
+position = Vector2( 60, 148 )
+enabled = false
+
+[node name="Beta Wing Container" type="Control" parent="Wing Ships Container"]
+visible = false
+margin_right = 120.0
+margin_bottom = 180.0
+rect_min_size = Vector2( 120, 180 )
+script = ExtResource( 5 )
+
+[node name="Beta Icon 1" parent="Wing Ships Container/Beta Wing Container" instance=ExtResource( 6 )]
+position = Vector2( 60, 32 )
+
+[node name="Beta Icon 2" parent="Wing Ships Container/Beta Wing Container" instance=ExtResource( 6 )]
+position = Vector2( 19, 90 )
+enabled = false
+
+[node name="Beta Icon 3" parent="Wing Ships Container/Beta Wing Container" instance=ExtResource( 6 )]
+position = Vector2( 101, 90 )
+enabled = false
+
+[node name="Beta Icon 4" parent="Wing Ships Container/Beta Wing Container" instance=ExtResource( 6 )]
+position = Vector2( 60, 148 )
 enabled = false
 
 [node name="Ship Preview Viewport" type="Viewport" parent="."]
@@ -152,7 +176,7 @@ size = Vector2( 200, 150 )
 own_world = true
 world = SubResource( 2 )
 transparent_bg = true
-script = ExtResource( 6 )
+script = ExtResource( 7 )
 
 [node name="Hangar Environment" type="WorldEnvironment" parent="Ship Preview Viewport"]
 environment = SubResource( 3 )
@@ -163,7 +187,7 @@ light_color = Color( 0.847059, 0.933333, 0.996078, 1 )
 
 [node name="Ship Container" type="Spatial" parent="Ship Preview Viewport"]
 
-[node name="Ship" parent="Ship Preview Viewport/Ship Container" instance=ExtResource( 7 )]
+[node name="Ship" parent="Ship Preview Viewport/Ship Container" instance=ExtResource( 8 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0 )
 
 [node name="Camera" type="Camera" parent="Ship Preview Viewport"]
