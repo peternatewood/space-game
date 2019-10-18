@@ -3,10 +3,12 @@ extends Control
 onready var ship_class = get_node("Ship Preview Container/Ship Details/Ship Class")
 onready var ship_preview = get_node("Ship Preview Viewport")
 onready var ship_preview_container = get_node("Ship Preview Container")
-onready var ship_selection_container = get_node("Left Rows/PanelContainer/Ship Selection Container")
+onready var ship_selection_container = get_node("Left Rows/Ships Panel/Ship Selection Container")
 
 var current_ship_class: String
+var mouse_over_wing_ship: bool = false
 var ship_data: Dictionary = {}
+var wing_ship_over
 
 
 func _ready():
@@ -30,8 +32,16 @@ func _ready():
 			ship_selection_container.add_child(loadout_icon)
 			loadout_icon.set_ship(ship_class, icon)
 			loadout_icon.connect("icon_clicked", self, "_on_loadout_icon_clicked")
+			loadout_icon.connect("draggable_icon_dropped", self, "_on_draggable_icon_dropped")
 
 			ship_data[ship_class] = { "model": model, "icon": icon, "overhead": overhead }
+
+	var wing_ships_containers = get_node("Wing Ships Container")
+
+
+func _on_draggable_icon_dropped(icon, over_area):
+	if over_area != null and over_area is WingShipIcon:
+		over_area.set_icon(icon.get_texture())
 
 
 func _on_loadout_icon_clicked(icon):
@@ -42,6 +52,8 @@ func _on_loadout_icon_clicked(icon):
 		ship_class.set_text(icon.ship_class)
 		ship_preview.show_ship(ship_data[icon.ship_class].model)
 
+
+const WingShipIcon = preload("WingShipIcon.gd")
 
 const SHIP_DIRECTORIES: Array = [ "fighter_frog", "fighter_hawk", "fighter_spider" ]
 const SHIP_LOADOUT_ICON = preload("res://icons/ship_loadout_icon.tscn")
