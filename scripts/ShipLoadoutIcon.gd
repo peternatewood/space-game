@@ -3,7 +3,7 @@ extends Control
 onready var icon_texture = get_node("TextureRect")
 onready var ship_name = get_node("Ship Name")
 
-var model
+var ship_class
 
 
 func _ready():
@@ -27,10 +27,10 @@ func _on_mouse_exited():
 # PUBLIC
 
 
-func set_ship(name, image_resource, model_resource):
+func set_ship(name, image_resource):
 	ship_name.set_text(name)
+	ship_class = name
 	icon_texture.set_texture(image_resource)
-	model = model_resource
 
 
 signal icon_clicked

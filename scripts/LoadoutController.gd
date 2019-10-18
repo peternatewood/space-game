@@ -5,6 +5,8 @@ onready var ship_preview = get_node("Ship Preview Viewport")
 onready var ship_preview_container = get_node("Ship Preview Container")
 onready var ship_selection_container = get_node("Left Rows/PanelContainer/Ship Selection Container")
 
+var ship_data: Dictionary = {}
+
 
 func _ready():
 	for dir in SHIP_DIRECTORIES:
@@ -12,23 +14,25 @@ func _ready():
 		if model != null:
 			var ship_instance = model.instance()
 			var ship_class = ship_instance.get_meta("ship_class")
+
 			var icon = ImageTexture.new()
 			var icon_load_error = icon.load("res://models/" + dir + "/overhead.png")
-
 			if icon_load_error != OK:
 				print("Error loading ship icon: " + str(icon_load_error))
 
 			var loadout_icon = SHIP_LOADOUT_ICON.instance()
 			ship_selection_container.add_child(loadout_icon)
-			loadout_icon.set_ship(ship_class, icon, model)
+			loadout_icon.set_ship(ship_class, icon)
 			loadout_icon.connect("icon_clicked", self, "_on_loadout_icon_clicked")
+
+			ship_data[ship_class] = { "model": model, "icon": icon }
 
 
 func _on_loadout_icon_clicked(icon):
 	ship_preview_container.show()
 
-	ship_class.set_text(icon.ship_name.text)
-	ship_preview.show_ship(icon.model)
+	ship_class.set_text(icon.ship_class)
+	ship_preview.show_ship(ship_data[icon.ship_class].model)
 
 
 const SHIP_DIRECTORIES: Array = [ "fighter_frog", "fighter_hawk", "fighter_spider" ]
