@@ -3,12 +3,20 @@ extends Area2D
 export (bool) var enabled = true
 
 onready var cross = get_node("Cross")
+onready var mouse_click_control = get_node("Mouse Click Control")
 onready var ship_icon = get_node("Ship Icon")
 
 
 func _ready():
-	if not enabled:
+	if enabled:
+		mouse_click_control.connect("gui_input", self, "_on_gui_input")
+	else:
 		disable()
+
+
+func _on_gui_input(event):
+	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT:
+		highlight(event.pressed)
 
 
 # PUBLIC
