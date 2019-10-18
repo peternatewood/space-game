@@ -40,8 +40,9 @@ func _ready():
 
 
 func _on_draggable_icon_dropped(icon, over_area):
-	if over_area != null and over_area is WingShipIcon:
+	if over_area is WingShipIcon:
 		over_area.set_icon(icon.get_texture())
+		over_area.highlight(false)
 
 
 func _on_loadout_icon_clicked(icon):

@@ -6,6 +6,7 @@ onready var icon_texture = get_node("TextureRect")
 onready var ship_name = get_node("Ship Name")
 
 var being_dragged: bool = false
+var current_closest_area
 var is_mouse_down: bool = false
 var mouse_pos: Vector2
 var ship_class
@@ -71,6 +72,14 @@ func _on_mouse_exited():
 func _process(delta):
 	if being_dragged:
 		draggable_icon.set_position(mouse_pos)
+		var over_area = _get_closest_overlapping_area()
+		if over_area != current_closest_area:
+			if current_closest_area is WingShipIcon:
+				current_closest_area.highlight(false)
+			if over_area is WingShipIcon:
+				over_area.highlight(true)
+
+			current_closest_area = over_area
 
 
 func _toggle_draggable_icon(enable: bool):
@@ -101,3 +110,5 @@ func set_ship(name, image_resource):
 
 signal icon_clicked
 signal draggable_icon_dropped
+
+const WingShipIcon = preload("WingShipIcon.gd")
