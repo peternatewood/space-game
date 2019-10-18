@@ -16,6 +16,12 @@ margin_right = 38.0
 margin_bottom = 63.0
 texture = ExtResource( 2 )
 
+[node name="Draggable Icon" type="TextureRect" parent="."]
+visible = false
+margin_right = 38.0
+margin_bottom = 63.0
+texture = ExtResource( 2 )
+
 [node name="Ship Name" type="Label" parent="."]
 visible = false
 anchor_left = 1.0
