@@ -1,12 +1,15 @@
 extends Control
 
 onready var ship_class_label = get_node("Ship Preview Container/Ship Details/Ship Class")
+onready var ship_overhead = get_node("Ship Overhead")
 onready var ship_preview = get_node("Ship Preview Viewport")
 onready var ship_preview_container = get_node("Ship Preview Container")
 onready var ship_selection_container = get_node("Left Rows/Ships Panel/Ship Selection Container")
 onready var wing_ships_container = get_node("Wing Ships Container")
 
 var current_ship_class: String
+var editing_ship_index: int = 0
+var editing_wing_index: int = 0
 var mouse_over_wing_ship: bool = false
 var ship_data: Dictionary = {}
 var wing_ship_over
@@ -58,6 +61,8 @@ func _ready():
 			if ship_index < wings[wing_index].size():
 				var ship_class = wings[wing_index][ship_index].ship_class
 				ship_icons[ship_index].set_icon(ship_data[ship_class].icon)
+				ship_icons[ship_index].set_indexes(wing_index, ship_index)
+				ship_icons[ship_index].connect("pressed", self, "_on_wing_icon_pressed", [ wing_index, ship_index ])
 			else:
 				ship_icons[ship_index].disable()
 		wing_index += 1
@@ -73,20 +78,40 @@ func _on_draggable_icon_dropped(icon, over_area):
 	if over_area is WingShipIcon:
 		over_area.set_icon(icon.get_texture())
 		over_area.highlight(false)
+		# Set current wing ship selection to icon we dropped over
+		_set_editing_ship(icon.ship_class, over_area.wing_index, over_area.ship_index)
 
 
 func _on_loadout_icon_clicked(icon):
-	if icon.ship_class != current_ship_class:
-		ship_preview_container.show()
-
-		current_ship_class = icon.ship_class
-		ship_class_label.set_text(icon.ship_class)
-		ship_preview.show_ship(ship_data[icon.ship_class].model)
+	_update_ship_preview(icon.ship_class)
 
 
 func _on_wing_checkbox_pressed(index: int):
 	for wing_index in range(wing_containers.size()):
 		wing_containers[wing_index].toggle(wing_index == index)
+
+
+func _on_wing_icon_pressed(wing_index: int, ship_index: int):
+	_set_editing_ship(wings[wing_index][ship_index].ship_class, wing_index, ship_index)
+
+
+func _set_editing_ship(ship_class: String, wing_index: int, ship_index: int):
+	_update_ship_preview(ship_class)
+	ship_overhead.set_texture(ship_data[ship_class].overhead)
+	wings[wing_index][ship_index].ship_class = ship_class
+
+
+func _update_ship_preview(ship_class: String):
+	if ship_class != current_ship_class:
+		current_ship_class = ship_class
+
+		ship_preview_container.show()
+		ship_class_label.set_text(current_ship_class)
+		ship_preview.show_ship(ship_data[current_ship_class].model)
+
+		return true
+
+	return false
 
 
 const WingShipIcon = preload("WingShipIcon.gd")
