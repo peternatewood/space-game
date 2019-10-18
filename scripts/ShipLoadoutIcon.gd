@@ -25,13 +25,30 @@ func _gui_input(event):
 			is_mouse_down = false
 
 			if being_dragged:
-				emit_signal("draggable_icon_dropped", self)
+
+				var over_area
+				var overlapping_areas = draggable_icon.get_overlapping_areas()
+				if overlapping_areas.size() == 1:
+					over_area = overlapping_areas[0]
+				elif overlapping_areas.size() > 1:
+					# Get one closest to mouse
+					var closest_dist: float = -1
+					var closest_index: float = -1
+					for index in range(overlapping_areas.size()):
+						var dist_squared = (overlapping_areas[index].position - mouse_pos).length_squared()
+						if dist_squared < closest_dist or closest_index == -1:
+							closest_dist = dist_squared
+							closest_index = index
+
+					over_area = overlapping_areas[closest_index]
+
+				emit_signal("draggable_icon_dropped", self, over_area)
 				being_dragged = false
-				draggable_icon.hide()
+				_toggle_draggable_icon(false)
 	elif event is InputEventMouseMotion:
 		if not being_dragged and is_mouse_down:
 			being_dragged = true
-			draggable_icon.show()
+			_toggle_draggable_icon(true)
 		if being_dragged:
 			mouse_pos += event.relative
 
@@ -49,7 +66,21 @@ func _process(delta):
 		draggable_icon.set_position(mouse_pos)
 
 
+func _toggle_draggable_icon(enable: bool):
+	if enable:
+		draggable_icon.show()
+	else:
+		draggable_icon.hide()
+
+	draggable_icon.set_monitorable(enable)
+	draggable_icon.set_monitoring(enable)
+
+
 # PUBLIC
+
+
+func get_texture():
+	return icon_texture.get_texture()
 
 
 func set_ship(name, image_resource):

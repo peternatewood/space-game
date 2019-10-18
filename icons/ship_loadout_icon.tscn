@@ -31,6 +31,8 @@ text = "ship"
 [node name="Draggable Icon" type="Area2D" parent="."]
 visible = false
 position = Vector2( 19, 31.5 )
+monitoring = false
+monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Draggable Icon"]
 shape = SubResource( 1 )
