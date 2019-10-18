@@ -5,6 +5,8 @@ onready var mouse_click_control = get_node("Mouse Click Control")
 onready var ship_icon = get_node("Ship Icon")
 
 var enabled: bool = true
+var ship_index: int
+var wing_index: int
 
 
 func _ready():
@@ -37,3 +39,8 @@ func highlight(toggle_on: bool):
 
 func set_icon(image_resource):
 	ship_icon.set_texture(image_resource)
+
+
+func set_indexes(wing: int, ship: int):
+	ship_index = ship
+	wing_index = wing
