@@ -1,5 +1,6 @@
 extends Control
 
+onready var default_modulate = get_modulate()
 onready var draggable_icon = get_node("Draggable Icon")
 onready var icon_texture = get_node("TextureRect")
 onready var ship_name = get_node("Ship Name")
@@ -54,10 +55,12 @@ func _gui_input(event):
 
 
 func _on_mouse_entered():
+	set_modulate(Color.white)
 	ship_name.show()
 
 
 func _on_mouse_exited():
+	set_modulate(default_modulate)
 	ship_name.hide()
 
 
