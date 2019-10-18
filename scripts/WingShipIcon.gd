@@ -22,5 +22,12 @@ func disable():
 	set_monitorable(false)
 
 
+func highlight(toggle_on: bool):
+	if toggle_on:
+		set_modulate(Color.yellow)
+	else:
+		set_modulate(Color.white)
+
+
 func set_icon(image_resource):
 	ship_icon.set_texture(image_resource)
