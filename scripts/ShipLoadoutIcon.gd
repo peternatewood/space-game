@@ -16,6 +16,27 @@ func _ready():
 	self.connect("mouse_exited", self, "_on_mouse_exited")
 
 
+func _get_closest_overlapping_area():
+	var over_area
+	var overlapping_areas = draggable_icon.get_overlapping_areas()
+
+	if overlapping_areas.size() == 1:
+		return overlapping_areas[0]
+	elif overlapping_areas.size() > 1:
+		# Get one closest to mouse
+		var closest_dist: float = -1
+		var closest_index: float = -1
+		for index in range(overlapping_areas.size()):
+			var dist_squared = (overlapping_areas[index].position - mouse_pos).length_squared()
+			if dist_squared < closest_dist or closest_index == -1:
+				closest_dist = dist_squared
+				closest_index = index
+
+		over_area = overlapping_areas[closest_index]
+
+	return over_area
+
+
 func _gui_input(event):
 	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT:
 		if event.pressed:
@@ -26,24 +47,7 @@ func _gui_input(event):
 			is_mouse_down = false
 
 			if being_dragged:
-
-				var over_area
-				var overlapping_areas = draggable_icon.get_overlapping_areas()
-				if overlapping_areas.size() == 1:
-					over_area = overlapping_areas[0]
-				elif overlapping_areas.size() > 1:
-					# Get one closest to mouse
-					var closest_dist: float = -1
-					var closest_index: float = -1
-					for index in range(overlapping_areas.size()):
-						var dist_squared = (overlapping_areas[index].position - mouse_pos).length_squared()
-						if dist_squared < closest_dist or closest_index == -1:
-							closest_dist = dist_squared
-							closest_index = index
-
-					over_area = overlapping_areas[closest_index]
-
-				emit_signal("draggable_icon_dropped", self, over_area)
+				emit_signal("draggable_icon_dropped", self, _get_closest_overlapping_area())
 				being_dragged = false
 				_toggle_draggable_icon(false)
 	elif event is InputEventMouseMotion:
