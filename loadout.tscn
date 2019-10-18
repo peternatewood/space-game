@@ -1,10 +1,12 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scripts/LoadoutController.gd" type="Script" id=1]
 [ext_resource path="res://images/metal_bricks.png" type="Texture" id=2]
 [ext_resource path="res://models/fighter_spider/loadout_overhead.png" type="Texture" id=3]
-[ext_resource path="res://scripts/LoadoutShipPreview.gd" type="Script" id=4]
-[ext_resource path="res://models/fighter_frog/fighter_frog.dae" type="PackedScene" id=5]
+[ext_resource path="res://button_groups/loadout_wing_group.tres" type="ButtonGroup" id=4]
+[ext_resource path="res://icons/wing_ship_icon.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scripts/LoadoutShipPreview.gd" type="Script" id=6]
+[ext_resource path="res://models/fighter_frog/fighter_frog.dae" type="PackedScene" id=7]
 
 [sub_resource type="ViewportTexture" id=1]
 viewport_path = NodePath("Ship Preview Viewport")
@@ -65,32 +67,90 @@ margin_right = 51.0
 margin_bottom = 40.0
 
 [node name="Loadout" type="Label" parent="Left Rows"]
-margin_right = 51.0
+margin_right = 78.0
 margin_bottom = 14.0
 text = "Loadout"
 
-[node name="PanelContainer" type="PanelContainer" parent="Left Rows"]
+[node name="Ships Panel" type="PanelContainer" parent="Left Rows"]
 margin_top = 18.0
-margin_right = 51.0
+margin_right = 78.0
 margin_bottom = 46.0
 
-[node name="Ship Selection Container" type="VBoxContainer" parent="Left Rows/PanelContainer"]
+[node name="Ship Selection Container" type="VBoxContainer" parent="Left Rows/Ships Panel"]
 margin_left = 7.0
 margin_top = 7.0
-margin_right = 44.0
+margin_right = 71.0
 margin_bottom = 21.0
 
-[node name="Label" type="Label" parent="Left Rows/PanelContainer/Ship Selection Container"]
-margin_right = 37.0
+[node name="Label" type="Label" parent="Left Rows/Ships Panel/Ship Selection Container"]
+margin_right = 64.0
 margin_bottom = 14.0
 text = "Ships"
+
+[node name="Wings Panel" type="PanelContainer" parent="Left Rows"]
+margin_top = 50.0
+margin_right = 78.0
+margin_bottom = 134.0
+
+[node name="Wing Selection Container" type="VBoxContainer" parent="Left Rows/Wings Panel"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 71.0
+margin_bottom = 77.0
+
+[node name="Wings Label" type="Label" parent="Left Rows/Wings Panel/Wing Selection Container"]
+margin_right = 64.0
+margin_bottom = 14.0
+text = "Wings"
+
+[node name="Alpha CheckBox" type="CheckBox" parent="Left Rows/Wings Panel/Wing Selection Container"]
+margin_top = 18.0
+margin_right = 64.0
+margin_bottom = 42.0
+pressed = true
+group = ExtResource( 4 )
+text = "Alpha"
+
+[node name="Beta CheckBox" type="CheckBox" parent="Left Rows/Wings Panel/Wing Selection Container"]
+margin_top = 46.0
+margin_right = 64.0
+margin_bottom = 70.0
+group = ExtResource( 4 )
+text = "Beta"
+
+[node name="Wing Ships Container" type="Control" parent="."]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 200.0
+margin_top = -90.0
+margin_right = 320.0
+margin_bottom = 90.0
+rect_min_size = Vector2( 120, 180 )
+
+[node name="Alpha Wing Container" type="Control" parent="Wing Ships Container"]
+margin_right = 120.0
+margin_bottom = 180.0
+rect_min_size = Vector2( 120, 180 )
+
+[node name="Alpha Icon 1" parent="Wing Ships Container/Alpha Wing Container" instance=ExtResource( 5 )]
+position = Vector2( 60, 31.5 )
+
+[node name="Alpha Icon 2" parent="Wing Ships Container/Alpha Wing Container" instance=ExtResource( 5 )]
+position = Vector2( 19, 90 )
+
+[node name="Alpha Icon 3" parent="Wing Ships Container/Alpha Wing Container" instance=ExtResource( 5 )]
+position = Vector2( 101, 90 )
+
+[node name="Alpha Icon 4" parent="Wing Ships Container/Alpha Wing Container" instance=ExtResource( 5 )]
+position = Vector2( 60, 148.5 )
+enabled = false
 
 [node name="Ship Preview Viewport" type="Viewport" parent="."]
 size = Vector2( 200, 150 )
 own_world = true
 world = SubResource( 2 )
 transparent_bg = true
-script = ExtResource( 4 )
+script = ExtResource( 6 )
 
 [node name="Hangar Environment" type="WorldEnvironment" parent="Ship Preview Viewport"]
 environment = SubResource( 3 )
@@ -101,7 +161,7 @@ light_color = Color( 0.847059, 0.933333, 0.996078, 1 )
 
 [node name="Ship Container" type="Spatial" parent="Ship Preview Viewport"]
 
-[node name="Ship" parent="Ship Preview Viewport/Ship Container" instance=ExtResource( 5 )]
+[node name="Ship" parent="Ship Preview Viewport/Ship Container" instance=ExtResource( 7 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0 )
 
 [node name="Camera" type="Camera" parent="Ship Preview Viewport"]
