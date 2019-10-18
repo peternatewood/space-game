@@ -16,6 +16,7 @@ func _ready():
 func _on_gui_input(event):
 	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT:
 		highlight(event.pressed)
+		emit_signal("pressed")
 
 
 # PUBLIC
@@ -44,3 +45,6 @@ func set_icon(image_resource):
 func set_indexes(wing: int, ship: int):
 	ship_index = ship
 	wing_index = wing
+
+
+signal pressed
