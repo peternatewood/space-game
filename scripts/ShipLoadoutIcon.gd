@@ -21,10 +21,13 @@ func _gui_input(event):
 			is_mouse_down = true
 			mouse_pos = event.position
 			emit_signal("icon_clicked", self)
-		elif is_mouse_down or being_dragged:
-			being_dragged = false
+		elif is_mouse_down:
 			is_mouse_down = false
-			draggable_icon.hide()
+
+			if being_dragged:
+				emit_signal("draggable_icon_dropped", self)
+				being_dragged = false
+				draggable_icon.hide()
 	elif event is InputEventMouseMotion:
 		if not being_dragged and is_mouse_down:
 			being_dragged = true
@@ -43,7 +46,7 @@ func _on_mouse_exited():
 
 func _process(delta):
 	if being_dragged:
-		draggable_icon.set_position(mouse_pos - draggable_icon.rect_size / 2)
+		draggable_icon.set_position(mouse_pos)
 
 
 # PUBLIC
@@ -53,7 +56,10 @@ func set_ship(name, image_resource):
 	ship_name.set_text(name)
 	ship_class = name
 	icon_texture.set_texture(image_resource)
-	draggable_icon.set_texture(image_resource)
+
+	var ship_sprite = draggable_icon.get_node("Ship Sprite")
+	ship_sprite.set_texture(image_resource)
 
 
 signal icon_clicked
+signal draggable_icon_dropped
