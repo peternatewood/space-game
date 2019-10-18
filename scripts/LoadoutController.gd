@@ -4,11 +4,13 @@ onready var ship_class = get_node("Ship Preview Container/Ship Details/Ship Clas
 onready var ship_preview = get_node("Ship Preview Viewport")
 onready var ship_preview_container = get_node("Ship Preview Container")
 onready var ship_selection_container = get_node("Left Rows/Ships Panel/Ship Selection Container")
+onready var wing_ships_container = get_node("Wing Ships Container")
 
 var current_ship_class: String
 var mouse_over_wing_ship: bool = false
 var ship_data: Dictionary = {}
 var wing_ship_over
+var wing_containers
 
 
 func _ready():
@@ -36,7 +38,12 @@ func _ready():
 
 			ship_data[ship_class] = { "model": model, "icon": icon, "overhead": overhead }
 
-	var wing_ships_containers = get_node("Wing Ships Container")
+	wing_containers = wing_ships_container.get_children()
+	var index: int = 0
+	for node in get_node("Left Rows/Wings Panel/Wing Selection Container").get_children():
+		if node is CheckBox:
+			node.connect("pressed", self, "_on_wing_checkbox_pressed", [ index ])
+			index += 1
 
 
 func _on_draggable_icon_dropped(icon, over_area):
@@ -52,6 +59,11 @@ func _on_loadout_icon_clicked(icon):
 		current_ship_class = icon.ship_class
 		ship_class.set_text(icon.ship_class)
 		ship_preview.show_ship(ship_data[icon.ship_class].model)
+
+
+func _on_wing_checkbox_pressed(index: int):
+	for wing_index in range(wing_containers.size()):
+		wing_containers[wing_index].toggle(wing_index == index)
 
 
 const WingShipIcon = preload("WingShipIcon.gd")
