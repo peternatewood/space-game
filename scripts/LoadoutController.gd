@@ -5,6 +5,7 @@ onready var ship_preview = get_node("Ship Preview Viewport")
 onready var ship_preview_container = get_node("Ship Preview Container")
 onready var ship_selection_container = get_node("Left Rows/PanelContainer/Ship Selection Container")
 
+var current_ship_class: String
 var ship_data: Dictionary = {}
 
 
@@ -34,10 +35,12 @@ func _ready():
 
 
 func _on_loadout_icon_clicked(icon):
-	ship_preview_container.show()
+	if icon.ship_class != current_ship_class:
+		ship_preview_container.show()
 
-	ship_class.set_text(icon.ship_class)
-	ship_preview.show_ship(ship_data[icon.ship_class].model)
+		current_ship_class = icon.ship_class
+		ship_class.set_text(icon.ship_class)
+		ship_preview.show_ship(ship_data[icon.ship_class].model)
 
 
 const SHIP_DIRECTORIES: Array = [ "fighter_frog", "fighter_hawk", "fighter_spider" ]
