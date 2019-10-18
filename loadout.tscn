@@ -138,19 +138,15 @@ script = ExtResource( 5 )
 
 [node name="Alpha Icon 1" parent="Wing Ships Container/Alpha Wing Container" instance=ExtResource( 6 )]
 position = Vector2( 60, 32 )
-enabled = true
 
 [node name="Alpha Icon 2" parent="Wing Ships Container/Alpha Wing Container" instance=ExtResource( 6 )]
 position = Vector2( 19, 90 )
-enabled = true
 
 [node name="Alpha Icon 3" parent="Wing Ships Container/Alpha Wing Container" instance=ExtResource( 6 )]
 position = Vector2( 101, 90 )
-enabled = true
 
 [node name="Alpha Icon 4" parent="Wing Ships Container/Alpha Wing Container" instance=ExtResource( 6 )]
 position = Vector2( 60, 148 )
-enabled = false
 
 [node name="Beta Wing Container" type="Control" parent="Wing Ships Container"]
 visible = false
@@ -161,19 +157,15 @@ script = ExtResource( 5 )
 
 [node name="Beta Icon 1" parent="Wing Ships Container/Beta Wing Container" instance=ExtResource( 6 )]
 position = Vector2( 60, 32 )
-enabled = true
 
 [node name="Beta Icon 2" parent="Wing Ships Container/Beta Wing Container" instance=ExtResource( 6 )]
 position = Vector2( 19, 90 )
-enabled = false
 
 [node name="Beta Icon 3" parent="Wing Ships Container/Beta Wing Container" instance=ExtResource( 6 )]
 position = Vector2( 101, 90 )
-enabled = false
 
 [node name="Beta Icon 4" parent="Wing Ships Container/Beta Wing Container" instance=ExtResource( 6 )]
 position = Vector2( 60, 148 )
-enabled = false
 
 [node name="Ship Preview Viewport" type="Viewport" parent="."]
 size = Vector2( 200, 150 )
