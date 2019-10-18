@@ -20,12 +20,17 @@ func _ready():
 			if icon_load_error != OK:
 				print("Error loading ship icon: " + str(icon_load_error))
 
+			var overhead = ImageTexture.new()
+			var overhead_load_error = overhead.load("res://models/" + dir + "/loadout_overhead.png")
+			if overhead_load_error != OK:
+				print("Error loading overhead icon: " + str(overhead_load_error))
+
 			var loadout_icon = SHIP_LOADOUT_ICON.instance()
 			ship_selection_container.add_child(loadout_icon)
 			loadout_icon.set_ship(ship_class, icon)
 			loadout_icon.connect("icon_clicked", self, "_on_loadout_icon_clicked")
 
-			ship_data[ship_class] = { "model": model, "icon": icon }
+			ship_data[ship_class] = { "model": model, "icon": icon, "overhead": overhead }
 
 
 func _on_loadout_icon_clicked(icon):
