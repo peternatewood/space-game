@@ -12,7 +12,8 @@ var waypoint_index: int = -1
 
 
 func _defended_target_destroyed(order_index):
-	orders.remove(order_index)
+	orders[order_index].target = null
+	orders[order_index].type = ORDER_TYPE.PASSIVE
 
 
 func _attack_current_target():
