@@ -49,6 +49,14 @@ func _on_scene_loaded():
 	._on_scene_loaded()
 
 
+func _on_target_destroyed():
+	if orders[0].target == current_target:
+		orders[0].target = null
+		orders[0].type = ORDER_TYPE.PASSIVE
+
+	._on_target_destroyed()
+
+
 func _process(delta):
 	if warping == NONE:
 		for o in orders:
