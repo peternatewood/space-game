@@ -237,6 +237,7 @@ func hide():
 	ship_commands.hide()
 	ships_menu.hide()
 	wings_menu.hide()
+	reinforcements_list.hide()
 
 	.hide()
 
