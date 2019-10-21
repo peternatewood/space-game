@@ -99,3 +99,5 @@ func set_texture(image_resource):
 
 signal icon_clicked
 signal draggable_icon_dropped
+
+const WeaponSlot = preload("WeaponSlot.gd")

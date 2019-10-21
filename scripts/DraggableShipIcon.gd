@@ -3,6 +3,10 @@ extends "res://scripts/DraggableIcon.gd"
 var ship_class: String
 
 
+func _ready():
+	draggable_icon.set_meta("type", WeaponSlot.TYPE.SHIP)
+
+
 func _process(delta):
 	._process(delta)
 
