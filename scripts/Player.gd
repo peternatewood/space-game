@@ -1,8 +1,8 @@
 extends "res://scripts/ShipBase.gd"
 
-export (NodePath) var camera_path
+enum { COCKPIT, CHASE }
 
-onready var targets_container = get_tree().get_root().get_node("Mission Controller/Targets Container")
+export (NodePath) var camera_path
 
 var allow_input: bool = false
 var cam_dist: float
@@ -34,6 +34,9 @@ func _input(event):
 					_set_cam_mode(CHASE)
 				CHASE:
 					_set_cam_mode(COCKPIT)
+		elif event.is_action("warp_out") and event.pressed:
+			if warping == NONE:
+				warp_out()
 		elif event.is_action("throttle_up") and event.pressed:
 			throttle = min(MAX_THROTTLE, throttle + ACCELERATION)
 			emit_signal("throttle_changed")
@@ -56,7 +59,7 @@ func _input(event):
 			if has_target:
 				last_target = current_target
 
-			if _target_next_of_alignment(targets_container.get_children(), mission_controller.HOSTILE):
+			if _target_next_of_alignment(mission_controller.HOSTILE):
 				has_target = true
 				emit_signal("target_changed", last_target)
 		elif event.is_action("target_next_friendly") and event.pressed:
@@ -64,7 +67,7 @@ func _input(event):
 			if has_target:
 				last_target = current_target
 
-			if _target_next_of_alignment(targets_container.get_children(), mission_controller.FRIENDLY):
+			if _target_next_of_alignment(mission_controller.FRIENDLY):
 				has_target = true
 				emit_signal("target_changed", last_target)
 		elif event.is_action("target_next_neutral") and event.pressed:
@@ -72,12 +75,12 @@ func _input(event):
 			if has_target:
 				last_target = current_target
 
-			if _target_next_of_alignment(targets_container.get_children(), mission_controller.NEUTRAL):
+			if _target_next_of_alignment(mission_controller.NEUTRAL):
 				has_target = true
 				emit_signal("target_changed", last_target)
 		elif event.is_action("target_next_in_reticule") and event.pressed:
 			var targets_in_view: Array = []
-			for target in targets_container.get_children():
+			for target in mission_controller.get_targets():
 				if camera.is_position_in_view(target.transform.origin):
 					targets_in_view.append(target)
 
@@ -91,14 +94,18 @@ func _input(event):
 
 			emit_signal("target_changed", last_target)
 		elif event.is_action("target_next") and event.pressed:
-			var targets = targets_container.get_children()
+			var targets = mission_controller.get_targets()
 			var last_target
-			if targets.size() == 0:
+			# One or less since the player is included in the targets collection
+			if targets.size() <= 1:
 				has_target = false
 				current_target = null
 			else:
 				if has_target:
 					last_target = current_target
+					target_index = (target_index + 1) % targets.size()
+
+				if targets[target_index] == self:
 					target_index = (target_index + 1) % targets.size()
 
 				_set_current_target(targets[target_index])
@@ -174,35 +181,40 @@ func _on_scene_loaded():
 
 
 func _process(delta):
-	if is_alive:
-		input_velocity.x = Input.get_action_strength("pitch_up") - Input.get_action_strength("pitch_down")
-		input_velocity.y = Input.get_action_strength("yaw_left") - Input.get_action_strength("yaw_right")
-		input_velocity.z = Input.get_action_strength("roll_left") - Input.get_action_strength("roll_right")
+	match warping:
+		NONE:
+			if is_alive:
+				input_velocity.x = Input.get_action_strength("pitch_up") - Input.get_action_strength("pitch_down")
+				input_velocity.y = Input.get_action_strength("yaw_left") - Input.get_action_strength("yaw_right")
+				input_velocity.z = Input.get_action_strength("roll_left") - Input.get_action_strength("roll_right")
 
-		torque_vector = transform.basis.x * input_velocity.x + transform.basis.y * input_velocity.y + transform.basis.z * input_velocity.z
+				torque_vector = transform.basis.x * input_velocity.x + transform.basis.y * input_velocity.y + transform.basis.z * input_velocity.z
 
-		if Input.is_action_pressed("fire_energy_weapon"):
-			_fire_energy_weapon()
+				if Input.is_action_pressed("fire_energy_weapon"):
+					_fire_energy_weapon()
 
-		if Input.is_action_pressed("fire_missile_weapon"):
-			if has_target:
-				_fire_missile_weapon(current_target)
+				if Input.is_action_pressed("fire_missile_weapon"):
+					if has_target:
+						_fire_missile_weapon(current_target)
+					else:
+						_fire_missile_weapon()
+
+				match cam_mode:
+					COCKPIT:
+						camera.transform.origin = cockpit_view.global_transform.origin
+						camera.look_at(cockpit_view.global_transform.origin - 5 * transform.basis.z, transform.basis.y)
+					CHASE:
+						cam_offset = cam_offset.linear_interpolate(input_velocity, delta)
+						cam_dist = lerp(cam_dist, throttle * CAM_THROTTLE_MOD, delta)
+						var cam_up = transform.basis.y + transform.basis.x * CAM_ROLL_MOD * cam_offset.z
+
+						camera.transform.origin = chase_view.global_transform.origin - transform.basis.x * cam_offset.y + transform.basis.y * cam_offset.x + transform.basis.z * cam_dist
+						camera.look_at(transform.origin - transform.basis.z, cam_up)
 			else:
-				_fire_missile_weapon()
+				camera.look_at(transform.origin, Vector3.UP)
 
-		match cam_mode:
-			COCKPIT:
-				camera.transform.origin = cockpit_view.global_transform.origin
-				camera.look_at(cockpit_view.global_transform.origin - 5 * transform.basis.z, transform.basis.y)
-			CHASE:
-				cam_offset = cam_offset.linear_interpolate(input_velocity, delta)
-				cam_dist = lerp(cam_dist, throttle * CAM_THROTTLE_MOD, delta)
-				var cam_up = transform.basis.y + transform.basis.x * CAM_ROLL_MOD * cam_offset.z
-
-				camera.transform.origin = chase_view.global_transform.origin - transform.basis.x * cam_offset.y + transform.basis.y * cam_offset.x + transform.basis.z * cam_dist
-				camera.look_at(transform.origin - transform.basis.z, cam_up)
-	else:
-		camera.look_at(transform.origin, Vector3.UP)
+		WARP_OUT:
+			camera.look_at(transform.origin, transform.basis.y)
 
 	._process(delta)
 
@@ -228,13 +240,29 @@ func _toggle_ship_mesh(show_meshes: bool):
 				child.hide()
 
 
+# PUBLIC
+
+
+func warp_out():
+	# Allow physics to bring player to a full stop
+	torque_vector = Vector3.ZERO
+
+	# Move camera to a roughly random position behind the player
+	_toggle_ship_mesh(true)
+	camera.transform.origin = transform.origin + 4 * ((randi() % 2) - 0.5) * transform.basis.x + 2 * transform.basis.y + 2 * transform.basis.z
+
+	warp_speed = WARP_IN_DISTANCE / WARP_DURATION
+	warping_countdown = WARP_DURATION
+	warping = WARP_OUT
+	emit_signal("began_warp_out")
+
+
 signal cam_changed
 signal power_distribution_changed
 signal shield_boost_changed
 signal target_changed
 signal throttle_changed
-
-enum { COCKPIT, CHASE }
+signal began_warp_out
 
 const ShipBase = preload("ShipBase.gd")
 

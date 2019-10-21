@@ -1,7 +1,6 @@
 extends Control
 
 export (NodePath) var camera_path
-export (NodePath) var targets_container_path
 export (NodePath) var player_path
 
 onready var debug = get_node("Debug")
@@ -38,6 +37,8 @@ var radar_icons_container: Control
 var target_class
 var target_distance
 var target_hull
+var target_name
+var target_speed
 var target_view_cam
 var target_view_model
 
@@ -47,6 +48,8 @@ func _ready():
 	target_class = target_view_container.get_node("Target View Rows/Target Class")
 	target_distance = target_view_container.get_node("Target View Rows/Target Distance Container/Target Distance")
 	target_hull = target_view_container.get_node("Target View Rows/Target View Panel Container/Target Hull Container/Target Hull")
+	target_name = target_view_container.get_node("Target View Rows/Target Name")
+	target_speed = target_view_container.get_node("Target View Rows/Target Distance Container/Target Speed")
 	target_view_cam = target_viewport.get_node("Camera")
 	target_view_model = target_viewport.get_node("Frog Fighter")
 
@@ -57,6 +60,7 @@ func _ready():
 func _disconnect_target_signals(target):
 	target.disconnect("damaged", self, "_on_target_damaged")
 	target.disconnect("destroyed", self, "_on_target_destroyed")
+	target.disconnect("warped_out", self, "_on_target_destroyed")
 
 	for index in range(target.QUADRANT_COUNT):
 		target.shields[index].disconnect("hitpoints_changed", self, "_on_target_shield_changed")
@@ -130,6 +134,7 @@ func _on_player_target_changed(last_target):
 
 		player.current_target.connect("damaged", self, "_on_target_damaged")
 		player.current_target.connect("destroyed", self, "_on_target_destroyed", [ player.current_target ])
+		player.current_target.connect("warped_out", self, "_on_target_destroyed", [ player.current_target ])
 
 		for index in range(player.current_target.QUADRANT_COUNT):
 			player.current_target.shields[index].connect("hitpoints_changed", self, "_on_target_shield_changed", [ index ])
@@ -144,10 +149,12 @@ func _on_player_target_changed(last_target):
 				break
 
 		if alignment != -1:
+			target_name.set_modulate(ALIGNMENT_COLORS[alignment])
 			target_class.set_modulate(ALIGNMENT_COLORS[alignment])
 			edge_target_icon.set_modulate(ALIGNMENT_COLORS[alignment])
 			target_icon.set_modulate(ALIGNMENT_COLORS[alignment])
 		else:
+			target_name.set_modulate(Color.white)
 			target_class.set_modulate(Color.white)
 			edge_target_icon.set_modulate(Color.white)
 			target_icon.set_modulate(Color.white)
@@ -160,6 +167,7 @@ func _on_player_target_changed(last_target):
 
 		# Update target viewport
 		target_class.set_text(player.current_target.ship_class)
+		target_name.set_text(player.current_target.name)
 		target_viewport.add_child(target_view_model)
 		target_view_model.transform.origin = Vector3.ZERO
 		target_hull.set_text(str(round(player.current_target.get_hull_percent())))
@@ -182,6 +190,11 @@ func _on_player_throttle_changed():
 	throttle_line.set_position(line_pos)
 
 
+func _on_player_began_warp_out():
+	hide()
+	set_process(false)
+
+
 func _on_scene_loaded():
 	camera = get_node(camera_path)
 	player = get_node(player_path)
@@ -197,9 +210,11 @@ func _on_scene_loaded():
 	player.connect("power_distribution_changed", self, "_on_player_power_distribution_changed")
 	player.connect("shield_boost_changed", self, "_on_player_shield_boost_changed")
 	player.connect("target_changed", self, "_on_player_target_changed")
+	player.connect("began_warp_out", self, "_on_player_began_warp_out")
 
 	player.connect("damaged", self, "_on_player_damaged")
 	player.connect("destroyed", self, "_on_player_destroyed")
+	player.connect("warped_out", self, "_on_player_destroyed")
 
 	for index in range(player.QUADRANT_COUNT):
 		player.shields[index].connect("hitpoints_changed", self, "_on_player_shield_changed", [ index ])
@@ -211,17 +226,18 @@ func _on_scene_loaded():
 
 	power_container.set_power_bars(player.power_distribution)
 
-	for node in get_node(targets_container_path).get_children():
-		var icon = RADAR_ICON.instance()
-		icon.set_target(node)
-		# Set icon color based on alignment
-		var alignment = mission_controller.get_alignment(player.faction, node.faction)
-		if alignment != -1:
-			icon.set_modulate(ALIGNMENT_COLORS_FADED[alignment])
-		else:
-			icon.set_modulate(Color.white)
+	for node in mission_controller.get_targets():
+		if node != mission_controller.player:
+			var icon = RADAR_ICON.instance()
+			icon.set_target(node)
+			# Set icon color based on alignment
+			var alignment = mission_controller.get_alignment(player.faction, node.faction)
+			if alignment != -1:
+				icon.set_modulate(ALIGNMENT_COLORS_FADED[alignment])
+			else:
+				icon.set_modulate(Color.white)
 
-		radar_icons_container.add_child(icon)
+			radar_icons_container.add_child(icon)
 
 	# Set up weapons display based on player loadout
 	energy_hardpoint_count = player.energy_weapon_hardpoints.size()
@@ -253,7 +269,7 @@ func _on_scene_loaded():
 
 
 func _on_target_damaged():
-	var hull_percent = player.current_target.get_hull_percent()
+	var hull_percent = max(0, player.current_target.get_hull_percent())
 	target_details_minimal.set_hull(hull_percent)
 	target_hull.set_text(str(round(hull_percent)))
 
@@ -264,6 +280,7 @@ func _on_target_destroyed(target):
 	edge_target_icon.hide()
 	target_view_container.hide()
 	target_overhead.hide()
+	target_details_minimal.hide()
 
 
 func _on_target_shield_changed(percent: float, quadrant: int):
@@ -346,6 +363,7 @@ func _process(delta):
 		target_view_model.set_rotation(player.current_target.rotation)
 
 		target_distance.set_text(str(round(target_dist)))
+		target_speed.set_text(str(round(10 * player.current_target.linear_velocity.length())))
 	else:
 		if target_icon.visible:
 			target_icon.hide()

@@ -15,3 +15,4 @@ func set_target(node):
 	has_target = true
 	target = node
 	target.connect("destroyed", self, "_on_target_destroyed")
+	target.connect("warped_out", self, "_on_target_destroyed")

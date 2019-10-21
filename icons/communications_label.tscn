@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scripts/CommunicationsLabel.gd" type="Script" id=1]
+
+[node name="Ship Label" type="Label"]
+margin_right = 136.0
+margin_bottom = 18.0
+text = "1. Ship"
+script = ExtResource( 1 )

@@ -1,6 +1,12 @@
 extends "res://scripts/ActorBase.gd"
 
+enum { NONE, WARP_IN, WARP_OUT }
+enum { WEAPON, SHIELD, ENGINE, TOTAL_POWER_LEVELS }
+enum { FRONT, REAR, LEFT, RIGHT, QUADRANT_COUNT }
+
 export (String) var faction
+export (bool) var is_warped_in = true
+export (String) var wing_name
 
 onready var chase_view = get_node("Chase View")
 onready var cockpit_view = get_node("Cockpit View")
@@ -28,9 +34,15 @@ var power_distribution: Array = [
 ]
 var propulsion_force: float = 1.0
 var target_index: int = 0
+var targeting_ships: Array = []
 var throttle: float
 var torque_vector: Vector3
 var turn_speed: float
+var warp_destination: Vector3
+var warp_origin: Vector3
+var warp_speed: float
+var warping: int = NONE
+var warping_countdown: float = 0.0
 var weapon_battery: float = MAX_WEAPON_BATTERY
 
 
@@ -68,6 +80,14 @@ func _cycle_missile_weapon(direction: int):
 	emit_signal("missile_weapon_changed")
 
 
+func _deselect_current_target():
+	has_target = false
+	current_target.disconnect("destroyed", self, "_on_target_destroyed")
+	current_target.disconnect("warped_out", self, "_on_target_destroyed")
+	current_target.handle_target_deselected(self)
+	current_target = null
+
+
 func _fire_energy_weapon():
 	var weapon_cost = energy_weapon_hardpoints[energy_weapon_index].get_weapon_data("cost")
 	if energy_weapon_hardpoints[energy_weapon_index].countdown == 0 and weapon_battery >= weapon_cost:
@@ -92,6 +112,12 @@ func _fire_missile_weapon(target = null):
 # Ranges from 0.75 to 1.25
 func _get_engine_factor():
 	return 0.75 + 0.5 * (power_distribution[ENGINE] / MAX_SYSTEM_POWER)
+
+
+func _get_throttle_to_match_target_speed():
+	var target_speed: float = current_target.linear_velocity.length()
+	# The target ship might be flying faster than this ship can
+	return min(target_speed / get_max_speed(), 1)
 
 
 func _increment_power_level(system: int, direction: int):
@@ -125,31 +151,72 @@ func _increment_power_level(system: int, direction: int):
 				quadrant.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
 
 
+func _on_scene_loaded():
+	._on_scene_loaded()
+
+	if not is_warped_in:
+		hide_and_disable()
+
+
 func _on_target_destroyed():
 	has_target = false
 	current_target = null
 	target_index = 0
 
 
+func _on_targeting_ship_destroyed(destroyed_ship):
+	var index: int = 0
+	for ship in targeting_ships:
+		if ship == destroyed_ship:
+			targeting_ships.remove(index)
+			return
+		index += 1
+
+
 func _physics_process(delta):
-	add_torque(turn_speed * torque_vector)
-	apply_central_impulse(throttle * propulsion_force * _get_engine_factor() * -transform.basis.z)
+	if warping == NONE:
+		add_torque(turn_speed * torque_vector)
+		apply_central_impulse(throttle * propulsion_force * _get_engine_factor() * -transform.basis.z)
 
 
 func _process(delta):
-	if weapon_battery < MAX_WEAPON_BATTERY:
-		# Ranges from half recovery rate to full recovery rate (0.5 - 1.0)
-		var battery_recovery_rate: float = WEAPON_BATTERY_RECOVERY_RATE * (0.5 + 0.5 * power_distribution[WEAPON] / MAX_SYSTEM_POWER)
-		weapon_battery = min(MAX_WEAPON_BATTERY, weapon_battery + delta * battery_recovery_rate)
+	match warping:
+		NONE:
+			if weapon_battery < MAX_WEAPON_BATTERY:
+				# Ranges from half recovery rate to full recovery rate (0.5 - 1.0)
+				var battery_recovery_rate: float = WEAPON_BATTERY_RECOVERY_RATE * (0.5 + 0.5 * power_distribution[WEAPON] / MAX_SYSTEM_POWER)
+				weapon_battery = min(MAX_WEAPON_BATTERY, weapon_battery + delta * battery_recovery_rate)
+		WARP_IN:
+			transform.origin = warp_origin.linear_interpolate(warp_destination, 1 - max(0, warping_countdown / WARP_DURATION))
+			warping_countdown -= delta
+			if warping_countdown <= 0:
+				show_and_enable()
+				warping = NONE
+				is_warped_in = true
+		WARP_OUT:
+			warping_countdown -= delta
+
+			if warping_countdown <= 0:
+				translate(delta * warp_speed * Vector3.FORWARD)
+
+				if warping_countdown <= -WARP_DURATION:
+					hide_and_disable()
+					emit_signal("warped_out")
+					queue_free()
 
 
 func _set_current_target(node):
 	if has_target:
 		current_target.disconnect("destroyed", self, "_on_target_destroyed")
+		current_target.disconnect("warped_out", self, "_on_target_destroyed")
+		current_target.handle_target_deselected(self)
 
-	has_target = true
-	current_target = node
-	current_target.connect("destroyed", self, "_on_target_destroyed")
+	if node.is_alive:
+		has_target = true
+		current_target = node
+		current_target.connect("destroyed", self, "_on_target_destroyed")
+		current_target.connect("warped_out", self, "_on_target_destroyed")
+		current_target.handle_being_targeted(self)
 
 
 func _start_destruction():
@@ -160,7 +227,8 @@ func _start_destruction():
 
 
 # Loops through the given array of possible targets; if one is found, set it as the current target and return true, otherwise do nothing and return false
-func _target_next_of_alignment(possible_targets: Array, alignment: int):
+func _target_next_of_alignment(alignment: int):
+	var possible_targets = mission_controller.get_targets()
 	var targets_count = possible_targets.size()
 	var steps: int = 0
 	if has_target:
@@ -170,7 +238,7 @@ func _target_next_of_alignment(possible_targets: Array, alignment: int):
 	# Ensures we loop through all targets just once
 	while steps < targets_count:
 		var target = possible_targets[target_index]
-		if mission_controller.get_alignment(faction, target.faction) == alignment:
+		if self != target and mission_controller.get_alignment(faction, target.faction) == alignment:
 			_set_current_target(target)
 			return true
 
@@ -213,15 +281,67 @@ func get_weapon_battery_percent():
 	return weapon_battery / MAX_WEAPON_BATTERY
 
 
+func handle_being_targeted(targeting_ship):
+	targeting_ships.append(targeting_ship)
+	targeting_ship.connect("destroyed", self, "_on_targeting_ship_destroyed", [ targeting_ship ])
+	targeting_ship.connect("warped_out", self, "_on_targeting_ship_destroyed", [ targeting_ship ])
+
+
+func handle_target_deselected(targeting_ship):
+	var index: int = 0
+	for ship in targeting_ships:
+		if ship == targeting_ship:
+			targeting_ships.remove(index)
+			return
+
+		index += 1
+
+
+func hide_and_disable():
+	set_process(false)
+	_disable_shapes(true)
+
+	for quadrant in shields:
+		quadrant.set_monitorable(false)
+		quadrant.set_monitoring(false)
+
+	hide()
+
+
 func is_a_target_in_range():
 	return target_raycast.get_collider() is ActorBase
 
 
+func show_and_enable():
+	set_process(true)
+	_disable_shapes(false)
+
+	for quadrant in shields:
+		quadrant.set_monitorable(true)
+		quadrant.set_monitoring(true)
+
+	show()
+
+
+func warp(warp_in: bool):
+	if warp_in:
+		warping = WARP_IN
+		warp_destination = transform.origin
+		translate(WARP_IN_DISTANCE * Vector3.BACK)
+		warp_origin = transform.origin
+
+		set_process(true)
+		show()
+	else:
+		warping = WARP_OUT
+		warp_speed = WARP_IN_DISTANCE / WARP_DURATION
+
+	warping_countdown = WARP_DURATION
+
+
 signal energy_weapon_changed
 signal missile_weapon_changed
-
-enum { WEAPON, SHIELD, ENGINE, TOTAL_POWER_LEVELS }
-enum { FRONT, REAR, LEFT, RIGHT, QUADRANT_COUNT }
+signal warped_out
 
 const ActorBase = preload("ActorBase.gd")
 const EnergyBolt = preload("EnergyBolt.gd")
@@ -236,4 +356,6 @@ const MAX_THROTTLE: float = 1.0
 const MAX_WEAPON_BATTERY: float = 100.0
 const POWER_INCREMENT: int = 10
 const TOTAL_SYSTEM_POWER: float = 90.0
+const WARP_DURATION: float = 2.5
+const WARP_IN_DISTANCE: float = 400.0
 const WEAPON_BATTERY_RECOVERY_RATE: float = 1.0

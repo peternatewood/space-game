@@ -1,5 +1,7 @@
 extends Control
 
+enum { UP, UP_RIGHT, RIGHT, DOWN_RIGHT, DOWN, DOWN_LEFT, LEFT, UP_LEFT }
+
 onready var arrow_icons: Array = [
 	get_node("Arrow Up"),
 	get_node("Arrow Up Right"),
@@ -42,5 +44,3 @@ func update_angle_label(angle: float):
 	var angle_str = str(round(360 * angle / TAU))
 	arrow_labels[direction].set_text(angle_str)
 
-
-enum { UP, UP_RIGHT, RIGHT, DOWN_RIGHT, DOWN, DOWN_LEFT, LEFT, UP_LEFT }
