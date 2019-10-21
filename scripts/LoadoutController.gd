@@ -74,7 +74,7 @@ func _ready():
 
 			var loadout_icon = WEAPON_DRAGGABLE_ICON.instance()
 			energy_weapons_container.add_child(loadout_icon)
-			loadout_icon.set_weapon(energy_weapon_name, icon)
+			loadout_icon.set_weapon(energy_weapon_name, icon, WeaponSlot.TYPE.ENERGY_WEAPON)
 			loadout_icon.connect("draggable_icon_dropped", self, "_on_draggable_icon_dropped")
 
 			energy_weapon_data[energy_weapon_name] = { "model": model, "icon": icon, "overhead": overhead }
@@ -97,7 +97,7 @@ func _ready():
 
 			var loadout_icon = WEAPON_DRAGGABLE_ICON.instance()
 			missile_weapons_container.add_child(loadout_icon)
-			loadout_icon.set_weapon(missile_weapon_name, icon)
+			loadout_icon.set_weapon(missile_weapon_name, icon, WeaponSlot.TYPE.MISSILE_WEAPON)
 			loadout_icon.connect("draggable_icon_dropped", self, "_on_draggable_icon_dropped")
 
 			missile_weapon_data[missile_weapon_name] = { "model": model, "icon": icon, "overhead": overhead }
@@ -164,6 +164,8 @@ func _update_ship_preview(ship_class: String):
 	return false
 
 
+const DraggableIcon = preload("DraggableIcon.gd")
+const WeaponSlot = preload("WeaponSlot.gd")
 const WingShipIcon = preload("WingShipIcon.gd")
 
 const ENERGY_WEAPON_DIRECTORIES: Array = [ "energy_bolt" ]
