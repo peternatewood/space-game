@@ -3,13 +3,12 @@ extends Control
 onready var default_modulate = get_modulate()
 onready var draggable_icon = get_node("Draggable Icon")
 onready var icon_texture = get_node("TextureRect")
-onready var ship_name = get_node("Ship Name")
+onready var name_label = get_node("Name Label")
 
 var being_dragged: bool = false
 var current_closest_area
 var is_mouse_down: bool = false
 var mouse_pos: Vector2
-var ship_class
 
 
 func _ready():
@@ -61,25 +60,17 @@ func _gui_input(event):
 
 func _on_mouse_entered():
 	set_modulate(Color.white)
-	ship_name.show()
+	name_label.show()
 
 
 func _on_mouse_exited():
 	set_modulate(default_modulate)
-	ship_name.hide()
+	name_label.hide()
 
 
 func _process(delta):
 	if being_dragged:
 		draggable_icon.set_position(mouse_pos)
-		var over_area = _get_closest_overlapping_area()
-		if over_area != current_closest_area:
-			if current_closest_area is WingShipIcon:
-				current_closest_area.highlight(false)
-			if over_area is WingShipIcon:
-				over_area.highlight(true)
-
-			current_closest_area = over_area
 
 
 func _toggle_draggable_icon(enable: bool):
@@ -99,16 +90,12 @@ func get_texture():
 	return icon_texture.get_texture()
 
 
-func set_ship(name, image_resource):
-	ship_name.set_text(name)
-	ship_class = name
+func set_texture(image_resource):
 	icon_texture.set_texture(image_resource)
 
-	var ship_sprite = draggable_icon.get_node("Ship Sprite")
-	ship_sprite.set_texture(image_resource)
+	var sprite = draggable_icon.get_node("Sprite")
+	sprite.set_texture(image_resource)
 
 
 signal icon_clicked
 signal draggable_icon_dropped
-
-const WingShipIcon = preload("WingShipIcon.gd")

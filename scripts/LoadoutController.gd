@@ -1,5 +1,7 @@
 extends Control
 
+onready var energy_weapons_container = get_node("Left Rows/Energy Weapons Panel/Energy Weapons Container")
+onready var missile_weapons_container = get_node("Left Rows/Missile Weapons Panel/Missile Weapons Container")
 onready var ship_class_label = get_node("Ship Preview Container/Ship Details/Ship Class")
 onready var ship_overhead = get_node("Ship Overhead")
 onready var ship_preview = get_node("Ship Preview Viewport")
@@ -10,6 +12,8 @@ onready var wing_ships_container = get_node("Wing Ships Container")
 var current_ship_class: String
 var editing_ship_index: int = 0
 var editing_wing_index: int = 0
+var energy_weapon_data: Dictionary = {}
+var missile_weapon_data: Dictionary = {}
 var mouse_over_wing_ship: bool = false
 var ship_data: Dictionary = {}
 var wing_ship_over
@@ -44,13 +48,59 @@ func _ready():
 			if overhead_load_error != OK:
 				print("Error loading overhead icon: " + str(overhead_load_error))
 
-			var loadout_icon = SHIP_LOADOUT_ICON.instance()
+			var loadout_icon = SHIP_DRAGGABLE_ICON.instance()
 			ship_selection_container.add_child(loadout_icon)
 			loadout_icon.set_ship(ship_class, icon)
 			loadout_icon.connect("icon_clicked", self, "_on_loadout_icon_clicked")
-			loadout_icon.connect("draggable_icon_dropped", self, "_on_draggable_icon_dropped")
+			loadout_icon.connect("draggable_icon_dropped", self, "_on_draggable_ship_icon_dropped")
 
 			ship_data[ship_class] = { "model": model, "icon": icon, "overhead": overhead }
+
+	for dir in ENERGY_WEAPON_DIRECTORIES:
+		var model = load("res://models/" + dir + "/" + dir + ".dae")
+		if model != null:
+			var energy_weapon_instance = model.instance()
+			var energy_weapon_name: String = energy_weapon_instance.get_meta("weapon_name")
+
+			var icon = ImageTexture.new()
+			var icon_load_error = icon.load("res://models/" + dir + "/overhead.png")
+			if icon_load_error != OK:
+				print("Error loading ship icon: " + str(icon_load_error))
+
+			var overhead = ImageTexture.new()
+			var overhead_load_error = overhead.load("res://models/" + dir + "/overhead.png")
+			if overhead_load_error != OK:
+				print("Error loading overhead icon: " + str(overhead_load_error))
+
+			var loadout_icon = WEAPON_DRAGGABLE_ICON.instance()
+			energy_weapons_container.add_child(loadout_icon)
+			loadout_icon.set_weapon(energy_weapon_name, icon)
+			loadout_icon.connect("draggable_icon_dropped", self, "_on_draggable_icon_dropped")
+
+			energy_weapon_data[energy_weapon_name] = { "model": model, "icon": icon, "overhead": overhead }
+
+	for dir in MISSILE_WEAPON_DIRECTORIES:
+		var model = load("res://models/" + dir + "/" + dir + ".dae")
+		if model != null:
+			var missile_instance = model.instance()
+			var missile_weapon_name: String = missile_instance.get_meta("weapon_name")
+
+			var icon = ImageTexture.new()
+			var icon_load_error = icon.load("res://models/" + dir + "/overhead.png")
+			if icon_load_error != OK:
+				print("Error loading ship icon: " + str(icon_load_error))
+
+			var overhead = ImageTexture.new()
+			var overhead_load_error = overhead.load("res://models/" + dir + "/overhead.png")
+			if overhead_load_error != OK:
+				print("Error loading overhead icon: " + str(overhead_load_error))
+
+			var loadout_icon = WEAPON_DRAGGABLE_ICON.instance()
+			missile_weapons_container.add_child(loadout_icon)
+			loadout_icon.set_weapon(missile_weapon_name, icon)
+			loadout_icon.connect("draggable_icon_dropped", self, "_on_draggable_icon_dropped")
+
+			missile_weapon_data[missile_weapon_name] = { "model": model, "icon": icon, "overhead": overhead }
 
 	wing_containers = wing_ships_container.get_children()
 	# Set wing ship icons based on wing defaults
@@ -74,7 +124,7 @@ func _ready():
 			index += 1
 
 
-func _on_draggable_icon_dropped(icon, over_area):
+func _on_draggable_ship_icon_dropped(icon, over_area):
 	if over_area is WingShipIcon:
 		over_area.set_icon(icon.get_texture())
 		over_area.highlight(false)
@@ -116,5 +166,8 @@ func _update_ship_preview(ship_class: String):
 
 const WingShipIcon = preload("WingShipIcon.gd")
 
+const ENERGY_WEAPON_DIRECTORIES: Array = [ "energy_bolt" ]
+const MISSILE_WEAPON_DIRECTORIES: Array = [ "missile" ]
 const SHIP_DIRECTORIES: Array = [ "fighter_frog", "fighter_hawk", "fighter_spider" ]
-const SHIP_LOADOUT_ICON = preload("res://icons/ship_loadout_icon.tscn")
+const SHIP_DRAGGABLE_ICON = preload("res://icons/ship_draggable_icon.tscn")
+const WEAPON_DRAGGABLE_ICON = preload("res://icons/weapon_draggable_icon.tscn")
