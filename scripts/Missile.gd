@@ -19,9 +19,10 @@ func _process(delta):
 		# If fired without a target, search for one within the search_area node
 		var closest_index: int = -1
 		var shortest_distance: float = -1.0
-		for index in range(mission_controller.targets.size()):
-			if mission_controller.targets[index] != owner_ship:
-				var to_target: Vector3 = mission_controller.targets[index].transform.origin - transform.origin
+		var targets = mission_controller.get_targets()
+		for index in range(targets.size()):
+			if targets[index] != owner_ship:
+				var to_target: Vector3 = targets[index].transform.origin - transform.origin
 				var dist_squared: float = to_target.length_squared()
 				var dot_product: float = (-transform.basis.z).dot(to_target.normalized())
 
@@ -31,7 +32,7 @@ func _process(delta):
 					closest_index = index
 
 		if closest_index != -1:
-			set_target(mission_controller.targets[closest_index])
+			set_target(targets[closest_index])
 
 		# Whether we found a target or not, don't search again
 		searched_for_target = true
