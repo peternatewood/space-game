@@ -75,7 +75,7 @@ func _ready():
 			var loadout_icon = WEAPON_DRAGGABLE_ICON.instance()
 			energy_weapons_container.add_child(loadout_icon)
 			loadout_icon.set_weapon(energy_weapon_name, icon, WeaponSlot.TYPE.ENERGY_WEAPON)
-			loadout_icon.connect("draggable_icon_dropped", self, "_on_draggable_icon_dropped")
+			loadout_icon.connect("draggable_icon_dropped", self, "_on_draggable_weapon_icon_dropped")
 
 			energy_weapon_data[energy_weapon_name] = { "model": model, "icon": icon, "overhead": overhead }
 
@@ -98,7 +98,7 @@ func _ready():
 			var loadout_icon = WEAPON_DRAGGABLE_ICON.instance()
 			missile_weapons_container.add_child(loadout_icon)
 			loadout_icon.set_weapon(missile_weapon_name, icon, WeaponSlot.TYPE.MISSILE_WEAPON)
-			loadout_icon.connect("draggable_icon_dropped", self, "_on_draggable_icon_dropped")
+			loadout_icon.connect("draggable_icon_dropped", self, "_on_draggable_weapon_icon_dropped")
 
 			missile_weapon_data[missile_weapon_name] = { "model": model, "icon": icon, "overhead": overhead }
 
@@ -130,6 +130,13 @@ func _on_draggable_ship_icon_dropped(icon, over_area):
 		over_area.highlight(false)
 		# Set current wing ship selection to icon we dropped over
 		_set_editing_ship(icon.ship_class, over_area.wing_index, over_area.ship_index)
+
+
+func _on_draggable_weapon_icon_dropped(icon, over_area):
+	if over_area is WeaponSlot and over_area.is_area_same_type(icon.draggable_icon):
+		over_area.set_icon(icon.get_texture())
+		over_area.highlight(false)
+		# TODO: assign weapon to currently selected ship in this slot
 
 
 func _on_loadout_icon_clicked(icon):
