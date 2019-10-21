@@ -125,7 +125,7 @@ func _ready():
 
 
 func _on_draggable_ship_icon_dropped(icon, over_area):
-	if over_area is WingShipIcon:
+	if over_area is ShipSlot:
 		over_area.set_icon(icon.get_texture())
 		over_area.highlight(false)
 		# Set current wing ship selection to icon we dropped over
@@ -166,7 +166,7 @@ func _update_ship_preview(ship_class: String):
 
 const DraggableIcon = preload("DraggableIcon.gd")
 const WeaponSlot = preload("WeaponSlot.gd")
-const WingShipIcon = preload("WingShipIcon.gd")
+const ShipSlot = preload("ShipSlot.gd")
 
 const ENERGY_WEAPON_DIRECTORIES: Array = [ "energy_bolt" ]
 const MISSILE_WEAPON_DIRECTORIES: Array = [ "missile" ]

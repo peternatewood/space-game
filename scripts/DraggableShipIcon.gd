@@ -13,9 +13,9 @@ func _process(delta):
 	if being_dragged:
 		var over_area = _get_closest_overlapping_area()
 		if over_area != current_closest_area:
-			if current_closest_area is WingShipIcon:
+			if current_closest_area is ShipSlot:
 				current_closest_area.highlight(false)
-			if over_area is WingShipIcon:
+			if over_area is ShipSlot:
 				over_area.highlight(true)
 
 			current_closest_area = over_area
@@ -35,4 +35,4 @@ func set_ship(name, image_resource):
 	set_texture(image_resource)
 
 
-const WingShipIcon = preload("WingShipIcon.gd")
+const ShipSlot = preload("ShipSlot.gd")
