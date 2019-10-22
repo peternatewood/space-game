@@ -2,12 +2,12 @@
   "name": "Debug Mission",
   "default_loadout": {
     "Alpha": [
-      { "ship_class": "Spider Fighter", "energy_weapons": [ "energy_bolt", "disintigrator" ], "missile_weapons": [ "heat_seeker", "heat_seeker" ] },
-      { "ship_class": "Spider Fighter", "energy_weapons": [ "energy_bolt", "disintigrator" ], "missile_weapons": [ "heat_seeker", "heat_seeker" ] },
-      { "ship_class": "Spider Fighter", "energy_weapons": [ "energy_bolt", "disintigrator" ], "missile_weapons": [ "heat_seeker", "heat_seeker" ] }
+      { "ship_class": "Spider Fighter", "energy_weapons": [ "Energy Bolt", "Disintigrator" ], "missile_weapons": [ "Heat Seeker", "Heat Seeker" ] },
+      { "ship_class": "Spider Fighter", "energy_weapons": [ "Energy Bolt", "Disintigrator" ], "missile_weapons": [ "Heat Seeker", "Heat Seeker" ] },
+      { "ship_class": "Spider Fighter", "energy_weapons": [ "Energy Bolt", "Disintigrator" ], "missile_weapons": [ "Heat Seeker", "Heat Seeker" ] }
     ],
     "Beta": [
-      { "ship_class": "Spider Fighter", "energy_weapons": [ "energy_bolt", "disintigrator" ], "missile_weapons": [ "heat_seeker", "heat_seeker" ] }
+      { "ship_class": "Spider Fighter", "energy_weapons": [ "Energy Bolt", "Disintigrator" ], "missile_weapons": [ "Heat Seeker", "Heat Seeker" ] }
     ]
   }
 }

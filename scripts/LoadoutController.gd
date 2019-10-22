@@ -1,8 +1,8 @@
 extends Control
 
-onready var energy_weapons_container = get_node("Left Rows/Energy Weapons Panel/Energy Weapons Container")
+onready var energy_weapon_slots = get_node("Weapon Slots Rows/Energy Weapon Rows").get_children()
 onready var loader = get_node("/root/SceneLoader")
-onready var missile_weapons_container = get_node("Left Rows/Missile Weapons Panel/Missile Weapons Container")
+onready var missile_weapon_slots = get_node("Weapon Slots Rows/Missile Weapon Rows").get_children()
 onready var mission_data = get_node("/root/MissionData")
 onready var ship_class_label = get_node("Ship Preview Container/Ship Details/Ship Class")
 onready var ship_overhead = get_node("Ship Overhead")
@@ -53,6 +53,7 @@ func _ready():
 
 			ship_data[ship_class] = { "model": model, "icon": icon, "overhead": overhead }
 
+	var energy_weapons_container = get_node("Left Rows/Energy Weapons Panel/Energy Weapons Container")
 	for dir in ENERGY_WEAPON_DIRECTORIES:
 		var model = load("res://models/energy_weapons/" + dir + "/model.dae")
 		if model != null:
@@ -76,6 +77,7 @@ func _ready():
 
 			energy_weapon_data[energy_weapon_name] = { "model": model, "icon": icon, "overhead": overhead }
 
+	var missile_weapons_container = get_node("Left Rows/Missile Weapons Panel/Missile Weapons Container")
 	for dir in MISSILE_WEAPON_DIRECTORIES:
 		var model = load("res://models/missile_weapons/" + dir + "/model.dae")
 		if model != null:
@@ -157,6 +159,25 @@ func _set_editing_ship(ship_class: String, wing_name: String, ship_index: int):
 	_update_ship_preview(ship_class)
 	ship_overhead.set_texture(ship_data[ship_class].overhead)
 	mission_data.wing_loadouts[wing_name][ship_index].ship_class = ship_class
+
+	# Update weapon slot icons
+	var ship_loadout = mission_data.wing_loadouts[wing_name][ship_index]
+	for index in range(energy_weapon_slots.size()):
+		if index < ship_loadout.energy_weapons.size():
+			energy_weapon_slots[index].set_icon(energy_weapon_data[ship_loadout.energy_weapons[index]].icon)
+			energy_weapon_slots[index].show()
+		else:
+			energy_weapon_slots[index].hide()
+
+	for index in range(missile_weapon_slots.size()):
+		if index < ship_loadout.missile_weapons.size():
+			missile_weapon_slots[index].set_icon(missile_weapon_data[ship_loadout.missile_weapons[index]].icon)
+			missile_weapon_slots[index].show()
+		else:
+			missile_weapon_slots[index].hide()
+
+	editing_wing_name = wing_name
+	editing_ship_index = ship_index
 
 
 func _update_ship_preview(ship_class: String):
