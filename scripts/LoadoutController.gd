@@ -175,7 +175,7 @@ const DraggableIcon = preload("DraggableIcon.gd")
 const WeaponSlot = preload("WeaponSlot.gd")
 const ShipSlot = preload("ShipSlot.gd")
 
-const ENERGY_WEAPON_DIRECTORIES: Array = [ "energy_bolt" ]
+const ENERGY_WEAPON_DIRECTORIES: Array = [ "disintigrator", "energy_bolt" ]
 const MISSILE_WEAPON_DIRECTORIES: Array = [ "missile" ]
 const SHIP_DIRECTORIES: Array = [ "fighter_frog", "fighter_hawk", "fighter_spider" ]
 const SHIP_DRAGGABLE_ICON = preload("res://icons/ship_draggable_icon.tscn")
