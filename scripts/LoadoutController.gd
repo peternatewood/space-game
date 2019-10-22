@@ -8,6 +8,7 @@ onready var ship_overhead = get_node("Ship Overhead")
 onready var ship_preview = get_node("Ship Preview Viewport")
 onready var ship_preview_container = get_node("Ship Preview Container")
 onready var ship_selection_container = get_node("Left Rows/Ships Panel/Ship Selection Container")
+onready var start_button = get_node("Start Button")
 onready var wing_ships_container = get_node("Wing Ships Container")
 
 var current_ship_class: String

@@ -232,6 +232,15 @@ position = Vector2( 101, 90 )
 [node name="Beta Icon 4" parent="Wing Ships Container/Beta Wing Container" instance=ExtResource( 7 )]
 position = Vector2( 60, 148 )
 
+[node name="Start Button" type="Button" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -41.0
+margin_top = -20.0
+text = "Start"
+
 [node name="Ship Preview Viewport" type="Viewport" parent="."]
 editor/display_folded = true
 size = Vector2( 200, 150 )
