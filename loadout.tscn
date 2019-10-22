@@ -2,13 +2,13 @@
 
 [ext_resource path="res://scripts/LoadoutController.gd" type="Script" id=1]
 [ext_resource path="res://images/metal_bricks.png" type="Texture" id=2]
-[ext_resource path="res://models/fighter_spider/loadout_overhead.png" type="Texture" id=3]
+[ext_resource path="res://models/ships/fighter_spider/loadout_overhead.png" type="Texture" id=3]
 [ext_resource path="res://button_groups/loadout_wing_group.tres" type="ButtonGroup" id=4]
 [ext_resource path="res://icons/weapon_slot.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scripts/WingContainer.gd" type="Script" id=6]
 [ext_resource path="res://icons/wing_ship_icon.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scripts/LoadoutShipPreview.gd" type="Script" id=8]
-[ext_resource path="res://models/fighter_frog/fighter_frog.dae" type="PackedScene" id=9]
+[ext_resource path="res://models/ships/fighter_frog/model.dae" type="PackedScene" id=9]
 
 [sub_resource type="ViewportTexture" id=1]
 viewport_path = NodePath("Ship Preview Viewport")
@@ -233,6 +233,7 @@ position = Vector2( 101, 90 )
 position = Vector2( 60, 148 )
 
 [node name="Ship Preview Viewport" type="Viewport" parent="."]
+editor/display_folded = true
 size = Vector2( 200, 150 )
 own_world = true
 world = SubResource( 2 )
@@ -249,10 +250,10 @@ light_color = Color( 0.847059, 0.933333, 0.996078, 1 )
 [node name="Ship Container" type="Spatial" parent="Ship Preview Viewport"]
 
 [node name="Ship" parent="Ship Preview Viewport/Ship Container" instance=ExtResource( 9 )]
-transform = Transform( -4.37114e-008, 0, 1, 0, 1, 0, -1, 0, -4.37114e-008, 0, 0, 0 )
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0 )
 
 [node name="Camera" type="Camera" parent="Ship Preview Viewport"]
-transform = Transform( -1, -8.74228e-008, 0, 8.44439e-008, -0.965926, 0.258819, -2.26267e-008, 0.258819, 0.965926, 0, 1, 4 )
+transform = Transform( -1, -8.74228e-08, 0, 8.44439e-08, -0.965926, 0.258819, -2.26267e-08, 0.258819, 0.965926, 0, 1, 4 )
 current = true
 fov = 45.0
 size = 3.0

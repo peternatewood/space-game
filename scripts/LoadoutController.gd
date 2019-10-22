@@ -33,18 +33,18 @@ var wings: Array = [
 
 func _ready():
 	for dir in SHIP_DIRECTORIES:
-		var model = load("res://models/" + dir + "/" + dir + ".dae")
+		var model = load("res://models/ships/" + dir + "/model.dae")
 		if model != null:
 			var ship_instance = model.instance()
 			var ship_class = ship_instance.get_meta("ship_class")
 
 			var icon = ImageTexture.new()
-			var icon_load_error = icon.load("res://models/" + dir + "/overhead.png")
+			var icon_load_error = icon.load("res://models/ships/" + dir + "/overhead.png")
 			if icon_load_error != OK:
 				print("Error loading ship icon: " + str(icon_load_error))
 
 			var overhead = ImageTexture.new()
-			var overhead_load_error = overhead.load("res://models/" + dir + "/loadout_overhead.png")
+			var overhead_load_error = overhead.load("res://models/ships/" + dir + "/loadout_overhead.png")
 			if overhead_load_error != OK:
 				print("Error loading overhead icon: " + str(overhead_load_error))
 
@@ -57,18 +57,18 @@ func _ready():
 			ship_data[ship_class] = { "model": model, "icon": icon, "overhead": overhead }
 
 	for dir in ENERGY_WEAPON_DIRECTORIES:
-		var model = load("res://models/" + dir + "/" + dir + ".dae")
+		var model = load("res://models/energy_weapons/" + dir + "/model.dae")
 		if model != null:
 			var energy_weapon_instance = model.instance()
 			var energy_weapon_name: String = energy_weapon_instance.get_meta("weapon_name")
 
 			var icon = ImageTexture.new()
-			var icon_load_error = icon.load("res://models/" + dir + "/overhead.png")
+			var icon_load_error = icon.load("res://models/energy_weapons/" + dir + "/overhead.png")
 			if icon_load_error != OK:
 				print("Error loading ship icon: " + str(icon_load_error))
 
 			var overhead = ImageTexture.new()
-			var overhead_load_error = overhead.load("res://models/" + dir + "/overhead.png")
+			var overhead_load_error = overhead.load("res://models/energy_weapons/" + dir + "/overhead.png")
 			if overhead_load_error != OK:
 				print("Error loading overhead icon: " + str(overhead_load_error))
 
@@ -80,18 +80,18 @@ func _ready():
 			energy_weapon_data[energy_weapon_name] = { "model": model, "icon": icon, "overhead": overhead }
 
 	for dir in MISSILE_WEAPON_DIRECTORIES:
-		var model = load("res://models/" + dir + "/" + dir + ".dae")
+		var model = load("res://models/missile_weapons/" + dir + "/model.dae")
 		if model != null:
 			var missile_instance = model.instance()
 			var missile_weapon_name: String = missile_instance.get_meta("weapon_name")
 
 			var icon = ImageTexture.new()
-			var icon_load_error = icon.load("res://models/" + dir + "/overhead.png")
+			var icon_load_error = icon.load("res://models/missile_weapons/" + dir + "/overhead.png")
 			if icon_load_error != OK:
 				print("Error loading ship icon: " + str(icon_load_error))
 
 			var overhead = ImageTexture.new()
-			var overhead_load_error = overhead.load("res://models/" + dir + "/overhead.png")
+			var overhead_load_error = overhead.load("res://models/missile_weapons/" + dir + "/overhead.png")
 			if overhead_load_error != OK:
 				print("Error loading overhead icon: " + str(overhead_load_error))
 
@@ -176,7 +176,7 @@ const WeaponSlot = preload("WeaponSlot.gd")
 const ShipSlot = preload("ShipSlot.gd")
 
 const ENERGY_WEAPON_DIRECTORIES: Array = [ "disintigrator", "energy_bolt" ]
-const MISSILE_WEAPON_DIRECTORIES: Array = [ "missile" ]
+const MISSILE_WEAPON_DIRECTORIES: Array = [ "heat_seeker" ]
 const SHIP_DIRECTORIES: Array = [ "fighter_frog", "fighter_hawk", "fighter_spider" ]
 const SHIP_DRAGGABLE_ICON = preload("res://icons/ship_draggable_icon.tscn")
 const WEAPON_DRAGGABLE_ICON = preload("res://icons/weapon_draggable_icon.tscn")

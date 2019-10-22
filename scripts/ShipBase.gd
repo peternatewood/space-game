@@ -63,7 +63,7 @@ func _ready():
 		quadrant.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
 
 	# TODO: figure out how to assign weapons from the editor for npc ships, and from the loadout menu for the player and wingmates
-	set_weapon_hardpoints([ ENERGY_BOLT, ENERGY_BOLT ], [ MISSILE, MISSILE ])
+	set_weapon_hardpoints([ ENERGY_BOLT, DISINTIGRATOR ], [ HEAT_SEEKER, HEAT_SEEKER ])
 
 
 func _cycle_energy_weapon(direction: int):
@@ -359,8 +359,9 @@ const ShieldQuadrant = preload("ShieldQuadrant.gd")
 
 const ACCELERATION: float = 0.1
 const DESTRUCTION_SMOKE = preload("res://models/Destruction_Smoke.tscn")
-const ENERGY_BOLT = preload("res://models/energy_bolt/energy_bolt.dae")
-const MISSILE = preload("res://models/missile/missile.dae")
+const DISINTIGRATOR = preload("res://models/energy_weapons/disintigrator/model.dae")
+const ENERGY_BOLT = preload("res://models/energy_weapons/energy_bolt/model.dae")
+const HEAT_SEEKER = preload("res://models/missile_weapons/heat_seeker/model.dae")
 const MAX_SYSTEM_POWER: float = 60.0
 const MAX_THROTTLE: float = 1.0
 const MAX_WEAPON_BATTERY: float = 100.0
