@@ -9,6 +9,7 @@ onready var ship_overhead = get_node("Ship Overhead")
 onready var ship_preview = get_node("Ship Preview Viewport")
 onready var ship_preview_container = get_node("Ship Preview Container")
 onready var ship_selection_container = get_node("Left Rows/Ships Panel/Ship Selection Container")
+onready var ship_wing_name = get_node("Weapon Slots Rows/Ship Wing Name")
 onready var start_button = get_node("Start Button")
 onready var wing_ships_container = get_node("Wing Ships Container")
 
@@ -169,7 +170,7 @@ func _on_wing_icon_pressed(wing_name: String, ship_index: int):
 func _set_editing_ship(ship_class: String, wing_name: String, ship_index: int):
 	_update_ship_preview(ship_class)
 	ship_overhead.set_texture(ship_data[ship_class].overhead)
-
+	ship_wing_name.set_text(wing_name + " " + str(ship_index + 1))
 
 	# Update weapon slot icons
 	var ship_loadout = mission_data.wing_loadouts[wing_name][ship_index]

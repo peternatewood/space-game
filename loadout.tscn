@@ -166,15 +166,25 @@ margin_right = -168.0
 margin_bottom = -40.0
 rect_min_size = Vector2( 64, 32 )
 
-[node name="Energy Weapon Label" type="Label" parent="Weapon Slots Rows"]
+[node name="Ship Wing Name" type="Label" parent="Weapon Slots Rows"]
 margin_right = 109.0
 margin_bottom = 14.0
+
+[node name="HSeparator" type="HSeparator" parent="Weapon Slots Rows"]
+margin_top = 18.0
+margin_right = 109.0
+margin_bottom = 22.0
+
+[node name="Energy Weapon Label" type="Label" parent="Weapon Slots Rows"]
+margin_top = 26.0
+margin_right = 109.0
+margin_bottom = 40.0
 text = "Energy Weapons"
 
 [node name="Energy Weapon Rows" type="VBoxContainer" parent="Weapon Slots Rows"]
-margin_top = 18.0
+margin_top = 44.0
 margin_right = 109.0
-margin_bottom = 86.0
+margin_bottom = 112.0
 
 [node name="Energy Weapon Slot 1" parent="Weapon Slots Rows/Energy Weapon Rows" instance=ExtResource( 5 )]
 margin_right = 109.0
@@ -187,15 +197,15 @@ margin_bottom = 68.0
 slot_type = 1
 
 [node name="Missile Weapon Label" type="Label" parent="Weapon Slots Rows"]
-margin_top = 90.0
+margin_top = 116.0
 margin_right = 109.0
-margin_bottom = 104.0
+margin_bottom = 130.0
 text = "Missile Weapons"
 
 [node name="Missile Weapon Rows" type="VBoxContainer" parent="Weapon Slots Rows"]
-margin_top = 108.0
+margin_top = 134.0
 margin_right = 109.0
-margin_bottom = 176.0
+margin_bottom = 202.0
 
 [node name="Missile Weapon Slot 1" parent="Weapon Slots Rows/Missile Weapon Rows" instance=ExtResource( 5 )]
 margin_right = 109.0
