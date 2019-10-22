@@ -1,5 +1,6 @@
 extends Node
 
+var mission_scene_path: String
 var wing_loadouts: Dictionary
 
 
@@ -36,6 +37,8 @@ func load_mission_data(folder_name: String):
 								"missile_weapons": default_loadout[wing_name][index].get("missile_weapons", [ "Heat Seeker" ])
 							}
 							wing_loadouts[wing_name].append(ship_loadout)
+
+				mission_scene_path = "res://missions/" + folder_name + "/scene.tscn"
 			else:
 				print("Error parsing " + directory + ": " + parse_result.error_string)
 		else:
