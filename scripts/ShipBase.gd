@@ -63,11 +63,7 @@ func _ready():
 		quadrant.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
 
 	# TODO: figure out how to assign weapons from the editor for npc ships, and from the loadout menu for the player and wingmates
-	for energy_weapon in energy_weapon_hardpoints:
-		energy_weapon.set_weapon(ENERGY_BOLT)
-
-	for missile_weapon in missile_weapon_hardpoints:
-		missile_weapon.set_weapon(MISSILE, get_meta("missile_capacity"))
+	set_weapon_hardpoints([ ENERGY_BOLT, ENERGY_BOLT ], [ MISSILE, MISSILE ])
 
 
 func _cycle_energy_weapon(direction: int):
@@ -310,6 +306,20 @@ func hide_and_disable():
 
 func is_a_target_in_range():
 	return target_raycast.get_collider() is ActorBase
+
+
+func set_weapon_hardpoints(energy_weapons: Array, missile_weapons: Array):
+	for index in range(energy_weapons.size()):
+		if index < energy_weapon_hardpoints.size():
+			energy_weapon_hardpoints[index].set_weapon(energy_weapons[index])
+		else:
+		 break
+
+	for index in range(missile_weapons.size()):
+		if index < missile_weapon_hardpoints.size():
+			missile_weapon_hardpoints[index].set_weapon(missile_weapons[index], get_meta("missile_capacity"))
+		else:
+		 break
 
 
 func show_and_enable():

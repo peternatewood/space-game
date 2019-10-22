@@ -45,7 +45,6 @@ func fire_weapon(ship):
 	get_tree().get_root().add_child(weapon_instance)
 	weapon_instance.transform.origin = hardpoints[hardpoint_index].global_transform.origin
 
-	#weapon_instance.look_at(hardpoints[hardpoint_index].global_transform.origin - ship.transform.basis.z, ship.transform.basis.y)
 	weapon_instance.look_at(ship.get_targeting_endpoint(), ship.transform.basis.y)
 	weapon_instance.add_speed(ship.get_linear_velocity().length())
 
