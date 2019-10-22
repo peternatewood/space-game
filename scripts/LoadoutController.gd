@@ -11,6 +11,7 @@ onready var ship_preview_container = get_node("Ship Preview Container")
 onready var ship_selection_container = get_node("Left Rows/Ships Panel/Ship Selection Container")
 onready var ship_wing_name = get_node("Weapon Slots Rows/Ship Wing Name")
 onready var start_button = get_node("Start Button")
+onready var weapon_slots_rows = get_node("Weapon Slots Rows")
 onready var wing_ships_container = get_node("Wing Ships Container")
 
 var current_ship_class: String
@@ -195,6 +196,9 @@ func _set_editing_ship(ship_class: String, wing_name: String, ship_index: int):
 
 	editing_wing_name = wing_name
 	editing_ship_index = ship_index
+
+	ship_overhead.show()
+	weapon_slots_rows.show()
 
 
 func _update_ship_preview(ship_class: String):
