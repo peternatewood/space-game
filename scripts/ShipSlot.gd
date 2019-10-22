@@ -6,7 +6,7 @@ onready var ship_icon = get_node("Ship Icon")
 
 var enabled: bool = true
 var ship_index: int
-var wing_index: int
+var wing_name: String
 
 
 func _ready():
@@ -42,9 +42,9 @@ func set_icon(image_resource):
 	ship_icon.set_texture(image_resource)
 
 
-func set_indexes(wing: int, ship: int):
+func set_indexes(wing: String, ship: int):
 	ship_index = ship
-	wing_index = wing
+	wing_name = wing
 
 
 signal pressed
