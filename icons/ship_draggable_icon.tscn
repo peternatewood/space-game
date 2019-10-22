@@ -3,7 +3,6 @@
 [ext_resource path="res://scripts/DraggableShipIcon.gd" type="Script" id=1]
 [ext_resource path="res://models/ships/fighter_frog/overhead.png" type="Texture" id=2]
 
-
 [sub_resource type="CircleShape2D" id=1]
 radius = 18.0
 
@@ -23,10 +22,12 @@ texture = ExtResource( 2 )
 
 [node name="Name Label" type="Label" parent="."]
 visible = false
-anchor_left = 1.0
-anchor_right = 1.0
-margin_right = 27.0
-margin_bottom = 14.0
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 40.0
+margin_top = -7.0
+margin_right = 67.0
+margin_bottom = 7.0
 rect_min_size = Vector2( 0, 14 )
 text = "ship"
 
