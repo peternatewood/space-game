@@ -2,6 +2,7 @@ extends Area2D
 
 onready var cross = get_node("Cross")
 onready var mouse_click_control = get_node("Mouse Click Control")
+onready var selection_border = get_node("Selection Border")
 onready var ship_icon = get_node("Ship Icon")
 
 var enabled: bool = true
@@ -45,6 +46,13 @@ func set_icon(image_resource):
 func set_indexes(wing: String, ship: int):
 	ship_index = ship
 	wing_name = wing
+
+
+func toggle_border(toggle_on: bool):
+	if toggle_on:
+		selection_border.show()
+	else:
+		selection_border.hide()
 
 
 signal pressed
