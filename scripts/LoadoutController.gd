@@ -13,7 +13,7 @@ onready var start_button = get_node("Start Button")
 onready var wing_ships_container = get_node("Wing Ships Container")
 
 var current_ship_class: String
-var editing_ship_index: int = 0
+var editing_ship_index: int = -1
 var editing_wing_name: String
 var energy_weapon_data: Dictionary = {}
 var missile_weapon_data: Dictionary = {}
@@ -170,6 +170,7 @@ func _set_editing_ship(ship_class: String, wing_name: String, ship_index: int):
 	_update_ship_preview(ship_class)
 	ship_overhead.set_texture(ship_data[ship_class].overhead)
 
+
 	# Update weapon slot icons
 	var ship_loadout = mission_data.wing_loadouts[wing_name][ship_index]
 	for index in range(energy_weapon_slots.size()):
@@ -185,6 +186,11 @@ func _set_editing_ship(ship_class: String, wing_name: String, ship_index: int):
 			missile_weapon_slots[index].show()
 		else:
 			missile_weapon_slots[index].hide()
+
+	if editing_ship_index != -1:
+		wing_containers[editing_wing_name].get_child(editing_ship_index).toggle_border(false)
+
+	wing_containers[wing_name].get_child(ship_index).toggle_border(true)
 
 	editing_wing_name = wing_name
 	editing_ship_index = ship_index
