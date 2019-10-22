@@ -1,6 +1,7 @@
 extends Control
 
 onready var energy_weapons_container = get_node("Left Rows/Energy Weapons Panel/Energy Weapons Container")
+onready var loader = get_node("/root/SceneLoader")
 onready var missile_weapons_container = get_node("Left Rows/Missile Weapons Panel/Missile Weapons Container")
 onready var mission_data = get_node("/root/MissionData")
 onready var ship_class_label = get_node("Ship Preview Container/Ship Details/Ship Class")
@@ -23,7 +24,6 @@ var wing_containers: Dictionary = {}
 
 
 func _ready():
-	print("Loaded!")
 	# Map wing names to container nodes
 	var wing_container_nodes = wing_ships_container.get_children()
 	for index in range(min(mission_data.VALID_WINGS.size(), wing_container_nodes.size())):
@@ -117,6 +117,8 @@ func _ready():
 			node.connect("pressed", self, "_on_wing_checkbox_pressed", [ mission_data.VALID_WINGS[index] ])
 			index += 1
 
+	start_button.connect("pressed", self, "_on_start_button_pressed")
+
 
 func _on_draggable_ship_icon_dropped(icon, over_area):
 	if over_area is ShipSlot:
@@ -135,6 +137,11 @@ func _on_draggable_weapon_icon_dropped(icon, over_area):
 
 func _on_loadout_icon_clicked(icon):
 	_update_ship_preview(icon.ship_class)
+
+
+func _on_start_button_pressed():
+	print(mission_data.mission_scene_path)
+	loader.change_scene(mission_data.mission_scene_path)
 
 
 func _on_wing_checkbox_pressed(pressed_wing_name: String):
