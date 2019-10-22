@@ -126,6 +126,9 @@ func _on_draggable_ship_icon_dropped(icon, over_area):
 	if over_area is ShipSlot:
 		over_area.set_icon(icon.get_texture())
 		over_area.highlight(false)
+
+		mission_data.wing_loadouts[over_area.wing_name][over_area.ship_index].ship_class = icon.ship_class
+
 		# Set current wing ship selection to icon we dropped over
 		_set_editing_ship(icon.ship_class, over_area.wing_name, over_area.ship_index)
 
@@ -134,7 +137,15 @@ func _on_draggable_weapon_icon_dropped(icon, over_area):
 	if over_area is WeaponSlot and over_area.is_area_same_type(icon.draggable_icon):
 		over_area.set_icon(icon.get_texture())
 		over_area.highlight(false)
-		# TODO: assign weapon to currently selected ship in this slot
+
+		var weapon_type_string: String
+		match over_area.slot_type:
+			WeaponSlot.TYPE.ENERGY_WEAPON:
+				weapon_type_string = "energy_weapons"
+			WeaponSlot.TYPE.MISSILE_WEAPON:
+				weapon_type_string = "missile_weapons"
+
+		mission_data.wing_loadouts[editing_wing_name][editing_ship_index][weapon_type_string][over_area.index] = icon.weapon_name
 
 
 func _on_loadout_icon_clicked(icon):
@@ -158,7 +169,6 @@ func _on_wing_icon_pressed(wing_name: String, ship_index: int):
 func _set_editing_ship(ship_class: String, wing_name: String, ship_index: int):
 	_update_ship_preview(ship_class)
 	ship_overhead.set_texture(ship_data[ship_class].overhead)
-	mission_data.wing_loadouts[wing_name][ship_index].ship_class = ship_class
 
 	# Update weapon slot icons
 	var ship_loadout = mission_data.wing_loadouts[wing_name][ship_index]
