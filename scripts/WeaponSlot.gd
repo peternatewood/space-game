@@ -8,10 +8,14 @@ onready var area = get_node("Area")
 onready var highlight_polygon = get_node("Area/Highlight")
 onready var sprite = get_node("Area/Sprite")
 
+var index: int
+
 
 func _ready():
 	area.connect("area_entered", self, "_on_area_entered")
 	area.connect("area_exited", self, "_on_area_exited")
+
+	index = get_position_in_parent()
 
 
 # PUBLIC
