@@ -1,7 +1,106 @@
 extends Node
 
+var energy_weapon_models: Dictionary
+var missile_weapon_models: Dictionary
 var mission_scene_path: String
+var ship_models: Dictionary
 var wing_loadouts: Dictionary
+
+
+func _ready():
+	# Map ship and weapon models by name
+	var dir = Directory.new()
+	if dir.open("res://models/ships") != OK:
+		print("Unable to open res://models/ships directory")
+	else:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while file_name != "":
+			if dir.current_is_dir() and file_name != "." and file_name != "..":
+				var model_dir = dir.get_current_dir() + "/" + file_name + "/"
+				var model_file = load(model_dir + "model.dae")
+
+				var data_file = File.new()
+				var data_file_error = data_file.open(model_dir + "data.json", File.READ)
+
+				if data_file_error != OK:
+					print("Unable to open data file in " + model_dir)
+				else:
+					var data_parsed = JSON.parse(data_file.get_as_text())
+
+					if data_parsed.error != OK:
+						print("Error parsing data file at " + model_dir + ": " + data_parsed.error_string)
+					elif model_file == null:
+						print("Unable to load model file at " + model_file)
+					else:
+						ship_models[data_parsed.result.get("ship_class", "ship")] = model_file
+
+			file_name = dir.get_next()
+
+	if dir.open("res://models/energy_weapons") != OK:
+		print("Unable to open res://models/energy_weapons directory")
+	else:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while file_name != "":
+			if dir.current_is_dir() and file_name != "." and file_name != "..":
+				var model_dir = dir.get_current_dir() + "/" + file_name + "/"
+				var model_file = load(model_dir + "model.dae")
+
+				var data_file = File.new()
+				var data_file_error = data_file.open(model_dir + "data.json", File.READ)
+
+				if data_file_error != OK:
+					print("Unable to open data file in " + model_dir)
+				else:
+					var data_parsed = JSON.parse(data_file.get_as_text())
+
+					if data_parsed.error != OK:
+						print("Error parsing data file at " + model_dir + ": " + data_parsed.error_string)
+					elif model_file == null:
+						print("Unable to load model file at " + model_file)
+					else:
+						energy_weapon_models[data_parsed.result.get("name", "ship")] = model_file
+
+			file_name = dir.get_next()
+
+	if dir.open("res://models/missile_weapons") != OK:
+		print("Unable to open res://models/missile_weapons directory")
+	else:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while file_name != "":
+			if dir.current_is_dir() and file_name != "." and file_name != "..":
+				var model_dir = dir.get_current_dir() + "/" + file_name + "/"
+				var model_file = load(model_dir + "model.dae")
+
+				var data_file = File.new()
+				var data_file_error = data_file.open(model_dir + "data.json", File.READ)
+
+				if data_file_error != OK:
+					print("Unable to open data file in " + model_dir)
+				else:
+					var data_parsed = JSON.parse(data_file.get_as_text())
+
+					if data_parsed.error != OK:
+						print("Error parsing data file at " + model_dir + ": " + data_parsed.error_string)
+					elif model_file == null:
+						print("Unable to load model file at " + model_file)
+					else:
+						missile_weapon_models[data_parsed.result.get("name", "ship")] = model_file
+
+			file_name = dir.get_next()
+
+
+# PUBLIC
+
+
+func get_weapon_models(type: String, wing_name: String, ship_index: int):
+	var models: Array = []
+	for weapon_data in wing_loadouts[wing_name][ship_index][type]:
+		models.append(weapon_data.model)
+
+	return models
 
 
 func load_mission_data(folder_name: String):
@@ -32,10 +131,25 @@ func load_mission_data(folder_name: String):
 
 						for index in range(min(MAX_SHIPS_PER_WING, default_loadout[wing_name].size())):
 							var ship_loadout: Dictionary = {
-								"ship_class": default_loadout[wing_name][index].get("ship_class", "Frog Fighter"),
-								"energy_weapons": default_loadout[wing_name][index].get("energy_weapons", [ "Energy Bolt", "Energy Bolt" ]),
-								"missile_weapons": default_loadout[wing_name][index].get("missile_weapons", [ "Heat Seeker" ])
+								"ship_class": "Frog Fighter",
+								"model": ship_models["Frog Fighter"],
+								"energy_weapons": [],
+								"missile_weapons": []
 							}
+
+							var ship_class = default_loadout[wing_name][index].get("ship_class", "")
+							if ship_models.has(ship_class):
+								ship_loadout["ship_class"] = ship_class
+								ship_loadout["model"] = ship_models[ship_class]
+
+							for energy_weapon_name in default_loadout[wing_name][index].get("energy_weapons", []):
+								if energy_weapon_models.has(energy_weapon_name):
+									ship_loadout["energy_weapons"].append({ "name": energy_weapon_name, "model": energy_weapon_models[energy_weapon_name] })
+
+							for missile_weapon_name in default_loadout[wing_name][index].get("missile_weapons", []):
+								if missile_weapon_models.has(missile_weapon_name):
+									ship_loadout["missile_weapons"].append({ "name": missile_weapon_name, "model": missile_weapon_models[missile_weapon_name] })
+
 							wing_loadouts[wing_name].append(ship_loadout)
 
 				mission_scene_path = "res://missions/" + folder_name + "/scene.tscn"
