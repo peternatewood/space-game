@@ -105,10 +105,10 @@ func get_closest_target(ship, targets: Array, only_alignment: int = -1):
 	return targets[closest_index]
 
 
-func get_commandable_ships():
+func get_commandable_ships(include_warped_out: bool = false):
 	var commandable_ships: Array = []
 
-	for target in get_targets():
+	for target in get_targets(include_warped_out):
 		# TODO: also check some other property like rank or ship class to determine whether player can command or not
 		if target != player and get_alignment(player.faction, target.faction) == FRIENDLY:
 			commandable_ships.append(target)

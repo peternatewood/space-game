@@ -59,16 +59,17 @@ func _handle_number_press(number: int):
 			return
 
 		wing = wings_menu.get_child(number - 1)
-		if wing.wing_destroyed:
-			return
+		if wing.wing_warped_in:
+			if wing.wing_destroyed:
+				return
 
-		wings_menu.hide()
-		ship_commands.show()
+			wings_menu.hide()
+			ship_commands.show()
 	elif ships_menu.visible:
 		var ship_index = number - 1
 		var ship_labels = ships_menu.get_children()
 
-		if ship_index < ship_labels.size():
+		if ship_index < ship_labels.size() and ship_labels[ship_index].ship.is_warped_in:
 			if commanding_ship != null:
 				commanding_ship.disconnect("destroyed", self, "_on_commanding_ship_destroyed")
 				commanding_ship.disconnect("warped_out", self, "_on_commanding_ship_destroyed")
@@ -173,7 +174,8 @@ func _input(event):
 func _on_mission_ready():
 	# Build ships list
 	var index: int = 1
-	for ship in mission_controller.get_commandable_ships():
+	var commandable_ships = mission_controller.get_commandable_ships(true)
+	for ship in commandable_ships:
 		var comm_label = COMMUNICATIONS_LABEL.instance()
 		comm_label.set_ship(ship, index)
 		ships_menu.add_child(comm_label)
@@ -182,7 +184,7 @@ func _on_mission_ready():
 
 	# Build wings list
 	var friendly_wings: Array = []
-	for ship in mission_controller.get_commandable_ships():
+	for ship in commandable_ships:
 		if not friendly_wings.has(ship.wing_name):
 			friendly_wings.append(ship.wing_name)
 
@@ -206,7 +208,7 @@ func _on_mission_ready():
 
 		if wing_ships.size() > 0:
 			var comm_label = COMMUNICATIONS_LABEL.instance()
-			comm_label.set_wing(wing, wing_ships, index)
+			comm_label.set_wing(wing, wing_ships, index, true)
 			reinforcements_list.add_child(comm_label)
 			index += 1
 
