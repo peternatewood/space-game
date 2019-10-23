@@ -36,6 +36,8 @@ func _ready():
 		if model != null:
 			var ship_instance = model.instance()
 			var ship_class = ship_instance.get_meta("ship_class")
+			var energy_weapon_slots = ship_instance.get_node("Energy Weapon Groups").get_child_count()
+			var missile_weapon_slots = ship_instance.get_node("Missile Weapon Groups").get_child_count()
 
 			var icon = ImageTexture.new()
 			var icon_load_error = icon.load("res://models/ships/" + dir + "/overhead.png")
@@ -53,7 +55,7 @@ func _ready():
 			loadout_icon.connect("icon_clicked", self, "_on_loadout_icon_clicked")
 			loadout_icon.connect("draggable_icon_dropped", self, "_on_draggable_ship_icon_dropped")
 
-			ship_data[ship_class] = { "model": model, "icon": icon, "overhead": overhead }
+			ship_data[ship_class] = { "model": model, "icon": icon, "overhead": overhead, "energy_weapon_slots": energy_weapon_slots, "missile_weapon_slots": missile_weapon_slots }
 
 	var energy_weapons_container = get_node("Left Rows/Energy Weapons Panel/Energy Weapons Container")
 	for dir in ENERGY_WEAPON_DIRECTORIES:
