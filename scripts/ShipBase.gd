@@ -186,6 +186,7 @@ func _process(delta):
 				show_and_enable()
 				warping = NONE
 				is_warped_in = true
+				emit_signal("warped_in")
 		WARP_OUT:
 			warping_countdown -= delta
 
@@ -336,6 +337,7 @@ func warp(warp_in: bool):
 		warp_destination = transform.origin
 		translate(WARP_IN_DISTANCE * Vector3.BACK)
 		warp_origin = transform.origin
+		emit_signal("warping_in")
 
 		set_process(true)
 		show()
@@ -348,7 +350,9 @@ func warp(warp_in: bool):
 
 signal energy_weapon_changed
 signal missile_weapon_changed
+signal warped_in
 signal warped_out
+signal warping_in
 
 const ActorBase = preload("ActorBase.gd")
 const EnergyBolt = preload("EnergyBolt.gd")
