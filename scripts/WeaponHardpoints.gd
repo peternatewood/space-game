@@ -66,7 +66,7 @@ func get_weapon_data(name: String):
 func set_weapon(weapon_scene, missile_capacity = null):
 	if weapon_scene == null:
 		for name in WEAPON_DATA_NAMES:
-			weapon_data[name] = "n/a"
+			weapon_data[name] = "none"
 	else:
 		is_weapon_loaded = true
 		weapon = weapon_scene

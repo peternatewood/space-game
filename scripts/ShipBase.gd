@@ -65,11 +65,25 @@ func _ready():
 
 func _cycle_energy_weapon(direction: int):
 	energy_weapon_index = (energy_weapon_index + direction) % energy_weapon_hardpoints.size()
+
+	# Skip any weapon slot that has no weapon loaded
+	var index: int = 0
+	while not energy_weapon_hardpoints[energy_weapon_index].is_weapon_loaded and index < energy_weapon_hardpoints.size():
+		energy_weapon_index = (energy_weapon_index + direction) % energy_weapon_hardpoints.size()
+		index += 1
+
 	emit_signal("energy_weapon_changed")
 
 
 func _cycle_missile_weapon(direction: int):
 	missile_weapon_index = (missile_weapon_index + direction) % missile_weapon_hardpoints.size()
+
+	# Skip any weapon slot that has no weapon loaded
+	var index: int = 0
+	while not missile_weapon_hardpoints[missile_weapon_index].is_weapon_loaded and index < missile_weapon_hardpoints.size():
+		missile_weapon_index = (missile_weapon_index + direction) % missile_weapon_hardpoints.size()
+		index += 1
+
 	emit_signal("missile_weapon_changed")
 
 
