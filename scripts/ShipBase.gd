@@ -356,9 +356,6 @@ const ShieldQuadrant = preload("ShieldQuadrant.gd")
 
 const ACCELERATION: float = 0.1
 const DESTRUCTION_SMOKE = preload("res://models/Destruction_Smoke.tscn")
-const DISINTIGRATOR = preload("res://models/energy_weapons/disintigrator/model.dae")
-const ENERGY_BOLT = preload("res://models/energy_weapons/energy_bolt/model.dae")
-const HEAT_SEEKER = preload("res://models/missile_weapons/heat_seeker/model.dae")
 const MAX_SYSTEM_POWER: float = 60.0
 const MAX_THROTTLE: float = 1.0
 const MAX_WEAPON_BATTERY: float = 100.0
