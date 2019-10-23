@@ -34,3 +34,10 @@ func is_area_same_type(area):
 func set_icon(image_resource):
 	sprite.set_texture(image_resource)
 	sprite.show()
+
+
+func toggle_icon(toggle_on: bool):
+	if toggle_on:
+		sprite.show()
+	else:
+		sprite.hide()
