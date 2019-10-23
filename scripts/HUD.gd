@@ -225,7 +225,8 @@ func _on_mission_ready():
 
 	power_container.set_power_bars(player.power_distribution)
 
-	for node in mission_controller.get_targets():
+	# Add radar icons
+	for node in mission_controller.get_targets(true):
 		if node != mission_controller.player:
 			var icon = RADAR_ICON.instance()
 			icon.set_target(node)
@@ -292,7 +293,7 @@ func _process(delta):
 	var viewport_rect: Rect2 = viewport.get_visible_rect()
 	var radar_position
 	for icon in radar_icons_container.get_children():
-		if icon.has_target:
+		if icon.has_target and icon.target_warped_in:
 			var target_dist_sq = (icon.target.transform.origin - player.transform.origin).length_squared()
 			if icon.target == player.current_target or target_dist_sq < RADAR_RANGE_SQ:
 				if not icon.visible:
