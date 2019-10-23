@@ -143,11 +143,15 @@ func load_mission_data(folder_name: String):
 								ship_loadout["model"] = ship_models[ship_class]
 
 							for energy_weapon_name in default_loadout[wing_name][index].get("energy_weapons", []):
-								if energy_weapon_models.has(energy_weapon_name):
+								if energy_weapon_name == "none":
+									ship_loadout["energy_weapons"].append({ "name": energy_weapon_name, "model": null })
+								elif energy_weapon_models.has(energy_weapon_name):
 									ship_loadout["energy_weapons"].append({ "name": energy_weapon_name, "model": energy_weapon_models[energy_weapon_name] })
 
 							for missile_weapon_name in default_loadout[wing_name][index].get("missile_weapons", []):
-								if missile_weapon_models.has(missile_weapon_name):
+								if missile_weapon_name == "none":
+									ship_loadout["missile_weapons"].append({ "name": missile_weapon_name, "model": null })
+								elif missile_weapon_models.has(missile_weapon_name):
 									ship_loadout["missile_weapons"].append({ "name": missile_weapon_name, "model": missile_weapon_models[missile_weapon_name] })
 
 							wing_loadouts[wing_name].append(ship_loadout)
