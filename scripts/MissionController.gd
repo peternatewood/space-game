@@ -35,6 +35,31 @@ func _on_scene_loaded():
 	for wing_name in mission_data.wing_loadouts.keys():
 		for index in range(mission_data.wing_loadouts[wing_name].size()):
 			var ship = targets_container.get_node_or_null(wing_name + " " + str(index + 1))
+
+			if ship.get_meta("ship_class") != mission_data.wing_loadouts[wing_name][index].ship_class:
+				var ship_instance = mission_data.wing_loadouts[wing_name][index].model.instance()
+
+				# Copy relevant data from ship to new instance
+				ship_instance.name = ship.name
+				ship_instance.transform = ship.transform
+				ship_instance.set_script(ship.get_script())
+				ship_instance.hull_hitpoints = ship.hull_hitpoints
+				ship_instance.faction = ship.faction
+				ship_instance.wing_name = ship.wing_name
+				ship_instance.is_warped_in = ship.is_warped_in
+
+				if ship_instance is Player:
+					ship_instance.camera_path = ship.camera_path
+				elif ship_instance is NPCShip:
+					ship_instance.initial_orders = ship.initial_orders
+
+				var ship_tree_pos = ship.get_position_in_parent()
+				targets_container.remove_child(ship)
+				targets_container.add_child(ship_instance)
+				targets_container.move_child(ship_instance, ship_tree_pos)
+
+				ship = ship_instance
+
 			if ship == null:
 				print("No such ship in scene: " + wing_name + " " + str(index + 1))
 			else:
