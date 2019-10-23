@@ -130,6 +130,7 @@ func _on_draggable_ship_icon_dropped(icon, over_area):
 		over_area.highlight(false)
 
 		mission_data.wing_loadouts[over_area.wing_name][over_area.ship_index].ship_class = icon.ship_class
+		mission_data.wing_loadouts[over_area.wing_name][over_area.ship_index].model = ship_data[icon.ship_class].model
 
 		# Set current wing ship selection to icon we dropped over
 		_set_editing_ship(icon.ship_class, over_area.wing_name, over_area.ship_index)
@@ -144,10 +145,12 @@ func _on_draggable_weapon_icon_dropped(icon, over_area):
 		match over_area.slot_type:
 			WeaponSlot.TYPE.ENERGY_WEAPON:
 				weapon_type_string = "energy_weapons"
+				mission_data.wing_loadouts[editing_wing_name][editing_ship_index][weapon_type_string][over_area.index].model = energy_weapon_data[icon.weapon_name].model
 			WeaponSlot.TYPE.MISSILE_WEAPON:
 				weapon_type_string = "missile_weapons"
+				mission_data.wing_loadouts[editing_wing_name][editing_ship_index][weapon_type_string][over_area.index].model = missile_weapon_data[icon.weapon_name].model
 
-		mission_data.wing_loadouts[editing_wing_name][editing_ship_index][weapon_type_string][over_area.index] = icon.weapon_name
+		mission_data.wing_loadouts[editing_wing_name][editing_ship_index][weapon_type_string][over_area.index].weapon_name = icon.weapon_name
 
 
 func _on_loadout_icon_clicked(icon):
@@ -155,7 +158,6 @@ func _on_loadout_icon_clicked(icon):
 
 
 func _on_start_button_pressed():
-	print(mission_data.mission_scene_path)
 	loader.change_scene(mission_data.mission_scene_path)
 
 
@@ -177,14 +179,14 @@ func _set_editing_ship(ship_class: String, wing_name: String, ship_index: int):
 	var ship_loadout = mission_data.wing_loadouts[wing_name][ship_index]
 	for index in range(energy_weapon_slots.size()):
 		if index < ship_loadout.energy_weapons.size():
-			energy_weapon_slots[index].set_icon(energy_weapon_data[ship_loadout.energy_weapons[index]].icon)
+			energy_weapon_slots[index].set_icon(energy_weapon_data[ship_loadout.energy_weapons[index].name].icon)
 			energy_weapon_slots[index].show()
 		else:
 			energy_weapon_slots[index].hide()
 
 	for index in range(missile_weapon_slots.size()):
 		if index < ship_loadout.missile_weapons.size():
-			missile_weapon_slots[index].set_icon(missile_weapon_data[ship_loadout.missile_weapons[index]].icon)
+			missile_weapon_slots[index].set_icon(missile_weapon_data[ship_loadout.missile_weapons[index].name].icon)
 			missile_weapon_slots[index].show()
 		else:
 			missile_weapon_slots[index].hide()
