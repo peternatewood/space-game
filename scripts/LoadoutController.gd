@@ -170,16 +170,26 @@ func _set_editing_ship(ship_class: String, wing_name: String, ship_index: int):
 	# Update weapon slot icons
 	var ship_loadout = mission_data.wing_loadouts[wing_name][ship_index]
 	for index in range(energy_weapon_slots.size()):
-		if index < ship_loadout.energy_weapons.size():
-			energy_weapon_slots[index].set_icon(energy_weapon_data[ship_loadout.energy_weapons[index].name].icon)
+		if index < ship_data[ship_loadout.ship_class].energy_weapon_slots:
 			energy_weapon_slots[index].show()
+
+			var energy_weapon_name = ship_loadout.energy_weapons[index].name
+			if energy_weapon_name == "none":
+				energy_weapon_slots[index].toggle_icon(false)
+			else:
+				energy_weapon_slots[index].set_icon(energy_weapon_data[energy_weapon_name].icon)
 		else:
 			energy_weapon_slots[index].hide()
 
 	for index in range(missile_weapon_slots.size()):
-		if index < ship_loadout.missile_weapons.size():
-			missile_weapon_slots[index].set_icon(missile_weapon_data[ship_loadout.missile_weapons[index].name].icon)
+		if index < ship_data[ship_loadout.ship_class].missile_weapon_slots:
 			missile_weapon_slots[index].show()
+
+			var missile_weapon_name = ship_loadout.missile_weapons[index].name
+			if missile_weapon_name == "none":
+				missile_weapon_slots[index].toggle_icon(false)
+			else:
+				missile_weapon_slots[index].set_icon(missile_weapon_data[missile_weapon_name].icon)
 		else:
 			missile_weapon_slots[index].hide()
 
