@@ -29,7 +29,6 @@ func _on_scene_loaded():
 	targets_container = get_node("Targets Container")
 	waypoints_container = get_node("Waypoints Container")
 	waypoints = waypoints_container.get_children()
-	player = get_node(player_path)
 
 	# Assign loadouts from mission data to ships in scene
 	for wing_name in mission_data.wing_loadouts.keys():
@@ -64,6 +63,8 @@ func _on_scene_loaded():
 				print("No such ship in scene: " + wing_name + " " + str(index + 1))
 			else:
 				ship.set_weapon_hardpoints(mission_data.get_weapon_models("energy_weapons", wing_name, index), mission_data.get_weapon_models("missile_weapons", wing_name, index))
+
+	player = get_node(player_path)
 
 	set_process(true)
 	emit_signal("mission_ready")
