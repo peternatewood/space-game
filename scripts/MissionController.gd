@@ -6,6 +6,7 @@ export (NodePath) var player_path
 export (Array, String) var reinforcement_wings = []
 
 onready var loader = get_node("/root/SceneLoader")
+onready var mission_data = get_node("/root/MissionData")
 
 var factions = {
 	"frog": { "hawk": FRIENDLY, "spider": NEUTRAL },
@@ -29,6 +30,15 @@ func _on_scene_loaded():
 	waypoints_container = get_node("Waypoints Container")
 	waypoints = waypoints_container.get_children()
 	player = get_node(player_path)
+
+	# Assign loadouts from mission data to ships in scene
+	for wing_name in mission_data.wing_loadouts.keys():
+		for index in range(mission_data.wing_loadouts[wing_name].size()):
+			var ship = targets_container.get_node_or_null(wing_name + " " + str(index + 1))
+			if ship == null:
+				print("No such ship in scene: " + wing_name + " " + str(index + 1))
+			else:
+				ship.set_weapon_hardpoints(mission_data.get_weapon_models("energy_weapons", wing_name, index), mission_data.get_weapon_models("missile_weapons", wing_name, index))
 
 	set_process(true)
 

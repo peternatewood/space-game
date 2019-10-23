@@ -62,9 +62,6 @@ func _ready():
 		quadrant.set_max_hitpoints(shield_hitpoints)
 		quadrant.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
 
-	# TODO: figure out how to assign weapons from the editor for npc ships, and from the loadout menu for the player and wingmates
-	set_weapon_hardpoints([ ENERGY_BOLT, DISINTIGRATOR ], [ HEAT_SEEKER, HEAT_SEEKER ])
-
 
 func _cycle_energy_weapon(direction: int):
 	energy_weapon_index = (energy_weapon_index + direction) % energy_weapon_hardpoints.size()
