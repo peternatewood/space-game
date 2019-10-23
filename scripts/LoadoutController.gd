@@ -63,21 +63,16 @@ func _ready():
 			var energy_weapon_name: String = energy_weapon_instance.get_meta("weapon_name")
 
 			var icon = ImageTexture.new()
-			var icon_load_error = icon.load("res://models/energy_weapons/" + dir + "/overhead.png")
+			var icon_load_error = icon.load("res://models/energy_weapons/" + dir + "/icon.png")
 			if icon_load_error != OK:
 				print("Error loading ship icon: " + str(icon_load_error))
-
-			var overhead = ImageTexture.new()
-			var overhead_load_error = overhead.load("res://models/energy_weapons/" + dir + "/overhead.png")
-			if overhead_load_error != OK:
-				print("Error loading overhead icon: " + str(overhead_load_error))
 
 			var loadout_icon = WEAPON_DRAGGABLE_ICON.instance()
 			energy_weapons_container.add_child(loadout_icon)
 			loadout_icon.set_weapon(energy_weapon_name, icon, WeaponSlot.TYPE.ENERGY_WEAPON)
 			loadout_icon.connect("draggable_icon_dropped", self, "_on_draggable_weapon_icon_dropped")
 
-			energy_weapon_data[energy_weapon_name] = { "model": model, "icon": icon, "overhead": overhead }
+			energy_weapon_data[energy_weapon_name] = { "model": model, "icon": icon }
 
 	var missile_weapons_container = get_node("Left Rows/Missile Weapons Panel/Missile Weapons Container")
 	for dir in MISSILE_WEAPON_DIRECTORIES:
@@ -87,21 +82,16 @@ func _ready():
 			var missile_weapon_name: String = missile_instance.get_meta("weapon_name")
 
 			var icon = ImageTexture.new()
-			var icon_load_error = icon.load("res://models/missile_weapons/" + dir + "/overhead.png")
+			var icon_load_error = icon.load("res://models/missile_weapons/" + dir + "/icon.png")
 			if icon_load_error != OK:
 				print("Error loading ship icon: " + str(icon_load_error))
-
-			var overhead = ImageTexture.new()
-			var overhead_load_error = overhead.load("res://models/missile_weapons/" + dir + "/overhead.png")
-			if overhead_load_error != OK:
-				print("Error loading overhead icon: " + str(overhead_load_error))
 
 			var loadout_icon = WEAPON_DRAGGABLE_ICON.instance()
 			missile_weapons_container.add_child(loadout_icon)
 			loadout_icon.set_weapon(missile_weapon_name, icon, WeaponSlot.TYPE.MISSILE_WEAPON)
 			loadout_icon.connect("draggable_icon_dropped", self, "_on_draggable_weapon_icon_dropped")
 
-			missile_weapon_data[missile_weapon_name] = { "model": model, "icon": icon, "overhead": overhead }
+			missile_weapon_data[missile_weapon_name] = { "model": model, "icon": icon }
 
 	# Set wing ship icons based on wing defaults
 	for wing_name in wing_containers.keys():

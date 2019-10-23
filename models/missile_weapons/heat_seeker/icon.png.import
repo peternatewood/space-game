@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/overhead.png-263bc3839e941b63df6ab8c734c48cc3.stex"
+path="res://.import/icon.png-43f05f3a7599517402e982bd15e7b5c5.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://models/energy_weapons/energy_bolt/overhead.png"
-dest_files=[ "res://.import/overhead.png-263bc3839e941b63df6ab8c734c48cc3.stex" ]
+source_file="res://models/missile_weapons/heat_seeker/icon.png"
+dest_files=[ "res://.import/icon.png-43f05f3a7599517402e982bd15e7b5c5.stex" ]
 
 [params]
 
