@@ -12,10 +12,12 @@ var index: int
 
 
 func _ready():
-	area.connect("area_entered", self, "_on_area_entered")
-	area.connect("area_exited", self, "_on_area_exited")
-
 	index = get_position_in_parent()
+
+
+func _gui_input(event):
+	if event is InputEventMouseButton and event.pressed and event.button_index == BUTTON_LEFT:
+		emit_signal("slot_clicked", self, event.position)
 
 
 # PUBLIC
@@ -41,3 +43,6 @@ func toggle_icon(toggle_on: bool):
 		sprite.show()
 	else:
 		sprite.hide()
+
+
+signal slot_clicked

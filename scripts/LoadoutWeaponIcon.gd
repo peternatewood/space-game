@@ -1,4 +1,4 @@
-extends "res://scripts/DraggableIcon.gd"
+extends "res://scripts/LoadoutIcon.gd"
 
 var weapon_name: String
 

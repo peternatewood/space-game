@@ -1,8 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://scripts/DraggableWeaponIcon.gd" type="Script" id=1]
+[ext_resource path="res://scripts/LoadoutWeaponIcon.gd" type="Script" id=1]
 [ext_resource path="res://models/energy_weapons/energy_bolt/icon.png" type="Texture" id=2]
-
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 12.0

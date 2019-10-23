@@ -3,8 +3,6 @@
 [ext_resource path="res://scripts/WeaponSlot.gd" type="Script" id=1]
 [ext_resource path="res://models/energy_weapons/energy_bolt/icon.png" type="Texture" id=2]
 
-
-
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 32, 16 )
 
@@ -31,21 +29,25 @@ texture = ExtResource( 2 )
 points = PoolVector2Array( -32, -12, -32, -16, -28, -16 )
 width = 1.0
 default_color = Color( 1, 1, 1, 1 )
+texture_mode = -1759062831
 
 [node name="Top Right" type="Line2D" parent="Area/Border"]
 points = PoolVector2Array( 32, -12, 32, -16, 28, -16 )
 width = 1.0
 default_color = Color( 1, 1, 1, 1 )
+texture_mode = 165367328
 
 [node name="Bottom Left" type="Line2D" parent="Area/Border"]
 points = PoolVector2Array( -32, 12, -32, 16, -28, 16 )
 width = 1.0
 default_color = Color( 1, 1, 1, 1 )
+texture_mode = 165367328
 
 [node name="Bottom Right" type="Line2D" parent="Area/Border"]
 points = PoolVector2Array( 32, 12, 32, 16, 28, 16 )
 width = 1.0
 default_color = Color( 1, 1, 1, 1 )
+texture_mode = 165367328
 
 [node name="Highlight" type="Polygon2D" parent="Area"]
 visible = false

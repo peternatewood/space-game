@@ -1,5 +1,6 @@
 extends Control
 
+onready var draggable_icon = get_node("Draggable Icon")
 onready var energy_weapon_slots = get_node("Weapon Slots Rows/Energy Weapon Rows").get_children()
 onready var loader = get_node("/root/SceneLoader")
 onready var missile_weapon_slots = get_node("Weapon Slots Rows/Missile Weapon Rows").get_children()
@@ -36,8 +37,8 @@ func _ready():
 		if model != null:
 			var ship_instance = model.instance()
 			var ship_class = ship_instance.get_meta("ship_class")
-			var energy_weapon_slots = ship_instance.get_node("Energy Weapon Groups").get_child_count()
-			var missile_weapon_slots = ship_instance.get_node("Missile Weapon Groups").get_child_count()
+			var energy_weapon_slot_count = ship_instance.get_node("Energy Weapon Groups").get_child_count()
+			var missile_weapon_slot_count = ship_instance.get_node("Missile Weapon Groups").get_child_count()
 
 			var icon = ImageTexture.new()
 			var icon_load_error = icon.load("res://models/ships/" + dir + "/overhead.png")
@@ -49,13 +50,13 @@ func _ready():
 			if overhead_load_error != OK:
 				print("Error loading overhead icon: " + str(overhead_load_error))
 
-			var loadout_icon = SHIP_DRAGGABLE_ICON.instance()
+			var loadout_icon = SHIP_LOADOUT_ICON.instance()
 			ship_selection_container.add_child(loadout_icon)
 			loadout_icon.set_ship(ship_class, icon)
 			loadout_icon.connect("icon_clicked", self, "_on_loadout_icon_clicked")
 			loadout_icon.connect("draggable_icon_dropped", self, "_on_draggable_ship_icon_dropped")
 
-			ship_data[ship_class] = { "model": model, "icon": icon, "overhead": overhead, "energy_weapon_slots": energy_weapon_slots, "missile_weapon_slots": missile_weapon_slots }
+			ship_data[ship_class] = { "model": model, "icon": icon, "overhead": overhead, "energy_weapon_slots": energy_weapon_slot_count, "missile_weapon_slots": missile_weapon_slot_count }
 
 	var energy_weapons_container = get_node("Left Rows/Energy Weapons Panel/Energy Weapons Container")
 	for dir in ENERGY_WEAPON_DIRECTORIES:
@@ -69,7 +70,7 @@ func _ready():
 			if icon_load_error != OK:
 				print("Error loading ship icon: " + str(icon_load_error))
 
-			var loadout_icon = WEAPON_DRAGGABLE_ICON.instance()
+			var loadout_icon = WEAPON_LOADOUT_ICON.instance()
 			energy_weapons_container.add_child(loadout_icon)
 			loadout_icon.set_weapon(energy_weapon_name, icon, WeaponSlot.TYPE.ENERGY_WEAPON)
 			loadout_icon.connect("draggable_icon_dropped", self, "_on_draggable_weapon_icon_dropped")
@@ -88,7 +89,7 @@ func _ready():
 			if icon_load_error != OK:
 				print("Error loading ship icon: " + str(icon_load_error))
 
-			var loadout_icon = WEAPON_DRAGGABLE_ICON.instance()
+			var loadout_icon = WEAPON_LOADOUT_ICON.instance()
 			missile_weapons_container.add_child(loadout_icon)
 			loadout_icon.set_weapon(missile_weapon_name, icon, WeaponSlot.TYPE.MISSILE_WEAPON)
 			loadout_icon.connect("draggable_icon_dropped", self, "_on_draggable_weapon_icon_dropped")
@@ -218,12 +219,11 @@ func _update_ship_preview(ship_class: String):
 	return false
 
 
-const DraggableIcon = preload("DraggableIcon.gd")
 const WeaponSlot = preload("WeaponSlot.gd")
 const ShipSlot = preload("ShipSlot.gd")
 
 const ENERGY_WEAPON_DIRECTORIES: Array = [ "disintigrator", "energy_bolt" ]
 const MISSILE_WEAPON_DIRECTORIES: Array = [ "heat_seeker" ]
 const SHIP_DIRECTORIES: Array = [ "fighter_frog", "fighter_hawk", "fighter_spider" ]
-const SHIP_DRAGGABLE_ICON = preload("res://icons/ship_draggable_icon.tscn")
-const WEAPON_DRAGGABLE_ICON = preload("res://icons/weapon_draggable_icon.tscn")
+const SHIP_LOADOUT_ICON = preload("res://icons/ship_loadout_icon.tscn")
+const WEAPON_LOADOUT_ICON = preload("res://icons/weapon_loadout_icon.tscn")
