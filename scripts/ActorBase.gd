@@ -3,7 +3,6 @@ extends RigidBody
 export (int) var hull_hitpoints = -1
 
 onready var bounding_box_extents = get_meta("bounding_box_extents")
-onready var loader = get_node("/root/SceneLoader")
 onready var mission_controller = get_tree().get_root().get_node("Mission Controller")
 
 var destruction_countdown: float
@@ -14,7 +13,7 @@ var max_hull_hitpoints: int = get_meta("hull_hitpoints")
 
 func _ready():
 	self.connect("body_entered", self, "_on_body_entered")
-	loader.connect("scene_loaded", self, "_on_scene_loaded")
+	mission_controller.connect("mission_ready", self, "_on_mission_ready")
 
 	set_process(false)
 
@@ -44,7 +43,7 @@ func _on_body_entered(body):
 		_deal_damage(1)
 
 
-func _on_scene_loaded():
+func _on_mission_ready():
 	if hull_hitpoints < 0:
 		hull_hitpoints = max_hull_hitpoints
 	set_process(true)

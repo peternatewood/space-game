@@ -8,7 +8,6 @@ onready var edge_target_icon = get_node("Edge Target Icon")
 onready var energy_weapon_rows = get_node("Weapons Container/Weapons Rows/Energy Weapons").get_children()
 onready var hud_bars = get_node("HUD Bars")
 onready var in_range_icon = get_node("Target Reticule/In Range Indicator")
-onready var loader = get_node("/root/SceneLoader")
 onready var missile_weapon_rows = get_node("Weapons Container/Weapons Rows/Missile Weapons").get_children()
 onready var mission_controller = get_tree().get_root().get_node("Mission Controller")
 onready var mission_timer = get_node("Mission Timer")
@@ -53,7 +52,7 @@ func _ready():
 	target_view_cam = target_viewport.get_node("Camera")
 	target_view_model = target_viewport.get_node("Frog Fighter")
 
-	loader.connect("scene_loaded", self, "_on_scene_loaded")
+	mission_controller.connect("mission_ready", self, "_on_mission_ready")
 	set_process(false)
 
 
@@ -195,7 +194,7 @@ func _on_player_began_warp_out():
 	set_process(false)
 
 
-func _on_scene_loaded():
+func _on_mission_ready():
 	camera = get_node(camera_path)
 	player = get_node(player_path)
 

@@ -41,6 +41,7 @@ func _on_scene_loaded():
 				ship.set_weapon_hardpoints(mission_data.get_weapon_models("energy_weapons", wing_name, index), mission_data.get_weapon_models("missile_weapons", wing_name, index))
 
 	set_process(true)
+	emit_signal("mission_ready")
 
 
 # PUBLIC
@@ -149,3 +150,9 @@ func get_targets_by_distance(ship, targets: Array, only_alignment: int = -1):
 			ordered_targets.push_back(targets[index])
 
 	return ordered_targets
+
+
+signal mission_ready
+
+const NPCShip = preload("NPCShip.gd")
+const Player = preload("Player.gd")

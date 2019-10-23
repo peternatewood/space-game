@@ -144,8 +144,8 @@ func _increment_power_level(system: int, direction: int):
 				quadrant.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
 
 
-func _on_scene_loaded():
-	._on_scene_loaded()
+func _on_mission_ready():
+	._on_mission_ready()
 
 	if not is_warped_in:
 		hide_and_disable()

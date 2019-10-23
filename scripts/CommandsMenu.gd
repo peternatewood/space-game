@@ -2,7 +2,6 @@ extends PanelContainer
 
 enum { NONE, ALL_SHIPS, WING, SHIP }
 
-onready var loader = get_node("/root/SceneLoader")
 onready var menus_container = get_node("Menus Container")
 onready var mission_controller = get_tree().get_root().get_node("Mission Controller")
 onready var root_menu = get_node("Root Commands")
@@ -23,7 +22,7 @@ func _ready():
 	reinforcements_list = menus_container.get_node("Reinforcements List")
 	wings_menu = menus_container.get_node("Wings List")
 
-	loader.connect("scene_loaded", self, "_on_scene_loaded")
+	mission_controller.connect("mission_ready", self, "_on_mission_ready")
 
 
 func _on_commanding_ship_destroyed():
@@ -171,7 +170,7 @@ func _input(event):
 							ships_menu.show()
 
 
-func _on_scene_loaded():
+func _on_mission_ready():
 	# Build ships list
 	var index: int = 1
 	for ship in mission_controller.get_commandable_ships():
