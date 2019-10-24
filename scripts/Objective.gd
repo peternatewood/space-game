@@ -29,11 +29,19 @@ func _init(source_dictionary):
 
 
 func _on_requirement_completed():
-	emit_signal("completed")
+	if state != FAILED:
+		for requirement in success_requirements:
+			if requirement.state != COMPLETED:
+				return
+
+		state = COMPLETED
+		emit_signal("completed")
 
 
 func _on_requirement_failed():
-	emit_signal("failed")
+	if state != COMPLETED:
+		state = FAILED
+		emit_signal("failed")
 
 
 signal completed
@@ -42,7 +50,7 @@ signal failed
 
 class Requirement extends Object:
 	var objective
-	var state: INCOMPLETE
+	var state: int = INCOMPLETE
 	var type: int
 	var target_names: Array = []
 	var targets: Array = []
