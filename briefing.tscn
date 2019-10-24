@@ -26,11 +26,11 @@ margin_right = -16.0
 margin_bottom = -16.0
 
 [node name="Menu Buttons" type="VBoxContainer" parent="Columns"]
-margin_right = 79.0
+margin_right = 97.0
 margin_bottom = 568.0
 
 [node name="Briefing Button" type="CheckBox" parent="Columns/Menu Buttons"]
-margin_right = 79.0
+margin_right = 97.0
 margin_bottom = 24.0
 pressed = true
 group = ExtResource( 3 )
@@ -38,13 +38,20 @@ text = "Briefing"
 
 [node name="Loadout Button" type="CheckBox" parent="Columns/Menu Buttons"]
 margin_top = 28.0
-margin_right = 79.0
+margin_right = 97.0
 margin_bottom = 52.0
 group = ExtResource( 3 )
 text = "Loadout"
 
+[node name="Objectives Button" type="CheckBox" parent="Columns/Menu Buttons"]
+margin_top = 56.0
+margin_right = 97.0
+margin_bottom = 80.0
+group = ExtResource( 3 )
+text = "Objectives"
+
 [node name="Menus Container" type="Control" parent="Columns"]
-margin_left = 83.0
+margin_left = 101.0
 margin_right = 992.0
 margin_bottom = 568.0
 size_flags_horizontal = 3
@@ -63,6 +70,59 @@ margin_bottom = -16.0
 
 [node name="Loadout" parent="Columns/Menus Container" instance=ExtResource( 4 )]
 visible = false
+
+[node name="Objectives Container" type="Control" parent="Columns/Menus Container"]
+visible = false
+margin_right = 79.0
+
+[node name="Objective Rows" type="VBoxContainer" parent="Columns/Menus Container/Objectives Container"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 16.0
+margin_top = 16.0
+margin_right = -16.0
+margin_bottom = -16.0
+
+[node name="Primary Container" type="VBoxContainer" parent="Columns/Menus Container/Objectives Container/Objective Rows"]
+margin_right = 138.0
+margin_bottom = 32.0
+
+[node name="Primary Label" type="Label" parent="Columns/Menus Container/Objectives Container/Objective Rows/Primary Container"]
+margin_right = 138.0
+margin_bottom = 14.0
+text = "Primary Objectives"
+
+[node name="Primary Panel" type="PanelContainer" parent="Columns/Menus Container/Objectives Container/Objective Rows/Primary Container"]
+margin_top = 18.0
+margin_right = 138.0
+margin_bottom = 32.0
+
+[node name="Primary Rows" type="VBoxContainer" parent="Columns/Menus Container/Objectives Container/Objective Rows/Primary Container/Primary Panel"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 131.0
+margin_bottom = 7.0
+
+[node name="Secondary Container" type="VBoxContainer" parent="Columns/Menus Container/Objectives Container/Objective Rows"]
+margin_top = 36.0
+margin_right = 138.0
+margin_bottom = 68.0
+
+[node name="Secondary Label" type="Label" parent="Columns/Menus Container/Objectives Container/Objective Rows/Secondary Container"]
+margin_right = 138.0
+margin_bottom = 14.0
+text = "Secondary Objectives"
+
+[node name="Secondary Panel" type="PanelContainer" parent="Columns/Menus Container/Objectives Container/Objective Rows/Secondary Container"]
+margin_top = 18.0
+margin_right = 138.0
+margin_bottom = 32.0
+
+[node name="Secondary Rows" type="VBoxContainer" parent="Columns/Menus Container/Objectives Container/Objective Rows/Secondary Container/Secondary Panel"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 131.0
+margin_bottom = 7.0
 
 [node name="Start Button" type="Button" parent="Columns/Menus Container"]
 anchor_left = 1.0
