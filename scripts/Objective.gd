@@ -1,7 +1,7 @@
 extends Object
 
 enum { PRIMARY, SECONDARY, SECRET }
-enum { INCOMPLETE, FAILED, ACCOMPLISHED }
+enum { INCOMPLETE, FAILED, COMPLETED }
 enum { PATROL, DESTROY, DEFEND, OBJECTIVE }
 
 var state: int = INCOMPLETE
@@ -31,6 +31,7 @@ func _init(source_dictionary):
 func _on_requirement_completed():
 	emit_signal("completed")
 
+
 func _on_requirement_failed():
 	emit_signal("failed")
 
@@ -41,6 +42,7 @@ signal failed
 
 class Requirement extends Object:
 	var objective
+	var state: INCOMPLETE
 	var type: int
 	var target_names: Array = []
 	var targets: Array = []
@@ -61,8 +63,10 @@ class Requirement extends Object:
 		if targets_destroyed >= targets.size():
 			match type:
 				DESTROY:
+					state = COMPLETED
 					emit_signal("completed")
 				DEFEND:
+					state = FAILED
 					emit_signal("failed")
 
 
