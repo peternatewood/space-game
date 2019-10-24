@@ -1,5 +1,8 @@
 {
   "name": "Debug Mission",
+  "briefing": [
+    "Test everything to do with individual missions."
+  ],
   "default_loadout": {
     "Alpha": [
       { "ship_class": "Spider Fighter", "energy_weapons": [ "Energy Bolt", "Disintigrator" ], "missile_weapons": [ "Heat Seeker", "Heat Seeker" ] },

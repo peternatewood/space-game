@@ -1,10 +1,11 @@
 extends Node
 
+var briefing: Array
 var energy_weapon_models: Dictionary
 var missile_weapon_models: Dictionary
 var mission_name: String
 var mission_scene_path: String
-var objectives: Array = [ [], [], [] ]
+var objectives: Array
 var ship_models: Dictionary
 var wing_loadouts: Dictionary
 
@@ -114,10 +115,14 @@ func load_mission_data(folder_name: String):
 		if file_error == OK:
 			var parse_result = JSON.parse(data_file.get_as_text())
 			if parse_result.error == OK:
+				# Get general mission info
 				mission_name = parse_result.result.get("name", "mission_name")
-				var default_loadout = parse_result.result.get("default_loadout", {})
+				briefing = []
+				for brief_copy in parse_result.result.get("briefing"):
+					briefing.append(brief_copy)
 
 				# Get loadout for each ship by wing
+				var default_loadout = parse_result.result.get("default_loadout", {})
 				for wing_name in VALID_WINGS:
 					# Only load data for valid wing names, and type-check the data file
 					if default_loadout.has(wing_name) and default_loadout[wing_name] is Array:
@@ -160,6 +165,7 @@ func load_mission_data(folder_name: String):
 							wing_loadouts[wing_name].append(ship_loadout)
 
 				# Get mission objectives
+				objectives = [ [], [], [] ]
 				var objective_data = parse_result.result.get("objectives", [])
 				for index in range(min(3, objectives.size())):
 					for objective in objective_data[index]:
