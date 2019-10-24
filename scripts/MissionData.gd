@@ -2,6 +2,7 @@ extends Node
 
 var energy_weapon_models: Dictionary
 var missile_weapon_models: Dictionary
+var mission_name: String
 var mission_scene_path: String
 var objectives: Array = [ [], [], [] ]
 var ship_models: Dictionary
@@ -113,7 +114,7 @@ func load_mission_data(folder_name: String):
 		if file_error == OK:
 			var parse_result = JSON.parse(data_file.get_as_text())
 			if parse_result.error == OK:
-				var mission_name = parse_result.result.get("name", "mission_name")
+				mission_name = parse_result.result.get("name", "mission_name")
 				var default_loadout = parse_result.result.get("default_loadout", {})
 
 				# Get loadout for each ship by wing
