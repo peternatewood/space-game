@@ -151,7 +151,7 @@ func _on_loadout_icon_clicked(icon):
 
 
 func _on_start_button_pressed():
-	loader.change_scene(mission_data.mission_scene_path)
+	loader.load_scene(mission_data.mission_scene_path)
 
 
 func _on_wing_checkbox_pressed(pressed_wing_name: String):

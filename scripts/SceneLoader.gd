@@ -51,7 +51,7 @@ func _update_progress(loader):
 # PUBLIC
 
 
-func change_scene(path: String):
+func load_scene(path: String):
 	current_scene.queue_free()
 
 	var tree = get_tree()
