@@ -83,6 +83,7 @@ func _on_scene_loaded():
 
 	set_process(true)
 	emit_signal("mission_ready")
+	get_tree().set_pause(true)
 
 
 # PUBLIC
