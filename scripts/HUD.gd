@@ -272,6 +272,9 @@ func _on_mission_ready():
 			objective_label.set_text(objective.name)
 			objectives_rows.add_child(objective_label)
 
+			objective.connect("completed", objective_label, "_on_objective_completed")
+			objective.connect("failed", objective_label, "_on_objective_failed")
+
 	set_process(true)
 
 

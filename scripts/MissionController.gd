@@ -74,6 +74,7 @@ func _on_scene_loaded():
 					var target_node = targets_container.get_node_or_null(target_name)
 					if target_node != null:
 						requirement.targets.append(target_node)
+						target_node.connect("destroyed", requirement, "_on_target_destroyed")
 
 	set_process(true)
 	emit_signal("mission_ready")
