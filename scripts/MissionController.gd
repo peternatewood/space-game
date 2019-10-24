@@ -25,6 +25,10 @@ func _ready():
 	set_process(false)
 
 
+func _on_player_warped_out():
+	loader.change_scene("res://debriefing.tscn")
+
+
 func _on_scene_loaded():
 	targets_container = get_node("Targets Container")
 	waypoints_container = get_node("Waypoints Container")
@@ -65,6 +69,7 @@ func _on_scene_loaded():
 				ship.set_weapon_hardpoints(mission_data.get_weapon_models("energy_weapons", wing_name, index), mission_data.get_weapon_models("missile_weapons", wing_name, index))
 
 	player = get_node(player_path)
+	player.connect("warped_out", self, "_on_player_warped_out")
 
 	# Prepare mission objectives
 	for index in range(mission_data.objectives.size()):
