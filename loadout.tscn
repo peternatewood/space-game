@@ -49,14 +49,17 @@ anchor_left = 1.0
 anchor_right = 1.0
 margin_left = -231.0
 margin_bottom = 150.0
+grow_horizontal = 0
 
 [node name="Ship Details" type="VBoxContainer" parent="Ship Preview Container"]
 margin_right = 27.0
 margin_bottom = 150.0
+grow_horizontal = 0
 
 [node name="Ship Class" type="Label" parent="Ship Preview Container/Ship Details"]
 margin_right = 27.0
 margin_bottom = 14.0
+grow_horizontal = 0
 text = "Ship"
 
 [node name="Ship Preview" type="TextureRect" parent="Ship Preview Container"]
