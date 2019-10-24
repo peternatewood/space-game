@@ -11,6 +11,7 @@ onready var in_range_icon = get_node("Target Reticule/In Range Indicator")
 onready var missile_weapon_rows = get_node("Weapons Container/Weapons Rows/Missile Weapons").get_children()
 onready var mission_controller = get_tree().get_root().get_node("Mission Controller")
 onready var mission_timer = get_node("Mission Timer")
+onready var objectives_rows = get_node("Objectives Container/Objective Rows")
 onready var player_overhead = get_node("Player Overhead")
 onready var player_hull_bar = get_node("Hull Bar")
 onready var power_container = get_node("Power Container")
@@ -265,6 +266,12 @@ func _on_mission_ready():
 	if not player.has_target:
 		target_details_minimal.hide()
 
+	for index in range(mission_controller.mission_data.objectives.size()):
+		for objective in mission_controller.mission_data.objectives[index]:
+			var objective_label = OBJECTIVE_LABEL.instance()
+			objective_label.set_text(objective.name)
+			objectives_rows.add_child(objective_label)
+
 	set_process(true)
 
 
@@ -444,6 +451,7 @@ const ShipIcon = preload("ShipIcon.gd")
 
 const ALIGNMENT_COLORS: Array = [ Color(1.0, 1.0, 0.0, 1.0), Color(0.25, 1.0, 0.25, 1.0), Color(1.0, 0.25, 0.25, 1.0) ]
 const ALIGNMENT_COLORS_FADED: Array = [ Color(1.0, 1.0, 0.0, 0.5), Color(0.25, 1.0, 0.25, 0.5), Color(1.0, 0.25, 0.25, 0.5) ]
+const OBJECTIVE_LABEL = preload("res://icons/objective_label.tscn")
 const RADAR_ICON = preload("res://icons/radar_icon.tscn")
 const RADAR_RANGE_SQ: float = 300.0 * 300.0
 const THROTTLE_BAR_SPEED: float = 2.5
