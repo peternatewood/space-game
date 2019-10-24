@@ -3,6 +3,7 @@ extends Node
 var energy_weapon_models: Dictionary
 var missile_weapon_models: Dictionary
 var mission_scene_path: String
+var objectives: Array = [ [], [], [] ]
 var ship_models: Dictionary
 var wing_loadouts: Dictionary
 
@@ -115,6 +116,7 @@ func load_mission_data(folder_name: String):
 				var mission_name = parse_result.result.get("name", "mission_name")
 				var default_loadout = parse_result.result.get("default_loadout", {})
 
+				# Get loadout for each ship by wing
 				for wing_name in VALID_WINGS:
 					# Only load data for valid wing names, and type-check the data file
 					if default_loadout.has(wing_name) and default_loadout[wing_name] is Array:
@@ -156,6 +158,12 @@ func load_mission_data(folder_name: String):
 
 							wing_loadouts[wing_name].append(ship_loadout)
 
+				# Get mission objectives
+				var objective_data = parse_result.result.get("objectives", [])
+				for index in range(min(3, objectives.size())):
+					for objective in objective_data[index]:
+						objectives[index].append(Objective.new(objective))
+
 				mission_scene_path = "res://missions/" + folder_name + "/scene.tscn"
 			else:
 				print("Error parsing " + directory + ": " + parse_result.error_string)
@@ -164,6 +172,8 @@ func load_mission_data(folder_name: String):
 	else:
 		print("Unable to open mission data file: no such file at " + directory)
 
+
+const Objective = preload("Objective.gd")
 
 const MAX_SHIPS_PER_WING: int = 4
 const VALID_WINGS: Array = [ "Alpha", "Beta", "Gamma", "Delta", "Epsilon" ]

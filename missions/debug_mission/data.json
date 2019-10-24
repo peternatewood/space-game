@@ -9,5 +9,30 @@
     "Beta": [
       { "ship_class": "Spider Fighter", "energy_weapons": [ "Energy Bolt", "Disintigrator" ], "missile_weapons": [ "Heat Seeker", "Heat Seeker" ] }
     ]
-  }
+  },
+  "objectives": [
+    [
+      {
+        "name": "Destroy All Enemies",
+        "description": "Destroy every enemy wing to complete the mission.",
+        "is_critical": true,
+        "success_requirements": [
+          { "type": 1, "targets": [ "Buteo 1", "Buteo 2" ] }
+        ]
+      }
+    ],
+    [
+      {
+        "name": "Protect Friendly Ships",
+        "description": "Protect all ships in Alpha wing.",
+        "success_requirements": [
+          { "type": 3, "objective_type": 0, "objective_index": 0 }
+        ],
+        "failure_requirements": [
+          { "type": 2, "targets": [ "Alpha 2", "Alpha 3" ] }
+        ]
+      }
+    ],
+    []
+  ]
 }
