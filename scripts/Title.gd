@@ -15,7 +15,7 @@ func _ready():
 
 func _on_new_game_pressed():
 	mission_data.load_mission_data("debug_mission")
-	loader.change_scene("res://loadout.tscn")
+	loader.change_scene("res://briefing.tscn")
 
 
 func _on_exit_pressed():

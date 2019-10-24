@@ -64,21 +64,15 @@ texture = SubResource( 1 )
 margin_right = 51.0
 margin_bottom = 40.0
 
-[node name="Loadout" type="Label" parent="Left Rows"]
+[node name="Ships Panel Label" type="Label" parent="Left Rows"]
 margin_right = 109.0
 margin_bottom = 14.0
-text = "Loadout"
-
-[node name="Ships Panel Label" type="Label" parent="Left Rows"]
-margin_top = 18.0
-margin_right = 109.0
-margin_bottom = 32.0
 text = "Ships"
 
 [node name="Ships Panel" type="PanelContainer" parent="Left Rows"]
-margin_top = 36.0
+margin_top = 18.0
 margin_right = 109.0
-margin_bottom = 50.0
+margin_bottom = 32.0
 
 [node name="Ship Selection Container" type="VBoxContainer" parent="Left Rows/Ships Panel"]
 margin_left = 7.0
@@ -87,15 +81,15 @@ margin_right = 102.0
 margin_bottom = 7.0
 
 [node name="Energy Weapons Label" type="Label" parent="Left Rows"]
-margin_top = 54.0
+margin_top = 36.0
 margin_right = 109.0
-margin_bottom = 68.0
+margin_bottom = 50.0
 text = "Energy Weapons"
 
 [node name="Energy Weapons Panel" type="PanelContainer" parent="Left Rows"]
-margin_top = 72.0
+margin_top = 54.0
 margin_right = 109.0
-margin_bottom = 86.0
+margin_bottom = 68.0
 
 [node name="Energy Weapons Container" type="VBoxContainer" parent="Left Rows/Energy Weapons Panel"]
 margin_left = 7.0
@@ -104,15 +98,15 @@ margin_right = 102.0
 margin_bottom = 7.0
 
 [node name="Missile Weapons Label" type="Label" parent="Left Rows"]
-margin_top = 90.0
+margin_top = 72.0
 margin_right = 109.0
-margin_bottom = 104.0
+margin_bottom = 86.0
 text = "Missile Weapons"
 
 [node name="Missile Weapons Panel" type="PanelContainer" parent="Left Rows"]
-margin_top = 108.0
+margin_top = 90.0
 margin_right = 109.0
-margin_bottom = 122.0
+margin_bottom = 104.0
 
 [node name="Missile Weapons Container" type="VBoxContainer" parent="Left Rows/Missile Weapons Panel"]
 margin_left = 7.0
@@ -121,9 +115,9 @@ margin_right = 102.0
 margin_bottom = 7.0
 
 [node name="Wings Panel" type="PanelContainer" parent="Left Rows"]
-margin_top = 126.0
+margin_top = 108.0
 margin_right = 109.0
-margin_bottom = 210.0
+margin_bottom = 192.0
 
 [node name="Wing Selection Container" type="VBoxContainer" parent="Left Rows/Wings Panel"]
 margin_left = 7.0
@@ -261,17 +255,6 @@ position = Vector2( 101, 90 )
 
 [node name="Beta Icon 4" parent="Wing Ships Container/Beta Wing Container" instance=ExtResource( 6 )]
 position = Vector2( 60, 148 )
-
-[node name="Start Button" type="Button" parent="."]
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -73.0
-margin_top = -52.0
-margin_right = -32.0
-margin_bottom = -32.0
-text = "Start"
 
 [node name="Ship Preview Viewport" type="Viewport" parent="."]
 editor/display_folded = true

@@ -2,7 +2,6 @@ extends Control
 
 onready var draggable_icon = get_node("Draggable Icon")
 onready var energy_weapon_slots = get_node("Weapon Slots Rows/Energy Weapon Rows").get_children()
-onready var loader = get_node("/root/SceneLoader")
 onready var missile_weapon_slots = get_node("Weapon Slots Rows/Missile Weapon Rows").get_children()
 onready var mission_data = get_node("/root/MissionData")
 onready var ship_class_label = get_node("Ship Preview Container/Ship Details/Ship Class")
@@ -11,7 +10,6 @@ onready var ship_preview = get_node("Ship Preview Viewport")
 onready var ship_preview_container = get_node("Ship Preview Container")
 onready var ship_selection_container = get_node("Left Rows/Ships Panel/Ship Selection Container")
 onready var ship_wing_name = get_node("Weapon Slots Rows/Ship Wing Name")
-onready var start_button = get_node("Start Button")
 onready var weapon_slots_rows = get_node("Weapon Slots Rows")
 onready var wing_ships_container = get_node("Wing Ships Container")
 
@@ -117,8 +115,6 @@ func _ready():
 	# Default to showing player/Alpha 1 loadout
 	_on_wing_icon_pressed("Alpha", 0)
 
-	start_button.connect("pressed", self, "_on_start_button_pressed")
-
 
 func _on_draggable_ship_icon_dropped(icon, over_area):
 	if over_area is ShipSlot:
@@ -151,10 +147,6 @@ func _on_draggable_weapon_icon_dropped(icon, over_area):
 
 func _on_loadout_icon_clicked(icon):
 	_update_ship_preview(icon.ship_class)
-
-
-func _on_start_button_pressed():
-	loader.load_scene(mission_data.mission_scene_path)
 
 
 func _on_wing_checkbox_pressed(pressed_wing_name: String):
