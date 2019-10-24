@@ -114,6 +114,9 @@ func _ready():
 			node.connect("pressed", self, "_on_wing_checkbox_pressed", [ mission_data.VALID_WINGS[index] ])
 			index += 1
 
+	# Default to showing player/Alpha 1 loadout
+	_on_wing_icon_pressed("Alpha", 0)
+
 	start_button.connect("pressed", self, "_on_start_button_pressed")
 
 
