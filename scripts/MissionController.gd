@@ -66,6 +66,15 @@ func _on_scene_loaded():
 
 	player = get_node(player_path)
 
+	# Prepare mission objectives
+	for index in range(mission_data.objectives.size()):
+		for objective in mission_data.objectives[index]:
+			for requirement in objective.success_requirements:
+				for target_name in requirement.target_names:
+					var target_node = targets_container.get_node_or_null(target_name)
+					if target_node != null:
+						requirement.targets.append(target_node)
+
 	set_process(true)
 	emit_signal("mission_ready")
 
@@ -181,4 +190,5 @@ func get_targets_by_distance(ship, targets: Array, only_alignment: int = -1):
 signal mission_ready
 
 const NPCShip = preload("NPCShip.gd")
+const Objective = preload("Objective.gd")
 const Player = preload("Player.gd")
