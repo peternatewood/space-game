@@ -2,7 +2,7 @@ extends Control
 
 onready var briefing_button = get_node("Columns/Menu Buttons/Briefing Button")
 onready var briefing_container = get_node("Columns/Menus Container/Briefing Container")
-onready var briefing_rows = get_node("Columns/Menus Container/Briefing Container/Briefing Rows")
+onready var briefing_rows = get_node("Columns/Menus Container/Briefing Container/Briefing Panel/Briefing Rows")
 onready var loader = get_node("/root/SceneLoader")
 onready var loadout_button = get_node("Columns/Menu Buttons/Loadout Button")
 onready var loadout_container = get_node("Columns/Menus Container/Loadout")
