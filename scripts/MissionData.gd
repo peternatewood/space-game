@@ -141,8 +141,17 @@ func load_mission_data(folder_name: String):
 							var ship_loadout: Dictionary = {
 								"ship_class": "Frog Fighter",
 								"model": ship_models["Frog Fighter"],
-								"energy_weapons": [],
-								"missile_weapons": []
+								"energy_weapons": [
+									{ "name": "none", "model": null },
+									{ "name": "none", "model": null },
+									{ "name": "none", "model": null }
+								],
+								"missile_weapons": [
+									{ "name": "none", "model": null },
+									{ "name": "none", "model": null },
+									{ "name": "none", "model": null },
+									{ "name": "none", "model": null }
+								]
 							}
 
 							var ship_class = default_loadout[wing_name][index].get("ship_class", "")
@@ -150,17 +159,23 @@ func load_mission_data(folder_name: String):
 								ship_loadout["ship_class"] = ship_class
 								ship_loadout["model"] = ship_models[ship_class]
 
+							var energy_weapon_index: int = 0
 							for energy_weapon_name in default_loadout[wing_name][index].get("energy_weapons", []):
-								if energy_weapon_name == "none":
-									ship_loadout["energy_weapons"].append({ "name": energy_weapon_name, "model": null })
-								elif energy_weapon_models.has(energy_weapon_name):
-									ship_loadout["energy_weapons"].append({ "name": energy_weapon_name, "model": energy_weapon_models[energy_weapon_name] })
+								if energy_weapon_name != "none" and energy_weapon_models.has(energy_weapon_name):
+									ship_loadout["energy_weapons"][energy_weapon_index] = { "name": energy_weapon_name, "model": energy_weapon_models[energy_weapon_name] }
 
+								energy_weapon_index += 1
+								if energy_weapon_index >= ship_loadout["energy_weapons"].size():
+									break
+
+							var missile_weapon_index: int = 0
 							for missile_weapon_name in default_loadout[wing_name][index].get("missile_weapons", []):
-								if missile_weapon_name == "none":
-									ship_loadout["missile_weapons"].append({ "name": missile_weapon_name, "model": null })
-								elif missile_weapon_models.has(missile_weapon_name):
-									ship_loadout["missile_weapons"].append({ "name": missile_weapon_name, "model": missile_weapon_models[missile_weapon_name] })
+								if missile_weapon_name != "none" and missile_weapon_models.has(missile_weapon_name):
+									ship_loadout["missile_weapons"][missile_weapon_index] = { "name": missile_weapon_name, "model": missile_weapon_models[missile_weapon_name] }
+
+								missile_weapon_index += 1
+								if missile_weapon_index >= ship_loadout["missile_weapons"].size():
+									break
 
 							wing_loadouts[wing_name].append(ship_loadout)
 
