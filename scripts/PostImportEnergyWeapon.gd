@@ -45,6 +45,8 @@ func post_import(scene):
 	else:
 		print("No such file: " + data_file_name)
 
+	scene.set_meta("source_folder", get_source_folder())
+
 	scene.set_meta("cost", energy_data["cost"])
 	scene.set_meta("damage_hull", energy_data["damage_hull"])
 	scene.set_meta("damage_shield", energy_data["damage_shield"])

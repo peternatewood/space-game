@@ -43,6 +43,8 @@ func post_import(scene):
 	for key in missile_data.keys():
 		scene.set_meta(key, missile_data[key])
 
+	scene.set_meta("source_folder", get_source_folder())
+
 	# Avg speed when accelerating: (max_speed - acceleration) / 2 | Seconds to reach max speed: max_speed / acceleration | Add max speed multiplied by remaining seconds
 	# Avg accel speed: (100 - 20) / 2 = 40 | Seconds to max speed: 100 / 20 = 5
 	# 40 * 5 + 100 * (12 - 5)
