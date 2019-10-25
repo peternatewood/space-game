@@ -3,6 +3,11 @@
   "briefing": [
     "Test everything to do with individual missions."
   ],
+  "armory": {
+    "ships": [ "Spider Fighter", "Spider Bomber" ],
+    "energy_weapons": [ "Energy Bolt", "Disintigrator" ],
+    "missile_weapons": [ "Heat Seeker" ]
+  },
   "default_loadout": {
     "Alpha": [
       { "ship_class": "Spider Fighter", "energy_weapons": [ "Energy Bolt", "Disintigrator" ], "missile_weapons": [ "Heat Seeker", "Heat Seeker" ] },

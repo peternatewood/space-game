@@ -1,5 +1,6 @@
 extends Node
 
+var armory: Dictionary
 var briefing: Array
 var energy_weapon_models: Dictionary
 var missile_weapon_models: Dictionary
@@ -122,6 +123,23 @@ func load_mission_data(folder_name: String):
 					if typeof(brief_copy) == TYPE_STRING:
 						briefing.append(brief_copy)
 
+				# Get armory (the available ships and weapons)
+				armory = {
+					"ships": [],
+					"energy_weapons": [],
+					"missile_weapons": []
+				}
+
+				var parsed_armory = parse_result.result.get("armory", {})
+				for ship in parsed_armory.get("ships", []):
+					armory["ships"].append(ship)
+
+				for energy_weapon in parsed_armory.get("energy_weapons", []):
+					armory["energy_weapons"].append(energy_weapon)
+
+				for missile_weapon in parsed_armory.get("missile_weapons", []):
+					armory["missile_weapons"].append(missile_weapon)
+
 				# Get loadout for each ship by wing
 				var default_loadout = parse_result.result.get("default_loadout", {})
 				for wing_name in VALID_WINGS:
@@ -162,7 +180,7 @@ func load_mission_data(folder_name: String):
 
 							var energy_weapon_index: int = 0
 							for energy_weapon_name in default_loadout[wing_name][index].get("energy_weapons", []):
-								if energy_weapon_name != "none" and energy_weapon_models.has(energy_weapon_name):
+								if energy_weapon_name != "none" and energy_weapon_models.has(energy_weapon_name) and armory.energy_weapons.has(energy_weapon_name):
 									ship_loadout["energy_weapons"][energy_weapon_index] = { "name": energy_weapon_name, "model": energy_weapon_models[energy_weapon_name] }
 
 								energy_weapon_index += 1
@@ -171,7 +189,7 @@ func load_mission_data(folder_name: String):
 
 							var missile_weapon_index: int = 0
 							for missile_weapon_name in default_loadout[wing_name][index].get("missile_weapons", []):
-								if missile_weapon_name != "none" and missile_weapon_models.has(missile_weapon_name):
+								if missile_weapon_name != "none" and missile_weapon_models.has(missile_weapon_name) and armory.missile_weapons.has(missile_weapon_name):
 									ship_loadout["missile_weapons"][missile_weapon_index] = { "name": missile_weapon_name, "model": missile_weapon_models[missile_weapon_name] }
 
 								missile_weapon_index += 1
