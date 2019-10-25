@@ -119,7 +119,8 @@ func load_mission_data(folder_name: String):
 				mission_name = parse_result.result.get("name", "mission_name")
 				briefing = []
 				for brief_copy in parse_result.result.get("briefing"):
-					briefing.append(brief_copy)
+					if typeof(brief_copy) == TYPE_STRING:
+						briefing.append(brief_copy)
 
 				# Get loadout for each ship by wing
 				var default_loadout = parse_result.result.get("default_loadout", {})
