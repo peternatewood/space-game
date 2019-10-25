@@ -96,7 +96,7 @@ func _deselect_current_target():
 
 
 func _fire_energy_weapon():
-	var weapon_cost = energy_weapon_hardpoints[energy_weapon_index].get_weapon_data("cost")
+	var weapon_cost = energy_weapon_hardpoints[energy_weapon_index].weapon_data.get("cost", 1.0)
 	if energy_weapon_hardpoints[energy_weapon_index].countdown == 0 and weapon_battery >= weapon_cost:
 		energy_weapon_hardpoints[energy_weapon_index].fire_weapon(self)
 		weapon_battery -= weapon_cost
@@ -260,7 +260,7 @@ func _target_next_of_alignment(alignment: int):
 
 
 func get_energy_weapon_range():
-	return energy_weapon_hardpoints[energy_weapon_index].get_weapon_data("firing_range")
+	return energy_weapon_hardpoints[energy_weapon_index].weapon_data("firing_range", 10)
 
 
 func get_overhead_icon():

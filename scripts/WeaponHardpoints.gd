@@ -59,10 +59,6 @@ func get_hardpoint_pos():
 	return hardpoints[hardpoint_index].transform.origin
 
 
-func get_weapon_data(name: String):
-	return weapon_data.get(name, 1.0)
-
-
 func set_weapon(weapon_scene, missile_capacity = null):
 	if weapon_scene == null:
 		for name in WEAPON_DATA_NAMES:
