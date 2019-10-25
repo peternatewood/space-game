@@ -79,6 +79,7 @@ margin_left = 7.0
 margin_top = 7.0
 margin_right = 102.0
 margin_bottom = 7.0
+size_flags_horizontal = 3
 
 [node name="Energy Weapons Label" type="Label" parent="Left Rows"]
 margin_top = 36.0
@@ -96,6 +97,7 @@ margin_left = 7.0
 margin_top = 7.0
 margin_right = 102.0
 margin_bottom = 7.0
+size_flags_horizontal = 3
 
 [node name="Missile Weapons Label" type="Label" parent="Left Rows"]
 margin_top = 72.0
@@ -113,6 +115,7 @@ margin_left = 7.0
 margin_top = 7.0
 margin_right = 102.0
 margin_bottom = 7.0
+size_flags_horizontal = 3
 
 [node name="Wings Panel" type="PanelContainer" parent="Left Rows"]
 margin_top = 108.0

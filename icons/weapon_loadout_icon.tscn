@@ -13,6 +13,7 @@ anchor_bottom = 1.0
 margin_right = -960.0
 margin_bottom = -568.0
 rect_min_size = Vector2( 64, 32 )
+size_flags_horizontal = 4
 script = ExtResource( 1 )
 
 [node name="TextureRect" type="TextureRect" parent="."]
