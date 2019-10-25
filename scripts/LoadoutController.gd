@@ -38,7 +38,7 @@ func _ready():
 		var missile_weapon_slot_count = ship_instance.get_node("Missile Weapon Groups").get_child_count()
 
 		var icon = ImageTexture.new()
-		var icon_load_error = icon.load(source_folder + "/overhead.png")
+		var icon_load_error = icon.load(source_folder + "/icon.png")
 		if icon_load_error != OK:
 			print("Error loading ship icon: " + str(icon_load_error))
 
