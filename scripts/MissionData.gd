@@ -63,7 +63,7 @@ func _ready():
 					elif model_file == null:
 						print("Unable to load model file at " + model_file)
 					else:
-						energy_weapon_models[data_parsed.result.get("name", "ship")] = model_file
+						energy_weapon_models[data_parsed.result.get("name", "energy weapon")] = model_file
 
 			file_name = dir.get_next()
 
@@ -90,7 +90,7 @@ func _ready():
 					elif model_file == null:
 						print("Unable to load model file at " + model_file)
 					else:
-						missile_weapon_models[data_parsed.result.get("name", "ship")] = model_file
+						missile_weapon_models[data_parsed.result.get("name", "missile weapon")] = model_file
 
 			file_name = dir.get_next()
 
