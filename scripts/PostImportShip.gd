@@ -88,7 +88,7 @@ func post_import(scene):
 	var max_speed: float = 7.0
 	var ship_data: Dictionary = {
 		"hull_hitpoints": 100.0,
-		"missile_capacity": 55,
+		"missile_capacity": 55.0,
 		"shield_hitpoints": 100.0,
 		"ship_class": "ship"
 	}
