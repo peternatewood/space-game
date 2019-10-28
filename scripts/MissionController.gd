@@ -6,6 +6,7 @@ export (NodePath) var player_path
 export (Array, String) var reinforcement_wings = []
 
 onready var loader = get_node("/root/SceneLoader")
+onready var mission_data = get_node("/root/MissionData")
 
 var factions = {
 	"frog": { "hawk": FRIENDLY, "spider": NEUTRAL },
@@ -24,13 +25,65 @@ func _ready():
 	set_process(false)
 
 
+func _on_player_warped_out():
+	loader.change_scene("res://debriefing.tscn")
+
+
 func _on_scene_loaded():
 	targets_container = get_node("Targets Container")
 	waypoints_container = get_node("Waypoints Container")
 	waypoints = waypoints_container.get_children()
+
+	# Assign loadouts from mission data to ships in scene
+	for wing_name in mission_data.wing_loadouts.keys():
+		for index in range(mission_data.wing_loadouts[wing_name].size()):
+			var ship = targets_container.get_node_or_null(wing_name + " " + str(index + 1))
+
+			if ship.get_meta("ship_class") != mission_data.wing_loadouts[wing_name][index].ship_class:
+				var ship_instance = mission_data.wing_loadouts[wing_name][index].model.instance()
+
+				# Copy relevant data from ship to new instance
+				ship_instance.name = ship.name
+				ship_instance.transform = ship.transform
+				ship_instance.set_script(ship.get_script())
+				ship_instance.hull_hitpoints = ship.hull_hitpoints
+				ship_instance.faction = ship.faction
+				ship_instance.wing_name = ship.wing_name
+				ship_instance.is_warped_in = ship.is_warped_in
+
+				if ship_instance is Player:
+					ship_instance.camera_path = ship.camera_path
+				elif ship_instance is NPCShip:
+					ship_instance.initial_orders = ship.initial_orders
+
+				var ship_tree_pos = ship.get_position_in_parent()
+				targets_container.remove_child(ship)
+				targets_container.add_child(ship_instance)
+				targets_container.move_child(ship_instance, ship_tree_pos)
+
+				ship = ship_instance
+
+			if ship == null:
+				print("No such ship in scene: " + wing_name + " " + str(index + 1))
+			else:
+				ship.set_weapon_hardpoints(mission_data.get_weapon_models("energy_weapons", wing_name, index), mission_data.get_weapon_models("missile_weapons", wing_name, index))
+
 	player = get_node(player_path)
+	player.connect("warped_out", self, "_on_player_warped_out")
+
+	# Prepare mission objectives
+	for index in range(mission_data.objectives.size()):
+		for objective in mission_data.objectives[index]:
+			for requirement in objective.success_requirements:
+				for target_name in requirement.target_names:
+					var target_node = targets_container.get_node_or_null(target_name)
+					if target_node != null:
+						requirement.targets.append(target_node)
+						target_node.connect("destroyed", requirement, "_on_target_destroyed")
 
 	set_process(true)
+	emit_signal("mission_ready")
+	get_tree().set_pause(true)
 
 
 # PUBLIC
@@ -68,10 +121,10 @@ func get_closest_target(ship, targets: Array, only_alignment: int = -1):
 	return targets[closest_index]
 
 
-func get_commandable_ships():
+func get_commandable_ships(include_warped_out: bool = false):
 	var commandable_ships: Array = []
 
-	for target in get_targets():
+	for target in get_targets(include_warped_out):
 		# TODO: also check some other property like rank or ship class to determine whether player can command or not
 		if target != player and get_alignment(player.faction, target.faction) == FRIENDLY:
 			commandable_ships.append(target)
@@ -139,3 +192,10 @@ func get_targets_by_distance(ship, targets: Array, only_alignment: int = -1):
 			ordered_targets.push_back(targets[index])
 
 	return ordered_targets
+
+
+signal mission_ready
+
+const NPCShip = preload("NPCShip.gd")
+const Objective = preload("Objective.gd")
+const Player = preload("Player.gd")

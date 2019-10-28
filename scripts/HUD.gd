@@ -8,10 +8,10 @@ onready var edge_target_icon = get_node("Edge Target Icon")
 onready var energy_weapon_rows = get_node("Weapons Container/Weapons Rows/Energy Weapons").get_children()
 onready var hud_bars = get_node("HUD Bars")
 onready var in_range_icon = get_node("Target Reticule/In Range Indicator")
-onready var loader = get_node("/root/SceneLoader")
 onready var missile_weapon_rows = get_node("Weapons Container/Weapons Rows/Missile Weapons").get_children()
 onready var mission_controller = get_tree().get_root().get_node("Mission Controller")
 onready var mission_timer = get_node("Mission Timer")
+onready var objectives_rows = get_node("Objectives Container/Objective Rows")
 onready var player_overhead = get_node("Player Overhead")
 onready var player_hull_bar = get_node("Hull Bar")
 onready var power_container = get_node("Power Container")
@@ -53,7 +53,7 @@ func _ready():
 	target_view_cam = target_viewport.get_node("Camera")
 	target_view_model = target_viewport.get_node("Frog Fighter")
 
-	loader.connect("scene_loaded", self, "_on_scene_loaded")
+	mission_controller.connect("mission_ready", self, "_on_mission_ready")
 	set_process(false)
 
 
@@ -195,7 +195,7 @@ func _on_player_began_warp_out():
 	set_process(false)
 
 
-func _on_scene_loaded():
+func _on_mission_ready():
 	camera = get_node(camera_path)
 	player = get_node(player_path)
 
@@ -226,7 +226,8 @@ func _on_scene_loaded():
 
 	power_container.set_power_bars(player.power_distribution)
 
-	for node in mission_controller.get_targets():
+	# Add radar icons
+	for node in mission_controller.get_targets(true):
 		if node != mission_controller.player:
 			var icon = RADAR_ICON.instance()
 			icon.set_target(node)
@@ -244,7 +245,7 @@ func _on_scene_loaded():
 	for index in range(energy_weapon_rows.size()):
 		if index < energy_hardpoint_count:
 			energy_weapon_rows[index].show()
-			energy_weapon_rows[index].set_name(player.energy_weapon_hardpoints[index].get_weapon_data("weapon_name"))
+			energy_weapon_rows[index].set_name(player.energy_weapon_hardpoints[index].weapon_data.get("weapon_name", "none"))
 		else:
 			energy_weapon_rows[index].hide()
 
@@ -255,7 +256,7 @@ func _on_scene_loaded():
 		if index < missile_hardpoint_count:
 			missile_weapon_rows[index].show()
 			missile_weapon_rows[index].set_capacity(player.missile_weapon_hardpoints[index].ammo_capacity)
-			missile_weapon_rows[index].set_name(player.missile_weapon_hardpoints[index].get_weapon_data("weapon_name"))
+			missile_weapon_rows[index].set_name(player.missile_weapon_hardpoints[index].weapon_data.get("weapon_name", "none"))
 			player.missile_weapon_hardpoints[index].connect("ammo_count_changed", self, "_on_player_ammo_count_changed", [ index ])
 		else:
 			missile_weapon_rows[index].hide()
@@ -264,6 +265,15 @@ func _on_scene_loaded():
 
 	if not player.has_target:
 		target_details_minimal.hide()
+
+	for index in range(mission_controller.mission_data.objectives.size()):
+		for objective in mission_controller.mission_data.objectives[index]:
+			var objective_label = OBJECTIVE_LABEL.instance()
+			objective_label.set_text(objective.name)
+			objectives_rows.add_child(objective_label)
+
+			objective.connect("completed", objective_label, "_on_objective_completed")
+			objective.connect("failed", objective_label, "_on_objective_failed")
 
 	set_process(true)
 
@@ -293,7 +303,7 @@ func _process(delta):
 	var viewport_rect: Rect2 = viewport.get_visible_rect()
 	var radar_position
 	for icon in radar_icons_container.get_children():
-		if icon.has_target:
+		if icon.has_target and icon.target_warped_in:
 			var target_dist_sq = (icon.target.transform.origin - player.transform.origin).length_squared()
 			if icon.target == player.current_target or target_dist_sq < RADAR_RANGE_SQ:
 				if not icon.visible:
@@ -444,6 +454,7 @@ const ShipIcon = preload("ShipIcon.gd")
 
 const ALIGNMENT_COLORS: Array = [ Color(1.0, 1.0, 0.0, 1.0), Color(0.25, 1.0, 0.25, 1.0), Color(1.0, 0.25, 0.25, 1.0) ]
 const ALIGNMENT_COLORS_FADED: Array = [ Color(1.0, 1.0, 0.0, 0.5), Color(0.25, 1.0, 0.25, 0.5), Color(1.0, 0.25, 0.25, 0.5) ]
+const OBJECTIVE_LABEL = preload("res://icons/objective_label.tscn")
 const RADAR_ICON = preload("res://icons/radar_icon.tscn")
 const RADAR_RANGE_SQ: float = 300.0 * 300.0
 const THROTTLE_BAR_SPEED: float = 2.5

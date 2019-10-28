@@ -171,11 +171,11 @@ func _input(event):
 			emit_signal("missile_weapon_changed")
 
 
-func _on_scene_loaded():
+func _on_mission_ready():
 	camera = get_node(camera_path)
 	_set_cam_mode(COCKPIT)
 
-	._on_scene_loaded()
+	._on_mission_ready()
 
 	allow_input = true
 

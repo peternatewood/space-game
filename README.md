@@ -19,10 +19,10 @@ Here I'll be keeping track of the all the features I want to implement, and chec
 - [x] NPC Ship Behavior
 - [x] Communications Menu (in-game)
 - [x] Group ships into Wings
-- [ ] Mission Objectives and Warp Out
+- [x] Mission Objectives and Warp Out
 - [ ] Options Menu
-- [ ] Mission Briefing
-- [ ] Loadout Menu
+- [x] Mission Briefing
+- [x] Loadout Menu
 - [ ] Capital Ships
 - [ ] Carrier Ships
 

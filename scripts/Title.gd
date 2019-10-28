@@ -2,6 +2,7 @@ extends Control
 
 onready var exit_button = get_node("Container/Exit")
 onready var loader = get_node("/root/SceneLoader")
+onready var mission_data = get_node("/root/MissionData")
 onready var new_game_button = get_node("Container/New Game")
 
 
@@ -13,7 +14,8 @@ func _ready():
 
 
 func _on_new_game_pressed():
-	loader.change_scene("res://mission.tscn")
+	mission_data.load_mission_data("debug_mission")
+	loader.change_scene("res://briefing.tscn")
 
 
 func _on_exit_pressed():

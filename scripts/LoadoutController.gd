@@ -1,46 +1,50 @@
 extends Control
 
+onready var draggable_icon = get_node("Draggable Icon")
+onready var energy_weapon_slots = get_node("Weapon Slots Rows/Energy Weapon Rows").get_children()
+onready var missile_weapon_slots = get_node("Weapon Slots Rows/Missile Weapon Rows").get_children()
+onready var mission_data = get_node("/root/MissionData")
 onready var ship_class_label = get_node("Ship Preview Container/Ship Details/Ship Class")
 onready var ship_overhead = get_node("Ship Overhead")
 onready var ship_preview = get_node("Ship Preview Viewport")
 onready var ship_preview_container = get_node("Ship Preview Container")
 onready var ship_selection_container = get_node("Left Rows/Ships Panel/Ship Selection Container")
+onready var ship_wing_name = get_node("Weapon Slots Rows/Ship Wing Name")
+onready var weapon_slots_rows = get_node("Weapon Slots Rows")
 onready var wing_ships_container = get_node("Wing Ships Container")
 
 var current_ship_class: String
-var editing_ship_index: int = 0
-var editing_wing_index: int = 0
+var editing_ship_index: int = -1
+var editing_wing_name: String
+var energy_weapon_data: Dictionary = {}
+var missile_weapon_data: Dictionary = {}
 var mouse_over_wing_ship: bool = false
 var ship_data: Dictionary = {}
 var wing_ship_over
-var wing_containers
-# TODO: get this default data on a per mission basis
-var wings: Array = [
-	[
-		{ "ship_class": "Spider Fighter", "energy_weapons": [ "Energy Bolt", "Energy Bolt" ], "missile_weapons": [ "Heak Seeker", "Heat Seeker" ] },
-		{ "ship_class": "Spider Fighter", "energy_weapons": [ "Energy Bolt", "Energy Bolt" ], "missile_weapons": [ "Heak Seeker", "Heat Seeker" ] },
-		{ "ship_class": "Spider Fighter", "energy_weapons": [ "Energy Bolt", "Energy Bolt" ], "missile_weapons": [ "Heak Seeker", "Heat Seeker" ] }
-	],
-	[
-		{ "ship_class": "Frog Fighter", "energy_weapons": [ "Energy Bolt", "Energy Bolt" ], "missile_weapons": [ "Heak Seeker" ] }
-	]
-]
+var wing_containers: Dictionary = {}
 
 
 func _ready():
-	for dir in SHIP_DIRECTORIES:
-		var model = load("res://models/" + dir + "/" + dir + ".dae")
-		if model != null:
+	# Map wing names to container nodes
+	var wing_container_nodes = wing_ships_container.get_children()
+	for index in range(min(mission_data.VALID_WINGS.size(), wing_container_nodes.size())):
+		wing_containers[mission_data.VALID_WINGS[index]] = wing_container_nodes[index]
+
+	for ship_class in mission_data.ship_models.keys():
+		if mission_data.armory.ships.has(ship_class):
+			var model = mission_data.ship_models[ship_class]
 			var ship_instance = model.instance()
-			var ship_class = ship_instance.get_meta("ship_class")
+			var source_folder = ship_instance.get_meta("source_folder")
+			var energy_weapon_slot_count = ship_instance.get_node("Energy Weapon Groups").get_child_count()
+			var missile_weapon_slot_count = ship_instance.get_node("Missile Weapon Groups").get_child_count()
 
 			var icon = ImageTexture.new()
-			var icon_load_error = icon.load("res://models/" + dir + "/overhead.png")
+			var icon_load_error = icon.load(source_folder + "/icon.png")
 			if icon_load_error != OK:
 				print("Error loading ship icon: " + str(icon_load_error))
 
 			var overhead = ImageTexture.new()
-			var overhead_load_error = overhead.load("res://models/" + dir + "/loadout_overhead.png")
+			var overhead_load_error = overhead.load(source_folder + "/loadout_overhead.png")
 			if overhead_load_error != OK:
 				print("Error loading overhead icon: " + str(overhead_load_error))
 
@@ -48,57 +52,153 @@ func _ready():
 			ship_selection_container.add_child(loadout_icon)
 			loadout_icon.set_ship(ship_class, icon)
 			loadout_icon.connect("icon_clicked", self, "_on_loadout_icon_clicked")
-			loadout_icon.connect("draggable_icon_dropped", self, "_on_draggable_icon_dropped")
+			loadout_icon.connect("draggable_icon_dropped", self, "_on_draggable_ship_icon_dropped")
 
-			ship_data[ship_class] = { "model": model, "icon": icon, "overhead": overhead }
+			ship_data[ship_class] = { "model": model, "icon": icon, "overhead": overhead, "energy_weapon_slots": energy_weapon_slot_count, "missile_weapon_slots": missile_weapon_slot_count }
 
-	wing_containers = wing_ships_container.get_children()
+	var energy_weapons_container = get_node("Left Rows/Energy Weapons Panel/Energy Weapons Container")
+	for energy_weapon_name in mission_data.energy_weapon_models.keys():
+		if mission_data.armory.energy_weapons.has(energy_weapon_name):
+			var model = mission_data.energy_weapon_models[energy_weapon_name]
+			var energy_weapon_instance = model.instance()
+			var source_folder = energy_weapon_instance.get_meta("source_folder")
+
+			var icon = ImageTexture.new()
+			var icon_load_error = icon.load(source_folder + "/icon.png")
+			if icon_load_error != OK:
+				print("Error loading ship icon: " + str(icon_load_error))
+
+			var loadout_icon = WEAPON_LOADOUT_ICON.instance()
+			energy_weapons_container.add_child(loadout_icon)
+			loadout_icon.set_weapon(energy_weapon_name, icon, WeaponSlot.TYPE.ENERGY_WEAPON)
+			loadout_icon.connect("draggable_icon_dropped", self, "_on_draggable_weapon_icon_dropped")
+
+			energy_weapon_data[energy_weapon_name] = { "model": model, "icon": icon }
+
+	var missile_weapons_container = get_node("Left Rows/Missile Weapons Panel/Missile Weapons Container")
+	for missile_weapon_name in mission_data.missile_weapon_models.keys():
+		if mission_data.armory.missile_weapons.has(missile_weapon_name):
+			var model = mission_data.missile_weapon_models[missile_weapon_name]
+			var missile_weapon_instance = model.instance()
+			var source_folder = missile_weapon_instance.get_meta("source_folder")
+
+			var icon = ImageTexture.new()
+			var icon_load_error = icon.load(source_folder + "/icon.png")
+			if icon_load_error != OK:
+				print("Error loading ship icon: " + str(icon_load_error))
+
+			var loadout_icon = WEAPON_LOADOUT_ICON.instance()
+			missile_weapons_container.add_child(loadout_icon)
+			loadout_icon.set_weapon(missile_weapon_name, icon, WeaponSlot.TYPE.MISSILE_WEAPON)
+			loadout_icon.connect("draggable_icon_dropped", self, "_on_draggable_weapon_icon_dropped")
+
+			missile_weapon_data[missile_weapon_name] = { "model": model, "icon": icon }
+
 	# Set wing ship icons based on wing defaults
-	var wing_index: int = 0
-	for wing in wing_containers:
-		var ship_icons = wing.get_children()
+	for wing_name in wing_containers.keys():
+		var ship_icons = wing_containers[wing_name].get_children()
 		for ship_index in range(4):
-			if ship_index < wings[wing_index].size():
-				var ship_class = wings[wing_index][ship_index].ship_class
+			if ship_index < mission_data.wing_loadouts[wing_name].size():
+				var ship_class = mission_data.wing_loadouts[wing_name][ship_index].ship_class
 				ship_icons[ship_index].set_icon(ship_data[ship_class].icon)
-				ship_icons[ship_index].set_indexes(wing_index, ship_index)
-				ship_icons[ship_index].connect("pressed", self, "_on_wing_icon_pressed", [ wing_index, ship_index ])
+				ship_icons[ship_index].set_indexes(wing_name, ship_index)
+				ship_icons[ship_index].connect("pressed", self, "_on_wing_icon_pressed", [ wing_name, ship_index ])
 			else:
 				ship_icons[ship_index].disable()
-		wing_index += 1
 
 	var index: int = 0
 	for node in get_node("Left Rows/Wings Panel/Wing Selection Container").get_children():
 		if node is CheckBox:
-			node.connect("pressed", self, "_on_wing_checkbox_pressed", [ index ])
+			node.connect("pressed", self, "_on_wing_checkbox_pressed", [ mission_data.VALID_WINGS[index] ])
 			index += 1
 
+	# Default to showing player/Alpha 1 loadout
+	_on_wing_icon_pressed("Alpha", 0)
 
-func _on_draggable_icon_dropped(icon, over_area):
-	if over_area is WingShipIcon:
+
+func _on_draggable_ship_icon_dropped(icon, over_area):
+	if over_area is ShipSlot:
 		over_area.set_icon(icon.get_texture())
 		over_area.highlight(false)
+
+		mission_data.wing_loadouts[over_area.wing_name][over_area.ship_index].ship_class = icon.ship_class
+		mission_data.wing_loadouts[over_area.wing_name][over_area.ship_index].model = ship_data[icon.ship_class].model
+
 		# Set current wing ship selection to icon we dropped over
-		_set_editing_ship(icon.ship_class, over_area.wing_index, over_area.ship_index)
+		_set_editing_ship(icon.ship_class, over_area.wing_name, over_area.ship_index)
+
+
+func _on_draggable_weapon_icon_dropped(icon, over_area):
+	if over_area is WeaponSlot and over_area.is_area_same_type(icon.draggable_icon):
+		over_area.set_icon(icon.get_texture())
+		over_area.highlight(false)
+
+		var weapon_type_string: String
+		match over_area.slot_type:
+			WeaponSlot.TYPE.ENERGY_WEAPON:
+				weapon_type_string = "energy_weapons"
+				mission_data.wing_loadouts[editing_wing_name][editing_ship_index][weapon_type_string][over_area.index].model = energy_weapon_data[icon.weapon_name].model
+			WeaponSlot.TYPE.MISSILE_WEAPON:
+				weapon_type_string = "missile_weapons"
+				mission_data.wing_loadouts[editing_wing_name][editing_ship_index][weapon_type_string][over_area.index].model = missile_weapon_data[icon.weapon_name].model
+
+		mission_data.wing_loadouts[editing_wing_name][editing_ship_index][weapon_type_string][over_area.index].weapon_name = icon.weapon_name
 
 
 func _on_loadout_icon_clicked(icon):
 	_update_ship_preview(icon.ship_class)
 
 
-func _on_wing_checkbox_pressed(index: int):
-	for wing_index in range(wing_containers.size()):
-		wing_containers[wing_index].toggle(wing_index == index)
+func _on_wing_checkbox_pressed(pressed_wing_name: String):
+	for wing_name in wing_containers.keys():
+		wing_containers[wing_name].toggle(wing_name == pressed_wing_name)
 
 
-func _on_wing_icon_pressed(wing_index: int, ship_index: int):
-	_set_editing_ship(wings[wing_index][ship_index].ship_class, wing_index, ship_index)
+func _on_wing_icon_pressed(wing_name: String, ship_index: int):
+	_set_editing_ship(mission_data.wing_loadouts[wing_name][ship_index].ship_class, wing_name, ship_index)
 
 
-func _set_editing_ship(ship_class: String, wing_index: int, ship_index: int):
+func _set_editing_ship(ship_class: String, wing_name: String, ship_index: int):
 	_update_ship_preview(ship_class)
 	ship_overhead.set_texture(ship_data[ship_class].overhead)
-	wings[wing_index][ship_index].ship_class = ship_class
+	ship_wing_name.set_text(wing_name + " " + str(ship_index + 1))
+
+	# Update weapon slot icons
+	var ship_loadout = mission_data.wing_loadouts[wing_name][ship_index]
+	for index in range(energy_weapon_slots.size()):
+		if index < ship_data[ship_loadout.ship_class].energy_weapon_slots:
+			energy_weapon_slots[index].show()
+
+			var energy_weapon_name = ship_loadout.energy_weapons[index].name
+			if energy_weapon_name == "none":
+				energy_weapon_slots[index].toggle_icon(false)
+			else:
+				energy_weapon_slots[index].set_icon(energy_weapon_data[energy_weapon_name].icon)
+		else:
+			energy_weapon_slots[index].hide()
+
+	for index in range(missile_weapon_slots.size()):
+		if index < ship_data[ship_loadout.ship_class].missile_weapon_slots:
+			missile_weapon_slots[index].show()
+
+			var missile_weapon_name = ship_loadout.missile_weapons[index].name
+			if missile_weapon_name == "none":
+				missile_weapon_slots[index].toggle_icon(false)
+			else:
+				missile_weapon_slots[index].set_icon(missile_weapon_data[missile_weapon_name].icon)
+		else:
+			missile_weapon_slots[index].hide()
+
+	if editing_ship_index != -1:
+		wing_containers[editing_wing_name].get_child(editing_ship_index).toggle_border(false)
+
+	wing_containers[wing_name].get_child(ship_index).toggle_border(true)
+
+	editing_wing_name = wing_name
+	editing_ship_index = ship_index
+
+	ship_overhead.show()
+	weapon_slots_rows.show()
 
 
 func _update_ship_preview(ship_class: String):
@@ -114,7 +214,8 @@ func _update_ship_preview(ship_class: String):
 	return false
 
 
-const WingShipIcon = preload("WingShipIcon.gd")
+const WeaponSlot = preload("WeaponSlot.gd")
+const ShipSlot = preload("ShipSlot.gd")
 
-const SHIP_DIRECTORIES: Array = [ "fighter_frog", "fighter_hawk", "fighter_spider" ]
 const SHIP_LOADOUT_ICON = preload("res://icons/ship_loadout_icon.tscn")
+const WEAPON_LOADOUT_ICON = preload("res://icons/weapon_loadout_icon.tscn")

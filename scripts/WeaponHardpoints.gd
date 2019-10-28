@@ -7,6 +7,7 @@ var ammo_count: int = 0
 var countdown: float = 0
 var hardpoint_index: int = 0
 var hardpoint_count: int
+var is_weapon_loaded: bool = false
 var weapon
 var weapon_data: Dictionary = {}
 
@@ -45,7 +46,6 @@ func fire_weapon(ship):
 	get_tree().get_root().add_child(weapon_instance)
 	weapon_instance.transform.origin = hardpoints[hardpoint_index].global_transform.origin
 
-	#weapon_instance.look_at(hardpoints[hardpoint_index].global_transform.origin - ship.transform.basis.z, ship.transform.basis.y)
 	weapon_instance.look_at(ship.get_targeting_endpoint(), ship.transform.basis.y)
 	weapon_instance.add_speed(ship.get_linear_velocity().length())
 
@@ -59,23 +59,24 @@ func get_hardpoint_pos():
 	return hardpoints[hardpoint_index].transform.origin
 
 
-func get_weapon_data(name: String):
-	return weapon_data.get(name, 1.0)
-
-
 func set_weapon(weapon_scene, missile_capacity = null):
-	weapon = weapon_scene
+	if weapon_scene == null:
+		for name in WEAPON_DATA_NAMES:
+			weapon_data[name] = "none"
+	else:
+		is_weapon_loaded = true
+		weapon = weapon_scene
 
-	var weapon_instance = weapon.instance()
-	for name in WEAPON_DATA_NAMES:
-		if weapon_instance.has_meta(name):
-			weapon_data[name] = weapon_instance.get_meta(name)
+		var weapon_instance = weapon.instance()
+		for name in WEAPON_DATA_NAMES:
+			if weapon_instance.has_meta(name):
+				weapon_data[name] = weapon_instance.get_meta(name)
 
-	if weapon_data.has("ammo_cost") and missile_capacity != null:
-		ammo_capacity = round(missile_capacity / weapon_data["ammo_cost"])
-		ammo_count = ammo_capacity
+		if weapon_data.has("ammo_cost") and missile_capacity != null:
+			ammo_capacity = round(missile_capacity / weapon_data["ammo_cost"])
+			ammo_count = ammo_capacity
 
-	weapon_instance.free()
+		weapon_instance.free()
 
 
 signal countdown_completed

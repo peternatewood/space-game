@@ -1,0 +1,88 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scripts/Debriefing.gd" type="Script" id=1]
+
+[node name="Scene" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+
+[node name="Rows" type="VBoxContainer" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Title Container" type="HBoxContainer" parent="Rows"]
+margin_right = 152.0
+margin_bottom = 14.0
+
+[node name="Mission Name Label" type="Label" parent="Rows/Title Container"]
+margin_bottom = 14.0
+
+[node name="Debrief Label" type="Label" parent="Rows/Title Container"]
+margin_left = 4.0
+margin_right = 51.0
+margin_bottom = 14.0
+text = "Debrief"
+
+[node name="Primary Objectives Container" type="PanelContainer" parent="Rows"]
+margin_top = 18.0
+margin_right = 152.0
+margin_bottom = 54.0
+
+[node name="Objective Rows" type="VBoxContainer" parent="Rows/Primary Objectives Container"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 145.0
+margin_bottom = 29.0
+
+[node name="Objectives Label" type="Label" parent="Rows/Primary Objectives Container/Objective Rows"]
+margin_right = 138.0
+margin_bottom = 14.0
+text = "Primary Objectives"
+
+[node name="HSeparator" type="HSeparator" parent="Rows/Primary Objectives Container/Objective Rows"]
+margin_top = 18.0
+margin_right = 138.0
+margin_bottom = 22.0
+
+[node name="Secondary Objectives Container" type="PanelContainer" parent="Rows"]
+margin_top = 58.0
+margin_right = 152.0
+margin_bottom = 94.0
+
+[node name="Objective Rows" type="VBoxContainer" parent="Rows/Secondary Objectives Container"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 145.0
+margin_bottom = 29.0
+
+[node name="Objectives Label" type="Label" parent="Rows/Secondary Objectives Container/Objective Rows"]
+margin_right = 138.0
+margin_bottom = 14.0
+text = "Secondary Objectives"
+
+[node name="HSeparator" type="HSeparator" parent="Rows/Secondary Objectives Container/Objective Rows"]
+margin_top = 18.0
+margin_right = 138.0
+margin_bottom = 22.0
+
+[node name="Secret Objectives Container" type="PanelContainer" parent="Rows"]
+margin_top = 98.0
+margin_right = 152.0
+margin_bottom = 134.0
+
+[node name="Objective Rows" type="VBoxContainer" parent="Rows/Secret Objectives Container"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 145.0
+margin_bottom = 29.0
+
+[node name="Objectives Label" type="Label" parent="Rows/Secret Objectives Container/Objective Rows"]
+margin_right = 138.0
+margin_bottom = 14.0
+text = "Secret Objectives"
+
+[node name="HSeparator" type="HSeparator" parent="Rows/Secret Objectives Container/Objective Rows"]
+margin_top = 18.0
+margin_right = 138.0
+margin_bottom = 22.0

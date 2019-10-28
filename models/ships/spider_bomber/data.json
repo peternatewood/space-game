@@ -1,0 +1,8 @@
+{
+  "ship_class": "Spider Bomber",
+  "hull_hitpoints": 160.0,
+  "shield_hitpoints": 140.0,
+  "mass": 24,
+  "max_speed": 52.0,
+  "missile_capacity": 120.0
+}

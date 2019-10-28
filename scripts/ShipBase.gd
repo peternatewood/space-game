@@ -62,21 +62,28 @@ func _ready():
 		quadrant.set_max_hitpoints(shield_hitpoints)
 		quadrant.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
 
-	# TODO: figure out how to assign weapons from the editor for npc ships, and from the loadout menu for the player and wingmates
-	for energy_weapon in energy_weapon_hardpoints:
-		energy_weapon.set_weapon(ENERGY_BOLT)
-
-	for missile_weapon in missile_weapon_hardpoints:
-		missile_weapon.set_weapon(MISSILE, get_meta("missile_capacity"))
-
 
 func _cycle_energy_weapon(direction: int):
 	energy_weapon_index = (energy_weapon_index + direction) % energy_weapon_hardpoints.size()
+
+	# Skip any weapon slot that has no weapon loaded
+	var index: int = 0
+	while not energy_weapon_hardpoints[energy_weapon_index].is_weapon_loaded and index < energy_weapon_hardpoints.size():
+		energy_weapon_index = (energy_weapon_index + direction) % energy_weapon_hardpoints.size()
+		index += 1
+
 	emit_signal("energy_weapon_changed")
 
 
 func _cycle_missile_weapon(direction: int):
 	missile_weapon_index = (missile_weapon_index + direction) % missile_weapon_hardpoints.size()
+
+	# Skip any weapon slot that has no weapon loaded
+	var index: int = 0
+	while not missile_weapon_hardpoints[missile_weapon_index].is_weapon_loaded and index < missile_weapon_hardpoints.size():
+		missile_weapon_index = (missile_weapon_index + direction) % missile_weapon_hardpoints.size()
+		index += 1
+
 	emit_signal("missile_weapon_changed")
 
 
@@ -89,7 +96,7 @@ func _deselect_current_target():
 
 
 func _fire_energy_weapon():
-	var weapon_cost = energy_weapon_hardpoints[energy_weapon_index].get_weapon_data("cost")
+	var weapon_cost = energy_weapon_hardpoints[energy_weapon_index].weapon_data.get("cost", 1.0)
 	if energy_weapon_hardpoints[energy_weapon_index].countdown == 0 and weapon_battery >= weapon_cost:
 		energy_weapon_hardpoints[energy_weapon_index].fire_weapon(self)
 		weapon_battery -= weapon_cost
@@ -151,8 +158,8 @@ func _increment_power_level(system: int, direction: int):
 				quadrant.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
 
 
-func _on_scene_loaded():
-	._on_scene_loaded()
+func _on_mission_ready():
+	._on_mission_ready()
 
 	if not is_warped_in:
 		hide_and_disable()
@@ -193,6 +200,7 @@ func _process(delta):
 				show_and_enable()
 				warping = NONE
 				is_warped_in = true
+				emit_signal("warped_in")
 		WARP_OUT:
 			warping_countdown -= delta
 
@@ -252,7 +260,7 @@ func _target_next_of_alignment(alignment: int):
 
 
 func get_energy_weapon_range():
-	return energy_weapon_hardpoints[energy_weapon_index].get_weapon_data("firing_range")
+	return energy_weapon_hardpoints[energy_weapon_index].weapon_data("firing_range", 10)
 
 
 func get_overhead_icon():
@@ -312,6 +320,20 @@ func is_a_target_in_range():
 	return target_raycast.get_collider() is ActorBase
 
 
+func set_weapon_hardpoints(energy_weapons: Array, missile_weapons: Array):
+	for index in range(energy_weapons.size()):
+		if index < energy_weapon_hardpoints.size():
+			energy_weapon_hardpoints[index].set_weapon(energy_weapons[index])
+		else:
+		 break
+
+	for index in range(missile_weapons.size()):
+		if index < missile_weapon_hardpoints.size():
+			missile_weapon_hardpoints[index].set_weapon(missile_weapons[index], get_meta("missile_capacity"))
+		else:
+		 break
+
+
 func show_and_enable():
 	set_process(true)
 	_disable_shapes(false)
@@ -329,6 +351,7 @@ func warp(warp_in: bool):
 		warp_destination = transform.origin
 		translate(WARP_IN_DISTANCE * Vector3.BACK)
 		warp_origin = transform.origin
+		emit_signal("warping_in")
 
 		set_process(true)
 		show()
@@ -341,7 +364,9 @@ func warp(warp_in: bool):
 
 signal energy_weapon_changed
 signal missile_weapon_changed
+signal warped_in
 signal warped_out
+signal warping_in
 
 const ActorBase = preload("ActorBase.gd")
 const EnergyBolt = preload("EnergyBolt.gd")
@@ -349,8 +374,6 @@ const ShieldQuadrant = preload("ShieldQuadrant.gd")
 
 const ACCELERATION: float = 0.1
 const DESTRUCTION_SMOKE = preload("res://models/Destruction_Smoke.tscn")
-const ENERGY_BOLT = preload("res://models/energy_bolt/energy_bolt.dae")
-const MISSILE = preload("res://models/missile/missile.dae")
 const MAX_SYSTEM_POWER: float = 60.0
 const MAX_THROTTLE: float = 1.0
 const MAX_WEAPON_BATTERY: float = 100.0

@@ -43,11 +43,11 @@ func _get_next_waypoint():
 	waypoint_pos = mission_controller.get_next_waypoint_pos(waypoint_index)
 
 
-func _on_scene_loaded():
+func _on_mission_ready():
 	for order_type in initial_orders:
 		orders.append(Order.new(order_type))
 
-	._on_scene_loaded()
+	._on_mission_ready()
 
 
 func _on_target_destroyed():
