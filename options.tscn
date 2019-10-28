@@ -35,6 +35,7 @@ size_flags_vertical = 3
 tab_align = 0
 
 [node name="Video" type="VBoxContainer" parent="Options Rows/TabContainer"]
+editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -238,6 +239,7 @@ max_value = 120.0
 min_value = 45.0
 
 [node name="Audio" type="VBoxContainer" parent="Options Rows/TabContainer"]
+editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -245,6 +247,24 @@ margin_left = 4.0
 margin_top = 32.0
 margin_right = -4.0
 margin_bottom = -4.0
+
+[node name="Master Audio Slider" parent="Options Rows/TabContainer/Audio" instance=ExtResource( 2 )]
+margin_top = 0.0
+margin_bottom = 24.0
+default = 100.0
+label_text = "Master"
+
+[node name="Sound Effects Slider" parent="Options Rows/TabContainer/Audio" instance=ExtResource( 2 )]
+margin_top = 28.0
+margin_bottom = 52.0
+default = 100.0
+label_text = "Sound Effects"
+
+[node name="Music Slider" parent="Options Rows/TabContainer/Audio" instance=ExtResource( 2 )]
+margin_top = 56.0
+margin_bottom = 80.0
+default = 100.0
+label_text = "Music"
 
 [node name="Controls" type="VBoxContainer" parent="Options Rows/TabContainer"]
 visible = false
