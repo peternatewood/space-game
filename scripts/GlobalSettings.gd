@@ -15,11 +15,24 @@ var subsurf_scatter = Setting.new("subsurf_scatter", 0)
 var vsync = Setting.new("vsync", true)
 
 
+func set_fullscreen(toggle_on: bool):
+	fullscreen.set_value(toggle_on)
+
+	OS.set_window_fullscreen(fullscreen._value)
+
+	if fullscreen._value:
+		get_viewport().set_size(resolution._value)
+
+
 func set_resolution(new_resolution: Vector2):
 	resolution.set_value(new_resolution)
-	OS.set_window_size(new_resolution)
 
-	return new_resolution
+	if fullscreen._value:
+		get_viewport().set_size(resolution._value)
+	else:
+		OS.set_window_size(resolution._value)
+
+	return resolution._value
 
 
 const RESOLUTIONS: Array = [
@@ -92,5 +105,9 @@ class Setting:
 		if typeof(value) == _type:
 			_value = value
 			_value_string = var2str(_value)
+
+			return _value
 		else:
 			print("Invalid type for " + _name + " setting")
+
+		return null
