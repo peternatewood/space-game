@@ -61,6 +61,8 @@ text = "Resolution"
 margin_top = 18.0
 margin_right = 1016.0
 margin_bottom = 38.0
+items = [ "Custom", null, false, -1, null ]
+selected = 0
 
 [node name="Custom Res Container" type="HBoxContainer" parent="Options Rows/TabContainer/Video"]
 margin_top = 42.0

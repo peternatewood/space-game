@@ -8,6 +8,8 @@ onready var keybind_popup_key_label = get_node("Keybind Popup/Popup Rows/Keybind
 onready var point_light_shadow_spinbox = get_node("Shadows Atlas Settings/Shadows Atlas Rows/Point Light Shadows Container2/Point Light Shadows SpinBox")
 onready var popup_backdrop = get_node("Popup Backdrop")
 onready var reflections_popup = get_node("Reflections Popup")
+onready var resolution_options = get_node("Options Rows/TabContainer/Video/Resolution Options")
+onready var settings = get_node("/root/GlobalSettings")
 onready var shadows_atlas_popup = get_node("Shadows Atlas Settings")
 
 var editing_keybind: Dictionary = { "input_type": -1 }
@@ -17,6 +19,18 @@ func _ready():
 	var back_button = get_node("Options Rows/First Row/Back Button")
 	back_button.connect("pressed", self, "_on_back_button_pressed")
 
+	var viewport = get_viewport()
+	var screen_size = OS.get_screen_size()
+
+	# Get resolution options and disable any bigger than the current screen size
+	for index in range(settings.RESOLUTIONS.size()):
+		var res_label = str(settings.RESOLUTIONS[index].x) + " x " + str(settings.RESOLUTIONS[index].y)
+		resolution_options.add_item(res_label, index)
+
+		if settings.RESOLUTIONS[index].x > screen_size.x or settings.RESOLUTIONS[index].y > screen_size.y:
+			resolution_options.set_item_disabled(index, true)
+
+	# Connect popups and their buttons
 	var shadows_atlas_button = get_node("Options Rows/TabContainer/Video/Three Columns/Shadows Atlas Button")
 	shadows_atlas_button.connect("pressed", self, "_on_shadows_atlas_button_pressed")
 
@@ -106,6 +120,7 @@ func _on_keybind_popup_cancel_pressed():
 
 
 func _on_reflections_accept_pressed():
+	# TODO: update reflections settings
 	reflections_popup.hide()
 
 
