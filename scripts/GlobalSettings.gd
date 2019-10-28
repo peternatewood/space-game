@@ -15,6 +15,13 @@ var subsurf_scatter = Setting.new("subsurf_scatter", 0)
 var vsync = Setting.new("vsync", true)
 
 
+func set_resolution(new_resolution: Vector2):
+	resolution.set_value(new_resolution)
+	OS.set_window_size(new_resolution)
+
+	return new_resolution
+
+
 const RESOLUTIONS: Array = [
 	# 4:3
 	Vector2(800, 600),
