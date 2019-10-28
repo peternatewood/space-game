@@ -15,6 +15,38 @@ var subsurf_scatter = Setting.new("subsurf_scatter", 0)
 var vsync = Setting.new("vsync", true)
 
 
+const RESOLUTIONS: Array = [
+	# 4:3
+	Vector2(800, 600),
+	Vector2(1024, 768),
+	Vector2(1280, 960),
+	Vector2(1400, 1050),
+	Vector2(1600, 1200),
+	# 8:5
+	Vector2(1280, 800),
+	Vector2(1440, 900),
+	Vector2(1680, 1050),
+	Vector2(1920, 1200),
+	# 5:4
+	Vector2(1280, 1024),
+	# 9:16
+	Vector2(720, 1280),
+	# 16:9
+	Vector2(1024, 600),
+	Vector2(1280, 720),
+	Vector2(1360, 768),
+	Vector2(1366, 768),
+	Vector2(1600, 900),
+	Vector2(1920, 1080),
+	Vector2(2560, 1440),
+	# 16:10
+	Vector2(1280, 800),
+	Vector2(1920, 1200),
+	Vector2(2560, 1600),
+	Vector2(3840, 2400)
+]
+
+
 # Used to maintain properties of a given setting
 class Setting:
 	var _name: String

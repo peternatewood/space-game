@@ -21,9 +21,9 @@ config/icon="res://icon.png"
 
 [autoload]
 
+GlobalSettings="*res://scripts/GlobalSettings.gd"
 SceneLoader="*res://scripts/SceneLoader.gd"
 MissionData="*res://scripts/MissionData.gd"
-GlobalSettings="*res://scripts/GlobalSettings.gd"
 
 [input]
 
