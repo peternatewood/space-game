@@ -7,6 +7,7 @@ onready var keybind_cancel_button = get_node("Keybind Popup/Popup Rows/Popup But
 onready var keybind_popup_key_label = get_node("Keybind Popup/Popup Rows/Keybind Name Label")
 onready var point_light_shadow_spinbox = get_node("Shadows Atlas Settings/Shadows Atlas Rows/Point Light Shadows Container2/Point Light Shadows SpinBox")
 onready var popup_backdrop = get_node("Popup Backdrop")
+onready var reflections_popup = get_node("Reflections Popup")
 onready var shadows_atlas_popup = get_node("Shadows Atlas Settings")
 
 var editing_keybind: Dictionary = { "input_type": -1 }
@@ -26,6 +27,17 @@ func _ready():
 	var shadow_atlas_cancel = get_node("Shadows Atlas Settings/Shadows Atlas Rows/Shadows Atlas Buttons/Shadows Atlas Cancel")
 	shadow_atlas_accept.connect("pressed", self, "_on_shadow_atlas_accept_pressed")
 	shadow_atlas_cancel.connect("pressed", self, "_on_shadow_atlas_cancel_pressed")
+
+	var reflections_button = get_node("Options Rows/TabContainer/Video/Three Columns/Reflections Button")
+	reflections_button.connect("pressed", self, "_on_reflections_button_pressed")
+
+	reflections_popup.connect("about_to_show", self, "show_popup_backdrop")
+	reflections_popup.connect("popup_hide", self, "hide_popup_backdrop")
+
+	var reflections_accept = get_node("Reflections Popup/Reflections Rows/Reflections Popup Buttons/Reflections Accept")
+	var reflections_cancel = get_node("Reflections Popup/Reflections Rows/Reflections Popup Buttons/Reflections Cancel")
+	reflections_accept.connect("pressed", self, "_on_reflections_accept_pressed")
+	reflections_cancel.connect("pressed", self, "_on_reflections_cancel_pressed")
 
 	keybind_popup.connect("about_to_show", self, "show_popup_backdrop")
 	keybind_popup.connect("popup_hide", self, "hide_popup_backdrop")
@@ -76,7 +88,7 @@ func _on_keybind_button_pressed(keybind, event, input_type, button, button_index
 	editing_keybind["button_index"] = button_index
 
 	keybind_popup_key_label.set_text(button.text)
-	keybind_popup.popup()
+	keybind_popup.popup_centered()
 	# Probably a function of the popup: this button is focused when we popup(), which is no good for mouse binding
 	keybind_accept_button.release_focus()
 
@@ -93,13 +105,25 @@ func _on_keybind_popup_cancel_pressed():
 	keybind_popup.hide()
 
 
+func _on_reflections_accept_pressed():
+	reflections_popup.hide()
+
+
+func _on_reflections_button_pressed():
+	reflections_popup.popup_centered()
+
+
+func _on_reflections_cancel_pressed():
+	reflections_popup.hide()
+
+
 func _on_shadow_atlas_accept_pressed():
 	# TODO: update shadow atlas settings
 	shadows_atlas_popup.hide()
 
 
 func _on_shadows_atlas_button_pressed():
-	shadows_atlas_popup.popup()
+	shadows_atlas_popup.popup_centered()
 
 
 func _on_shadow_atlas_cancel_pressed():
