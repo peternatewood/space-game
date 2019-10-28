@@ -1,4 +1,4 @@
-extends Object
+extends Node
 
 # Default settings here
 var aniso_filtering = Setting.new("aniso_filtering", 0)
