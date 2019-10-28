@@ -24,6 +24,8 @@ func _ready():
 	var viewport = get_viewport()
 	var screen_size = OS.get_screen_size()
 
+	resolution_options.connect("item_selected", self, "_on_resolution_options_item_selected")
+
 	var min_res_x: int = screen_size.x
 	var min_res_y: int = screen_size.y
 	# Get resolution options and disable any bigger than the current screen size
@@ -45,6 +47,9 @@ func _ready():
 	resolution_x_spinbox.set_min(min_res_x)
 	resolution_y_spinbox.set_min(min_res_y)
 	_set_resolution_spinboxes_max()
+
+	var resolution_button = get_node("Options Rows/TabContainer/Video/Custom Res Container/Res Button")
+	resolution_button.connect("pressed", self, "_on_resolution_button_pressed")
 
 	# Connect popups and their buttons
 	var shadows_atlas_button = get_node("Options Rows/TabContainer/Video/Three Columns/Shadows Atlas Button")
@@ -148,6 +153,24 @@ func _on_reflections_cancel_pressed():
 	reflections_popup.hide()
 
 
+func _on_resolution_button_pressed():
+	var resolution = _set_resolution(Vector2(resolution_x_spinbox.value, resolution_y_spinbox.value))
+	# Update the resolution options control
+	var new_res_index = -1
+	for index in range(settings.RESOLUTIONS.size()):
+		if settings.RESOLUTIONS[index] == resolution:
+			new_res_index = index
+			break
+
+	# We have to add one since the first element is not represented in the RESOLUTIONS array
+	resolution_options.select(new_res_index + 1)
+
+
+func _on_resolution_options_item_selected(res_index: int):
+	# We have to subtract one from the index, since the first element is "Custom"
+	_set_resolution(settings.RESOLUTIONS[res_index - 1])
+
+
 func _on_shadow_atlas_accept_pressed():
 	# TODO: update shadow atlas settings
 	shadows_atlas_popup.hide()
@@ -159,6 +182,14 @@ func _on_shadows_atlas_button_pressed():
 
 func _on_shadow_atlas_cancel_pressed():
 	shadows_atlas_popup.hide()
+
+
+func _set_resolution(size: Vector2):
+	var new_res = settings.set_resolution(size)
+	resolution_x_spinbox.set_value(new_res.x)
+	resolution_y_spinbox.set_value(new_res.y)
+
+	return new_res
 
 
 func _set_resolution_spinboxes_max():
