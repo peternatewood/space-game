@@ -15,6 +15,11 @@ var subsurf_scatter = Setting.new("subsurf_scatter", 0)
 var vsync = Setting.new("vsync", true)
 
 
+func set_borderless_window(toggle_on: bool):
+	borderless.set_value(toggle_on)
+	OS.set_borderless_window(borderless._value)
+
+
 func set_fullscreen(toggle_on: bool):
 	fullscreen.set_value(toggle_on)
 
