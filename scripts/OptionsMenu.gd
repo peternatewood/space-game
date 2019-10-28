@@ -9,6 +9,8 @@ onready var point_light_shadow_spinbox = get_node("Shadows Atlas Settings/Shadow
 onready var popup_backdrop = get_node("Popup Backdrop")
 onready var reflections_popup = get_node("Reflections Popup")
 onready var resolution_options = get_node("Options Rows/TabContainer/Video/Resolution Options")
+onready var resolution_x_spinbox = get_node("Options Rows/TabContainer/Video/Custom Res Container/Res X SpinBox")
+onready var resolution_y_spinbox = get_node("Options Rows/TabContainer/Video/Custom Res Container/Res Y SpinBox")
 onready var settings = get_node("/root/GlobalSettings")
 onready var shadows_atlas_popup = get_node("Shadows Atlas Settings")
 
@@ -22,6 +24,8 @@ func _ready():
 	var viewport = get_viewport()
 	var screen_size = OS.get_screen_size()
 
+	var min_res_x: int = screen_size.x
+	var min_res_y: int = screen_size.y
 	# Get resolution options and disable any bigger than the current screen size
 	for index in range(settings.RESOLUTIONS.size()):
 		var res_label = str(settings.RESOLUTIONS[index].x) + " x " + str(settings.RESOLUTIONS[index].y)
@@ -29,6 +33,18 @@ func _ready():
 
 		if settings.RESOLUTIONS[index].x > screen_size.x or settings.RESOLUTIONS[index].y > screen_size.y:
 			resolution_options.set_item_disabled(index, true)
+
+		if settings.RESOLUTIONS[index].x < min_res_x:
+			min_res_x = settings.RESOLUTIONS[index].x
+		if settings.RESOLUTIONS[index].y < min_res_y:
+			min_res_y = settings.RESOLUTIONS[index].y
+
+	var res = settings.resolution.get_value()
+	resolution_x_spinbox.set_value(res.x)
+	resolution_y_spinbox.set_value(res.y)
+	resolution_x_spinbox.set_min(min_res_x)
+	resolution_y_spinbox.set_min(min_res_y)
+	_set_resolution_spinboxes_max()
 
 	# Connect popups and their buttons
 	var shadows_atlas_button = get_node("Options Rows/TabContainer/Video/Three Columns/Shadows Atlas Button")
@@ -144,6 +160,11 @@ func _on_shadows_atlas_button_pressed():
 func _on_shadow_atlas_cancel_pressed():
 	shadows_atlas_popup.hide()
 
+
+func _set_resolution_spinboxes_max():
+	var screen_size = OS.get_screen_size()
+	resolution_x_spinbox.set_max(screen_size.x)
+	resolution_y_spinbox.set_max(screen_size.y)
 
 # PUBLIC
 

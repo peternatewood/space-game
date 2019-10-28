@@ -104,7 +104,7 @@ margin_left = 170.0
 margin_right = 244.0
 margin_bottom = 24.0
 
-[node name="Button" type="Button" parent="Options Rows/TabContainer/Video/Custom Res Container"]
+[node name="Res Button" type="Button" parent="Options Rows/TabContainer/Video/Custom Res Container"]
 margin_left = 248.0
 margin_right = 306.0
 margin_bottom = 24.0
