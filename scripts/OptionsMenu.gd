@@ -1,6 +1,7 @@
 extends Control
 
 onready var directional_shadow_spinbox = get_node("Shadows Atlas Settings/Shadows Atlas Rows/Directional Shadows Container/Directional Shadows SpinBox")
+onready var fullscreen_checkbox = get_node("Options Rows/TabContainer/Video/Window Options Container/Fullscreen CheckBox")
 onready var keybind_popup = get_node("Keybind Popup")
 onready var keybind_accept_button = get_node("Keybind Popup/Popup Rows/Popup Buttons/Accept Button")
 onready var keybind_cancel_button = get_node("Keybind Popup/Popup Rows/Popup Buttons/Cancel Button")
@@ -23,6 +24,8 @@ func _ready():
 
 	var viewport = get_viewport()
 	var screen_size = OS.get_screen_size()
+
+	fullscreen_checkbox.connect("toggled", self, "_on_fullscreen_checkbox_toggled")
 
 	resolution_options.connect("item_selected", self, "_on_resolution_options_item_selected")
 
@@ -114,6 +117,10 @@ func _input(event):
 
 func _on_back_button_pressed():
 	emit_signal("back_button_pressed")
+
+
+func _on_fullscreen_checkbox_toggled(button_pressed: bool):
+	settings.set_fullscreen(button_pressed)
 
 
 func _on_keybind_button_pressed(keybind, event, input_type, button, button_index: int = -1):

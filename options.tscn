@@ -61,6 +61,7 @@ text = "Resolution"
 margin_top = 18.0
 margin_right = 1016.0
 margin_bottom = 38.0
+text = "Custom"
 items = [ "Custom", null, false, -1, null ]
 selected = 0
 
