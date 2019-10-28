@@ -1,9 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scripts/OptionsMenu.gd" type="Script" id=1]
-[ext_resource path="res://button_groups/fullscreen_radios.tres" type="ButtonGroup" id=2]
-[ext_resource path="res://prefabs/slider_with_spinbox.tscn" type="PackedScene" id=3]
-[ext_resource path="res://prefabs/keybind.tscn" type="PackedScene" id=4]
+[ext_resource path="res://prefabs/slider_with_spinbox.tscn" type="PackedScene" id=2]
+[ext_resource path="res://prefabs/keybind.tscn" type="PackedScene" id=3]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.498039 )
@@ -114,30 +113,21 @@ margin_top = 70.0
 margin_right = 1016.0
 margin_bottom = 74.0
 
-[node name="Fullscreen Container" type="HBoxContainer" parent="Options Rows/TabContainer/Video"]
+[node name="Window Options Container" type="HBoxContainer" parent="Options Rows/TabContainer/Video"]
 margin_top = 78.0
 margin_right = 1016.0
 margin_bottom = 102.0
 
-[node name="Fullscreen CheckBox" type="CheckBox" parent="Options Rows/TabContainer/Video/Fullscreen Container"]
+[node name="Fullscreen CheckBox" type="CheckBox" parent="Options Rows/TabContainer/Video/Window Options Container"]
 margin_right = 94.0
 margin_bottom = 24.0
-group = ExtResource( 2 )
 text = "Fullscreen"
 
-[node name="Windowed CheckBox" type="CheckBox" parent="Options Rows/TabContainer/Video/Fullscreen Container"]
+[node name="Borderless CheckBox" type="CheckBox" parent="Options Rows/TabContainer/Video/Window Options Container"]
 margin_left = 98.0
-margin_right = 193.0
+margin_right = 250.0
 margin_bottom = 24.0
-group = ExtResource( 2 )
-text = "Windowed"
-
-[node name="Borderless CheckBox" type="CheckBox" parent="Options Rows/TabContainer/Video/Fullscreen Container"]
-margin_left = 197.0
-margin_right = 364.0
-margin_bottom = 24.0
-group = ExtResource( 2 )
-text = "Borderless Fullscreen"
+text = "Borderless Window"
 
 [node name="Two Columns" type="GridContainer" parent="Options Rows/TabContainer/Video"]
 margin_top = 106.0
@@ -237,7 +227,7 @@ margin_right = 1016.0
 margin_bottom = 278.0
 text = "Enable Vsync"
 
-[node name="FOV Slider" parent="Options Rows/TabContainer/Video" instance=ExtResource( 3 )]
+[node name="FOV Slider" parent="Options Rows/TabContainer/Video" instance=ExtResource( 2 )]
 margin_top = 282.0
 margin_right = 1016.0
 margin_bottom = 306.0
@@ -256,21 +246,21 @@ margin_top = 32.0
 margin_right = -4.0
 margin_bottom = -4.0
 
-[node name="Master Audio Slider" parent="Options Rows/TabContainer/Audio" instance=ExtResource( 3 )]
+[node name="Master Audio Slider" parent="Options Rows/TabContainer/Audio" instance=ExtResource( 2 )]
 margin_top = 0.0
 margin_right = 1016.0
 margin_bottom = 24.0
 default = 100.0
 label_text = "Master"
 
-[node name="Sound Effects Slider" parent="Options Rows/TabContainer/Audio" instance=ExtResource( 3 )]
+[node name="Sound Effects Slider" parent="Options Rows/TabContainer/Audio" instance=ExtResource( 2 )]
 margin_top = 28.0
 margin_right = 1016.0
 margin_bottom = 52.0
 default = 100.0
 label_text = "Sound Effects"
 
-[node name="Music Slider" parent="Options Rows/TabContainer/Audio" instance=ExtResource( 3 )]
+[node name="Music Slider" parent="Options Rows/TabContainer/Audio" instance=ExtResource( 2 )]
 margin_top = 56.0
 margin_right = 1016.0
 margin_bottom = 80.0
@@ -293,278 +283,278 @@ margin_right = 1016.0
 margin_bottom = 956.0
 size_flags_horizontal = 3
 
-[node name="Pitch Up" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Pitch Up" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_right = 1004.0
 action = "pitch_up"
 
-[node name="Pitch Down" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Pitch Down" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 24.0
 margin_right = 1004.0
 margin_bottom = 44.0
 action = "pitch_down"
 
-[node name="Yaw Left" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Yaw Left" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 48.0
 margin_right = 1004.0
 margin_bottom = 68.0
 action = "yaw_left"
 
-[node name="Yaw Right" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Yaw Right" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 72.0
 margin_right = 1004.0
 margin_bottom = 92.0
 action = "yaw_right"
 
-[node name="Roll Right" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Roll Right" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 96.0
 margin_right = 1004.0
 margin_bottom = 116.0
 action = "roll_right"
 
-[node name="Roll Left" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Roll Left" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 120.0
 margin_right = 1004.0
 margin_bottom = 140.0
 action = "roll_left"
 
-[node name="Fire Energy Weapon" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Fire Energy Weapon" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 144.0
 margin_right = 1004.0
 margin_bottom = 164.0
 action = "fire_energy_weapon"
 
-[node name="Fire Missile Weapon" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Fire Missile Weapon" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 168.0
 margin_right = 1004.0
 margin_bottom = 188.0
 action = "fire_missile_weapon"
 
-[node name="Cycle Energy Weapons" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Cycle Energy Weapons" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 192.0
 margin_right = 1004.0
 margin_bottom = 212.0
 action = "cycle_energy_weapons"
 
-[node name="Cycle Missile Weapons" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Cycle Missile Weapons" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 216.0
 margin_right = 1004.0
 margin_bottom = 236.0
 action = "cycle_missile_weapons"
 
-[node name="Throttle Up" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Throttle Up" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 240.0
 margin_right = 1004.0
 margin_bottom = 260.0
 action = "throttle_up"
 
-[node name="Throttle Down" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Throttle Down" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 264.0
 margin_right = 1004.0
 margin_bottom = 284.0
 action = "throttle_down"
 
-[node name="Set Max Throttle" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Set Max Throttle" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 288.0
 margin_right = 1004.0
 margin_bottom = 308.0
 action = "set_throttle_full"
 
-[node name="Set Zero Throttle" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Set Zero Throttle" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 312.0
 margin_right = 1004.0
 margin_bottom = 332.0
 action = "set_throttle_zero"
 
-[node name="Change Camera" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Change Camera" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 336.0
 margin_right = 1004.0
 margin_bottom = 356.0
 action = "change_cam"
 
-[node name="Select Next Target" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Select Next Target" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 360.0
 margin_right = 1004.0
 margin_bottom = 380.0
 action = "target_next"
 
-[node name="Select Next Hostile Target" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Select Next Hostile Target" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 384.0
 margin_right = 1004.0
 margin_bottom = 404.0
 action = "target_next_hostile"
 
-[node name="Select Next Friendly Target" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Select Next Friendly Target" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 408.0
 margin_right = 1004.0
 margin_bottom = 428.0
 action = "target_next_friendly"
 
-[node name="Select Next Neutral Target" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Select Next Neutral Target" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 432.0
 margin_right = 1004.0
 margin_bottom = 452.0
 action = "target_next_neutral"
 
-[node name="Select Target in Reticule" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Select Target in Reticule" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 456.0
 margin_right = 1004.0
 margin_bottom = 476.0
 action = "target_next_in_reticule"
 
-[node name="Deselect Target" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Deselect Target" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 480.0
 margin_right = 1004.0
 margin_bottom = 500.0
 action = "deselect_target"
 
-[node name="Increase Weapon Power" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Increase Weapon Power" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 504.0
 margin_right = 1004.0
 margin_bottom = 524.0
 action = "increment_weapon_power"
 
-[node name="Decrease Weapon Power" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Decrease Weapon Power" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 528.0
 margin_right = 1004.0
 margin_bottom = 548.0
 action = "decrement_weapon_power"
 
-[node name="Increase Shield Power" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Increase Shield Power" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 552.0
 margin_right = 1004.0
 margin_bottom = 572.0
 action = "increment_shield_power"
 
-[node name="Decrease Shield Power" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Decrease Shield Power" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 576.0
 margin_right = 1004.0
 margin_bottom = 596.0
 action = "decrement_shield_power"
 
-[node name="Increase Engine Power" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Increase Engine Power" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 600.0
 margin_right = 1004.0
 margin_bottom = 620.0
 action = "increment_engine_power"
 
-[node name="Decrease Engine Power" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Decrease Engine Power" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 624.0
 margin_right = 1004.0
 margin_bottom = 644.0
 action = "decrement_engine_power"
 
-[node name="Equalize System Power" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Equalize System Power" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 648.0
 margin_right = 1004.0
 margin_bottom = 668.0
 action = "equalize_power"
 
-[node name="Boost Front Shield" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Boost Front Shield" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 672.0
 margin_right = 1004.0
 margin_bottom = 692.0
 action = "boost_shield_front"
 
-[node name="Boost Rear Shield" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Boost Rear Shield" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 696.0
 margin_right = 1004.0
 margin_bottom = 716.0
 action = "boost_shield_rear"
 
-[node name="Boost Left Shield" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Boost Left Shield" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 720.0
 margin_right = 1004.0
 margin_bottom = 740.0
 action = "boost_shield_left"
 
-[node name="Boost Right Shield" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Boost Right Shield" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 744.0
 margin_right = 1004.0
 margin_bottom = 764.0
 action = "boost_shield_right"
 
-[node name="Clear Shield Bost" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Clear Shield Bost" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 768.0
 margin_right = 1004.0
 margin_bottom = 788.0
 action = "clear_shield_boost"
 
-[node name="Redirect Shield to Front" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Redirect Shield to Front" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 792.0
 margin_right = 1004.0
 margin_bottom = 812.0
 action = "redirect_shield_to_front"
 
-[node name="Redirect Shield to Rear" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Redirect Shield to Rear" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 816.0
 margin_right = 1004.0
 margin_bottom = 836.0
 action = "redirect_shield_to_rear"
 
-[node name="Redirect Shield to Left" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Redirect Shield to Left" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 840.0
 margin_right = 1004.0
 margin_bottom = 860.0
 action = "redirect_shield_to_left"
 
-[node name="Redirect Shield to Right" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Redirect Shield to Right" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 864.0
 margin_right = 1004.0
 margin_bottom = 884.0
 action = "redirect_shield_to_right"
 
-[node name="Equalize Shields" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Equalize Shields" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 888.0
 margin_right = 1004.0
 margin_bottom = 908.0
 action = "equalize_shields"
 
-[node name="Toggle Communications Menu" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Toggle Communications Menu" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 912.0
 margin_right = 1004.0
 margin_bottom = 932.0
 action = "toggle_communications_menu"
 
-[node name="Warp Out" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 4 )]
+[node name="Warp Out" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_top = 936.0
 margin_right = 1004.0
