@@ -46,7 +46,6 @@ size_flags_vertical = 3
 tab_align = 0
 
 [node name="Video" type="VBoxContainer" parent="Options Rows/TabContainer"]
-editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -110,10 +109,15 @@ margin_right = 306.0
 margin_bottom = 24.0
 text = "Update"
 
-[node name="Fullscreen Container" type="HBoxContainer" parent="Options Rows/TabContainer/Video"]
+[node name="HSeparator" type="HSeparator" parent="Options Rows/TabContainer/Video"]
 margin_top = 70.0
 margin_right = 1016.0
-margin_bottom = 94.0
+margin_bottom = 74.0
+
+[node name="Fullscreen Container" type="HBoxContainer" parent="Options Rows/TabContainer/Video"]
+margin_top = 78.0
+margin_right = 1016.0
+margin_bottom = 102.0
 
 [node name="Fullscreen CheckBox" type="CheckBox" parent="Options Rows/TabContainer/Video/Fullscreen Container"]
 margin_right = 94.0
@@ -135,18 +139,19 @@ margin_bottom = 24.0
 group = ExtResource( 2 )
 text = "Borderless Fullscreen"
 
-[node name="AA Container" type="HBoxContainer" parent="Options Rows/TabContainer/Video"]
-margin_top = 98.0
+[node name="Two Columns" type="GridContainer" parent="Options Rows/TabContainer/Video"]
+margin_top = 106.0
 margin_right = 1016.0
-margin_bottom = 118.0
+margin_bottom = 174.0
+columns = 2
 
-[node name="AA Label" type="Label" parent="Options Rows/TabContainer/Video/AA Container"]
+[node name="AA Label" type="Label" parent="Options Rows/TabContainer/Video/Two Columns"]
 margin_top = 3.0
 margin_right = 214.0
 margin_bottom = 17.0
 text = "Multisample Anti-Aliasing (MSAA)"
 
-[node name="AA Options" type="OptionButton" parent="Options Rows/TabContainer/Video/AA Container"]
+[node name="AA Options" type="OptionButton" parent="Options Rows/TabContainer/Video/Two Columns"]
 margin_left = 218.0
 margin_right = 315.0
 margin_bottom = 20.0
@@ -154,97 +159,88 @@ text = "Disabled"
 items = [ "Disabled", null, false, 0, null ]
 selected = 0
 
-[node name="Anisotropic Filtering Container" type="HBoxContainer" parent="Options Rows/TabContainer/Video"]
-margin_top = 122.0
-margin_right = 1016.0
-margin_bottom = 142.0
-
-[node name="Anisotropic Filtering Label" type="Label" parent="Options Rows/TabContainer/Video/Anisotropic Filtering Container"]
-margin_top = 3.0
-margin_right = 129.0
-margin_bottom = 17.0
+[node name="Anisotropic Filtering Label" type="Label" parent="Options Rows/TabContainer/Video/Two Columns"]
+margin_top = 27.0
+margin_right = 214.0
+margin_bottom = 41.0
 text = "Anisotropic Filtering"
 
-[node name="OptionButton" type="OptionButton" parent="Options Rows/TabContainer/Video/Anisotropic Filtering Container"]
-margin_left = 133.0
-margin_right = 174.0
-margin_bottom = 20.0
+[node name="OptionButton" type="OptionButton" parent="Options Rows/TabContainer/Video/Two Columns"]
+margin_left = 218.0
+margin_top = 24.0
+margin_right = 315.0
+margin_bottom = 44.0
 
-[node name="Shadows Container" type="HBoxContainer" parent="Options Rows/TabContainer/Video"]
-margin_top = 146.0
+[node name="Subsurface Label" type="Label" parent="Options Rows/TabContainer/Video/Two Columns"]
+margin_top = 51.0
+margin_right = 214.0
+margin_bottom = 65.0
+text = "Subsurface Scattering Quality"
+
+[node name="Subsurface Options" type="OptionButton" parent="Options Rows/TabContainer/Video/Two Columns"]
+margin_left = 218.0
+margin_top = 48.0
+margin_right = 315.0
+margin_bottom = 68.0
+
+[node name="Three Columns" type="GridContainer" parent="Options Rows/TabContainer/Video"]
+margin_top = 178.0
 margin_right = 1016.0
-margin_bottom = 166.0
+margin_bottom = 222.0
+columns = 3
 
-[node name="Shadows Label" type="Label" parent="Options Rows/TabContainer/Video/Shadows Container"]
-margin_top = 3.0
-margin_right = 98.0
-margin_bottom = 17.0
-text = "Shadow Quality"
-
-[node name="Shadow Quality Options" type="OptionButton" parent="Options Rows/TabContainer/Video/Shadows Container"]
-margin_left = 102.0
-margin_right = 143.0
-margin_bottom = 20.0
-
-[node name="Shadows Atlas Button" type="Button" parent="Options Rows/TabContainer/Video/Shadows Container"]
-margin_left = 147.0
-margin_right = 334.0
-margin_bottom = 20.0
-text = "Customize Shadow Settings"
-
-[node name="Reflections Container" type="HBoxContainer" parent="Options Rows/TabContainer/Video"]
-margin_top = 170.0
-margin_right = 1016.0
-margin_bottom = 190.0
-
-[node name="Reflections Label" type="Label" parent="Options Rows/TabContainer/Video/Reflections Container"]
+[node name="Shadows Label" type="Label" parent="Options Rows/TabContainer/Video/Three Columns"]
 margin_top = 3.0
 margin_right = 121.0
 margin_bottom = 17.0
-text = "Reflections Quality"
+text = "Shadow Quality"
 
-[node name="Reflections Options" type="OptionButton" parent="Options Rows/TabContainer/Video/Reflections Container"]
+[node name="Shadow Quality Options" type="OptionButton" parent="Options Rows/TabContainer/Video/Three Columns"]
 margin_left = 125.0
 margin_right = 166.0
 margin_bottom = 20.0
 
-[node name="Reflections Button" type="Button" parent="Options Rows/TabContainer/Video/Reflections Container"]
+[node name="Shadows Atlas Button" type="Button" parent="Options Rows/TabContainer/Video/Three Columns"]
 margin_left = 170.0
 margin_right = 373.0
 margin_bottom = 20.0
+text = "Customize Shadow Settings"
+
+[node name="Reflections Label" type="Label" parent="Options Rows/TabContainer/Video/Three Columns"]
+margin_top = 27.0
+margin_right = 121.0
+margin_bottom = 41.0
+text = "Reflections Quality"
+
+[node name="Reflections Options" type="OptionButton" parent="Options Rows/TabContainer/Video/Three Columns"]
+margin_left = 125.0
+margin_top = 24.0
+margin_right = 166.0
+margin_bottom = 44.0
+
+[node name="Reflections Button" type="Button" parent="Options Rows/TabContainer/Video/Three Columns"]
+margin_left = 170.0
+margin_top = 24.0
+margin_right = 373.0
+margin_bottom = 44.0
 text = "Customize Reflection Settings"
 
 [node name="HDR CheckBox" type="CheckBox" parent="Options Rows/TabContainer/Video"]
-margin_top = 194.0
+margin_top = 226.0
 margin_right = 1016.0
-margin_bottom = 218.0
+margin_bottom = 250.0
 text = "Enable HDR"
 
-[node name="Subsurface Scattering Container" type="HBoxContainer" parent="Options Rows/TabContainer/Video"]
-margin_top = 222.0
-margin_right = 1016.0
-margin_bottom = 242.0
-
-[node name="Subsurface Label" type="Label" parent="Options Rows/TabContainer/Video/Subsurface Scattering Container"]
-margin_top = 3.0
-margin_right = 186.0
-margin_bottom = 17.0
-text = "Subsurface Scattering Quality"
-
-[node name="Subsurface Options" type="OptionButton" parent="Options Rows/TabContainer/Video/Subsurface Scattering Container"]
-margin_left = 190.0
-margin_right = 231.0
-margin_bottom = 20.0
-
 [node name="Vsync CheckBox" type="CheckBox" parent="Options Rows/TabContainer/Video"]
-margin_top = 246.0
+margin_top = 254.0
 margin_right = 1016.0
-margin_bottom = 270.0
+margin_bottom = 278.0
 text = "Enable Vsync"
 
 [node name="FOV Slider" parent="Options Rows/TabContainer/Video" instance=ExtResource( 3 )]
+margin_top = 282.0
 margin_right = 1016.0
-margin_bottom = 298.0
+margin_bottom = 306.0
 default = 65.0
 label_text = "FOV"
 max_value = 120.0
@@ -282,6 +278,7 @@ default = 100.0
 label_text = "Music"
 
 [node name="Controls" type="ScrollContainer" parent="Options Rows/TabContainer"]
+editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -637,20 +634,20 @@ margin_left = 162.0
 margin_right = 236.0
 margin_bottom = 24.0
 
-[node name="Other Shadows Container2" type="HBoxContainer" parent="Shadows Atlas Settings/Shadows Atlas Rows"]
+[node name="Point Light Shadows Container2" type="HBoxContainer" parent="Shadows Atlas Settings/Shadows Atlas Rows"]
 margin_top = 46.0
 margin_right = 236.0
 margin_bottom = 70.0
 
-[node name="Other Shadows Label2" type="Label" parent="Shadows Atlas Settings/Shadows Atlas Rows/Other Shadows Container2"]
+[node name="Point Light Shadows Label" type="Label" parent="Shadows Atlas Settings/Shadows Atlas Rows/Point Light Shadows Container2"]
 margin_top = 5.0
-margin_right = 125.0
+margin_right = 156.0
 margin_bottom = 19.0
-text = "Other Shadow Atlas"
+text = "Point Light Shadow Atlas"
 
-[node name="Other Shadows SpinBox" type="SpinBox" parent="Shadows Atlas Settings/Shadows Atlas Rows/Other Shadows Container2"]
-margin_left = 129.0
-margin_right = 203.0
+[node name="Point Light Shadows SpinBox" type="SpinBox" parent="Shadows Atlas Settings/Shadows Atlas Rows/Point Light Shadows Container2"]
+margin_left = 160.0
+margin_right = 234.0
 margin_bottom = 24.0
 
 [node name="Shadows Atlas Buttons" type="HBoxContainer" parent="Shadows Atlas Settings/Shadows Atlas Rows"]
@@ -719,6 +716,7 @@ size_flags_horizontal = 3
 text = "Cancel"
 
 [node name="Keybind Popup" type="PopupPanel" parent="."]
+editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5

@@ -1,16 +1,31 @@
 extends Control
 
+onready var directional_shadow_spinbox = get_node("Shadows Atlas Settings/Shadows Atlas Rows/Directional Shadows Container/Directional Shadows SpinBox")
 onready var keybind_popup = get_node("Keybind Popup")
 onready var keybind_accept_button = get_node("Keybind Popup/Popup Rows/Popup Buttons/Accept Button")
 onready var keybind_cancel_button = get_node("Keybind Popup/Popup Rows/Popup Buttons/Cancel Button")
 onready var keybind_popup_key_label = get_node("Keybind Popup/Popup Rows/Keybind Name Label")
+onready var point_light_shadow_spinbox = get_node("Shadows Atlas Settings/Shadows Atlas Rows/Point Light Shadows Container2/Point Light Shadows SpinBox")
 onready var popup_backdrop = get_node("Popup Backdrop")
+onready var shadows_atlas_popup = get_node("Shadows Atlas Settings")
 
 var editing_keybind: Dictionary = { "input_type": -1 }
 
 
 func _ready():
-	get_node("Options Rows/First Row/Back Button").connect("pressed", self, "_on_back_button_pressed")
+	var back_button = get_node("Options Rows/First Row/Back Button")
+	back_button.connect("pressed", self, "_on_back_button_pressed")
+
+	var shadows_atlas_button = get_node("Options Rows/TabContainer/Video/Three Columns/Shadows Atlas Button")
+	shadows_atlas_button.connect("pressed", self, "_on_shadows_atlas_button_pressed")
+
+	shadows_atlas_popup.connect("about_to_show", self, "show_popup_backdrop")
+	shadows_atlas_popup.connect("popup_hide", self, "hide_popup_backdrop")
+
+	var shadow_atlas_accept = get_node("Shadows Atlas Settings/Shadows Atlas Rows/Shadows Atlas Buttons/Shadows Atlas Accept")
+	var shadow_atlas_cancel = get_node("Shadows Atlas Settings/Shadows Atlas Rows/Shadows Atlas Buttons/Shadows Atlas Cancel")
+	shadow_atlas_accept.connect("pressed", self, "_on_shadow_atlas_accept_pressed")
+	shadow_atlas_cancel.connect("pressed", self, "_on_shadow_atlas_cancel_pressed")
 
 	keybind_popup.connect("about_to_show", self, "show_popup_backdrop")
 	keybind_popup.connect("popup_hide", self, "hide_popup_backdrop")
@@ -76,6 +91,19 @@ func _on_keybind_popup_accept_pressed():
 
 func _on_keybind_popup_cancel_pressed():
 	keybind_popup.hide()
+
+
+func _on_shadow_atlas_accept_pressed():
+	# TODO: update shadow atlas settings
+	shadows_atlas_popup.hide()
+
+
+func _on_shadows_atlas_button_pressed():
+	shadows_atlas_popup.popup()
+
+
+func _on_shadow_atlas_cancel_pressed():
+	shadows_atlas_popup.hide()
 
 
 # PUBLIC
