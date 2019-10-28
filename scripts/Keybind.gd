@@ -3,7 +3,6 @@ extends Control
 enum { KEY, MOUSE, JOY_BUTTON, JOY_AXIS }
 
 export (String) var action = ""
-export (String) var label_text = "Keybind"
 
 onready var key_one_button = get_node("Key One Button")
 onready var key_two_button = get_node("Key Two Button")
@@ -17,7 +16,7 @@ var keybind_type
 
 
 func _ready():
-	keybind_label.set_text(label_text)
+	keybind_label.set_text(name)
 
 	var keys_index: int = 0
 	for event in InputMap.get_action_list(action):
