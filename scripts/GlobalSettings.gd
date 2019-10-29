@@ -45,6 +45,14 @@ func set_resolution(new_resolution: Vector2):
 	return resolution._value
 
 
+func set_shadows_dir_atlas_size(value: int):
+	shadows_dir.set_value(value)
+
+
+func set_shadows_point_atlas_size(value: int):
+	shadows_point.set_value(value)
+
+
 const RESOLUTIONS: Array = [
 	# 4:3
 	Vector2(800, 600),
