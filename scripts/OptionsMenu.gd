@@ -198,8 +198,15 @@ func _on_keybind_button_pressed(keybind, event, input_type, button, button_index
 				for index in range(tabs.size()):
 					if tabs[index].find_node(control.name):
 						controls_tabs.set_current_tab(index)
-						control.grab_focus()
-						return
+						# Scroll to the control's position
+						for node in tabs[index].get_children():
+							if node is ScrollContainer:
+								node.set_v_scroll(control.rect_position.y)
+								break
+						# Control's tab found
+						break
+				# Conflicting control found
+				break
 
 
 func _on_keybind_popup_accept_pressed():
