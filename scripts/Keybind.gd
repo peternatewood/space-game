@@ -11,6 +11,7 @@ onready var joypad_button_button = get_node("Joypad Button")
 onready var joypad_axis_button = get_node("Joypad Axis")
 
 var events: Array = [ [ null, null ], null, null, null ]
+var keybind_conflicts: bool = false
 var keybind_type
 
 
@@ -106,6 +107,26 @@ func conflicts_with(other_action: String, input_type: int, event):
 				return events[JOY_AXIS].axis == event.axis and axis_direction == other_axis_direction
 
 	return false
+
+
+func toggle_conflict(toggle_on: bool, input_type: int, button_index: int = -1):
+	if toggle_on != keybind_conflicts:
+		keybind_conflicts = toggle_on
+		var new_theme = KEYBIND_CONFLICT_THEME if toggle_on else null
+
+		if input_type == KEY and button_index != -1:
+			if button_index == 0:
+				key_one_button.set_theme(new_theme)
+			elif button_index == 1:
+				key_two_button.set_theme(new_theme)
+		else:
+			match input_type:
+				MOUSE:
+					mouse_button.set_theme(new_theme)
+				JOY_BUTTON:
+					joypad_button_button.set_theme(new_theme)
+				JOY_AXIS:
+					joypad_axis_button.set_theme(new_theme)
 
 
 func update_keybind(input_type: int, new_event, button_index: int = -1):
@@ -205,3 +226,5 @@ static func event_to_text(event = null):
 
 
 signal keybind_button_pressed
+
+const KEYBIND_CONFLICT_THEME = preload("res://themes/keybind_conflict.tres")
