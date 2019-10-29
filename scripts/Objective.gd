@@ -20,15 +20,28 @@ func _init(source_dictionary):
 	for requirement_data in source_dictionary.get("success_requirements", []):
 		var requirement = Requirement.new(requirement_data)
 		success_requirements.append(requirement)
-		requirement.connect("completed", self, "_on_requirement_completed")
-		requirement.connect("failed", self, "_on_requirement_failed")
+		requirement.connect("completed", self, "_on_success_requirement_completed")
+		requirement.connect("failed", self, "_on_success_requirement_failed")
 
 	for requirement_data in source_dictionary.get("failure_requirements", []):
 		var requirement = Requirement.new(requirement_data)
 		failure_requirements.append(requirement)
+		requirement.connect("completed", self, "_on_failure_requirement_completed")
+		requirement.connect("failed", self, "_on_failure_requirement_failed")
 
 
-func _on_requirement_completed():
+func _on_failure_requirement_completed():
+	if state != FAILED:
+		state = FAILED
+		emit_signal("failed")
+
+
+func _on_failure_requirement_failed():
+	# Do we even need to do anything here? Maybe succeed?
+	pass
+
+
+func _on_success_requirement_completed():
 	if state != FAILED:
 		for requirement in success_requirements:
 			if requirement.state != COMPLETED:
@@ -38,7 +51,7 @@ func _on_requirement_completed():
 		emit_signal("completed")
 
 
-func _on_requirement_failed():
+func _on_success_requirement_failed():
 	if state != COMPLETED:
 		state = FAILED
 		emit_signal("failed")
@@ -55,7 +68,7 @@ class Requirement extends Object:
 	var type: int
 	var target_names: Array = []
 	var targets: Array = []
-	var targets_destroyed: int = 0
+	var target_counter: int = 0
 	var time_limit: float
 	var waypoints_name: String
 
@@ -83,8 +96,8 @@ class Requirement extends Object:
 
 
 	func _on_target_destroyed():
-		targets_destroyed += 1
-		if targets_destroyed >= targets.size():
+		target_counter += 1
+		if target_counter >= targets.size():
 			match type:
 				DESTROY:
 					state = COMPLETED
