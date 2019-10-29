@@ -24,7 +24,7 @@ func _ready():
 
 
 func _on_main_menu_confirmed():
-	pass
+	emit_signal("main_menu_confirmed")
 
 
 func _on_options_back_pressed():
@@ -50,3 +50,6 @@ func _on_quit_desktop_button_pressed():
 
 func _on_quit_to_desktop_confirmed():
 	get_tree().quit()
+
+
+signal main_menu_confirmed

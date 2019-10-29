@@ -34,6 +34,10 @@ func _input(event):
 			pause_menu.show()
 
 
+func _on_main_menu_confirmed():
+	loader.load_scene("res://title.tscn")
+
+
 func _on_player_warped_out():
 	loader.change_scene("res://debriefing.tscn")
 
@@ -90,8 +94,11 @@ func _on_scene_loaded():
 						requirement.targets.append(target_node)
 						target_node.connect("destroyed", requirement, "_on_target_destroyed")
 
+	pause_menu.connect("main_menu_confirmed", self, "_on_main_menu_confirmed")
+
 	set_process(true)
 	emit_signal("mission_ready")
+
 	get_tree().set_pause(true)
 
 
