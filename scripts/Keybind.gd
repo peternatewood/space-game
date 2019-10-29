@@ -131,6 +131,36 @@ static func event_to_text(event = null):
 				return "Wheel Left"
 			BUTTON_WHEEL_RIGHT:
 				return "Wheel Right"
+	elif event is InputEventJoypadMotion:
+		match event.axis:
+			JOY_AXIS_0:
+				var axis_direction = "Left" if event.axis_value < 0 else "Right"
+				return "Left Stick " + axis_direction
+			JOY_AXIS_1:
+				var axis_direction = "Up" if event.axis_value < 0 else "Down"
+				return "Left Stick " + axis_direction
+			JOY_AXIS_2:
+				var axis_direction = "Left" if event.axis_value < 0 else "Right"
+				return "Right Stick " + axis_direction
+			JOY_AXIS_3:
+				var axis_direction = "Up" if event.axis_value < 0 else "Down"
+				return "Right Stick " + axis_direction
+			JOY_AXIS_4:
+				var axis_direction = "-" if event.axis_value < 0 else "+"
+				return "Axis 4 " + axis_direction
+			JOY_AXIS_5:
+				var axis_direction = "-" if event.axis_value < 0 else "+"
+				return "Axis 5 " + axis_direction
+			JOY_AXIS_6:
+				return "Left Trigger"
+			JOY_AXIS_7:
+				return "Right Trigger"
+			JOY_AXIS_8:
+				var axis_direction = "-" if event.axis_value < 0 else "+"
+				return "Axis 8 " + axis_direction
+			JOY_AXIS_9:
+				var axis_direction = "-" if event.axis_value < 0 else "+"
+				return "Axis 9 " + axis_direction
 
 	return event.as_text()
 
