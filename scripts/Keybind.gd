@@ -86,6 +86,28 @@ func clear_keybind(input_type: int, button_index: int = -1):
 					joypad_axis_button.set_text("none")
 
 
+func conflicts_with(other_action: String, input_type: int, event):
+	if action == other_action:
+		return false
+
+	if input_type == KEY:
+		for index in range(2):
+			if events[KEY][index] != null:
+				if events[KEY][index].scancode == event.scancode and events[KEY][index].alt == event.alt and events[KEY][index].shift == event.shift and events[KEY][index].control == event.control and events[KEY][index].meta == event.meta and events[KEY][index].command == event.command:
+					return true
+	else:
+		match input_type:
+			MOUSE, JOY_BUTTON:
+				return events[input_type].button_index == event.button_index
+			JOY_AXIS:
+				var axis_direction = 1 if events[JOY_AXIS].axis_value > 0 else -1
+				var other_axis_direction = 1 if event.axis_value > 0 else -1
+
+				return events[JOY_AXIS].axis == event.axis and axis_direction == other_axis_direction
+
+	return false
+
+
 func update_keybind(input_type: int, new_event, button_index: int = -1):
 	var is_valid_update: bool = false
 
