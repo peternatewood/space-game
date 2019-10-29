@@ -1,7 +1,8 @@
 extends Control
 
-onready var quit_to_desktop_popup = get_node("Desktop Quit Popup")
+onready var main_menu_popup = get_node("Menu Quit Popup")
 onready var options_menu = get_node("Options Menu")
+onready var quit_to_desktop_popup = get_node("Desktop Quit Popup")
 
 
 func _ready():
@@ -18,11 +19,20 @@ func _ready():
 	quit_desktop_button.connect("pressed", self, "_on_quit_desktop_button_pressed")
 
 	options_menu.connect("back_button_pressed", self, "_on_options_back_pressed")
+	main_menu_popup.connect("confirmed", self, "_on_main_menu_confirmed")
 	quit_to_desktop_popup.connect("confirmed", self, "_on_quit_to_desktop_confirmed")
+
+
+func _on_main_menu_confirmed():
+	pass
 
 
 func _on_options_back_pressed():
 	options_menu.hide()
+
+
+func _on_options_button_pressed():
+	options_menu.show()
 
 
 func _on_resume_button_pressed():
@@ -30,12 +40,8 @@ func _on_resume_button_pressed():
 	get_tree().set_pause(false)
 
 
-func _on_options_button_pressed():
-	options_menu.show()
-
-
 func _on_quit_menu_button_pressed():
-	pass
+	main_menu_popup.popup_centered()
 
 
 func _on_quit_desktop_button_pressed():
