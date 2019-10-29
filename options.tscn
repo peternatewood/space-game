@@ -5,11 +5,11 @@
 [ext_resource path="res://prefabs/slider_with_spinbox.tscn" type="PackedScene" id=3]
 [ext_resource path="res://prefabs/keybind.tscn" type="PackedScene" id=4]
 
-[sub_resource type="StyleBoxFlat" id=2]
+[sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.498039 )
 corner_detail = 2
 
-[sub_resource type="StyleBoxFlat" id=1]
+[sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0, 0, 0, 0.498039 )
 corner_detail = 2
 
@@ -22,7 +22,7 @@ script = ExtResource( 2 )
 [node name="Background Panel" type="Panel" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_styles/panel = SubResource( 2 )
+custom_styles/panel = SubResource( 1 )
 
 [node name="Options Rows" type="VBoxContainer" parent="."]
 anchor_right = 1.0
@@ -303,7 +303,6 @@ margin_right = -8.0
 margin_bottom = -8.0
 
 [node name="Controls Tabs" type="TabContainer" parent="Options Rows/TabContainer/Controls"]
-editor/display_folded = true
 margin_right = 1008.0
 margin_bottom = 496.0
 size_flags_vertical = 3
@@ -319,7 +318,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Controls Header" type="HBoxContainer" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement"]
-editor/display_folded = true
 margin_right = 992.0
 margin_bottom = 26.0
 
@@ -382,7 +380,6 @@ margin_right = 992.0
 margin_bottom = 34.0
 
 [node name="Movement Scroll" type="ScrollContainer" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement"]
-editor/display_folded = true
 margin_top = 38.0
 margin_right = 992.0
 margin_bottom = 452.0
@@ -1239,7 +1236,7 @@ margin_right = 512.0
 margin_bottom = 300.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
-custom_styles/panel = SubResource( 1 )
+custom_styles/panel = SubResource( 2 )
 
 [node name="Shadows Atlas Settings" type="PopupPanel" parent="."]
 editor/display_folded = true

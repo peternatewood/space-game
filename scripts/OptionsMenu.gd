@@ -16,6 +16,7 @@ onready var shadows_dir_spinbox = get_node("Shadows Atlas Settings/Shadows Atlas
 onready var shadows_point_spinbox = get_node("Shadows Atlas Settings/Shadows Atlas Rows/Shadow Spinboxes Container/Point Light Shadows SpinBox")
 
 var editing_keybind: Dictionary = { "input_type": -1 }
+var keybinds: Array = []
 
 
 func _ready():
@@ -121,6 +122,7 @@ func _ready():
 				for node in container.get_node("Controls Grid").get_children():
 					if node is Keybind:
 						node.connect("keybind_button_pressed", self, "_on_keybind_button_pressed")
+						keybinds.append(node)
 
 
 func _handle_keybind_popup_input(event):
@@ -189,6 +191,16 @@ func _on_keybind_button_pressed(keybind, event, input_type, button, button_index
 func _on_keybind_popup_accept_pressed():
 	if editing_keybind.has("new_event") and editing_keybind.get("new_event") != editing_keybind.get("current_event"):
 		editing_keybind["keybind"].update_keybind(editing_keybind["input_type"], editing_keybind["new_event"], editing_keybind.get("button_index", -1))
+
+		var new_keybind_conflicts: bool = false
+		for keybind in keybinds:
+			if keybind.conflicts_with(editing_keybind["keybind"].action, editing_keybind["new_event"]):
+				keybind.toggle_conflict(true, editing_keybind["new_event"])
+				new_keybind_conflicts = true
+			elif keybind.conflicts_with(editing_keybind["keybind"].action, editing_keybind["current_event"]):
+				keybind.toggle_conflict(false, editing_keybind["current_event"])
+
+		editing_keybind["keybind"].toggle_conflict(new_keybind_conflicts, editing_keybind["new_event"])
 
 	editing_keybind = { "input_type": -1 }
 	keybind_popup.hide()
