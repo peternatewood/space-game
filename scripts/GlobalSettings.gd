@@ -84,6 +84,14 @@ const RESOLUTIONS: Array = [
 	Vector2(3840, 2400)
 ]
 
+# Low, Medium, High, Maximum
+var SHADOW_QUALITY: Array = [
+	1024,
+	2048,
+	4096,
+	8192
+]
+
 
 # Used to maintain properties of a given setting
 class Setting:
