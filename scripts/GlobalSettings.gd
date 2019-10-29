@@ -29,6 +29,11 @@ func set_fullscreen(toggle_on: bool):
 		get_viewport().set_size(resolution._value)
 
 
+func set_hdr(toggle_on: bool):
+	hdr.set_value(toggle_on)
+	get_viewport().set_hdr(hdr._value)
+
+
 func set_msaa(option: int):
 	msaa.set_value(option)
 	get_viewport().set_msaa(msaa._value)
