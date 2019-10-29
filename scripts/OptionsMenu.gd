@@ -114,8 +114,13 @@ func _ready():
 	keybind_accept_button.connect("pressed", self, "_on_keybind_popup_accept_pressed")
 	keybind_cancel_button.connect("pressed", self, "_on_keybind_popup_cancel_pressed")
 
-	for keybind_node in get_node("Options Rows/TabContainer/Controls/Controls Container/Controls Grid").get_children():
-		keybind_node.connect("keybind_button_pressed", self, "_on_keybind_button_pressed")
+	# Loop through all Keybind controls and connect signal
+	for keybind_tab in get_node("Options Rows/TabContainer/Controls/Controls Tabs").get_children():
+		for container in keybind_tab.get_children():
+			if container is ScrollContainer:
+				for node in container.get_node("Controls Grid").get_children():
+					if node is Keybind:
+						node.connect("keybind_button_pressed", self, "_on_keybind_button_pressed")
 
 
 func _handle_keybind_popup_input(event):
