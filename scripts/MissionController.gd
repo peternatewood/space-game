@@ -7,6 +7,7 @@ export (Array, String) var reinforcement_wings = []
 
 onready var loader = get_node("/root/SceneLoader")
 onready var mission_data = get_node("/root/MissionData")
+onready var pause_menu = get_node("Pause Menu")
 
 var factions = {
 	"frog": { "hawk": FRIENDLY, "spider": NEUTRAL },
@@ -23,6 +24,14 @@ var waypoints_container
 func _ready():
 	loader.connect("scene_loaded", self, "_on_scene_loaded")
 	set_process(false)
+
+
+func _input(event):
+	if event.is_action("pause") and event.pressed:
+		var tree = get_tree()
+		if not tree.paused:
+			tree.set_pause(true)
+			pause_menu.show()
 
 
 func _on_player_warped_out():
