@@ -29,6 +29,11 @@ func set_fullscreen(toggle_on: bool):
 		get_viewport().set_size(resolution._value)
 
 
+func set_msaa(option: int):
+	msaa.set_value(option)
+	get_viewport().set_msaa(msaa._value)
+
+
 func set_resolution(new_resolution: Vector2):
 	resolution.set_value(new_resolution)
 
