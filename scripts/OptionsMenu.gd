@@ -127,6 +127,9 @@ func _ready():
 						node.connect("keybind_button_pressed", self, "_on_keybind_button_pressed")
 						keybinds.append(node)
 
+	var dyslexia_checkbox = get_node("Options Rows/TabContainer/Accessibility/Dyslexia Checkbox")
+	dyslexia_checkbox.connect("toggled", self, "_on_dyslexia_checkbox_toggled")
+
 
 func _handle_keybind_popup_input(event):
 	var is_valid_input: bool = false
@@ -166,6 +169,10 @@ func _on_back_button_pressed():
 
 func _on_borderless_checkbox_toggled(button_pressed: bool):
 	settings.set_borderless_window(button_pressed)
+
+
+func _on_dyslexia_checkbox_toggled(button_pressed: bool):
+	settings.set_dyslexia(button_pressed)
 
 
 func _on_fullscreen_checkbox_toggled(button_pressed: bool):
