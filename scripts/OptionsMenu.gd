@@ -1,7 +1,9 @@
 extends Control
 
 onready var clear_binding_checkbox = get_node("Options Rows/TabContainer/Controls/Binding Options/Clear Binding")
+onready var controls_tabs = get_node("Options Rows/TabContainer/Controls/Controls Tabs")
 onready var edit_binding_checkbox = get_node("Options Rows/TabContainer/Controls/Binding Options/Edit Checkbox")
+onready var go_to_conflict_checkbox = get_node("Options Rows/TabContainer/Controls/Binding Options/Go to Conflict")
 onready var keybind_popup = get_node("Keybind Popup")
 onready var keybind_accept_button = get_node("Keybind Popup/Popup Rows/Popup Buttons/Accept Button")
 onready var keybind_cancel_button = get_node("Keybind Popup/Popup Rows/Popup Buttons/Cancel Button")
@@ -187,6 +189,17 @@ func _on_keybind_button_pressed(keybind, event, input_type, button, button_index
 		keybind_accept_button.release_focus()
 	elif clear_binding_checkbox.pressed:
 		keybind.clear_keybind(input_type, button_index)
+	elif go_to_conflict_checkbox.pressed:
+		# Find the first conflicting action
+		for control in keybinds:
+			if control.conflicts_with(keybind.action, event):
+				# Change to this control's tab
+				var tabs = controls_tabs.get_children()
+				for index in range(tabs.size()):
+					if tabs[index].find_node(control.name):
+						controls_tabs.set_current_tab(index)
+						control.grab_focus()
+						return
 
 
 func _on_keybind_popup_accept_pressed():
