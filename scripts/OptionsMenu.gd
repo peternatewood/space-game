@@ -82,6 +82,10 @@ func _ready():
 	hdr_checkbox.set_pressed(settings.hdr.get_value())
 	hdr_checkbox.connect("toggled", self, "_on_hdr_checkbox_toggled")
 
+	var vsync_checkbox = get_node("Options Rows/TabContainer/Video/Vsync CheckBox")
+	vsync_checkbox.set_pressed(settings.vsync.get_value())
+	vsync_checkbox.connect("toggled", self, "_on_vsync_checkbox_toggled")
+
 	# Connect popups and their buttons
 	var shadows_atlas_button = get_node("Options Rows/TabContainer/Video/Three Columns/Shadows Atlas Button")
 	shadows_atlas_button.connect("pressed", self, "_on_shadows_atlas_button_pressed")
@@ -241,6 +245,10 @@ func _on_shadow_quality_options_item_selected(item_index: int):
 		# Update popup spinboxes
 		shadows_dir_spinbox.set_value(settings.shadows_dir.get_value())
 		shadows_point_spinbox.set_value(settings.shadows_point.get_value())
+
+
+func _on_vsync_checkbox_toggled(button_pressed: bool):
+	settings.set_vsync(button_pressed)
 
 
 func _set_resolution(size: Vector2):
