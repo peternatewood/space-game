@@ -16,6 +16,12 @@ func _ready():
 	var quit_desktop_button = get_node("PanelContainer/Buttons Container/Quit to Desktop Button")
 	quit_desktop_button.connect("pressed", self, "_on_quit_desktop_button_pressed")
 
+	options_menu.connect("back_button_pressed", self, "_on_options_back_pressed")
+
+
+func _on_options_back_pressed():
+	options_menu.hide()
+
 
 func _on_resume_button_pressed():
 	hide()
@@ -23,7 +29,7 @@ func _on_resume_button_pressed():
 
 
 func _on_options_button_pressed():
-	pass
+	options_menu.show()
 
 
 func _on_quit_menu_button_pressed():
