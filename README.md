@@ -24,6 +24,7 @@ Here I'll be keeping track of the all the features I want to implement, and chec
 - [x] Mission Briefing
 - [x] Loadout Menu
 - [x] Pause Menu
+- [ ] Campaign Tree
 - [ ] Capital Ships
 - [ ] Carrier Ships
 
@@ -49,6 +50,7 @@ Here are some more in-depth descriptions for certain features.
 - __Mission Objectives and Warp Out__: Once all critical objectives are complete, the player warps out to end the mission.
 - __Communications Menu__: This is a staple of old space games, used to issue orders to wingmen, call in reinforcements, request repairs/reloading, and more.
 - __Loadout Menu__: The player chooses their ship and loadout before launching the mission.
+- __Campaign Tree__: Missions need to be connected to each other to form a progression. A tree structure will allow for paths that branch off or loop around. Whether the player meets certain objectives during a mission will determine how the following missions will branch and loop.
 - __Carrier Ships__: Ship that can launch small ships (fighters/bombers.) Maybe the player can land there to repair/reload?
 
 ## Mission Objectives
