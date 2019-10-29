@@ -1,8 +1,12 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scripts/OptionsMenu.gd" type="Script" id=1]
 [ext_resource path="res://prefabs/slider_with_spinbox.tscn" type="PackedScene" id=2]
 [ext_resource path="res://prefabs/keybind.tscn" type="PackedScene" id=3]
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0, 0, 0, 0.498039 )
+corner_detail = 2
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.498039 )
@@ -12,6 +16,11 @@ corner_detail = 2
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 1 )
+
+[node name="Background Panel" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = SubResource( 2 )
 
 [node name="Options Rows" type="VBoxContainer" parent="."]
 anchor_right = 1.0
