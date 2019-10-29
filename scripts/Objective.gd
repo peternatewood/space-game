@@ -49,7 +49,8 @@ signal failed
 
 
 class Requirement extends Object:
-	var objective
+	var objective_index: int
+	var objective_type: int
 	var state: int = INCOMPLETE
 	var type: int
 	var target_names: Array = []
@@ -61,9 +62,24 @@ class Requirement extends Object:
 
 	func _init(source_dictionary):
 		type = source_dictionary.get("type", PATROL)
+
+		objective_index = source_dictionary.get("objective_index", -1)
+		objective_type = source_dictionary.get("objective_type", -1)
 		target_names = source_dictionary.get("targets", [])
 		time_limit = source_dictionary.get("time_limit", 0.0)
 		waypoints_name = source_dictionary.get("waypoints_name", "")
+
+
+	func _on_objective_completed():
+		print("on objective completed")
+		state = COMPLETED
+		emit_signal("completed")
+
+
+	func _on_objective_failed():
+		print("on objective failed")
+		state = FAILED
+		emit_signal("failed")
 
 
 	func _on_target_destroyed():

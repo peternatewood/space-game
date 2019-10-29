@@ -205,6 +205,24 @@ func load_mission_data(folder_name: String):
 					for objective in objective_data[index]:
 						objectives[index].append(Objective.new(objective))
 
+				# Take a second pass to connect any objectives that require another objective to succeed/fail
+				for index in range(min(3, objectives.size())):
+					for objective in objectives[index]:
+						for success in objective.success_requirements:
+							match success.type:
+								Objective.OBJECTIVE:
+									if success.objective_index != -1 and success.objective_type != -1:
+										objectives[success.objective_type][success.objective_index].connect("completed", success, "_on_objective_completed")
+										objectives[success.objective_type][success.objective_index].connect("failed", success, "_on_objective_failed")
+
+						# And for failure requirements
+						for failure in objective.failure_requirements:
+							match failure.type:
+								Objective.OBJECTIVE:
+									if failure.objective_index != -1 and failure.objective_type != -1:
+										objectives[failure.objective_type][failure.objective_index].connect("completed", failure, "_on_objective_completed")
+										objectives[failure.objective_type][failure.objective_index].connect("failed", failure, "_on_objective_failed")
+
 				mission_scene_path = "res://missions/" + folder_name + "/scene.tscn"
 			else:
 				print("Error parsing " + directory + ": " + parse_result.error_string)
