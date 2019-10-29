@@ -1,11 +1,10 @@
 extends Control
 
-onready var directional_shadow_spinbox = get_node("Shadows Atlas Settings/Shadows Atlas Rows/Directional Shadows Container/Directional Shadows SpinBox")
+onready var clear_binding_checkbox = get_node("Options Rows/TabContainer/Controls/Binding Options/Clear Binding")
 onready var keybind_popup = get_node("Keybind Popup")
 onready var keybind_accept_button = get_node("Keybind Popup/Popup Rows/Popup Buttons/Accept Button")
 onready var keybind_cancel_button = get_node("Keybind Popup/Popup Rows/Popup Buttons/Cancel Button")
 onready var keybind_popup_key_label = get_node("Keybind Popup/Popup Rows/Keybind Name Label")
-onready var point_light_shadow_spinbox = get_node("Shadows Atlas Settings/Shadows Atlas Rows/Point Light Shadows Container2/Point Light Shadows SpinBox")
 onready var popup_backdrop = get_node("Popup Backdrop")
 onready var reflections_popup = get_node("Reflections Popup")
 onready var resolution_options = get_node("Options Rows/TabContainer/Video/Resolution Options")
@@ -168,15 +167,18 @@ func _on_hdr_checkbox_toggled(button_pressed: bool):
 
 
 func _on_keybind_button_pressed(keybind, event, input_type, button, button_index: int = -1):
-	editing_keybind["keybind"] = keybind
-	editing_keybind["current_event"] = event
-	editing_keybind["input_type"] = input_type
-	editing_keybind["button_index"] = button_index
+	if clear_binding_checkbox.pressed:
+		keybind.clear_keybind(input_type, button_index)
+	else:
+		editing_keybind["keybind"] = keybind
+		editing_keybind["current_event"] = event
+		editing_keybind["input_type"] = input_type
+		editing_keybind["button_index"] = button_index
 
-	keybind_popup_key_label.set_text(button.text)
-	keybind_popup.popup_centered()
-	# Probably a function of the popup: this button is focused when we popup(), which is no good for mouse binding
-	keybind_accept_button.release_focus()
+		keybind_popup_key_label.set_text(button.text)
+		keybind_popup.popup_centered()
+		# Probably a function of the popup: this button is focused when we popup(), which is no good for mouse binding
+		keybind_accept_button.release_focus()
 
 
 func _on_keybind_popup_accept_pressed():

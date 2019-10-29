@@ -57,7 +57,6 @@ tab_align = 0
 
 [node name="Video" type="VBoxContainer" parent="Options Rows/TabContainer"]
 editor/display_folded = true
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 8.0
@@ -294,6 +293,7 @@ default = 100.0
 label_text = "Music"
 
 [node name="Controls" type="VBoxContainer" parent="Options Rows/TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 8.0
@@ -365,17 +365,17 @@ margin_right = 1008.0
 margin_bottom = 34.0
 
 [node name="Controls Container" type="ScrollContainer" parent="Options Rows/TabContainer/Controls"]
+editor/display_folded = true
 margin_top = 38.0
 margin_right = 1008.0
-margin_bottom = 526.0
+margin_bottom = 496.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 scroll_horizontal_enabled = false
 
 [node name="Controls Grid" type="GridContainer" parent="Options Rows/TabContainer/Controls/Controls Container"]
 editor/display_folded = true
-margin_right = 996.0
-margin_bottom = 1196.0
+margin_right = 1008.0
 size_flags_horizontal = 3
 columns = 2
 
@@ -937,6 +937,16 @@ margin_top = 1170.0
 margin_right = 996.0
 margin_bottom = 1196.0
 action = "warp_out"
+
+[node name="Binding Options" type="HBoxContainer" parent="Options Rows/TabContainer/Controls"]
+margin_top = 500.0
+margin_right = 1008.0
+margin_bottom = 526.0
+
+[node name="Clear Binding" type="CheckBox" parent="Options Rows/TabContainer/Controls/Binding Options"]
+margin_right = 140.0
+margin_bottom = 26.0
+text = "Clear Binding"
 
 [node name="Game" type="VBoxContainer" parent="Options Rows/TabContainer"]
 visible = false
