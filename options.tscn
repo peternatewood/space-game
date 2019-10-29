@@ -624,7 +624,6 @@ margin_bottom = 476.0
 action = "deselect_target"
 
 [node name="Weapons" type="VBoxContainer" parent="Options Rows/TabContainer/Controls/Controls Tabs"]
-editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -693,7 +692,6 @@ margin_right = 992.0
 margin_bottom = 34.0
 
 [node name="Weapons Scroll" type="ScrollContainer" parent="Options Rows/TabContainer/Controls/Controls Tabs/Weapons"]
-editor/display_folded = true
 margin_top = 38.0
 margin_right = 992.0
 margin_bottom = 452.0
@@ -701,7 +699,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Controls Grid" type="GridContainer" parent="Options Rows/TabContainer/Controls/Controls Tabs/Weapons/Weapons Scroll"]
-editor/display_folded = true
 margin_right = 992.0
 size_flags_horizontal = 3
 columns = 2
@@ -746,7 +743,7 @@ margin_left = 196.0
 margin_top = 60.0
 margin_right = 992.0
 margin_bottom = 86.0
-action = "cycle_energy_weapons"
+action = "cycle_energy_weapon"
 
 [node name="Cycle Missile Weapons Label" type="Label" parent="Options Rows/TabContainer/Controls/Controls Tabs/Weapons/Weapons Scroll/Controls Grid"]
 margin_top = 94.0
@@ -760,7 +757,7 @@ margin_left = 196.0
 margin_top = 90.0
 margin_right = 992.0
 margin_bottom = 116.0
-action = "cycle_missile_weapons"
+action = "cycle_missile_weapon"
 
 [node name="Systems" type="VBoxContainer" parent="Options Rows/TabContainer/Controls/Controls Tabs"]
 editor/display_folded = true
@@ -1159,7 +1156,6 @@ margin_right = 992.0
 margin_bottom = 34.0
 
 [node name="Other Scroll" type="ScrollContainer" parent="Options Rows/TabContainer/Controls/Controls Tabs/Other"]
-editor/display_folded = true
 margin_top = 38.0
 margin_right = 992.0
 margin_bottom = 452.0
@@ -1167,7 +1163,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Controls Grid" type="GridContainer" parent="Options Rows/TabContainer/Controls/Controls Tabs/Other/Other Scroll"]
-editor/display_folded = true
 margin_right = 992.0
 size_flags_horizontal = 3
 columns = 2
