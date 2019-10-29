@@ -1,5 +1,6 @@
 extends Control
 
+onready var quit_to_desktop_popup = get_node("Desktop Quit Popup")
 onready var options_menu = get_node("Options Menu")
 
 
@@ -17,6 +18,7 @@ func _ready():
 	quit_desktop_button.connect("pressed", self, "_on_quit_desktop_button_pressed")
 
 	options_menu.connect("back_button_pressed", self, "_on_options_back_pressed")
+	quit_to_desktop_popup.connect("confirmed", self, "_on_quit_to_desktop_confirmed")
 
 
 func _on_options_back_pressed():
@@ -37,4 +39,8 @@ func _on_quit_menu_button_pressed():
 
 
 func _on_quit_desktop_button_pressed():
-	pass
+	quit_to_desktop_popup.popup_centered()
+
+
+func _on_quit_to_desktop_confirmed():
+	get_tree().quit()
