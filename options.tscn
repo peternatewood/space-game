@@ -16,6 +16,10 @@ corner_detail = 2
 [node name="Options Menu" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -8.0
 theme = ExtResource( 1 )
 script = ExtResource( 2 )
 
@@ -32,7 +36,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="First Row" type="HBoxContainer" parent="Options Rows"]
-margin_right = 1024.0
+margin_right = 1008.0
 margin_bottom = 26.0
 
 [node name="Title Label" type="Label" parent="Options Rows/First Row"]
@@ -49,8 +53,8 @@ text = "Back"
 
 [node name="TabContainer" type="TabContainer" parent="Options Rows"]
 margin_top = 30.0
-margin_right = 1024.0
-margin_bottom = 600.0
+margin_right = 1008.0
+margin_bottom = 584.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 tab_align = 0
@@ -65,13 +69,13 @@ margin_right = -8.0
 margin_bottom = -8.0
 
 [node name="Resolution" type="Label" parent="Options Rows/TabContainer/Video"]
-margin_right = 1008.0
+margin_right = 992.0
 margin_bottom = 18.0
 text = "Resolution"
 
 [node name="Resolution Options" type="OptionButton" parent="Options Rows/TabContainer/Video"]
 margin_top = 22.0
-margin_right = 1008.0
+margin_right = 992.0
 margin_bottom = 48.0
 text = "Custom"
 items = [ "Custom", null, false, -1, null ]
@@ -79,7 +83,7 @@ selected = 0
 
 [node name="Custom Res Container" type="HBoxContainer" parent="Options Rows/TabContainer/Video"]
 margin_top = 52.0
-margin_right = 1008.0
+margin_right = 992.0
 margin_bottom = 80.0
 
 [node name="Custom Res Label" type="Label" parent="Options Rows/TabContainer/Video/Custom Res Container"]
@@ -125,12 +129,12 @@ text = "Update"
 
 [node name="HSeparator" type="HSeparator" parent="Options Rows/TabContainer/Video"]
 margin_top = 84.0
-margin_right = 1008.0
+margin_right = 992.0
 margin_bottom = 88.0
 
 [node name="Window Options Container" type="HBoxContainer" parent="Options Rows/TabContainer/Video"]
 margin_top = 92.0
-margin_right = 1008.0
+margin_right = 992.0
 margin_bottom = 118.0
 
 [node name="Fullscreen CheckBox" type="CheckBox" parent="Options Rows/TabContainer/Video/Window Options Container"]
@@ -146,7 +150,7 @@ text = "Borderless Window"
 
 [node name="Two Columns" type="GridContainer" parent="Options Rows/TabContainer/Video"]
 margin_top = 122.0
-margin_right = 1008.0
+margin_right = 992.0
 margin_bottom = 148.0
 columns = 2
 
@@ -196,7 +200,7 @@ margin_bottom = 44.0
 
 [node name="Three Columns" type="GridContainer" parent="Options Rows/TabContainer/Video"]
 margin_top = 152.0
-margin_right = 1008.0
+margin_right = 992.0
 margin_bottom = 178.0
 columns = 3
 
@@ -242,19 +246,19 @@ text = "Customize Reflection Settings"
 
 [node name="HDR CheckBox" type="CheckBox" parent="Options Rows/TabContainer/Video"]
 margin_top = 182.0
-margin_right = 1008.0
+margin_right = 992.0
 margin_bottom = 208.0
 text = "Enable HDR"
 
 [node name="Vsync CheckBox" type="CheckBox" parent="Options Rows/TabContainer/Video"]
 margin_top = 212.0
-margin_right = 1008.0
+margin_right = 992.0
 margin_bottom = 238.0
 text = "Enable Vsync"
 
 [node name="FOV Slider" parent="Options Rows/TabContainer/Video" instance=ExtResource( 3 )]
 margin_top = 242.0
-margin_right = 1008.0
+margin_right = 992.0
 margin_bottom = 270.0
 default = 65.0
 label_text = "FOV"
