@@ -138,6 +138,8 @@ func _on_player_target_changed(last_target):
 
 		for index in range(player.current_target.QUADRANT_COUNT):
 			player.current_target.shields[index].connect("hitpoints_changed", self, "_on_target_shield_changed", [ index ])
+			# Also update the icons manually
+			_on_target_shield_changed(player.current_target.shields[index].get_hitpoints_fraction(), index)
 
 		# Update icons
 		target_overhead.set_overhead_icon(overhead_icon)
@@ -160,10 +162,11 @@ func _on_player_target_changed(last_target):
 			target_icon.set_modulate(Color.white)
 
 		if not target_details_minimal.visible:
-			target_details_minimal.set_hull(player.current_target.get_hull_percent())
-			for index in range(player.current_target.QUADRANT_COUNT):
-				target_details_minimal.set_shield_alpha(index, player.current_target.shields[index].get_hitpoints_fraction())
 			target_details_minimal.show()
+
+		target_details_minimal.set_hull(player.current_target.get_hull_percent())
+		for index in range(player.current_target.QUADRANT_COUNT):
+			target_details_minimal.set_shield_alpha(index, player.current_target.shields[index].get_hitpoints_fraction())
 
 		# Update target viewport
 		target_class.set_text(player.current_target.ship_class)
