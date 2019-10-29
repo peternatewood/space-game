@@ -58,6 +58,11 @@ func set_shadows_point_atlas_size(value: int):
 	shadows_point.set_value(value)
 
 
+func set_vsync(toggle_on: bool):
+	vsync.set_value(toggle_on)
+	OS.set_use_vsync(toggle_on)
+
+
 const RESOLUTIONS: Array = [
 	# 4:3
 	Vector2(800, 600),
