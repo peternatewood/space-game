@@ -6,7 +6,6 @@ export (String) var action = ""
 
 onready var key_one_button = get_node("Key One Button")
 onready var key_two_button = get_node("Key Two Button")
-onready var keybind_label = get_node("Keybind Label")
 onready var mouse_button = get_node("Mouse Button")
 onready var joypad_button_button = get_node("Joypad Button")
 onready var joypad_axis_button = get_node("Joypad Axis")
@@ -16,8 +15,6 @@ var keybind_type
 
 
 func _ready():
-	keybind_label.set_text(name)
-
 	var keys_index: int = 0
 	for event in InputMap.get_action_list(action):
 		if event is InputEventKey:

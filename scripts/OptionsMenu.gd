@@ -115,7 +115,7 @@ func _ready():
 	keybind_accept_button.connect("pressed", self, "_on_keybind_popup_accept_pressed")
 	keybind_cancel_button.connect("pressed", self, "_on_keybind_popup_cancel_pressed")
 
-	for keybind_node in get_node("Options Rows/TabContainer/Controls/Control Rows").get_children():
+	for keybind_node in get_node("Options Rows/TabContainer/Controls/Controls Container/Controls Grid").get_children():
 		keybind_node.connect("keybind_button_pressed", self, "_on_keybind_button_pressed")
 
 
