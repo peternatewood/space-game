@@ -10,6 +10,7 @@ onready var mouse_button = get_node("Mouse Button")
 onready var joypad_button_button = get_node("Joypad Button")
 onready var joypad_axis_button = get_node("Joypad Axis")
 
+var conflicts: Array = []
 var events: Array = [ [ null, null ], null, null, null ]
 var keybind_conflicts: bool = false
 var keybind_type
@@ -87,46 +88,45 @@ func clear_keybind(input_type: int, button_index: int = -1):
 					joypad_axis_button.set_text("none")
 
 
-func conflicts_with(other_action: String, input_type: int, event):
+func conflicts_with(other_action: String, event):
 	if action == other_action:
 		return false
 
-	if input_type == KEY:
+	if event is InputEventKey:
 		for index in range(2):
 			if events[KEY][index] != null:
-				if events[KEY][index].scancode == event.scancode and events[KEY][index].alt == event.alt and events[KEY][index].shift == event.shift and events[KEY][index].control == event.control and events[KEY][index].meta == event.meta and events[KEY][index].command == event.command:
+				if do_key_events_match(events[KEY][index], event):
 					return true
 	else:
-		match input_type:
-			MOUSE, JOY_BUTTON:
-				return events[input_type].button_index == event.button_index
-			JOY_AXIS:
-				var axis_direction = 1 if events[JOY_AXIS].axis_value > 0 else -1
-				var other_axis_direction = 1 if event.axis_value > 0 else -1
+		if event is InputEventMouseButton:
+			return events[MOUSE].button_index == event.button_index
+		elif event is InputEventJoypadButton:
+			return events[JOY_BUTTON].button_index == event.button_index
+		elif event is InputEventJoypadMotion:
+			var axis_direction = 1 if events[JOY_AXIS].axis_value > 0 else -1
+			var other_axis_direction = 1 if event.axis_value > 0 else -1
 
-				return events[JOY_AXIS].axis == event.axis and axis_direction == other_axis_direction
+			return events[JOY_AXIS].axis == event.axis and axis_direction == other_axis_direction
 
 	return false
 
 
-func toggle_conflict(toggle_on: bool, input_type: int, button_index: int = -1):
+func toggle_conflict(toggle_on: bool, event):
 	if toggle_on != keybind_conflicts:
 		keybind_conflicts = toggle_on
 		var new_theme = KEYBIND_CONFLICT_THEME if toggle_on else null
 
-		if input_type == KEY and button_index != -1:
-			if button_index == 0:
+		if event is InputEventKey:
+			if events[KEY][0] != null and do_key_events_match(events[KEY][0], event):
 				key_one_button.set_theme(new_theme)
-			elif button_index == 1:
+			elif events[KEY][1] != null and do_key_events_match(events[KEY][1], event):
 				key_two_button.set_theme(new_theme)
-		else:
-			match input_type:
-				MOUSE:
-					mouse_button.set_theme(new_theme)
-				JOY_BUTTON:
-					joypad_button_button.set_theme(new_theme)
-				JOY_AXIS:
-					joypad_axis_button.set_theme(new_theme)
+		elif event is InputEventMouseButton:
+			mouse_button.set_theme(new_theme)
+		elif event is InputEventJoypadButton:
+			joypad_button_button.set_theme(new_theme)
+		elif event is InputEventJoypadMotion:
+			joypad_axis_button.set_theme(new_theme)
 
 
 func update_keybind(input_type: int, new_event, button_index: int = -1):
@@ -166,6 +166,10 @@ func update_keybind(input_type: int, new_event, button_index: int = -1):
 			events[input_type] = new_event
 
 		InputMap.action_add_event(action, new_event)
+
+
+static func do_key_events_match(event_a: InputEventKey, event_b: InputEventKey):
+	return event_a.scancode == event_b.scancode and event_a.alt == event_b.alt and event_a.shift == event_b.shift and event_a.control == event_b.control and event_a.meta == event_b.meta and event_a.command == event_b.command
 
 
 static func event_to_text(event = null):
