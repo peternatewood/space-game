@@ -37,10 +37,19 @@
           { "type": 3, "objective_type": 0, "objective_index": 0 }
         ],
         "failure_requirements": [
-          { "type": 2, "targets": [ "Alpha 2", "Alpha 3" ] }
+          { "type": 1, "targets": [ "Alpha 2", "Alpha 3" ] }
         ]
       }
     ],
-    []
+    [
+      {
+        "name": "Don't Call In Reinforcements",
+        "description": "Complete the mission without calling in Beta wing: your reinforcements.",
+        "success_requirements": [],
+        "failure_requirements": [
+          { "type": 4, "targets": [ "Beta 1" ] }
+        ]
+      }
+    ]
   ]
 }
