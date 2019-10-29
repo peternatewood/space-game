@@ -135,7 +135,7 @@ text = "Borderless Window"
 [node name="Two Columns" type="GridContainer" parent="Options Rows/TabContainer/Video"]
 margin_top = 106.0
 margin_right = 1016.0
-margin_bottom = 174.0
+margin_bottom = 150.0
 columns = 2
 
 [node name="AA Label" type="Label" parent="Options Rows/TabContainer/Video/Two Columns"]
@@ -153,33 +153,38 @@ items = [ "Disabled", null, false, 0, null, "2x", null, false, -1, null, "4x", n
 selected = 0
 
 [node name="Anisotropic Filtering Label" type="Label" parent="Options Rows/TabContainer/Video/Two Columns"]
+visible = false
+margin_top = 24.0
+margin_right = 214.0
+margin_bottom = 38.0
+text = "Anisotropic Filtering"
+
+[node name="Anisotropic Filtering SpinBox" type="SpinBox" parent="Options Rows/TabContainer/Video/Two Columns"]
+visible = false
+margin_left = 218.0
+margin_top = 24.0
+margin_right = 315.0
+margin_bottom = 48.0
+min_value = 1.0
+max_value = 16.0
+value = 1.0
+
+[node name="Subsurface Label" type="Label" parent="Options Rows/TabContainer/Video/Two Columns"]
 margin_top = 27.0
 margin_right = 214.0
 margin_bottom = 41.0
-text = "Anisotropic Filtering"
+text = "Subsurface Scattering Quality"
 
-[node name="OptionButton" type="OptionButton" parent="Options Rows/TabContainer/Video/Two Columns"]
+[node name="Subsurface Options" type="OptionButton" parent="Options Rows/TabContainer/Video/Two Columns"]
 margin_left = 218.0
 margin_top = 24.0
 margin_right = 315.0
 margin_bottom = 44.0
 
-[node name="Subsurface Label" type="Label" parent="Options Rows/TabContainer/Video/Two Columns"]
-margin_top = 51.0
-margin_right = 214.0
-margin_bottom = 65.0
-text = "Subsurface Scattering Quality"
-
-[node name="Subsurface Options" type="OptionButton" parent="Options Rows/TabContainer/Video/Two Columns"]
-margin_left = 218.0
-margin_top = 48.0
-margin_right = 315.0
-margin_bottom = 68.0
-
 [node name="Three Columns" type="GridContainer" parent="Options Rows/TabContainer/Video"]
-margin_top = 178.0
+margin_top = 154.0
 margin_right = 1016.0
-margin_bottom = 222.0
+margin_bottom = 198.0
 columns = 3
 
 [node name="Shadows Label" type="Label" parent="Options Rows/TabContainer/Video/Three Columns"]
@@ -219,21 +224,21 @@ margin_bottom = 44.0
 text = "Customize Reflection Settings"
 
 [node name="HDR CheckBox" type="CheckBox" parent="Options Rows/TabContainer/Video"]
-margin_top = 226.0
+margin_top = 202.0
 margin_right = 1016.0
-margin_bottom = 250.0
+margin_bottom = 226.0
 text = "Enable HDR"
 
 [node name="Vsync CheckBox" type="CheckBox" parent="Options Rows/TabContainer/Video"]
-margin_top = 254.0
+margin_top = 230.0
 margin_right = 1016.0
-margin_bottom = 278.0
+margin_bottom = 254.0
 text = "Enable Vsync"
 
 [node name="FOV Slider" parent="Options Rows/TabContainer/Video" instance=ExtResource( 2 )]
-margin_top = 282.0
+margin_top = 258.0
 margin_right = 1016.0
-margin_bottom = 306.0
+margin_bottom = 282.0
 default = 65.0
 label_text = "FOV"
 max_value = 120.0
