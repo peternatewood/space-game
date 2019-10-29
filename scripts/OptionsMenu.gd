@@ -66,6 +66,18 @@ func _ready():
 	shadows_dir_spinbox.set_value(settings.shadows_dir.get_value())
 	shadows_point_spinbox.set_value(settings.shadows_point.get_value())
 
+	var shadow_quality_index: int = 0
+	if shadows_dir_spinbox.value == shadows_point_spinbox.value:
+		for index in range(settings.SHADOW_QUALITY.size()):
+			if shadows_dir_spinbox.value == settings.SHADOW_QUALITY[index]:
+				# We have to add one since the first option item is "Custom"
+				shadow_quality_index = index + 1
+				break
+
+	var shadow_quality_options = get_node("Options Rows/TabContainer/Video/Three Columns/Shadow Quality Options")
+	shadow_quality_options.select(shadow_quality_index)
+	shadow_quality_options.connect("item_selected", self, "_on_shadow_quality_options_item_selected")
+
 	# Connect popups and their buttons
 	var shadows_atlas_button = get_node("Options Rows/TabContainer/Video/Three Columns/Shadows Atlas Button")
 	shadows_atlas_button.connect("pressed", self, "_on_shadows_atlas_button_pressed")
@@ -210,6 +222,17 @@ func _on_shadows_atlas_button_pressed():
 
 func _on_shadow_atlas_cancel_pressed():
 	shadows_atlas_popup.hide()
+
+
+func _on_shadow_quality_options_item_selected(item_index: int):
+	if item_index != 0:
+		var atlas_size = settings.SHADOW_QUALITY[item_index - 1]
+		settings.set_shadows_dir_atlas_size(atlas_size)
+		settings.set_shadows_point_atlas_size(atlas_size)
+
+		# Update popup spinboxes
+		shadows_dir_spinbox.set_value(settings.shadows_dir.get_value())
+		shadows_point_spinbox.set_value(settings.shadows_point.get_value())
 
 
 func _set_resolution(size: Vector2):
