@@ -42,7 +42,7 @@ func _ready():
 
 
 func _on_key_one_button_pressed():
-	emit_signal("keybind_button_pressed", action, events[KEY][0], KEY, key_one_button, 0)
+	emit_signal("keybind_button_pressed", self, events[KEY][0], KEY, key_one_button, 0)
 
 
 func _on_key_two_button_pressed():
@@ -62,6 +62,28 @@ func _on_joypad_axis_button_pressed():
 
 
 # PUBLIC
+
+
+func clear_keybind(input_type: int, button_index: int = -1):
+	if input_type == KEY:
+		if events[KEY][button_index] != null:
+			InputMap.action_erase_event(action, events[KEY][button_index])
+
+			if button_index == 0:
+				key_one_button.set_text("none")
+			elif button_index == 1:
+				key_two_button.set_text("none")
+	else:
+		if events[input_type] != null:
+			InputMap.action_erase_event(action, events[input_type])
+
+			match input_type:
+				MOUSE:
+					mouse_button.set_text("none")
+				JOY_BUTTON:
+					joypad_button_button.set_text("none")
+				JOY_AXIS:
+					joypad_axis_button.set_text("none")
 
 
 func update_keybind(input_type: int, new_event, button_index: int = -1):
@@ -87,8 +109,6 @@ func update_keybind(input_type: int, new_event, button_index: int = -1):
 			if new_event is InputEventJoypadMotion:
 				is_valid_update = true
 				joypad_axis_button.set_text(event_to_text(new_event))
-
-	print(input_type, new_event.as_text(), is_valid_update)
 
 	if is_valid_update:
 		if input_type == KEY:
