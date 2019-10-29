@@ -3,6 +3,7 @@ extends Node
 # Default settings here
 var aniso_filtering = Setting.new("aniso_filtering", 0)
 var borderless = Setting.new("borderless", false)
+var dyslexia = Setting.new("dyslexia", false)
 var fov = Setting.new("fov", 70)
 var fullscreen = Setting.new("fullscreen", false)
 var hdr = Setting.new("hdr", false)
@@ -18,6 +19,11 @@ var vsync = Setting.new("vsync", true)
 func set_borderless_window(toggle_on: bool):
 	borderless.set_value(toggle_on)
 	OS.set_borderless_window(borderless._value)
+
+
+func set_dyslexia(toggle_on: bool):
+	dyslexia.set_value(toggle_on)
+	emit_signal("dyslexia_toggled", dyslexia._value)
 
 
 func set_fullscreen(toggle_on: bool):
@@ -63,6 +69,8 @@ func set_vsync(toggle_on: bool):
 	OS.set_use_vsync(toggle_on)
 
 
+signal dyslexia_toggled
+
 const RESOLUTIONS: Array = [
 	# 4:3
 	Vector2(800, 600),
@@ -95,12 +103,15 @@ const RESOLUTIONS: Array = [
 ]
 
 # Low, Medium, High, Maximum
-var SHADOW_QUALITY: Array = [
+const SHADOW_QUALITY: Array = [
 	1024,
 	2048,
 	4096,
 	8192
 ]
+
+const OPEN_DYSLEXIC_THEME = preload("res://themes/default_dyslexic.tres")
+const INCONSOLATA_THEME = preload("res://themes/default_inconsolata.tres")
 
 
 # Used to maintain properties of a given setting
