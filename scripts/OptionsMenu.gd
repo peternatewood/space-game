@@ -1,6 +1,7 @@
 extends Control
 
 onready var clear_binding_checkbox = get_node("Options Rows/TabContainer/Controls/Binding Options/Clear Binding")
+onready var edit_binding_checkbox = get_node("Options Rows/TabContainer/Controls/Binding Options/Edit Checkbox")
 onready var keybind_popup = get_node("Keybind Popup")
 onready var keybind_accept_button = get_node("Keybind Popup/Popup Rows/Popup Buttons/Accept Button")
 onready var keybind_cancel_button = get_node("Keybind Popup/Popup Rows/Popup Buttons/Cancel Button")
@@ -174,9 +175,7 @@ func _on_hdr_checkbox_toggled(button_pressed: bool):
 
 
 func _on_keybind_button_pressed(keybind, event, input_type, button, button_index: int = -1):
-	if clear_binding_checkbox.pressed:
-		keybind.clear_keybind(input_type, button_index)
-	else:
+	if edit_binding_checkbox.pressed:
 		editing_keybind["keybind"] = keybind
 		editing_keybind["current_event"] = event
 		editing_keybind["input_type"] = input_type
@@ -186,6 +185,8 @@ func _on_keybind_button_pressed(keybind, event, input_type, button, button_index
 		keybind_popup.popup_centered()
 		# Probably a function of the popup: this button is focused when we popup(), which is no good for mouse binding
 		keybind_accept_button.release_focus()
+	elif clear_binding_checkbox.pressed:
+		keybind.clear_keybind(input_type, button_index)
 
 
 func _on_keybind_popup_accept_pressed():
