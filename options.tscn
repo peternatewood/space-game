@@ -617,37 +617,40 @@ margin_right = 236.0
 margin_bottom = 14.0
 text = "Shadow Settings"
 
-[node name="Directional Shadows Container" type="HBoxContainer" parent="Shadows Atlas Settings/Shadows Atlas Rows"]
+[node name="Shadow Spinboxes Container" type="GridContainer" parent="Shadows Atlas Settings/Shadows Atlas Rows"]
+margin_right = 40.0
+margin_bottom = 40.0
+columns = 2
+
+[node name="Directional Shadows Label" type="Label" parent="Shadows Atlas Settings/Shadows Atlas Rows/Shadow Spinboxes Container"]
+margin_top = 23.0
+margin_right = 158.0
+margin_bottom = 37.0
+text = "Directional Shadow Atlas"
+
+[node name="Directional Shadows SpinBox" type="SpinBox" parent="Shadows Atlas Settings/Shadows Atlas Rows/Shadow Spinboxes Container"]
+margin_left = 162.0
 margin_top = 18.0
 margin_right = 236.0
 margin_bottom = 42.0
+min_value = 8.0
+max_value = 16384.0
+value = 16.0
 
-[node name="Directional Shadows Label" type="Label" parent="Shadows Atlas Settings/Shadows Atlas Rows/Directional Shadows Container"]
-margin_top = 5.0
-margin_right = 158.0
-margin_bottom = 19.0
-text = "Directional Shadow Atlas"
-
-[node name="Directional Shadows SpinBox" type="SpinBox" parent="Shadows Atlas Settings/Shadows Atlas Rows/Directional Shadows Container"]
-margin_left = 162.0
-margin_right = 236.0
-margin_bottom = 24.0
-
-[node name="Point Light Shadows Container2" type="HBoxContainer" parent="Shadows Atlas Settings/Shadows Atlas Rows"]
-margin_top = 46.0
-margin_right = 236.0
-margin_bottom = 70.0
-
-[node name="Point Light Shadows Label" type="Label" parent="Shadows Atlas Settings/Shadows Atlas Rows/Point Light Shadows Container2"]
-margin_top = 5.0
+[node name="Point Light Shadows Label" type="Label" parent="Shadows Atlas Settings/Shadows Atlas Rows/Shadow Spinboxes Container"]
+margin_top = 51.0
 margin_right = 156.0
-margin_bottom = 19.0
+margin_bottom = 65.0
 text = "Point Light Shadow Atlas"
 
-[node name="Point Light Shadows SpinBox" type="SpinBox" parent="Shadows Atlas Settings/Shadows Atlas Rows/Point Light Shadows Container2"]
+[node name="Point Light Shadows SpinBox" type="SpinBox" parent="Shadows Atlas Settings/Shadows Atlas Rows/Shadow Spinboxes Container"]
 margin_left = 160.0
+margin_top = 46.0
 margin_right = 234.0
-margin_bottom = 24.0
+margin_bottom = 70.0
+min_value = 8.0
+max_value = 16384.0
+value = 8.0
 
 [node name="Shadows Atlas Buttons" type="HBoxContainer" parent="Shadows Atlas Settings/Shadows Atlas Rows"]
 margin_top = 74.0

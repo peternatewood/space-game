@@ -13,6 +13,8 @@ onready var resolution_x_spinbox = get_node("Options Rows/TabContainer/Video/Cus
 onready var resolution_y_spinbox = get_node("Options Rows/TabContainer/Video/Custom Res Container/Res Y SpinBox")
 onready var settings = get_node("/root/GlobalSettings")
 onready var shadows_atlas_popup = get_node("Shadows Atlas Settings")
+onready var shadows_dir_spinbox = get_node("Shadows Atlas Settings/Shadows Atlas Rows/Shadow Spinboxes Container/Directional Shadows SpinBox")
+onready var shadows_point_spinbox = get_node("Shadows Atlas Settings/Shadows Atlas Rows/Shadow Spinboxes Container/Point Light Shadows SpinBox")
 
 var editing_keybind: Dictionary = { "input_type": -1 }
 
@@ -58,7 +60,11 @@ func _ready():
 	resolution_button.connect("pressed", self, "_on_resolution_button_pressed")
 
 	var aa_options = get_node("Options Rows/TabContainer/Video/Two Columns/AA Options")
+	aa_options.select(settings.msaa.get_value())
 	aa_options.connect("item_selected", self, "_on_aa_options_item_selected")
+
+	shadows_dir_spinbox.set_value(settings.shadows_dir.get_value())
+	shadows_point_spinbox.set_value(settings.shadows_point.get_value())
 
 	# Connect popups and their buttons
 	var shadows_atlas_button = get_node("Options Rows/TabContainer/Video/Three Columns/Shadows Atlas Button")
@@ -193,7 +199,8 @@ func _on_resolution_options_item_selected(res_index: int):
 
 
 func _on_shadow_atlas_accept_pressed():
-	# TODO: update shadow atlas settings
+	settings.set_shadows_dir_atlas_size(shadows_dir_spinbox.value)
+	settings.set_shadows_point_atlas_size(shadows_point_spinbox.value)
 	shadows_atlas_popup.hide()
 
 
