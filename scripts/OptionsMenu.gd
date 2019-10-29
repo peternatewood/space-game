@@ -78,6 +78,10 @@ func _ready():
 	shadow_quality_options.select(shadow_quality_index)
 	shadow_quality_options.connect("item_selected", self, "_on_shadow_quality_options_item_selected")
 
+	var hdr_checkbox = get_node("Options Rows/TabContainer/Video/HDR CheckBox")
+	hdr_checkbox.set_pressed(settings.hdr.get_value())
+	hdr_checkbox.connect("toggled", self, "_on_hdr_checkbox_toggled")
+
 	# Connect popups and their buttons
 	var shadows_atlas_button = get_node("Options Rows/TabContainer/Video/Three Columns/Shadows Atlas Button")
 	shadows_atlas_button.connect("pressed", self, "_on_shadows_atlas_button_pressed")
@@ -153,6 +157,10 @@ func _on_borderless_checkbox_toggled(button_pressed: bool):
 
 func _on_fullscreen_checkbox_toggled(button_pressed: bool):
 	settings.set_fullscreen(button_pressed)
+
+
+func _on_hdr_checkbox_toggled(button_pressed: bool):
+	settings.set_hdr(button_pressed)
 
 
 func _on_keybind_button_pressed(keybind, event, input_type, button, button_index: int = -1):
