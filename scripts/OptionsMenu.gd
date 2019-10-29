@@ -57,6 +57,9 @@ func _ready():
 	var resolution_button = get_node("Options Rows/TabContainer/Video/Custom Res Container/Res Button")
 	resolution_button.connect("pressed", self, "_on_resolution_button_pressed")
 
+	var aa_options = get_node("Options Rows/TabContainer/Video/Two Columns/AA Options")
+	aa_options.connect("item_selected", self, "_on_aa_options_item_selected")
+
 	# Connect popups and their buttons
 	var shadows_atlas_button = get_node("Options Rows/TabContainer/Video/Three Columns/Shadows Atlas Button")
 	shadows_atlas_button.connect("pressed", self, "_on_shadows_atlas_button_pressed")
@@ -116,6 +119,10 @@ func _input(event):
 	if keybind_popup.visible:
 		if not event is InputEventMouseButton or (not keybind_accept_button.is_hovered() and not keybind_cancel_button.is_hovered()):
 			_handle_keybind_popup_input(event)
+
+
+func _on_aa_options_item_selected(item_index: int):
+	settings.set_msaa(item_index)
 
 
 func _on_back_button_pressed():

@@ -149,7 +149,7 @@ margin_left = 218.0
 margin_right = 315.0
 margin_bottom = 20.0
 text = "Disabled"
-items = [ "Disabled", null, false, 0, null ]
+items = [ "Disabled", null, false, 0, null, "2x", null, false, -1, null, "4x", null, false, -1, null, "8x", null, false, -1, null, "16x", null, false, -1, null ]
 selected = 0
 
 [node name="Anisotropic Filtering Label" type="Label" parent="Options Rows/TabContainer/Video/Two Columns"]
