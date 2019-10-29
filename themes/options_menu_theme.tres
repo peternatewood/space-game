@@ -2,7 +2,7 @@
 
 [ext_resource path="res://fonts/inconsolata/Inconsolata-Regular.ttf" type="DynamicFontData" id=1]
 
-[sub_resource type="StyleBoxFlat" id=3]
+[sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 8.0
 content_margin_right = 8.0
 content_margin_top = 4.0
@@ -14,7 +14,7 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color( 0.952941, 0.937255, 0.721569, 1 )
 
-[sub_resource type="StyleBoxFlat" id=4]
+[sub_resource type="StyleBoxFlat" id=2]
 content_margin_left = 8.0
 content_margin_right = 8.0
 content_margin_top = 4.0
@@ -26,7 +26,7 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color( 0.4, 0.501961, 1, 1 )
 
-[sub_resource type="StyleBoxFlat" id=5]
+[sub_resource type="StyleBoxFlat" id=3]
 content_margin_left = 8.0
 content_margin_right = 8.0
 content_margin_top = 4.0
@@ -39,7 +39,7 @@ border_width_bottom = 1
 border_color = Color( 0.227451, 0.282353, 0.564706, 1 )
 corner_detail = 2
 
-[sub_resource type="StyleBoxFlat" id=8]
+[sub_resource type="StyleBoxFlat" id=4]
 content_margin_left = 8.0
 content_margin_right = 8.0
 content_margin_top = 4.0
@@ -51,11 +51,11 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color( 0.4, 0.501961, 1, 1 )
 
-[sub_resource type="StyleBoxFlat" id=10]
+[sub_resource type="StyleBoxFlat" id=5]
 bg_color = Color( 0.0431373, 0.0666667, 0.137255, 1 )
 corner_detail = 2
 
-[sub_resource type="StyleBoxFlat" id=11]
+[sub_resource type="StyleBoxFlat" id=6]
 content_margin_left = 8.0
 content_margin_right = 8.0
 content_margin_top = 4.0
@@ -68,7 +68,20 @@ border_width_bottom = 1
 border_color = Color( 0.227451, 0.282353, 0.564706, 1 )
 corner_detail = 2
 
-[sub_resource type="StyleBoxFlat" id=12]
+[sub_resource type="StyleBoxFlat" id=7]
+content_margin_left = 8.0
+content_margin_right = 8.0
+content_margin_top = 8.0
+content_margin_bottom = 8.0
+bg_color = Color( 0.0431373, 0.0666667, 0.137255, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.227451, 0.282353, 0.564706, 1 )
+corner_detail = 2
+
+[sub_resource type="StyleBoxFlat" id=8]
 content_margin_left = 8.0
 content_margin_right = 8.0
 content_margin_top = 8.0
@@ -84,19 +97,6 @@ corner_detail = 2
 [sub_resource type="StyleBoxFlat" id=9]
 content_margin_left = 8.0
 content_margin_right = 8.0
-content_margin_top = 8.0
-content_margin_bottom = 8.0
-bg_color = Color( 0.0431373, 0.0666667, 0.137255, 1 )
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color( 0.227451, 0.282353, 0.564706, 1 )
-corner_detail = 2
-
-[sub_resource type="StyleBoxFlat" id=6]
-content_margin_left = 8.0
-content_margin_right = 8.0
 content_margin_top = 2.0
 content_margin_bottom = 2.0
 bg_color = Color( 0.0431373, 0.0666667, 0.137255, 1 )
@@ -107,7 +107,7 @@ border_width_bottom = 1
 border_color = Color( 0.0941176, 0.14902, 0.305882, 1 )
 corner_detail = 2
 
-[sub_resource type="StyleBoxFlat" id=7]
+[sub_resource type="StyleBoxFlat" id=10]
 content_margin_left = 8.0
 content_margin_right = 8.0
 content_margin_top = 2.0
@@ -118,11 +118,11 @@ border_width_top = 1
 border_width_right = 1
 border_color = Color( 0.4, 0.501961, 1, 1 )
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="DynamicFont" id=11]
 font_data = ExtResource( 1 )
 
 [resource]
-default_font = SubResource( 1 )
+default_font = SubResource( 11 )
 Button/colors/font_color = Color( 0.878431, 0.878431, 0.878431, 1 )
 Button/colors/font_color_disabled = Color( 0.9, 0.9, 0.9, 0.2 )
 Button/colors/font_color_hover = Color( 0.941176, 0.941176, 0.941176, 1 )
@@ -130,10 +130,10 @@ Button/colors/font_color_pressed = Color( 1, 1, 1, 1 )
 Button/constants/hseparation = 2
 Button/fonts/font = null
 Button/styles/disabled = null
-Button/styles/focus = SubResource( 3 )
-Button/styles/hover = SubResource( 4 )
-Button/styles/normal = SubResource( 5 )
-Button/styles/pressed = SubResource( 8 )
+Button/styles/focus = SubResource( 1 )
+Button/styles/hover = SubResource( 2 )
+Button/styles/normal = SubResource( 3 )
+Button/styles/pressed = SubResource( 4 )
 CheckBox/colors/font_color = Color( 0.878431, 0.878431, 0.878431, 1 )
 CheckBox/colors/font_color_disabled = Color( 0.9, 0.9, 0.9, 0.2 )
 CheckBox/colors/font_color_hover = Color( 0.941176, 0.941176, 0.941176, 1 )
@@ -153,7 +153,7 @@ CheckBox/styles/hover_pressed = null
 CheckBox/styles/normal = null
 CheckBox/styles/pressed = null
 Panel/styles/panel = null
-Panel/styles/panelf = SubResource( 10 )
+Panel/styles/panelf = SubResource( 5 )
 Panel/styles/panelnc = null
 PopupMenu/colors/font_color = Color( 0.878431, 0.878431, 0.878431, 1 )
 PopupMenu/colors/font_color_accel = Color( 0.7, 0.7, 0.7, 0.8 )
@@ -170,10 +170,10 @@ PopupMenu/icons/unchecked = null
 PopupMenu/styles/hover = null
 PopupMenu/styles/labeled_separator_left = null
 PopupMenu/styles/labeled_separator_right = null
-PopupMenu/styles/panel = SubResource( 11 )
+PopupMenu/styles/panel = SubResource( 6 )
 PopupMenu/styles/panel_disabled = null
 PopupMenu/styles/separator = null
-PopupPanel/styles/panel = SubResource( 12 )
+PopupPanel/styles/panel = SubResource( 7 )
 TabContainer/colors/font_color_bg = Color( 0.709804, 0.709804, 0.709804, 1 )
 TabContainer/colors/font_color_disabled = Color( 0.9, 0.9, 0.9, 0.2 )
 TabContainer/colors/font_color_fg = Color( 0.941176, 0.941176, 0.941176, 1 )
@@ -189,7 +189,7 @@ TabContainer/icons/increment = null
 TabContainer/icons/increment_highlight = null
 TabContainer/icons/menu = null
 TabContainer/icons/menu_highlight = null
-TabContainer/styles/panel = SubResource( 9 )
-TabContainer/styles/tab_bg = SubResource( 6 )
+TabContainer/styles/panel = SubResource( 8 )
+TabContainer/styles/tab_bg = SubResource( 9 )
 TabContainer/styles/tab_disabled = null
-TabContainer/styles/tab_fg = SubResource( 7 )
+TabContainer/styles/tab_fg = SubResource( 10 )
