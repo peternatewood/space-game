@@ -281,7 +281,6 @@ default = 100.0
 label_text = "Music"
 
 [node name="Controls" type="ScrollContainer" parent="Options Rows/TabContainer"]
-editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -565,7 +564,7 @@ anchor_right = 0.0
 margin_top = 912.0
 margin_right = 1004.0
 margin_bottom = 932.0
-action = "toggle_communications_menu"
+action = "toggle_communcations_menu"
 
 [node name="Warp Out" parent="Options Rows/TabContainer/Controls/Control Rows" instance=ExtResource( 3 )]
 anchor_right = 0.0
