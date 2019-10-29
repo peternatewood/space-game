@@ -1233,6 +1233,20 @@ margin_bottom = 26.0
 group = ExtResource( 5 )
 text = "Clear Binding"
 
+[node name="Go to Conflict" type="CheckBox" parent="Options Rows/TabContainer/Controls/Binding Options"]
+margin_left = 280.0
+margin_right = 428.0
+margin_bottom = 26.0
+group = ExtResource( 5 )
+text = "Go to Conflict"
+
+[node name="Clear Conflict" type="CheckBox" parent="Options Rows/TabContainer/Controls/Binding Options"]
+margin_left = 432.0
+margin_right = 580.0
+margin_bottom = 26.0
+group = ExtResource( 5 )
+text = "Clear Conflict"
+
 [node name="Game" type="VBoxContainer" parent="Options Rows/TabContainer"]
 visible = false
 anchor_right = 1.0
