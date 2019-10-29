@@ -196,12 +196,15 @@ text = "Shadow Quality"
 
 [node name="Shadow Quality Options" type="OptionButton" parent="Options Rows/TabContainer/Video/Three Columns"]
 margin_left = 125.0
-margin_right = 166.0
+margin_right = 191.0
 margin_bottom = 20.0
+text = "Low"
+items = [ "Custom", null, false, 0, null, "Low", null, false, 1, null, "Medium", null, false, 2, null, "High", null, false, 3, null, "Maximum", null, false, 4, null ]
+selected = 0
 
 [node name="Shadows Atlas Button" type="Button" parent="Options Rows/TabContainer/Video/Three Columns"]
-margin_left = 170.0
-margin_right = 373.0
+margin_left = 195.0
+margin_right = 398.0
 margin_bottom = 20.0
 text = "Customize Shadow Settings"
 
@@ -214,13 +217,13 @@ text = "Reflections Quality"
 [node name="Reflections Options" type="OptionButton" parent="Options Rows/TabContainer/Video/Three Columns"]
 margin_left = 125.0
 margin_top = 24.0
-margin_right = 166.0
+margin_right = 191.0
 margin_bottom = 44.0
 
 [node name="Reflections Button" type="Button" parent="Options Rows/TabContainer/Video/Three Columns"]
-margin_left = 170.0
+margin_left = 195.0
 margin_top = 24.0
-margin_right = 373.0
+margin_right = 398.0
 margin_bottom = 44.0
 text = "Customize Reflection Settings"
 
@@ -633,9 +636,9 @@ margin_left = 162.0
 margin_top = 18.0
 margin_right = 236.0
 margin_bottom = 42.0
-min_value = 8.0
-max_value = 16384.0
-value = 16.0
+min_value = 1024.0
+max_value = 8192.0
+value = 1024.0
 
 [node name="Point Light Shadows Label" type="Label" parent="Shadows Atlas Settings/Shadows Atlas Rows/Shadow Spinboxes Container"]
 margin_top = 51.0
@@ -648,9 +651,9 @@ margin_left = 160.0
 margin_top = 46.0
 margin_right = 234.0
 margin_bottom = 70.0
-min_value = 8.0
-max_value = 16384.0
-value = 8.0
+min_value = 1024.0
+max_value = 8192.0
+value = 1024.0
 
 [node name="Shadows Atlas Buttons" type="HBoxContainer" parent="Shadows Atlas Settings/Shadows Atlas Rows"]
 margin_top = 74.0
