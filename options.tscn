@@ -185,64 +185,65 @@ margin_bottom = 44.0
 [node name="Three Columns" type="GridContainer" parent="Options Rows/TabContainer/Video"]
 margin_top = 130.0
 margin_right = 1016.0
-margin_bottom = 174.0
+margin_bottom = 150.0
 columns = 3
 
 [node name="Shadows Label" type="Label" parent="Options Rows/TabContainer/Video/Three Columns"]
 margin_top = 3.0
-margin_right = 121.0
+margin_right = 98.0
 margin_bottom = 17.0
 text = "Shadow Quality"
 
 [node name="Shadow Quality Options" type="OptionButton" parent="Options Rows/TabContainer/Video/Three Columns"]
-margin_left = 125.0
-margin_right = 215.0
+margin_left = 102.0
+margin_right = 192.0
 margin_bottom = 20.0
 text = "Custom"
 items = [ "Custom", null, false, 0, null, "Low", null, false, 1, null, "Medium", null, false, 2, null, "High", null, false, 3, null, "Maximum", null, false, 4, null ]
 selected = 0
 
 [node name="Shadows Atlas Button" type="Button" parent="Options Rows/TabContainer/Video/Three Columns"]
-margin_left = 219.0
-margin_right = 422.0
+margin_left = 196.0
+margin_right = 383.0
 margin_bottom = 20.0
 text = "Customize Shadow Settings"
 
 [node name="Reflections Label" type="Label" parent="Options Rows/TabContainer/Video/Three Columns"]
+visible = false
 margin_top = 27.0
 margin_right = 121.0
 margin_bottom = 41.0
 text = "Reflections Quality"
 
 [node name="Reflections Options" type="OptionButton" parent="Options Rows/TabContainer/Video/Three Columns"]
-margin_left = 125.0
+visible = false
 margin_top = 24.0
-margin_right = 215.0
+margin_right = 98.0
 margin_bottom = 44.0
 
 [node name="Reflections Button" type="Button" parent="Options Rows/TabContainer/Video/Three Columns"]
-margin_left = 219.0
+visible = false
 margin_top = 24.0
-margin_right = 422.0
+margin_right = 203.0
 margin_bottom = 44.0
 text = "Customize Reflection Settings"
 
 [node name="HDR CheckBox" type="CheckBox" parent="Options Rows/TabContainer/Video"]
-margin_top = 178.0
+margin_top = 154.0
 margin_right = 1016.0
-margin_bottom = 202.0
+margin_bottom = 178.0
 text = "Enable HDR"
 
 [node name="Vsync CheckBox" type="CheckBox" parent="Options Rows/TabContainer/Video"]
-margin_top = 206.0
+margin_top = 182.0
 margin_right = 1016.0
-margin_bottom = 230.0
+margin_bottom = 206.0
 text = "Enable Vsync"
 
 [node name="FOV Slider" parent="Options Rows/TabContainer/Video" instance=ExtResource( 2 )]
-margin_top = 234.0
+margin_top = 210.0
 margin_right = 1016.0
-margin_bottom = 258.0
+margin_bottom = 234.0
 default = 65.0
 label_text = "FOV"
 max_value = 120.0
