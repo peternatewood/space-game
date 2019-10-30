@@ -1,10 +1,13 @@
 extends TextureButton
 
+var ship_class: String
+var weapon_name: String
+
 
 func _ready():
 	connect("mouse_entered", self, "_on_mouse_entered")
 	connect("mouse_exited", self, "_on_mouse_exited")
-	set_modulate(HOVER_COLOR)
+	set_modulate(NORMAL_COLOR)
 
 
 func _on_mouse_entered():
@@ -12,7 +15,7 @@ func _on_mouse_entered():
 
 
 func _on_mouse_exited():
-	set_modulate(HOVER_COLOR)
+	set_modulate(NORMAL_COLOR)
 
 
-const HOVER_COLOR: Color = Color(1, 1, 1, 0.5)
+const NORMAL_COLOR: Color = Color(1, 1, 1, 0.5)
