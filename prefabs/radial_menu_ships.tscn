@@ -1,0 +1,107 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scripts/RadialMenuShips.gd" type="Script" id=1]
+[ext_resource path="res://models/ships/fighter_spider/icon.png" type="Texture" id=2]
+[ext_resource path="res://images/radial_bg.png" type="Texture" id=3]
+
+[node name="Radial Menu" type="Control"]
+rect_min_size = Vector2( 38, 63 )
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource( 1 )
+
+[node name="Current Icon" type="TextureRect" parent="."]
+margin_right = 38.0
+margin_bottom = 63.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource( 2 )
+
+[node name="Highlight" type="Control" parent="."]
+editor/display_folded = true
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Top Left" type="Control" parent="Highlight"]
+
+[node name="Highlight Line" type="Line2D" parent="Highlight/Top Left"]
+points = PoolVector2Array( 0, 8, 0, 0, 8, 0 )
+width = 1.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = -2131836240
+
+[node name="Top Right" type="Control" parent="Highlight"]
+anchor_left = 1.0
+anchor_right = 1.0
+
+[node name="Highlight Line" type="Line2D" parent="Highlight/Top Right"]
+points = PoolVector2Array( -8, 0, 0, 0, 0, 8 )
+width = 1.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = -2131836240
+
+[node name="Bottom Left" type="Control" parent="Highlight"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+
+[node name="Highlight Line" type="Line2D" parent="Highlight/Bottom Left"]
+points = PoolVector2Array( 0, -8, 0, 0, 8, 0 )
+width = 1.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = -2131836240
+
+[node name="Bottom Right" type="Control" parent="Highlight"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Highlight Line" type="Line2D" parent="Highlight/Bottom Right"]
+points = PoolVector2Array( 0, -8, 0, 0, -8, 0 )
+width = 1.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = -2131836240
+
+[node name="Radial Container" type="Control" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+
+[node name="Radial Background" type="TextureRect" parent="Radial Container"]
+self_modulate = Color( 0, 0, 0, 0.498039 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -161.0
+margin_top = -161.0
+margin_right = 161.0
+margin_bottom = 161.0
+texture = ExtResource( 3 )
+
+[node name="Icons Container" type="Control" parent="Radial Container"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+size_flags_horizontal = 5
+size_flags_vertical = 5
+
+[node name="Cross Icon" type="Node2D" parent="."]
+visible = false
+position = Vector2( 19, 32 )
+
+[node name="Line2D" type="Line2D" parent="Cross Icon"]
+points = PoolVector2Array( -14, -14, 14, 14 )
+width = 1.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = 1129775104
+
+[node name="Line2D2" type="Line2D" parent="Cross Icon"]
+points = PoolVector2Array( 14, -14, -14, 14 )
+width = 1.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = 1129775104
