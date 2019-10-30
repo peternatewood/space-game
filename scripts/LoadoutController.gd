@@ -8,7 +8,6 @@ onready var ship_class_label = get_node("Ship Preview Container/Ship Details/Shi
 onready var ship_overhead = get_node("Ship Overhead")
 onready var ship_preview = get_node("Ship Preview Viewport")
 onready var ship_preview_container = get_node("Ship Preview Container")
-onready var ship_selection_container = get_node("Left Rows/Ships Panel/Ship Selection Container")
 onready var ship_wing_name = get_node("Weapon Slots Rows/Ship Wing Name")
 onready var weapon_slots_rows = get_node("Weapon Slots Rows")
 onready var wing_ships_container = get_node("Wing Ships Container")
@@ -29,6 +28,7 @@ func _ready():
 	for index in range(min(mission_data.VALID_WINGS.size(), wing_container_nodes.size())):
 		wing_containers[mission_data.VALID_WINGS[index]] = wing_container_nodes[index]
 
+	var ship_selection_container = get_node("Left Rows/Ships Panel/Ship Selection Container")
 	for ship_class in mission_data.ship_models.keys():
 		if mission_data.armory.ships.has(ship_class):
 			var model = mission_data.ship_models[ship_class]
@@ -46,6 +46,12 @@ func _ready():
 			var overhead_load_error = overhead.load(source_folder + "/loadout_overhead.png")
 			if overhead_load_error != OK:
 				print("Error loading overhead icon: " + str(overhead_load_error))
+
+			var radial_icon = RADIAL_ICON.instance()
+			ship_selection_container.add_child(radial_icon)
+			radial_icon.set_normal_texture(icon)
+			radial_icon.set_h_size_flags(SIZE_SHRINK_CENTER)
+			radial_icon.connect("pressed", self, "_update_ship_preview", [ ship_class ])
 
 			ship_data[ship_class] = { "model": model, "icon": icon, "overhead": overhead, "energy_weapon_slots": energy_weapon_slot_count, "missile_weapon_slots": missile_weapon_slot_count }
 
@@ -202,8 +208,9 @@ func _update_ship_preview(ship_class: String):
 	return false
 
 
-const WeaponSlot = preload("WeaponSlot.gd")
 const ShipSlot = preload("ShipSlot.gd")
+const WeaponSlot = preload("WeaponSlot.gd")
 
+const RADIAL_ICON = preload("res://prefabs/radial_icon.tscn")
 const SHIP_LOADOUT_ICON = preload("res://icons/ship_loadout_icon.tscn")
 const WEAPON_LOADOUT_ICON = preload("res://icons/weapon_loadout_icon.tscn")
