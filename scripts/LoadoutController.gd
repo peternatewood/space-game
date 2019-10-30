@@ -18,7 +18,6 @@ var editing_ship_index: int = -1
 var editing_wing_name: String
 var energy_weapon_data: Dictionary = {}
 var missile_weapon_data: Dictionary = {}
-var mouse_over_wing_ship: bool = false
 var ship_data: Dictionary = {}
 var wing_ship_over
 var wing_containers: Dictionary = {}
@@ -48,12 +47,6 @@ func _ready():
 			if overhead_load_error != OK:
 				print("Error loading overhead icon: " + str(overhead_load_error))
 
-			var loadout_icon = SHIP_LOADOUT_ICON.instance()
-			ship_selection_container.add_child(loadout_icon)
-			loadout_icon.set_ship(ship_class, icon)
-			loadout_icon.connect("icon_clicked", self, "_on_loadout_icon_clicked")
-			loadout_icon.connect("draggable_icon_dropped", self, "_on_draggable_ship_icon_dropped")
-
 			ship_data[ship_class] = { "model": model, "icon": icon, "overhead": overhead, "energy_weapon_slots": energy_weapon_slot_count, "missile_weapon_slots": missile_weapon_slot_count }
 
 	var energy_weapons_container = get_node("Left Rows/Energy Weapons Panel/Energy Weapons Container")
@@ -68,12 +61,11 @@ func _ready():
 			if icon_load_error != OK:
 				print("Error loading ship icon: " + str(icon_load_error))
 
-			var loadout_icon = WEAPON_LOADOUT_ICON.instance()
-			energy_weapons_container.add_child(loadout_icon)
-			loadout_icon.set_weapon(energy_weapon_name, icon, WeaponSlot.TYPE.ENERGY_WEAPON)
-			loadout_icon.connect("draggable_icon_dropped", self, "_on_draggable_weapon_icon_dropped")
-
 			energy_weapon_data[energy_weapon_name] = { "model": model, "icon": icon }
+
+	for index in range(energy_weapon_slots.size()):
+		energy_weapon_slots[index].set_options(energy_weapon_data)
+		energy_weapon_slots[index].connect("icon_pressed", self, "_on_energy_weapon_slot_pressed", [ index ])
 
 	var missile_weapons_container = get_node("Left Rows/Missile Weapons Panel/Missile Weapons Container")
 	for missile_weapon_name in mission_data.missile_weapon_models.keys():
@@ -87,24 +79,27 @@ func _ready():
 			if icon_load_error != OK:
 				print("Error loading ship icon: " + str(icon_load_error))
 
-			var loadout_icon = WEAPON_LOADOUT_ICON.instance()
-			missile_weapons_container.add_child(loadout_icon)
-			loadout_icon.set_weapon(missile_weapon_name, icon, WeaponSlot.TYPE.MISSILE_WEAPON)
-			loadout_icon.connect("draggable_icon_dropped", self, "_on_draggable_weapon_icon_dropped")
-
 			missile_weapon_data[missile_weapon_name] = { "model": model, "icon": icon }
+
+	for index in range(missile_weapon_slots.size()):
+		missile_weapon_slots[index].set_options(missile_weapon_data)
+		missile_weapon_slots[index].connect("icon_pressed", self, "_on_missile_weapon_slot_pressed", [ index ])
 
 	# Set wing ship icons based on wing defaults
 	for wing_name in wing_containers.keys():
-		var ship_icons = wing_containers[wing_name].get_children()
+		var ship_radials = wing_containers[wing_name].get_children()
 		for ship_index in range(4):
 			if ship_index < mission_data.wing_loadouts[wing_name].size():
+				# Initialize ship options
+				ship_radials[ship_index].set_options(ship_data)
+
 				var ship_class = mission_data.wing_loadouts[wing_name][ship_index].ship_class
-				ship_icons[ship_index].set_icon(ship_data[ship_class].icon)
-				ship_icons[ship_index].set_indexes(wing_name, ship_index)
-				ship_icons[ship_index].connect("pressed", self, "_on_wing_icon_pressed", [ wing_name, ship_index ])
+
+				ship_radials[ship_index].set_current_icon(ship_data[ship_class].icon)
+				ship_radials[ship_index].connect("radial_pressed", self, "_on_wing_radial_pressed", [ wing_name, ship_index ])
+				ship_radials[ship_index].connect("icon_pressed", self, "_on_wing_icon_pressed")
 			else:
-				ship_icons[ship_index].disable()
+				ship_radials[ship_index].disable()
 
 	var index: int = 0
 	for node in get_node("Left Rows/Wings Panel/Wing Selection Container").get_children():
@@ -113,40 +108,23 @@ func _ready():
 			index += 1
 
 	# Default to showing player/Alpha 1 loadout
-	_on_wing_icon_pressed("Alpha", 0)
+	_on_wing_radial_pressed("Alpha", 0)
 
 
-func _on_draggable_ship_icon_dropped(icon, over_area):
-	if over_area is ShipSlot:
-		over_area.set_icon(icon.get_texture())
-		over_area.highlight(false)
-
-		mission_data.wing_loadouts[over_area.wing_name][over_area.ship_index].ship_class = icon.ship_class
-		mission_data.wing_loadouts[over_area.wing_name][over_area.ship_index].model = ship_data[icon.ship_class].model
-
-		# Set current wing ship selection to icon we dropped over
-		_set_editing_ship(icon.ship_class, over_area.wing_name, over_area.ship_index)
+func _on_energy_weapon_slot_pressed(weapon_name: String, slot_index: int):
+	if editing_wing_name == "" or editing_ship_index == -1:
+		print("Something went wrong!")
+	elif weapon_name != mission_data.wing_loadouts[editing_wing_name][editing_ship_index].energy_weapons[slot_index].name:
+		mission_data.wing_loadouts[editing_wing_name][editing_ship_index].energy_weapons[slot_index].model = energy_weapon_data[weapon_name].model
+		mission_data.wing_loadouts[editing_wing_name][editing_ship_index].energy_weapons[slot_index].name = weapon_name
 
 
-func _on_draggable_weapon_icon_dropped(icon, over_area):
-	if over_area is WeaponSlot and over_area.is_area_same_type(icon.draggable_icon):
-		over_area.set_icon(icon.get_texture())
-		over_area.highlight(false)
-
-		var weapon_type_string: String
-		match over_area.slot_type:
-			WeaponSlot.TYPE.ENERGY_WEAPON:
-				weapon_type_string = "energy_weapons"
-				mission_data.wing_loadouts[editing_wing_name][editing_ship_index][weapon_type_string][over_area.index].model = energy_weapon_data[icon.weapon_name].model
-			WeaponSlot.TYPE.MISSILE_WEAPON:
-				weapon_type_string = "missile_weapons"
-				mission_data.wing_loadouts[editing_wing_name][editing_ship_index][weapon_type_string][over_area.index].model = missile_weapon_data[icon.weapon_name].model
-
-		mission_data.wing_loadouts[editing_wing_name][editing_ship_index][weapon_type_string][over_area.index].weapon_name = icon.weapon_name
-
-
-func _on_loadout_icon_clicked(icon):
-	_update_ship_preview(icon.ship_class)
+func _on_missile_weapon_slot_pressed(weapon_name: String, slot_index: int):
+	if editing_wing_name == "" or editing_ship_index == -1:
+		print("Something went wrong!")
+	elif weapon_name != mission_data.wing_loadouts[editing_wing_name][editing_ship_index].missile_weapons[slot_index].name:
+		mission_data.wing_loadouts[editing_wing_name][editing_ship_index].missile_weapons[slot_index].model = missile_weapon_data[weapon_name].model
+		mission_data.wing_loadouts[editing_wing_name][editing_ship_index].missile_weapons[slot_index].name = weapon_name
 
 
 func _on_wing_checkbox_pressed(pressed_wing_name: String):
@@ -154,7 +132,17 @@ func _on_wing_checkbox_pressed(pressed_wing_name: String):
 		wing_containers[wing_name].toggle(wing_name == pressed_wing_name)
 
 
-func _on_wing_icon_pressed(wing_name: String, ship_index: int):
+func _on_wing_icon_pressed(ship_class: String):
+	if editing_wing_name == "" or editing_ship_index == -1:
+		print("Something went wrong!")
+	elif ship_class != mission_data.wing_loadouts[editing_wing_name][editing_ship_index].ship_class:
+		mission_data.wing_loadouts[editing_wing_name][editing_ship_index].ship_class = ship_class
+		mission_data.wing_loadouts[editing_wing_name][editing_ship_index].model = ship_data[ship_class].model
+
+		_set_editing_ship(ship_class, editing_wing_name, editing_ship_index)
+
+
+func _on_wing_radial_pressed(wing_name: String, ship_index: int):
 	_set_editing_ship(mission_data.wing_loadouts[wing_name][ship_index].ship_class, wing_name, ship_index)
 
 
@@ -171,9 +159,9 @@ func _set_editing_ship(ship_class: String, wing_name: String, ship_index: int):
 
 			var energy_weapon_name = ship_loadout.energy_weapons[index].name
 			if energy_weapon_name == "none":
-				energy_weapon_slots[index].toggle_icon(false)
+				energy_weapon_slots[index].hide_current_icon()
 			else:
-				energy_weapon_slots[index].set_icon(energy_weapon_data[energy_weapon_name].icon)
+				energy_weapon_slots[index].set_current_icon(energy_weapon_data[energy_weapon_name].icon)
 		else:
 			energy_weapon_slots[index].hide()
 
@@ -183,9 +171,9 @@ func _set_editing_ship(ship_class: String, wing_name: String, ship_index: int):
 
 			var missile_weapon_name = ship_loadout.missile_weapons[index].name
 			if missile_weapon_name == "none":
-				missile_weapon_slots[index].toggle_icon(false)
+				missile_weapon_slots[index].hide_current_icon()
 			else:
-				missile_weapon_slots[index].set_icon(missile_weapon_data[missile_weapon_name].icon)
+				missile_weapon_slots[index].set_current_icon(missile_weapon_data[missile_weapon_name].icon)
 		else:
 			missile_weapon_slots[index].hide()
 
