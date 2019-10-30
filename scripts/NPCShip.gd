@@ -102,6 +102,8 @@ func _process(delta):
 							_set_current_target(closest_target)
 						else:
 							o.type = ORDER_TYPE.PASSIVE
+				ORDER_TYPE.DEPART:
+					warp(false)
 
 	._process(delta)
 
