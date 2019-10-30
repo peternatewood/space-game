@@ -86,6 +86,41 @@ func _on_trigger_requirement_completed():
 		emit_signal("triggered")
 
 
+# PUBLIC
+
+
+func connect_targets_to_requirements(targets_container):
+	# Connect success requirements
+	for requirement in success_requirements:
+		for target_name in requirement.target_names:
+			var target_node = targets_container.get_node_or_null(target_name)
+			if target_node != null:
+				requirement.targets.append(target_node)
+				target_node.connect("destroyed", requirement, "_on_target_destroyed")
+				target_node.connect("warping_in", requirement, "_on_target_warping_in")
+				target_node.connect("warped_out", requirement, "_on_target_warped_out")
+
+	# Also connect all failure requirements
+	for requirement in failure_requirements:
+		for target_name in requirement.target_names:
+			var target_node = targets_container.get_node_or_null(target_name)
+			if target_node != null:
+				requirement.targets.append(target_node)
+				target_node.connect("destroyed", requirement, "_on_target_destroyed")
+				target_node.connect("warping_in", requirement, "_on_target_warping_in")
+				target_node.connect("warped_out", requirement, "_on_target_warped_out")
+
+	# And finally, trigger requirements
+	for requirement in trigger_requirements:
+		for target_name in requirement.target_names:
+			var target_node = targets_container.get_node_or_null(target_name)
+			if target_node != null:
+				requirement.targets.append(target_node)
+				target_node.connect("destroyed", requirement, "_on_target_destroyed")
+				target_node.connect("warping_in", requirement, "_on_target_warping_in")
+				target_node.connect("warped_out", requirement, "_on_target_warped_out")
+
+
 signal completed
 signal failed
 signal triggered

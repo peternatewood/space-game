@@ -87,32 +87,7 @@ func _on_scene_loaded():
 	# Prepare mission objectives
 	for index in range(mission_data.objectives.size()):
 		for objective in mission_data.objectives[index]:
-			for requirement in objective.success_requirements:
-				for target_name in requirement.target_names:
-					var target_node = targets_container.get_node_or_null(target_name)
-					if target_node != null:
-						requirement.targets.append(target_node)
-						target_node.connect("destroyed", requirement, "_on_target_destroyed")
-						target_node.connect("warping_in", requirement, "_on_target_warping_in")
-						target_node.connect("warped_out", requirement, "_on_target_warped_out")
-			# Also connect all failure requirements
-			for requirement in objective.failure_requirements:
-				for target_name in requirement.target_names:
-					var target_node = targets_container.get_node_or_null(target_name)
-					if target_node != null:
-						requirement.targets.append(target_node)
-						target_node.connect("destroyed", requirement, "_on_target_destroyed")
-						target_node.connect("warping_in", requirement, "_on_target_warping_in")
-						target_node.connect("warped_out", requirement, "_on_target_warped_out")
-			# And finally, trigger requirements
-			for requirement in objective.trigger_requirements:
-				for target_name in requirement.target_names:
-					var target_node = targets_container.get_node_or_null(target_name)
-					if target_node != null:
-						requirement.targets.append(target_node)
-						target_node.connect("destroyed", requirement, "_on_target_destroyed")
-						target_node.connect("warping_in", requirement, "_on_target_warping_in")
-						target_node.connect("warped_out", requirement, "_on_target_warped_out")
+			objective.connect_targets_to_requirements(targets_container)
 
 	pause_menu.connect("main_menu_confirmed", self, "_on_main_menu_confirmed")
 
