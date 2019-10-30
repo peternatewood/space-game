@@ -36,13 +36,17 @@ camera_path = NodePath("../../Camera")
 transform = Transform( 0.787268, 0.302992, 0.537034, -0.226817, 0.95218, -0.204713, -0.573379, 0.0393554, 0.818344, 4.66133, 2.33831, -2.32113 )
 script = ExtResource( 5 )
 faction = "spider"
+is_warped_in = false
 wing_name = "Alpha"
+initial_orders = [ 7 ]
 
 [node name="Alpha 3" parent="Targets Container" instance=ExtResource( 3 )]
 transform = Transform( -0.694721, -0.305488, -0.651183, -0.226817, 0.95218, -0.204713, 0.682581, 0.00548107, -0.730789, -10.4962, -2.45585, 4.0847 )
 script = ExtResource( 5 )
 faction = "spider"
+is_warped_in = false
 wing_name = "Alpha"
+initial_orders = [ 7 ]
 
 [node name="Beta 1" parent="Targets Container" instance=ExtResource( 3 )]
 transform = Transform( -0.417827, 0.599459, -0.682693, -0.312929, -0.800406, -0.511299, -0.852934, 0, 0.522019, -4.55983, 2.07022, -11.4268 )
@@ -56,7 +60,7 @@ transform = Transform( 0.478177, -0.0391645, 0.87739, 0.696631, 0.62528, -0.3517
 script = ExtResource( 5 )
 faction = "frog"
 wing_name = "Hyla"
-initial_orders = [ 7 ]
+initial_orders = [ 8 ]
 
 [node name="Hyla 2" parent="Targets Container" instance=ExtResource( 6 )]
 transform = Transform( 0.714087, 0.56136, -0.418275, -0.152566, 0.707917, 0.689621, 0.683229, -0.428635, 0.591159, -8.23028, 0, -14.6645 )
