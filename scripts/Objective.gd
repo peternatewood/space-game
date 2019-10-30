@@ -2,7 +2,7 @@ extends Object
 
 enum { PRIMARY, SECONDARY, SECRET }
 enum { INCOMPLETE, FAILED, COMPLETED }
-enum { PATROL, DESTROY, DEFEND, OBJECTIVE }
+enum { PATROL, DESTROY, DEFEND, OBJECTIVE, SHIPS_ARRIVE, SHIPS_LEAVE }
 
 var state: int = INCOMPLETE
 var name: String
@@ -105,6 +105,22 @@ class Requirement extends Object:
 				DEFEND:
 					state = FAILED
 					emit_signal("failed")
+
+
+	func _on_target_warping_in():
+		if type == SHIPS_ARRIVE:
+			target_counter += 1
+			if target_counter >= targets.size():
+				state = COMPLETED
+				emit_signal("completed")
+
+
+	func _on_target_warped_out():
+		if type == SHIPS_LEAVE:
+			target_counter += 1
+			if target_counter >= targets.size():
+				state = COMPLETED
+				emit_signal("completed")
 
 
 	signal completed
