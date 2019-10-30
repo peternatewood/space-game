@@ -5,9 +5,11 @@ var weapon_name: String
 
 
 func _ready():
+	set_modulate(NORMAL_COLOR)
+
 	connect("mouse_entered", self, "_on_mouse_entered")
 	connect("mouse_exited", self, "_on_mouse_exited")
-	set_modulate(NORMAL_COLOR)
+	connect("pressed", self, "_on_mouse_exited")
 
 
 func _on_mouse_entered():

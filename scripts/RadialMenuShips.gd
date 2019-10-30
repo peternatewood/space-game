@@ -20,4 +20,6 @@ func set_options(ship_data: Dictionary):
 		var icon_position = Vector2(HALF_RADIUS * cos(radians), HALF_RADIUS * sin(radians))
 		icon.set_position(icon_position - icon.rect_size / 2)
 
+		icon.connect("pressed", self, "_on_icon_pressed", [ ship_class, ship_data[ship_class].icon ])
+
 		radians += radian_increment

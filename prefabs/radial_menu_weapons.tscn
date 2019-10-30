@@ -71,17 +71,12 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
+rect_min_size = Vector2( 322, 322 )
 
 [node name="Radial Background" type="TextureRect" parent="Radial Container"]
 self_modulate = Color( 0, 0, 0, 0.498039 )
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -161.0
-margin_top = -161.0
-margin_right = 161.0
-margin_bottom = 161.0
+margin_right = 322.0
+margin_bottom = 322.0
 texture = ExtResource( 3 )
 
 [node name="Icons Container" type="Control" parent="Radial Container"]

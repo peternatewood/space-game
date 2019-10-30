@@ -14,10 +14,15 @@ func _ready():
 
 
 func _on_current_icon_pressed():
-	if radial_container.visible:
-		pass
-	else:
+	if not radial_container.visible:
 		radial_container.popup_centered()
+		emit_signal("radial_pressed")
+
+
+func _on_icon_pressed(icon_data: String, image_resource):
+	set_current_icon(image_resource)
+	radial_container.hide()
+	emit_signal("icon_pressed", icon_data)
 
 
 func _on_mouse_entered():
@@ -38,6 +43,9 @@ func hide_current_icon():
 func set_current_icon(image_resource):
 	current_icon.set_normal_texture(image_resource)
 
+
+signal icon_pressed
+signal radial_pressed
 
 const RadialIcon = preload("RadialIcon.gd")
 

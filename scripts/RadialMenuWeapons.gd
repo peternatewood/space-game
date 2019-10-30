@@ -15,4 +15,6 @@ func set_options(weapon_data: Dictionary):
 		var icon_position = Vector2(HALF_RADIUS * cos(radians), HALF_RADIUS * sin(radians))
 		icon.set_position(icon_position - icon.rect_size / 2)
 
+		icon.connect("pressed", self, "_on_icon_pressed", [ weapon_name, weapon_data[weapon_name].icon ])
+
 		radians += radian_increment
