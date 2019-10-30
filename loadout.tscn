@@ -36,27 +36,124 @@ margin_bottom = 200.0
 texture = ExtResource( 2 )
 
 [node name="Ship Preview Container" type="HBoxContainer" parent="."]
-visible = false
 anchor_left = 1.0
 anchor_right = 1.0
 margin_left = -231.0
 margin_bottom = 150.0
 grow_horizontal = 0
 
-[node name="Ship Details" type="VBoxContainer" parent="Ship Preview Container"]
-margin_right = 27.0
+[node name="Ship Details" type="GridContainer" parent="Ship Preview Container"]
+margin_right = 182.0
 margin_bottom = 150.0
 grow_horizontal = 0
+columns = 2
+
+[node name="Ship Class Label" type="Label" parent="Ship Preview Container/Ship Details"]
+margin_right = 141.0
+margin_bottom = 14.0
+grow_horizontal = 0
+text = "Class:"
 
 [node name="Ship Class" type="Label" parent="Ship Preview Container/Ship Details"]
-margin_right = 27.0
+margin_left = 145.0
+margin_right = 182.0
 margin_bottom = 14.0
 grow_horizontal = 0
 text = "Ship"
 
+[node name="Speed Label" type="Label" parent="Ship Preview Container/Ship Details"]
+margin_top = 18.0
+margin_right = 141.0
+margin_bottom = 32.0
+grow_horizontal = 0
+text = "Top Speed:"
+
+[node name="Ship Speed" type="Label" parent="Ship Preview Container/Ship Details"]
+margin_left = 145.0
+margin_top = 18.0
+margin_right = 182.0
+margin_bottom = 32.0
+grow_horizontal = 0
+text = "0 m/s"
+
+[node name="Hull Strength Label" type="Label" parent="Ship Preview Container/Ship Details"]
+margin_top = 36.0
+margin_right = 141.0
+margin_bottom = 50.0
+grow_horizontal = 0
+text = "Hull Strength:"
+
+[node name="Hull Strength" type="Label" parent="Ship Preview Container/Ship Details"]
+margin_left = 145.0
+margin_top = 36.0
+margin_right = 182.0
+margin_bottom = 50.0
+grow_horizontal = 0
+text = "n/a"
+
+[node name="Shield Strength Label" type="Label" parent="Ship Preview Container/Ship Details"]
+margin_top = 54.0
+margin_right = 141.0
+margin_bottom = 68.0
+grow_horizontal = 0
+text = "Shield Strength:"
+
+[node name="Shield Strength" type="Label" parent="Ship Preview Container/Ship Details"]
+margin_left = 145.0
+margin_top = 54.0
+margin_right = 182.0
+margin_bottom = 68.0
+grow_horizontal = 0
+text = "n/a"
+
+[node name="Energy Weapon Slots Label" type="Label" parent="Ship Preview Container/Ship Details"]
+margin_top = 72.0
+margin_right = 141.0
+margin_bottom = 86.0
+grow_horizontal = 0
+text = "Energy Weapon Slots:"
+
+[node name="Energy Weapon Slots" type="Label" parent="Ship Preview Container/Ship Details"]
+margin_left = 145.0
+margin_top = 72.0
+margin_right = 182.0
+margin_bottom = 86.0
+grow_horizontal = 0
+text = "0"
+
+[node name="Missile Weapon Slots Label" type="Label" parent="Ship Preview Container/Ship Details"]
+margin_top = 90.0
+margin_right = 141.0
+margin_bottom = 104.0
+grow_horizontal = 0
+text = "Missile Weapon Slots:"
+
+[node name="Missile Weapon Slots" type="Label" parent="Ship Preview Container/Ship Details"]
+margin_left = 145.0
+margin_top = 90.0
+margin_right = 182.0
+margin_bottom = 104.0
+grow_horizontal = 0
+text = "0"
+
+[node name="Weapon Capacity Label" type="Label" parent="Ship Preview Container/Ship Details"]
+margin_top = 108.0
+margin_right = 141.0
+margin_bottom = 122.0
+grow_horizontal = 0
+text = "Weapon Capacity"
+
+[node name="Weapon Capacity" type="Label" parent="Ship Preview Container/Ship Details"]
+margin_left = 145.0
+margin_top = 108.0
+margin_right = 182.0
+margin_bottom = 122.0
+grow_horizontal = 0
+text = "n/a"
+
 [node name="Ship Preview" type="TextureRect" parent="Ship Preview Container"]
-margin_left = 31.0
-margin_right = 231.0
+margin_left = 186.0
+margin_right = 386.0
 margin_bottom = 150.0
 texture = SubResource( 1 )
 
