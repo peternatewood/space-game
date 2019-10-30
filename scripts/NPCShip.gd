@@ -1,6 +1,6 @@
 extends "res://scripts/ShipBase.gd"
 
-enum ORDER_TYPE { PASSIVE, ATTACK, DEFEND, IGNORE, COVER_ME, ATTACK_ANY, DEPART, PATROL }
+enum ORDER_TYPE { PASSIVE, ATTACK, DEFEND, IGNORE, COVER_ME, ATTACK_ANY, DEPART, ARRIVE, PATROL }
 
 export (Array, ORDER_TYPE) var initial_orders = [ORDER_TYPE.PASSIVE]
 
@@ -45,7 +45,19 @@ func _get_next_waypoint():
 
 func _on_mission_ready():
 	for order_type in initial_orders:
-		orders.append(Order.new(order_type))
+		var order = Order.new(order_type)
+		orders.append(order)
+
+		match order_type:
+			ORDER_TYPE.ARRIVE:
+				# TODO: Provide a way to specify arrival delay
+				var warp_in_timer = Timer.new()
+				warp_in_timer.set_one_shot(true)
+				warp_in_timer.set_autostart(true)
+				warp_in_timer.set_wait_time(2)
+				warp_in_timer.connect("timeout", self, "warp", [ true ])
+				get_tree().get_root().add_child(warp_in_timer)
+				order.type = ORDER_TYPE.PASSIVE
 
 	._on_mission_ready()
 
