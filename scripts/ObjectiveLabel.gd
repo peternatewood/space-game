@@ -7,3 +7,7 @@ func _on_objective_completed():
 
 func _on_objective_failed():
 	set_modulate(Color.red)
+
+
+func _on_objective_triggered():
+	show()
