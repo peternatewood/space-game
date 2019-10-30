@@ -274,7 +274,12 @@ func _on_mission_ready():
 			var objective_label = OBJECTIVE_LABEL.instance()
 			objective_label.set_text(objective.name)
 			objectives_rows.add_child(objective_label)
-			if not objective.enabled:
+
+			# Only show secret objectives once completed, show other objective types when triggered
+			if index == objective.SECRET:
+				objective_label.hide()
+				objective.connect("completed", objective_label, "_on_objective_triggered")
+			elif not objective.enabled:
 				objective_label.hide()
 				objective.connect("triggered", objective_label, "_on_objective_triggered")
 
