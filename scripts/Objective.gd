@@ -4,12 +4,14 @@ enum { PRIMARY, SECONDARY, SECRET }
 enum { INCOMPLETE, FAILED, COMPLETED }
 enum { PATROL, DESTROY, DEFEND, OBJECTIVE, SHIPS_ARRIVE, SHIPS_LEAVE }
 
-var state: int = INCOMPLETE
-var name: String
 var description: String
-var is_critical: bool
-var success_requirements: Array = []
+var enabled: bool = true
 var failure_requirements: Array = []
+var is_critical: bool
+var name: String
+var state: int = INCOMPLETE
+var success_requirements: Array = []
+var trigger_requirements: Array = []
 
 
 func _init(source_dictionary):
@@ -29,8 +31,19 @@ func _init(source_dictionary):
 		requirement.connect("completed", self, "_on_failure_requirement_completed")
 		requirement.connect("failed", self, "_on_failure_requirement_failed")
 
+	for requirement_data in source_dictionary.get("trigger_requirements", []):
+		if enabled:
+			enabled = false
+
+		var requirement = Requirement.new(requirement_data)
+		trigger_requirements.append(requirement)
+		requirement.connect("completed", self, "_on_trigger_requirement_completed")
+
 
 func _on_failure_requirement_completed():
+	if not enabled:
+		return
+
 	if state != FAILED:
 		state = FAILED
 		emit_signal("failed")
@@ -42,6 +55,9 @@ func _on_failure_requirement_failed():
 
 
 func _on_success_requirement_completed():
+	if not enabled:
+		return
+
 	if state != FAILED:
 		for requirement in success_requirements:
 			if requirement.state != COMPLETED:
@@ -52,13 +68,27 @@ func _on_success_requirement_completed():
 
 
 func _on_success_requirement_failed():
+	if not enabled:
+		return
+
 	if state != COMPLETED:
 		state = FAILED
 		emit_signal("failed")
 
 
+func _on_trigger_requirement_completed():
+	if not enabled:
+		for requirement in trigger_requirements:
+			if requirement.state != COMPLETED:
+				return
+
+		enabled = true
+		emit_signal("triggered")
+
+
 signal completed
 signal failed
+signal triggered
 
 
 class Requirement extends Object:
@@ -70,6 +100,7 @@ class Requirement extends Object:
 	var targets: Array = []
 	var target_counter: int = 0
 	var time_limit: float
+	var warp_in_counter: int = 0
 	var waypoints_name: String
 
 
@@ -84,13 +115,11 @@ class Requirement extends Object:
 
 
 	func _on_objective_completed():
-		print("on objective completed")
 		state = COMPLETED
 		emit_signal("completed")
 
 
 	func _on_objective_failed():
-		print("on objective failed")
 		state = FAILED
 		emit_signal("failed")
 
@@ -109,8 +138,8 @@ class Requirement extends Object:
 
 	func _on_target_warping_in():
 		if type == SHIPS_ARRIVE:
-			target_counter += 1
-			if target_counter >= targets.size():
+			warp_in_counter += 1
+			if warp_in_counter >= targets.size():
 				state = COMPLETED
 				emit_signal("completed")
 
