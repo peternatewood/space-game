@@ -6,14 +6,17 @@ onready var radial_container = get_node("Radial Container")
 
 
 func _ready():
-	connect("mouse_entered", self, "_on_mouse_entered")
-	connect("mouse_exited", self, "_on_mouse_exited")
 	current_icon.set_modulate(RadialIcon.NORMAL_COLOR)
-	current_icon.connect("gui_input", self, "_on_current_icon_gui_input")
+
+	current_icon.connect("mouse_entered", self, "_on_mouse_entered")
+	current_icon.connect("mouse_exited", self, "_on_mouse_exited")
+	current_icon.connect("pressed", self, "_on_current_icon_pressed")
 
 
-func _on_current_icon_gui_input(event):
-	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.pressed:
+func _on_current_icon_pressed():
+	if radial_container.visible:
+		pass
+	else:
 		radial_container.popup_centered()
 
 
@@ -29,11 +32,11 @@ func _on_mouse_exited():
 
 
 func hide_current_icon():
-	current_icon.set_texture(null)
+	current_icon.set_normal_texture(null)
 
 
 func set_current_icon(image_resource):
-	current_icon.set_texture(image_resource)
+	current_icon.set_normal_texture(image_resource)
 
 
 const RadialIcon = preload("RadialIcon.gd")

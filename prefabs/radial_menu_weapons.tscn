@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://scripts/RadialMenu.gd" type="Script" id=1]
+[ext_resource path="res://scripts/RadialMenuWeapons.gd" type="Script" id=1]
 [ext_resource path="res://models/energy_weapons/energy_bolt/icon.png" type="Texture" id=2]
 [ext_resource path="res://images/radial_bg.png" type="Texture" id=3]
 
@@ -12,14 +12,13 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 script = ExtResource( 1 )
 
-[node name="Current Icon" type="TextureRect" parent="."]
+[node name="Current Icon" type="TextureButton" parent="."]
 margin_right = 64.0
 margin_bottom = 32.0
+rect_min_size = Vector2( 64, 32 )
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource( 2 )
-expand = true
-stretch_mode = 1
+texture_normal = ExtResource( 2 )
 
 [node name="Highlight" type="Control" parent="."]
 editor/display_folded = true
@@ -67,8 +66,7 @@ width = 1.0
 default_color = Color( 1, 1, 1, 1 )
 texture_mode = -2131836240
 
-[node name="Radial Container" type="Control" parent="."]
-visible = false
+[node name="Radial Container" type="Popup" parent="."]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
