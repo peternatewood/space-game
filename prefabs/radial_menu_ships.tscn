@@ -10,6 +10,62 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 script = ExtResource( 1 )
 
+[node name="Border" type="Control" parent="."]
+editor/display_folded = true
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Top Left" type="Control" parent="Border"]
+rect_min_size = Vector2( 8, 8 )
+
+[node name="Highlight Line" type="Line2D" parent="Border/Top Left"]
+points = PoolVector2Array( 0, 8, 0, 0, 8, 0 )
+width = 1.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = -2131836240
+
+[node name="Top Right" type="Control" parent="Border"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -8.0
+margin_bottom = 8.0
+rect_min_size = Vector2( 8, 8 )
+
+[node name="Highlight Line" type="Line2D" parent="Border/Top Right"]
+points = PoolVector2Array( 0, 0, 8, 0, 8, 8 )
+width = 1.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = -2131836240
+
+[node name="Bottom Left" type="Control" parent="Border"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -8.0
+margin_right = 8.0
+rect_min_size = Vector2( 8, 8 )
+
+[node name="Highlight Line" type="Line2D" parent="Border/Bottom Left"]
+points = PoolVector2Array( 0, 0, 0, 8, 8, 8 )
+width = 1.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = -2131836240
+
+[node name="Bottom Right" type="Control" parent="Border"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -8.0
+margin_top = -8.0
+rect_min_size = Vector2( 8, 8 )
+
+[node name="Highlight Line" type="Line2D" parent="Border/Bottom Right"]
+points = PoolVector2Array( 0, 8, 8, 8, 8, 0 )
+width = 1.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = -2131836240
+
 [node name="Current Icon" type="TextureButton" parent="."]
 margin_right = 38.0
 margin_bottom = 63.0
@@ -17,52 +73,6 @@ rect_min_size = Vector2( 38, 63 )
 size_flags_horizontal = 4
 size_flags_vertical = 4
 texture_normal = ExtResource( 2 )
-
-[node name="Highlight" type="Control" parent="."]
-editor/display_folded = true
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-
-[node name="Top Left" type="Control" parent="Highlight"]
-
-[node name="Highlight Line" type="Line2D" parent="Highlight/Top Left"]
-points = PoolVector2Array( 0, 8, 0, 0, 8, 0 )
-width = 1.0
-default_color = Color( 1, 1, 1, 1 )
-texture_mode = -2131836240
-
-[node name="Top Right" type="Control" parent="Highlight"]
-anchor_left = 1.0
-anchor_right = 1.0
-
-[node name="Highlight Line" type="Line2D" parent="Highlight/Top Right"]
-points = PoolVector2Array( -8, 0, 0, 0, 0, 8 )
-width = 1.0
-default_color = Color( 1, 1, 1, 1 )
-texture_mode = -2131836240
-
-[node name="Bottom Left" type="Control" parent="Highlight"]
-anchor_top = 1.0
-anchor_bottom = 1.0
-
-[node name="Highlight Line" type="Line2D" parent="Highlight/Bottom Left"]
-points = PoolVector2Array( 0, -8, 0, 0, 8, 0 )
-width = 1.0
-default_color = Color( 1, 1, 1, 1 )
-texture_mode = -2131836240
-
-[node name="Bottom Right" type="Control" parent="Highlight"]
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-
-[node name="Highlight Line" type="Line2D" parent="Highlight/Bottom Right"]
-points = PoolVector2Array( 0, -8, 0, 0, -8, 0 )
-width = 1.0
-default_color = Color( 1, 1, 1, 1 )
-texture_mode = -2131836240
 
 [node name="Radial Container" type="Popup" parent="."]
 anchor_left = 0.5

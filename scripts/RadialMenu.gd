@@ -1,7 +1,7 @@
 extends Control
 
+onready var border = get_node("Border")
 onready var current_icon = get_node("Current Icon")
-onready var highlight_control = get_node("Highlight")
 onready var radial_container = get_node("Radial Container")
 
 
@@ -42,6 +42,13 @@ func hide_current_icon():
 
 func set_current_icon(image_resource):
 	current_icon.set_normal_texture(image_resource)
+
+
+func toggle_border(toggle_on: bool):
+	if toggle_on:
+		border.show()
+	else:
+		border.hide()
 
 
 signal icon_pressed
