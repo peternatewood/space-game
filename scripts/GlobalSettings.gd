@@ -1,7 +1,5 @@
 extends Node
 
-enum Units { METRIC, IMPERIAL }
-
 # Default settings
 var settings: Dictionary = {
 	"aniso_filtering": Setting.new("aniso_filtering", 0),
@@ -16,7 +14,7 @@ var settings: Dictionary = {
 	"shadows_dir": Setting.new("shadows_dir", 4096),
 	"shadows_point": Setting.new("shadows_point", 4096),
 	"subsurf_scatter": Setting.new("subsurf_scatter", 0),
-	"units": Setting.new("units", Units.METRIC),
+	"units": Setting.new("units", MathHelper.Units.METRIC),
 	"vsync": Setting.new("vsync", true)
 }
 
@@ -43,8 +41,11 @@ func _load_settings_from_file():
 		settings_file.close()
 	else:
 		print("File not found")
-		_save_settings_to_file()
 
+	# Always save settings, in case the file is missing some defaults
+	_save_settings_to_file()
+
+	# Actually update settings from file settings
 	_update_fullscreen()
 	_update_resolution()
 
@@ -194,6 +195,8 @@ func set_vsync(toggle_on: bool):
 
 signal dyslexia_toggled
 signal units_changed
+
+const MathHelper = preload("MathHelper.gd")
 
 const DISTANCE_UNITS: Array = [
 	"m",

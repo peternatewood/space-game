@@ -1,5 +1,7 @@
 extends Object
 
+enum Units { METRIC, IMPERIAL }
+
 
 static func get_line_intersect(aStart: Vector2, aEnd: Vector2, bStart: Vector2, bEnd: Vector2):
 	var aDist: Vector2 = aEnd - aStart
@@ -68,21 +70,19 @@ static func percent_to_db(percent: float):
 
 static func units_to_distance(amount: float, units: int):
 	match units:
-		GlobalSettings.Units.METRIC:
+		Units.METRIC:
 			return 10 * amount
-		GlobalSettings.Units.IMPERIAL:
+		Units.IMPERIAL:
 			return 32.8084 * amount
 
 
 static func units_to_speed(amount: float, units: int):
 	match units:
-		GlobalSettings.Units.METRIC:
+		Units.METRIC:
 			return 10 * amount
-		GlobalSettings.Units.IMPERIAL:
+		Units.IMPERIAL:
 			return 19.438445 * amount
 
-
-const GlobalSettings = preload("GlobalSettings.gd")
 
 const MASS_SPEED_FACTOR: float = 32.129448
 
