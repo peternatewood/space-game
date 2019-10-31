@@ -67,13 +67,25 @@ func set_shadows_point_atlas_size(value: int):
 	shadows_point.set_value(value)
 
 
+func set_units(new_units: int):
+	units.set_value(new_units)
+	emit_signal("units_changed", units._value)
+
+
 func set_vsync(toggle_on: bool):
 	vsync.set_value(toggle_on)
 	OS.set_use_vsync(toggle_on)
 
 
 signal dyslexia_toggled
+signal units_changed
 
+const DISTANCE_UNITS: Array = [
+	"m",
+	"ft"
+]
+const INCONSOLATA_THEME = preload("res://themes/default_inconsolata.tres")
+const OPEN_DYSLEXIC_THEME = preload("res://themes/default_dyslexic.tres")
 const RESOLUTIONS: Array = [
 	# 4:3
 	Vector2(800, 600),
@@ -104,7 +116,6 @@ const RESOLUTIONS: Array = [
 	Vector2(2560, 1600),
 	Vector2(3840, 2400)
 ]
-
 # Low, Medium, High, Maximum
 const SHADOW_QUALITY: Array = [
 	1024,
@@ -112,9 +123,10 @@ const SHADOW_QUALITY: Array = [
 	4096,
 	8192
 ]
-
-const OPEN_DYSLEXIC_THEME = preload("res://themes/default_dyslexic.tres")
-const INCONSOLATA_THEME = preload("res://themes/default_inconsolata.tres")
+const SPEED_UNITS: Array = [
+	"m/s",
+	"knt"
+]
 
 
 # Used to maintain properties of a given setting
