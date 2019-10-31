@@ -12,13 +12,74 @@ var settings: Dictionary = {
 	"hdr": Setting.new("hdr", false),
 	"msaa": Setting.new("msaa", 0),
 	"reflections": Setting.new("reflections", 2048),
-	"resolution": Setting.new("resolution", Vector2(1024, 768)),
+	"resolution": Setting.new("resolution", Vector2(1280, 720)),
 	"shadows_dir": Setting.new("shadows_dir", 4096),
 	"shadows_point": Setting.new("shadows_point", 4096),
 	"subsurf_scatter": Setting.new("subsurf_scatter", 0),
 	"units": Setting.new("units", Units.METRIC),
 	"vsync": Setting.new("vsync", true)
 }
+
+
+func _ready():
+	_load_settings_from_file()
+
+
+func _load_settings_from_file():
+	var settings_file = File.new()
+	if settings_file.file_exists(SETTINGS_PATH):
+		var file_error = settings_file.open(SETTINGS_PATH, File.READ)
+		if file_error == OK:
+			var parse_result = JSON.parse(settings_file.get_as_text())
+			if parse_result.error == OK:
+				for key in parse_result.result.keys():
+					if settings.has(key):
+						settings[key].set_value(parse_result.result[key])
+			else:
+				print("Error parsing settings file: " + parse_result.error_string)
+		else:
+			print("File read error: " + str(file_error))
+
+		settings_file.close()
+	else:
+		print("File not found")
+		_save_settings_to_file()
+
+	_update_fullscreen()
+	_update_resolution()
+
+
+func _save_settings_to_file():
+	var settings_file = File.new()
+	settings_file.open(SETTINGS_PATH, File.WRITE)
+
+	var string_settings: Dictionary = {}
+	for key in settings.keys():
+		match settings[key]._type:
+			TYPE_BOOL, TYPE_INT, TYPE_REAL, TYPE_STRING:
+				string_settings[key] = settings[key]._value
+			_:
+				string_settings[key] = settings[key]._value_string
+
+	settings_file.store_string(JSON.print(string_settings))
+	settings_file.close()
+
+
+func _update_fullscreen():
+	OS.set_window_fullscreen(settings.fullscreen._value)
+
+	if settings.fullscreen._value:
+		get_viewport().set_size(settings.resolution._value)
+
+
+func _update_resolution():
+	if settings.fullscreen._value:
+		get_viewport().set_size(settings.resolution._value)
+	else:
+		OS.set_window_size(settings.resolution._value)
+
+
+# PUBLIC
 
 
 func get_borderless_window():
@@ -65,38 +126,42 @@ func set_borderless_window(toggle_on: bool):
 	settings.borderless.set_value(toggle_on)
 	OS.set_borderless_window(settings.borderless._value)
 
+	_save_settings_to_file()
+
 
 func set_dyslexia(toggle_on: bool):
 	settings.dyslexia.set_value(toggle_on)
 	emit_signal("dyslexia_toggled", settings.dyslexia._value)
 
+	_save_settings_to_file()
+
 
 func set_fullscreen(toggle_on: bool):
 	settings.fullscreen.set_value(toggle_on)
+	_update_fullscreen()
 
-	OS.set_window_fullscreen(settings.fullscreen._value)
-
-	if settings.fullscreen._value:
-		get_viewport().set_size(settings.resolution._value)
+	_save_settings_to_file()
 
 
 func set_hdr(toggle_on: bool):
 	settings.hdr.set_value(toggle_on)
 	get_viewport().set_hdr(settings.hdr._value)
 
+	_save_settings_to_file()
+
 
 func set_msaa(option: int):
 	settings.msaa.set_value(option)
 	get_viewport().set_msaa(settings.msaa._value)
 
+	_save_settings_to_file()
+
 
 func set_resolution(new_resolution: Vector2):
 	settings.resolution.set_value(new_resolution)
+	_update_resolution()
 
-	if settings.fullscreen._value:
-		get_viewport().set_size(settings.resolution._value)
-	else:
-		OS.set_window_size(settings.resolution._value)
+	_save_settings_to_file()
 
 	return settings.resolution._value
 
@@ -104,19 +169,27 @@ func set_resolution(new_resolution: Vector2):
 func set_shadows_dir_atlas_size(value: int):
 	settings.shadows_dir.set_value(value)
 
+	_save_settings_to_file()
+
 
 func set_shadows_point_atlas_size(value: int):
 	settings.shadows_point.set_value(value)
+
+	_save_settings_to_file()
 
 
 func set_units(new_units: int):
 	settings.units.set_value(new_units)
 	emit_signal("units_changed", settings.units._value)
 
+	_save_settings_to_file()
+
 
 func set_vsync(toggle_on: bool):
 	settings.vsync.set_value(toggle_on)
 	OS.set_use_vsync(settings.vsync._value)
+
+	_save_settings_to_file()
 
 
 signal dyslexia_toggled
@@ -158,6 +231,7 @@ const RESOLUTIONS: Array = [
 	Vector2(2560, 1600),
 	Vector2(3840, 2400)
 ]
+const SETTINGS_PATH: String = "user://settings.json"
 # Low, Medium, High, Maximum
 const SHADOW_QUALITY: Array = [
 	1024,
@@ -211,10 +285,17 @@ class Setting:
 			_value_string = var2str(_value)
 
 			return _value
+		elif _type == TYPE_INT:
+			_value = int(value)
+			_value_string = var2str(_value)
+
+			return _value
 		elif typeof(value) == TYPE_STRING:
 			_value = str2var(value)
 			_value_string = value
+
+			return _value
 		else:
-			print("Invalid type for " + _name + " setting")
+			print("Invalid type for " + _name + " setting: " + str(typeof(value)))
 
 		return null
