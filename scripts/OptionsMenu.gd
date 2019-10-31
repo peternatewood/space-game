@@ -127,6 +127,9 @@ func _ready():
 						node.connect("keybind_button_pressed", self, "_on_keybind_button_pressed")
 						keybinds.append(node)
 
+	var units_options = get_node("Options Rows/TabContainer/Game/Units Container/Units Options")
+	units_options.connect("item_selected", self, "_on_units_options_item_selected")
+
 	var dyslexia_checkbox = get_node("Options Rows/TabContainer/Accessibility/Dyslexia Checkbox")
 	dyslexia_checkbox.connect("toggled", self, "_on_dyslexia_checkbox_toggled")
 
@@ -292,6 +295,10 @@ func _on_shadow_quality_options_item_selected(item_index: int):
 		# Update popup spinboxes
 		shadows_dir_spinbox.set_value(settings.shadows_dir.get_value())
 		shadows_point_spinbox.set_value(settings.shadows_point.get_value())
+
+
+func _on_units_options_item_selected(item_index: int):
+	settings.units.set_value(item_index)
 
 
 func _on_vsync_checkbox_toggled(button_pressed: bool):

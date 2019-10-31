@@ -62,6 +62,7 @@ tab_align = 0
 
 [node name="Video" type="VBoxContainer" parent="Options Rows/TabContainer"]
 editor/display_folded = true
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 8.0
@@ -279,21 +280,21 @@ margin_bottom = -8.0
 [node name="Master Audio Slider" parent="Options Rows/TabContainer/Audio" instance=ExtResource( 3 )]
 margin_top = 0.0
 margin_right = 992.0
-margin_bottom = 28.0
+margin_bottom = 24.0
 default = 100.0
 label_text = "Master"
 
 [node name="Sound Effects Slider" parent="Options Rows/TabContainer/Audio" instance=ExtResource( 3 )]
-margin_top = 32.0
+margin_top = 28.0
 margin_right = 992.0
-margin_bottom = 60.0
+margin_bottom = 52.0
 default = 100.0
 label_text = "Sound Effects"
 
 [node name="Music Slider" parent="Options Rows/TabContainer/Audio" instance=ExtResource( 3 )]
-margin_top = 64.0
+margin_top = 56.0
 margin_right = 992.0
-margin_bottom = 92.0
+margin_bottom = 80.0
 default = 100.0
 label_text = "Music"
 
@@ -309,7 +310,7 @@ margin_bottom = -8.0
 
 [node name="Controls Tabs" type="TabContainer" parent="Options Rows/TabContainer/Controls"]
 margin_right = 992.0
-margin_bottom = 480.0
+margin_bottom = 490.0
 size_flags_vertical = 3
 
 [node name="Movement" type="VBoxContainer" parent="Options Rows/TabContainer/Controls/Controls Tabs"]
@@ -325,70 +326,70 @@ size_flags_vertical = 3
 
 [node name="Controls Header" type="HBoxContainer" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement"]
 margin_right = 976.0
-margin_bottom = 26.0
+margin_bottom = 22.0
 
 [node name="Action Label" type="Label" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Controls Header"]
 margin_top = 4.0
 margin_right = 192.0
-margin_bottom = 22.0
+margin_bottom = 18.0
 rect_min_size = Vector2( 192, 0 )
 text = "Command"
 
 [node name="Key One Label" type="Button" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Controls Header"]
 margin_left = 196.0
 margin_right = 344.0
-margin_bottom = 26.0
+margin_bottom = 22.0
 size_flags_horizontal = 3
 text = "Key"
 
 [node name="Key Two Label" type="Button" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Controls Header"]
 margin_left = 348.0
 margin_right = 496.0
-margin_bottom = 26.0
+margin_bottom = 22.0
 size_flags_horizontal = 3
 text = "Key Alt"
 
 [node name="Mouse Label" type="Button" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Controls Header"]
 margin_left = 500.0
 margin_right = 648.0
-margin_bottom = 26.0
+margin_bottom = 22.0
 size_flags_horizontal = 3
 text = "Mouse Button"
 
 [node name="VSeparator" type="VSeparator" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Controls Header"]
 margin_left = 652.0
 margin_right = 656.0
-margin_bottom = 26.0
+margin_bottom = 22.0
 
 [node name="Joypad Button Label" type="Button" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Controls Header"]
 margin_left = 660.0
 margin_right = 808.0
-margin_bottom = 26.0
+margin_bottom = 22.0
 size_flags_horizontal = 3
 text = "Joypad Button"
 
 [node name="Joypad Axis Label" type="Button" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Controls Header"]
 margin_left = 812.0
 margin_right = 960.0
-margin_bottom = 26.0
+margin_bottom = 22.0
 size_flags_horizontal = 3
 text = "Joypad Axis"
 
 [node name="Controls Header Padding" type="Control" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Controls Header"]
 margin_left = 964.0
 margin_right = 972.0
-margin_bottom = 26.0
+margin_bottom = 22.0
 rect_min_size = Vector2( 8, 0 )
 
 [node name="HSeparator" type="HSeparator" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement"]
-margin_top = 30.0
+margin_top = 26.0
 margin_right = 976.0
-margin_bottom = 34.0
+margin_bottom = 30.0
 
 [node name="Movement Scroll" type="ScrollContainer" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement"]
-margin_top = 38.0
+margin_top = 34.0
 margin_right = 976.0
-margin_bottom = 436.0
+margin_bottom = 450.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 scroll_horizontal_enabled = false
@@ -402,225 +403,225 @@ columns = 2
 [node name="Pitch Up Label" type="Label" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll/Controls Grid"]
 margin_top = 4.0
 margin_right = 192.0
-margin_bottom = 22.0
+margin_bottom = 18.0
 rect_min_size = Vector2( 192, 0 )
 text = "Pitch Up"
 
 [node name="Pitch Up" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll/Controls Grid" instance=ExtResource( 4 )]
 anchor_right = 0.0
 margin_left = 196.0
-margin_right = 964.0
-margin_bottom = 26.0
+margin_right = 976.0
+margin_bottom = 22.0
 action = "pitch_up"
 
 [node name="Pitch Down Label" type="Label" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll/Controls Grid"]
-margin_top = 34.0
+margin_top = 30.0
 margin_right = 192.0
-margin_bottom = 52.0
+margin_bottom = 44.0
 text = "Pitch Down"
 
 [node name="Pitch Down" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll/Controls Grid" instance=ExtResource( 4 )]
 anchor_right = 0.0
 margin_left = 196.0
-margin_top = 30.0
-margin_right = 964.0
-margin_bottom = 56.0
+margin_top = 26.0
+margin_right = 976.0
+margin_bottom = 48.0
 action = "pitch_down"
 
 [node name="Yaw Left Label" type="Label" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll/Controls Grid"]
-margin_top = 64.0
+margin_top = 56.0
 margin_right = 192.0
-margin_bottom = 82.0
+margin_bottom = 70.0
 text = "Yaw Left"
 
 [node name="Yaw Left" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll/Controls Grid" instance=ExtResource( 4 )]
 anchor_right = 0.0
 margin_left = 196.0
-margin_top = 60.0
-margin_right = 964.0
-margin_bottom = 86.0
+margin_top = 52.0
+margin_right = 976.0
+margin_bottom = 74.0
 action = "yaw_left"
 
 [node name="Yaw Right Label" type="Label" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll/Controls Grid"]
-margin_top = 94.0
+margin_top = 82.0
 margin_right = 192.0
-margin_bottom = 112.0
+margin_bottom = 96.0
 text = "Yaw Right"
 
 [node name="Yaw Right" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll/Controls Grid" instance=ExtResource( 4 )]
 anchor_right = 0.0
 margin_left = 196.0
-margin_top = 90.0
-margin_right = 964.0
-margin_bottom = 116.0
+margin_top = 78.0
+margin_right = 976.0
+margin_bottom = 100.0
 action = "yaw_right"
 
 [node name="Roll Right Label" type="Label" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll/Controls Grid"]
-margin_top = 124.0
+margin_top = 108.0
 margin_right = 192.0
-margin_bottom = 142.0
+margin_bottom = 122.0
 text = "Roll Right"
 
 [node name="Roll Right" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll/Controls Grid" instance=ExtResource( 4 )]
 anchor_right = 0.0
 margin_left = 196.0
-margin_top = 120.0
-margin_right = 964.0
-margin_bottom = 146.0
+margin_top = 104.0
+margin_right = 976.0
+margin_bottom = 126.0
 action = "roll_right"
 
 [node name="Roll Left Label" type="Label" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll/Controls Grid"]
-margin_top = 154.0
+margin_top = 134.0
 margin_right = 192.0
-margin_bottom = 172.0
+margin_bottom = 148.0
 text = "Roll Left"
 
 [node name="Roll Left" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll/Controls Grid" instance=ExtResource( 4 )]
 anchor_right = 0.0
 margin_left = 196.0
-margin_top = 150.0
-margin_right = 964.0
-margin_bottom = 176.0
+margin_top = 130.0
+margin_right = 976.0
+margin_bottom = 152.0
 action = "roll_left"
 
 [node name="Throttle Up Label" type="Label" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll/Controls Grid"]
-margin_top = 184.0
+margin_top = 160.0
 margin_right = 192.0
-margin_bottom = 202.0
+margin_bottom = 174.0
 text = "Throttle Up"
 
 [node name="Throttle Up" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll/Controls Grid" instance=ExtResource( 4 )]
 anchor_right = 0.0
 margin_left = 196.0
-margin_top = 180.0
-margin_right = 964.0
-margin_bottom = 206.0
+margin_top = 156.0
+margin_right = 976.0
+margin_bottom = 178.0
 action = "throttle_up"
 
 [node name="Throttle Down Label" type="Label" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll/Controls Grid"]
-margin_top = 214.0
+margin_top = 186.0
 margin_right = 192.0
-margin_bottom = 232.0
+margin_bottom = 200.0
 text = "Throttle Down"
 
 [node name="Throttle Down" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll/Controls Grid" instance=ExtResource( 4 )]
 anchor_right = 0.0
 margin_left = 196.0
-margin_top = 210.0
-margin_right = 964.0
-margin_bottom = 236.0
+margin_top = 182.0
+margin_right = 976.0
+margin_bottom = 204.0
 action = "throttle_down"
 
 [node name="Set Max Throttle Label" type="Label" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll/Controls Grid"]
-margin_top = 244.0
+margin_top = 212.0
 margin_right = 192.0
-margin_bottom = 262.0
+margin_bottom = 226.0
 text = "Set Max Throttle"
 
 [node name="Set Max Throttle" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll/Controls Grid" instance=ExtResource( 4 )]
 anchor_right = 0.0
 margin_left = 196.0
-margin_top = 240.0
-margin_right = 964.0
-margin_bottom = 266.0
+margin_top = 208.0
+margin_right = 976.0
+margin_bottom = 230.0
 action = "set_throttle_full"
 
 [node name="Set Zero Throttle Label" type="Label" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll/Controls Grid"]
-margin_top = 274.0
+margin_top = 238.0
 margin_right = 192.0
-margin_bottom = 292.0
+margin_bottom = 252.0
 text = "Set Zero Throttle"
 
 [node name="Set Zero Throttle" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll/Controls Grid" instance=ExtResource( 4 )]
 anchor_right = 0.0
 margin_left = 196.0
-margin_top = 270.0
-margin_right = 964.0
-margin_bottom = 296.0
+margin_top = 234.0
+margin_right = 976.0
+margin_bottom = 256.0
 action = "set_throttle_zero"
 
 [node name="Next Target Label" type="Label" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll/Controls Grid"]
-margin_top = 304.0
+margin_top = 264.0
 margin_right = 192.0
-margin_bottom = 322.0
+margin_bottom = 278.0
 text = "Next Target"
 
 [node name="Next Target" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll/Controls Grid" instance=ExtResource( 4 )]
 anchor_right = 0.0
 margin_left = 196.0
-margin_top = 300.0
-margin_right = 964.0
-margin_bottom = 326.0
+margin_top = 260.0
+margin_right = 976.0
+margin_bottom = 282.0
 action = "target_next"
 
 [node name="Next Hostile Target Label" type="Label" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll/Controls Grid"]
-margin_top = 334.0
+margin_top = 290.0
 margin_right = 192.0
-margin_bottom = 352.0
+margin_bottom = 304.0
 text = "Next Hostile Target"
 
 [node name="Next Hostile Target" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll/Controls Grid" instance=ExtResource( 4 )]
 anchor_right = 0.0
 margin_left = 196.0
-margin_top = 330.0
-margin_right = 964.0
-margin_bottom = 356.0
+margin_top = 286.0
+margin_right = 976.0
+margin_bottom = 308.0
 action = "target_next_hostile"
 
 [node name="Next Friendly Target Label" type="Label" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll/Controls Grid"]
-margin_top = 364.0
+margin_top = 316.0
 margin_right = 192.0
-margin_bottom = 382.0
+margin_bottom = 330.0
 text = "Next Friendly Target"
 
 [node name="Next Friendly Target" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll/Controls Grid" instance=ExtResource( 4 )]
 anchor_right = 0.0
 margin_left = 196.0
-margin_top = 360.0
-margin_right = 964.0
-margin_bottom = 386.0
+margin_top = 312.0
+margin_right = 976.0
+margin_bottom = 334.0
 action = "target_next_friendly"
 
 [node name="Next Neutral Target Label" type="Label" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll/Controls Grid"]
-margin_top = 394.0
+margin_top = 342.0
 margin_right = 192.0
-margin_bottom = 412.0
+margin_bottom = 356.0
 text = "Next Neutral Target"
 
 [node name="Next Neutral Target" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll/Controls Grid" instance=ExtResource( 4 )]
 anchor_right = 0.0
 margin_left = 196.0
-margin_top = 390.0
-margin_right = 964.0
-margin_bottom = 416.0
+margin_top = 338.0
+margin_right = 976.0
+margin_bottom = 360.0
 action = "target_next_neutral"
 
 [node name="Target in Reticule Label" type="Label" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll/Controls Grid"]
-margin_top = 424.0
+margin_top = 368.0
 margin_right = 192.0
-margin_bottom = 442.0
+margin_bottom = 382.0
 text = "Target in Reticule"
 
 [node name="Target in Reticule" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll/Controls Grid" instance=ExtResource( 4 )]
 anchor_right = 0.0
 margin_left = 196.0
-margin_top = 420.0
-margin_right = 964.0
-margin_bottom = 446.0
+margin_top = 364.0
+margin_right = 976.0
+margin_bottom = 386.0
 action = "target_next_in_reticule"
 
 [node name="Deselect Target Label" type="Label" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll/Controls Grid"]
-margin_top = 454.0
+margin_top = 394.0
 margin_right = 192.0
-margin_bottom = 472.0
+margin_bottom = 408.0
 text = "Deselect Target"
 
 [node name="Deselect Target" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll/Controls Grid" instance=ExtResource( 4 )]
 anchor_right = 0.0
 margin_left = 196.0
-margin_top = 450.0
-margin_right = 964.0
-margin_bottom = 476.0
+margin_top = 390.0
+margin_right = 976.0
+margin_bottom = 412.0
 action = "deselect_target"
 
 [node name="Weapons" type="VBoxContainer" parent="Options Rows/TabContainer/Controls/Controls Tabs"]
@@ -1210,46 +1211,63 @@ margin_bottom = 86.0
 action = "warp_out"
 
 [node name="Binding Options" type="HBoxContainer" parent="Options Rows/TabContainer/Controls"]
-margin_top = 484.0
+margin_top = 494.0
 margin_right = 992.0
-margin_bottom = 510.0
+margin_bottom = 518.0
 
 [node name="Edit Checkbox" type="CheckBox" parent="Options Rows/TabContainer/Controls/Binding Options"]
-margin_right = 132.0
-margin_bottom = 26.0
+margin_right = 112.0
+margin_bottom = 24.0
 pressed = true
 group = ExtResource( 5 )
 text = "Edit Binding"
 
 [node name="Clear Binding" type="CheckBox" parent="Options Rows/TabContainer/Controls/Binding Options"]
-margin_left = 136.0
-margin_right = 276.0
-margin_bottom = 26.0
+margin_left = 116.0
+margin_right = 236.0
+margin_bottom = 24.0
 group = ExtResource( 5 )
 text = "Clear Binding"
 
 [node name="Go to Conflict" type="CheckBox" parent="Options Rows/TabContainer/Controls/Binding Options"]
-margin_left = 280.0
-margin_right = 428.0
-margin_bottom = 26.0
+margin_left = 240.0
+margin_right = 363.0
+margin_bottom = 24.0
 group = ExtResource( 5 )
 text = "Go to Conflict"
 
 [node name="Clear Conflict" type="CheckBox" parent="Options Rows/TabContainer/Controls/Binding Options"]
-margin_left = 432.0
-margin_right = 580.0
-margin_bottom = 26.0
+margin_left = 367.0
+margin_right = 487.0
+margin_bottom = 24.0
 group = ExtResource( 5 )
 text = "Clear Conflict"
 
 [node name="Game" type="VBoxContainer" parent="Options Rows/TabContainer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 8.0
 margin_top = 32.0
 margin_right = -8.0
 margin_bottom = -8.0
+
+[node name="Units Container" type="HBoxContainer" parent="Options Rows/TabContainer/Game"]
+margin_right = 992.0
+margin_bottom = 22.0
+
+[node name="Units Label" type="Label" parent="Options Rows/TabContainer/Game/Units Container"]
+margin_top = 4.0
+margin_right = 34.0
+margin_bottom = 18.0
+text = "Units"
+
+[node name="Units Options" type="OptionButton" parent="Options Rows/TabContainer/Game/Units Container"]
+margin_left = 38.0
+margin_right = 109.0
+margin_bottom = 22.0
+text = "Metric"
+items = [ "Metric", null, false, 0, null, "Imperial", null, false, 1, null ]
+selected = 0
 
 [node name="Accessibility" type="VBoxContainer" parent="Options Rows/TabContainer"]
 visible = false
