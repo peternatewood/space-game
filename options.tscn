@@ -62,7 +62,6 @@ tab_align = 0
 
 [node name="Video" type="VBoxContainer" parent="Options Rows/TabContainer"]
 editor/display_folded = true
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 8.0
@@ -267,7 +266,7 @@ max_value = 120.0
 min_value = 45.0
 
 [node name="Audio" type="GridContainer" parent="Options Rows/TabContainer"]
-editor/display_folded = true
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 8.0
@@ -275,7 +274,7 @@ margin_top = 32.0
 margin_right = -8.0
 margin_bottom = -8.0
 size_flags_horizontal = 3
-columns = 2
+columns = 3
 
 [node name="Master Label" type="Label" parent="Options Rows/TabContainer/Audio"]
 margin_top = 5.0
@@ -286,10 +285,16 @@ text = "Master"
 [node name="Master Audio Slider" parent="Options Rows/TabContainer/Audio" instance=ExtResource( 3 )]
 margin_left = 89.0
 margin_top = 0.0
-margin_right = 992.0
+margin_right = 919.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 default = 100.0
+
+[node name="Master Mute" type="CheckBox" parent="Options Rows/TabContainer/Audio"]
+margin_left = 923.0
+margin_right = 992.0
+margin_bottom = 24.0
+text = "Mute"
 
 [node name="Sound Effects Label" type="Label" parent="Options Rows/TabContainer/Audio"]
 margin_top = 33.0
@@ -297,12 +302,19 @@ margin_right = 85.0
 margin_bottom = 47.0
 text = "Sound Effects"
 
-[node name="Sound Effects Slider" parent="Options Rows/TabContainer/Audio" instance=ExtResource( 3 )]
+[node name="Sound Effects Audio Slider" parent="Options Rows/TabContainer/Audio" instance=ExtResource( 3 )]
 margin_left = 89.0
+margin_top = 28.0
+margin_right = 919.0
+margin_bottom = 52.0
+default = 100.0
+
+[node name="Sound Effects Mute" type="CheckBox" parent="Options Rows/TabContainer/Audio"]
+margin_left = 923.0
 margin_top = 28.0
 margin_right = 992.0
 margin_bottom = 52.0
-default = 100.0
+text = "Mute"
 
 [node name="Music Label" type="Label" parent="Options Rows/TabContainer/Audio"]
 margin_top = 61.0
@@ -310,12 +322,19 @@ margin_right = 85.0
 margin_bottom = 75.0
 text = "Music"
 
-[node name="Music Slider" parent="Options Rows/TabContainer/Audio" instance=ExtResource( 3 )]
+[node name="Music Audio Slider" parent="Options Rows/TabContainer/Audio" instance=ExtResource( 3 )]
 margin_left = 89.0
+margin_top = 56.0
+margin_right = 919.0
+margin_bottom = 80.0
+default = 100.0
+
+[node name="Music Mute" type="CheckBox" parent="Options Rows/TabContainer/Audio"]
+margin_left = 923.0
 margin_top = 56.0
 margin_right = 992.0
 margin_bottom = 80.0
-default = 100.0
+text = "Mute"
 
 [node name="Controls" type="VBoxContainer" parent="Options Rows/TabContainer"]
 editor/display_folded = true
