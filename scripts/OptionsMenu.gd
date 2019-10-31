@@ -153,6 +153,8 @@ func _ready():
 				for node in container.get_node("Controls Grid").get_children():
 					if node is Keybind:
 						node.connect("keybind_button_pressed", self, "_on_keybind_button_pressed")
+						node.load_from_simplified_events(settings.keybinds[node.action])
+						node.connect("keybind_changed", settings, "_on_keybind_changed")
 						keybinds.append(node)
 
 	var units_options = get_node("Options Rows/TabContainer/Game/Units Container/Units Options")
