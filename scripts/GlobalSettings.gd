@@ -1,5 +1,6 @@
 extends Node
 
+var keybinds: Dictionary = {}
 # Default settings
 var settings: Dictionary = {
 	"aniso_filtering": Setting.new("aniso_filtering", 0),
@@ -26,7 +27,34 @@ var settings: Dictionary = {
 
 
 func _ready():
+	# Populate keybinds object from InputMap
+	for action in InputMap.get_actions():
+		keybinds[action] = Keybind.action_to_simplified_events(action)
+
+	_load_keybinds_from_file()
 	_load_settings_from_file()
+
+
+func _load_keybinds_from_file():
+	var keybinds_file = File.new()
+	if keybinds_file.file_exists(KEYBINDS_PATH):
+		var file_error = keybinds_file.open(KEYBINDS_PATH, File.READ)
+		if file_error == OK:
+			var parse_result = JSON.parse(keybinds_file.get_as_text())
+			if parse_result.error == OK:
+				for action in parse_result.result.keys():
+					if keybinds.has(action):
+						keybinds[action] = parse_result.result[action]
+			else:
+				print("Error parsing keybinds file: " + parse_result.error_string)
+		else:
+			print("File read error: " + str(file_error))
+
+		keybinds_file.close()
+	else:
+		print("File not found")
+
+	_save_keybinds_to_file()
 
 
 func _load_settings_from_file():
@@ -54,6 +82,21 @@ func _load_settings_from_file():
 	# Actually update settings from file settings
 	_update_fullscreen()
 	_update_resolution()
+
+
+func _on_keybind_changed(action):
+	print(action + " action changed")
+	var simplified_events = Keybind.action_to_simplified_events(action)
+	keybinds[action] = simplified_events
+
+	_save_keybinds_to_file()
+
+
+func _save_keybinds_to_file():
+	var keybinds_file = File.new()
+	keybinds_file.open(KEYBINDS_PATH, File.WRITE)
+	keybinds_file.store_string(JSON.print(keybinds))
+	keybinds_file.close()
 
 
 func _save_settings_to_file():
@@ -268,6 +311,7 @@ func set_vsync(toggle_on: bool):
 signal dyslexia_toggled
 signal units_changed
 
+const Keybind = preload("Keybind.gd")
 const MathHelper = preload("MathHelper.gd")
 
 const DISTANCE_UNITS: Array = [
@@ -275,6 +319,7 @@ const DISTANCE_UNITS: Array = [
 	"ft"
 ]
 const INCONSOLATA_THEME = preload("res://themes/default_inconsolata.tres")
+const KEYBINDS_PATH: String = "user://keybinds.json"
 const OPEN_DYSLEXIC_THEME = preload("res://themes/default_dyslexic.tres")
 const RESOLUTIONS: Array = [
 	# 4:3
