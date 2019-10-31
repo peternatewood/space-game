@@ -52,7 +52,7 @@ func _ready():
 		if settings.RESOLUTIONS[index].y < min_res_y:
 			min_res_y = settings.RESOLUTIONS[index].y
 
-	var res = settings.resolution.get_value()
+	var res = settings.get_resolution()
 	resolution_x_spinbox.set_value(res.x)
 	resolution_y_spinbox.set_value(res.y)
 	resolution_x_spinbox.set_min(min_res_x)
@@ -63,11 +63,11 @@ func _ready():
 	resolution_button.connect("pressed", self, "_on_resolution_button_pressed")
 
 	var aa_options = get_node("Options Rows/TabContainer/Video/Two Columns/AA Options")
-	aa_options.select(settings.msaa.get_value())
+	aa_options.select(settings.get_msaa())
 	aa_options.connect("item_selected", self, "_on_aa_options_item_selected")
 
-	shadows_dir_spinbox.set_value(settings.shadows_dir.get_value())
-	shadows_point_spinbox.set_value(settings.shadows_point.get_value())
+	shadows_dir_spinbox.set_value(settings.get_shadows_dir_atlas_size())
+	shadows_point_spinbox.set_value(settings.get_shadows_point_atlas_size())
 
 	var shadow_quality_index: int = 0
 	if shadows_dir_spinbox.value == shadows_point_spinbox.value:
@@ -82,11 +82,11 @@ func _ready():
 	shadow_quality_options.connect("item_selected", self, "_on_shadow_quality_options_item_selected")
 
 	var hdr_checkbox = get_node("Options Rows/TabContainer/Video/HDR CheckBox")
-	hdr_checkbox.set_pressed(settings.hdr.get_value())
+	hdr_checkbox.set_pressed(settings.get_hdr())
 	hdr_checkbox.connect("toggled", self, "_on_hdr_checkbox_toggled")
 
 	var vsync_checkbox = get_node("Options Rows/TabContainer/Video/Vsync CheckBox")
-	vsync_checkbox.set_pressed(settings.vsync.get_value())
+	vsync_checkbox.set_pressed(settings.get_vsync())
 	vsync_checkbox.connect("toggled", self, "_on_vsync_checkbox_toggled")
 
 	# Connect popups and their buttons
@@ -293,8 +293,8 @@ func _on_shadow_quality_options_item_selected(item_index: int):
 		settings.set_shadows_point_atlas_size(atlas_size)
 
 		# Update popup spinboxes
-		shadows_dir_spinbox.set_value(settings.shadows_dir.get_value())
-		shadows_point_spinbox.set_value(settings.shadows_point.get_value())
+		shadows_dir_spinbox.set_value(settings.get_shadows_dir_atlas_size())
+		shadows_point_spinbox.set_value(settings.get_shadows_point_atlas_size())
 
 
 func _on_units_options_item_selected(item_index: int):

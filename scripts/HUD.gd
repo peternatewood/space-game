@@ -56,7 +56,7 @@ func _ready():
 	target_view_cam = target_viewport.get_node("Camera")
 	target_view_model = target_viewport.get_node("Frog Fighter")
 
-	var units = settings.units.get_value()
+	var units = settings.get_units()
 	distance_units_label.set_text(GlobalSettings.DISTANCE_UNITS[units])
 	speed_units_label.set_text(GlobalSettings.SPEED_UNITS[units])
 
@@ -368,7 +368,7 @@ func _process(delta):
 		var cam_target_dist = (player.current_target.transform.origin - camera.transform.origin).length()
 		var icon_pos: Vector2 = camera.unproject_position(player.current_target.transform.origin)
 		# Multiply all units by 10 to get meters
-		var target_dist = MathHelper.units_to_distance(to_target.length(), settings.units._value)
+		var target_dist = MathHelper.units_to_distance(to_target.length(), settings.get_units())
 
 		if camera.is_position_in_view(player.current_target.transform.origin):
 			if not target_icon.visible:
@@ -407,7 +407,7 @@ func _process(delta):
 		target_view_model.set_rotation(player.current_target.rotation)
 
 		target_distance.set_text(str(round(target_dist)))
-		target_speed.set_text(str(round(MathHelper.units_to_speed(player.current_target.linear_velocity.length(), settings.units._value))))
+		target_speed.set_text(str(round(MathHelper.units_to_speed(player.current_target.linear_velocity.length(), settings.get_units()))))
 	else:
 		if target_icon.visible:
 			target_icon.hide()
@@ -477,7 +477,7 @@ func _update_speed_indicator():
 		throttle_bar.set_value(speed_percent)
 
 		# Multiply all units by 10 to get meters
-		speed_indicator.set_text(str(round(MathHelper.units_to_speed(speed, settings.units.get_value()))))
+		speed_indicator.set_text(str(round(MathHelper.units_to_speed(speed, settings.get_units()))))
 		var indicator_pos = Vector2(speed_indicator.rect_position.x, throttle_bar.rect_size.y - (speed_indicator.rect_size.y / 2) - (throttle_bar.value / throttle_bar.max_value) * throttle_bar.rect_size.y)
 		speed_indicator.set_position(indicator_pos)
 

@@ -2,79 +2,121 @@ extends Node
 
 enum Units { METRIC, IMPERIAL }
 
-# Default settings here
-var aniso_filtering = Setting.new("aniso_filtering", 0)
-var borderless = Setting.new("borderless", false)
-var dyslexia = Setting.new("dyslexia", false)
-var fov = Setting.new("fov", 70)
-var fullscreen = Setting.new("fullscreen", false)
-var hdr = Setting.new("hdr", false)
-var msaa = Setting.new("msaa", 0)
-var reflections = Setting.new("reflections", 2048)
-var resolution = Setting.new("resolution", Vector2(1024, 768))
-var shadows_dir = Setting.new("shadows_dir", 4096)
-var shadows_point = Setting.new("shadows_point", 4096)
-var subsurf_scatter = Setting.new("subsurf_scatter", 0)
-var units = Setting.new("units", Units.METRIC)
-var vsync = Setting.new("vsync", true)
+# Default settings
+var settings: Dictionary = {
+	"aniso_filtering": Setting.new("aniso_filtering", 0),
+	"borderless": Setting.new("borderless", false),
+	"dyslexia": Setting.new("dyslexia", false),
+	"fov": Setting.new("fov", 70),
+	"fullscreen": Setting.new("fullscreen", false),
+	"hdr": Setting.new("hdr", false),
+	"msaa": Setting.new("msaa", 0),
+	"reflections": Setting.new("reflections", 2048),
+	"resolution": Setting.new("resolution", Vector2(1024, 768)),
+	"shadows_dir": Setting.new("shadows_dir", 4096),
+	"shadows_point": Setting.new("shadows_point", 4096),
+	"subsurf_scatter": Setting.new("subsurf_scatter", 0),
+	"units": Setting.new("units", Units.METRIC),
+	"vsync": Setting.new("vsync", true)
+}
+
+
+func get_borderless_window():
+	return settings.borderless_window.get_value()
+
+
+func get_dyslexia():
+	return settings.dyslexia.get_value()
+
+
+func get_fullscreen():
+	return settings.fullscreen.get_value()
+
+
+func get_hdr():
+	return settings.hdr.get_value()
+
+
+func get_msaa():
+	return settings.msaa.get_value()
+
+
+func get_resolution():
+	return settings.resolution.get_value()
+
+
+func get_shadows_dir_atlas_size():
+	return settings.shadows_dir.get_value()
+
+
+func get_shadows_point_atlas_size():
+	return settings.shadows_point.get_value()
+
+
+func get_units():
+	return settings.units.get_value()
+
+
+func get_vsync():
+	return settings.vsync.get_value()
 
 
 func set_borderless_window(toggle_on: bool):
-	borderless.set_value(toggle_on)
-	OS.set_borderless_window(borderless._value)
+	settings.borderless.set_value(toggle_on)
+	OS.set_borderless_window(settings.borderless._value)
 
 
 func set_dyslexia(toggle_on: bool):
-	dyslexia.set_value(toggle_on)
-	emit_signal("dyslexia_toggled", dyslexia._value)
+	settings.dyslexia.set_value(toggle_on)
+	emit_signal("dyslexia_toggled", settings.dyslexia._value)
 
 
 func set_fullscreen(toggle_on: bool):
-	fullscreen.set_value(toggle_on)
+	settings.fullscreen.set_value(toggle_on)
 
-	OS.set_window_fullscreen(fullscreen._value)
+	OS.set_window_fullscreen(settings.fullscreen._value)
 
-	if fullscreen._value:
-		get_viewport().set_size(resolution._value)
+	if settings.fullscreen._value:
+		get_viewport().set_size(settings.resolution._value)
 
 
 func set_hdr(toggle_on: bool):
-	hdr.set_value(toggle_on)
-	get_viewport().set_hdr(hdr._value)
+	settings.hdr.set_value(toggle_on)
+	get_viewport().set_hdr(settings.hdr._value)
 
 
 func set_msaa(option: int):
-	msaa.set_value(option)
-	get_viewport().set_msaa(msaa._value)
+	settings.msaa.set_value(option)
+	get_viewport().set_msaa(settings.msaa._value)
 
 
 func set_resolution(new_resolution: Vector2):
-	resolution.set_value(new_resolution)
+	settings.resolution.set_value(new_resolution)
 
-	if fullscreen._value:
-		get_viewport().set_size(resolution._value)
+	if settings.fullscreen._value:
+		get_viewport().set_size(settings.resolution._value)
 	else:
-		OS.set_window_size(resolution._value)
+		OS.set_window_size(settings.resolution._value)
 
-	return resolution._value
+	return settings.resolution._value
 
 
 func set_shadows_dir_atlas_size(value: int):
-	shadows_dir.set_value(value)
+	settings.shadows_dir.set_value(value)
 
 
 func set_shadows_point_atlas_size(value: int):
-	shadows_point.set_value(value)
+	settings.shadows_point.set_value(value)
 
 
 func set_units(new_units: int):
-	units.set_value(new_units)
-	emit_signal("units_changed", units._value)
+	settings.units.set_value(new_units)
+	emit_signal("units_changed", settings.units._value)
 
 
 func set_vsync(toggle_on: bool):
-	vsync.set_value(toggle_on)
-	OS.set_use_vsync(toggle_on)
+	settings.vsync.set_value(toggle_on)
+	OS.set_use_vsync(settings.vsync._value)
 
 
 signal dyslexia_toggled
@@ -169,6 +211,9 @@ class Setting:
 			_value_string = var2str(_value)
 
 			return _value
+		elif typeof(value) == TYPE_STRING:
+			_value = str2var(value)
+			_value_string = value
 		else:
 			print("Invalid type for " + _name + " setting")
 
