@@ -1,4 +1,5 @@
-extends Node
+extends Object
+
 
 static func get_line_intersect(aStart: Vector2, aEnd: Vector2, bStart: Vector2, bEnd: Vector2):
 	var aDist: Vector2 = aEnd - aStart
@@ -60,6 +61,24 @@ static func get_line_rect_intersect(start: Vector2, end: Vector2, rectangle: Rec
 static func get_force_from_mass_and_speed(mass: float, speed: float):
 	return ((speed / 10) * mass) / (5.0 / 300.0)
 
+
+static func units_to_distance(amount: float, units: int):
+	match units:
+		GlobalSettings.Units.METRIC:
+			return 10 * amount
+		GlobalSettings.Units.IMPERIAL:
+			return 32.8084 * amount
+
+
+static func units_to_speed(amount: float, units: int):
+	match units:
+		GlobalSettings.Units.METRIC:
+			return 10 * amount
+		GlobalSettings.Units.IMPERIAL:
+			return 19.438445 * amount
+
+
+const GlobalSettings = preload("GlobalSettings.gd")
 
 const MASS_SPEED_FACTOR: float = 32.129448
 
