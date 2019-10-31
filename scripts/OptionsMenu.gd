@@ -152,8 +152,9 @@ func _ready():
 			if container is ScrollContainer:
 				for node in container.get_node("Controls Grid").get_children():
 					if node is Keybind:
-						node.connect("keybind_button_pressed", self, "_on_keybind_button_pressed")
 						node.load_from_simplified_events(settings.keybinds[node.action])
+						# TODO: Check for conflicts
+						node.connect("keybind_button_pressed", self, "_on_keybind_button_pressed")
 						node.connect("keybind_changed", settings, "_on_keybind_changed")
 						keybinds.append(node)
 
@@ -168,7 +169,7 @@ func _handle_keybind_popup_input(event):
 	var is_valid_input: bool = false
 
 	match editing_keybind.get("input_type", -1):
-		Keybind.KEY:
+		Keybind.KEY_ONE, Keybind.KEY_TWO:
 			if event is InputEventKey and event.pressed:
 				is_valid_input = true
 		Keybind.MOUSE:
@@ -216,19 +217,18 @@ func _on_hdr_checkbox_toggled(button_pressed: bool):
 	settings.set_hdr(button_pressed)
 
 
-func _on_keybind_button_pressed(keybind, event, input_type, button, button_index: int = -1):
+func _on_keybind_button_pressed(keybind, event, input_type, button):
 	if edit_binding_checkbox.pressed:
 		editing_keybind["keybind"] = keybind
 		editing_keybind["current_event"] = event
 		editing_keybind["input_type"] = input_type
-		editing_keybind["button_index"] = button_index
 
 		keybind_popup_key_label.set_text(button.text)
 		keybind_popup.popup_centered()
 		# Probably a function of the popup: this button is focused when we popup(), which is no good for mouse binding
 		keybind_accept_button.release_focus()
 	elif clear_binding_checkbox.pressed:
-		keybind.clear_keybind(input_type, button_index)
+		keybind.clear_keybind(input_type)
 	elif go_to_conflict_checkbox.pressed:
 		# Find the first conflicting action
 		for control in keybinds:
@@ -251,7 +251,7 @@ func _on_keybind_button_pressed(keybind, event, input_type, button, button_index
 
 func _on_keybind_popup_accept_pressed():
 	if editing_keybind.has("new_event") and editing_keybind.get("new_event") != editing_keybind.get("current_event"):
-		editing_keybind["keybind"].update_keybind(editing_keybind["input_type"], editing_keybind["new_event"], editing_keybind.get("button_index", -1))
+		editing_keybind["keybind"].update_keybind(editing_keybind["input_type"], editing_keybind["new_event"])
 
 		var new_keybind_conflicts: bool = false
 		for keybind in keybinds:
