@@ -168,6 +168,28 @@ func update_keybind(input_type: int, new_event, button_index: int = -1):
 		InputMap.action_add_event(action, new_event)
 
 
+static func action_to_simplified_events(action: String):
+	var events: Dictionary = {}
+
+	var keys_index: int = 0
+	for event in InputMap.get_action_list(action):
+		if event is InputEventKey:
+			if keys_index == 0:
+				events["key_one"] = { "scancode": event.scancode, "alt": event.alt, "command": event.command, "control": event.control, "meta": event.meta, "shift": event.shift }
+			elif keys_index == 1:
+				events["key_two"] = { "scancode": event.scancode, "alt": event.alt, "command": event.command, "control": event.control, "meta": event.meta, "shift": event.shift }
+			keys_index += 11
+		elif event is InputEventMouseButton:
+			events["mouse_button"] = { "button_index": event.button_index }
+		elif event is InputEventJoypadButton:
+			events["joypad_button"] = { "button_index": event.button_index }
+		elif event is InputEventJoypadMotion:
+			var axis_direction = 1 if event.axis_value < 0 else 0
+			events["joypad_axis"] = { "axis": event.axis, "axis_direction": axis_direction }
+
+	return events
+
+
 static func do_key_events_match(event_a: InputEventKey, event_b: InputEventKey):
 	return event_a.scancode == event_b.scancode and event_a.alt == event_b.alt and event_a.shift == event_b.shift and event_a.control == event_b.control and event_a.meta == event_b.meta and event_a.command == event_b.command
 
