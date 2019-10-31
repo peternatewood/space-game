@@ -62,6 +62,10 @@ static func get_force_from_mass_and_speed(mass: float, speed: float):
 	return ((speed / 10) * mass) / (5.0 / 300.0)
 
 
+static func percent_to_db(percent: float):
+	return 20 * log(percent) / log(10) - 40
+
+
 static func units_to_distance(amount: float, units: int):
 	match units:
 		GlobalSettings.Units.METRIC:
