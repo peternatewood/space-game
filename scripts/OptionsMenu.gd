@@ -39,6 +39,7 @@ func _ready():
 
 	var min_res_x: int = screen_size.x
 	var min_res_y: int = screen_size.y
+	var res = settings.get_resolution()
 	# Get resolution options and disable any bigger than the current screen size
 	for index in range(settings.RESOLUTIONS.size()):
 		var res_label = str(settings.RESOLUTIONS[index].x) + " x " + str(settings.RESOLUTIONS[index].y)
@@ -52,12 +53,14 @@ func _ready():
 		if settings.RESOLUTIONS[index].y < min_res_y:
 			min_res_y = settings.RESOLUTIONS[index].y
 
-	var res = settings.get_resolution()
-	resolution_x_spinbox.set_value(res.x)
-	resolution_y_spinbox.set_value(res.y)
+	_update_resolution_options_control(res)
+
 	resolution_x_spinbox.set_min(min_res_x)
 	resolution_y_spinbox.set_min(min_res_y)
 	_set_resolution_spinboxes_max()
+
+	resolution_x_spinbox.set_value(res.x)
+	resolution_y_spinbox.set_value(res.y)
 
 	var resolution_button = get_node("Options Rows/TabContainer/Video/Custom Res Container/Res Button")
 	resolution_button.connect("pressed", self, "_on_resolution_button_pressed")
@@ -256,15 +259,7 @@ func _on_reflections_cancel_pressed():
 
 func _on_resolution_button_pressed():
 	var resolution = _set_resolution(Vector2(resolution_x_spinbox.value, resolution_y_spinbox.value))
-	# Update the resolution options control
-	var new_res_index = -1
-	for index in range(settings.RESOLUTIONS.size()):
-		if settings.RESOLUTIONS[index] == resolution:
-			new_res_index = index
-			break
-
-	# We have to add one since the first element is not represented in the RESOLUTIONS array
-	resolution_options.select(new_res_index + 1)
+	_update_resolution_options_control(resolution)
 
 
 func _on_resolution_options_item_selected(res_index: int):
@@ -317,6 +312,18 @@ func _set_resolution_spinboxes_max():
 	var screen_size = OS.get_screen_size()
 	resolution_x_spinbox.set_max(screen_size.x)
 	resolution_y_spinbox.set_max(screen_size.y)
+
+
+func _update_resolution_options_control(res: Vector2):
+	var new_res_index = -1
+	for index in range(settings.RESOLUTIONS.size()):
+		if settings.RESOLUTIONS[index] == res:
+			new_res_index = index
+			break
+
+	# We have to add one since the first element is not represented in the RESOLUTIONS array
+	resolution_options.select(new_res_index + 1)
+
 
 # PUBLIC
 
