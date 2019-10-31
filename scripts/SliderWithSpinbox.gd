@@ -1,7 +1,6 @@
 extends Control
 
 export (float) var default = 50
-export (String) var label_text = "Slider"
 export (float) var max_value = 100
 export (float) var min_value = 0
 export (float) var step = 1
@@ -14,8 +13,6 @@ var _update_other_input: bool = false
 
 
 func _ready():
-	get_node("Label").set_text(label_text)
-
 	slider.set_max(max_value)
 	slider.set_min(min_value)
 	slider.set_step(step)

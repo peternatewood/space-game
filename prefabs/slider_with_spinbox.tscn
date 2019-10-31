@@ -8,16 +8,12 @@ margin_right = 984.0
 margin_bottom = 274.0
 script = ExtResource( 1 )
 
-[node name="Label" type="Label" parent="."]
-margin_top = 5.0
-margin_bottom = 19.0
-
 [node name="Slider" type="HSlider" parent="."]
-margin_left = 4.0
 margin_right = 906.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
+ticks_on_borders = true
 
 [node name="SpinBox" type="SpinBox" parent="."]
 margin_left = 910.0
