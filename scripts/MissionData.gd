@@ -40,6 +40,8 @@ func _ready():
 					else:
 						ship_models[data_parsed.result.get("ship_class", "ship")] = model_file
 
+				data_file.close()
+
 			file_name = dir.get_next()
 
 	if dir.open("res://models/energy_weapons") != OK:
@@ -67,6 +69,8 @@ func _ready():
 					else:
 						energy_weapon_models[data_parsed.result.get("name", "energy weapon")] = model_file
 
+				data_file.close()
+
 			file_name = dir.get_next()
 
 	if dir.open("res://models/missile_weapons") != OK:
@@ -93,6 +97,8 @@ func _ready():
 						print("Unable to load model file at " + model_file)
 					else:
 						missile_weapon_models[data_parsed.result.get("name", "missile weapon")] = model_file
+
+				data_file.close()
 
 			file_name = dir.get_next()
 
@@ -246,6 +252,8 @@ func load_mission_data(folder_name: String):
 				print("Error parsing " + directory + ": " + parse_result.error_string)
 		else:
 			print("Error opening " + directory + ": " + str(file_error))
+
+		data_file.close()
 	else:
 		print("Unable to open mission data file: no such file at " + directory)
 

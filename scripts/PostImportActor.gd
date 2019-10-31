@@ -62,6 +62,8 @@ func post_import(scene):
 				if hull_hitpoints != null and typeof(hull_hitpoints) == TYPE_REAL:
 					actor_data["hull_hitpoints"] = hull_hitpoints
 
+			data_file.close()
+
 		scene.set_meta("hull_hitpoints", actor_data["hull_hitpoints"])
 
 	scene.set_contact_monitor(true)
