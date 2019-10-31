@@ -298,7 +298,7 @@ func _on_shadow_quality_options_item_selected(item_index: int):
 
 
 func _on_units_options_item_selected(item_index: int):
-	settings.units.set_value(item_index)
+	settings.set_units(item_index)
 
 
 func _on_vsync_checkbox_toggled(button_pressed: bool):

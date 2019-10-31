@@ -62,7 +62,6 @@ tab_align = 0
 
 [node name="Video" type="VBoxContainer" parent="Options Rows/TabContainer"]
 editor/display_folded = true
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 8.0
@@ -1244,6 +1243,8 @@ group = ExtResource( 5 )
 text = "Clear Conflict"
 
 [node name="Game" type="VBoxContainer" parent="Options Rows/TabContainer"]
+editor/display_folded = true
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 8.0
@@ -1270,6 +1271,7 @@ items = [ "Metric", null, false, 0, null, "Imperial", null, false, 1, null ]
 selected = 0
 
 [node name="Accessibility" type="VBoxContainer" parent="Options Rows/TabContainer"]
+editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
