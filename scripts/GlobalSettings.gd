@@ -1,5 +1,7 @@
 extends Node
 
+enum Units { METRIC, IMPERIAL }
+
 # Default settings here
 var aniso_filtering = Setting.new("aniso_filtering", 0)
 var borderless = Setting.new("borderless", false)
@@ -13,6 +15,7 @@ var resolution = Setting.new("resolution", Vector2(1024, 768))
 var shadows_dir = Setting.new("shadows_dir", 4096)
 var shadows_point = Setting.new("shadows_point", 4096)
 var subsurf_scatter = Setting.new("subsurf_scatter", 0)
+var units = Setting.new("units", Units.METRIC)
 var vsync = Setting.new("vsync", true)
 
 
