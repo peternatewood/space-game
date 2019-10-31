@@ -29,6 +29,7 @@ func _ready():
 	var viewport = get_viewport()
 	var screen_size = OS.get_screen_size()
 
+	# Video
 	var fullscreen_checkbox = get_node("Options Rows/TabContainer/Video/Window Options Container/Fullscreen CheckBox")
 	fullscreen_checkbox.connect("toggled", self, "_on_fullscreen_checkbox_toggled")
 
@@ -115,6 +116,30 @@ func _ready():
 	reflections_accept.connect("pressed", self, "_on_reflections_accept_pressed")
 	reflections_cancel.connect("pressed", self, "_on_reflections_cancel_pressed")
 
+	# Audio
+	var master_mute = get_node("Options Rows/TabContainer/Audio/Master Mute")
+	var music_mute = get_node("Options Rows/TabContainer/Audio/Music Mute")
+	var sound_effects_mute = get_node("Options Rows/TabContainer/Audio/Sound Effects Mute")
+
+	master_mute.set_pressed(settings.get_audio_master_mute())
+	master_mute.connect("toggled", self, "_on_master_mute_toggled")
+	music_mute.set_pressed(settings.get_audio_music_mute())
+	music_mute.connect("toggled", self, "_on_music_mute_toggled")
+	sound_effects_mute.set_pressed(settings.get_audio_sound_effects_mute())
+	sound_effects_mute.connect("toggled", self, "_on_sound_effects_mute_toggled")
+
+	var master_audio_slider = get_node("Options Rows/TabContainer/Audio/Master Audio Slider")
+	var music_audio_slider = get_node("Options Rows/TabContainer/Audio/Music Audio Slider")
+	var sound_effects_audio_slider = get_node("Options Rows/TabContainer/Audio/Sound Effects Audio Slider")
+
+	master_audio_slider.set_value(settings.get_audio_master_percent())
+	master_audio_slider.connect("value_changed", self, "_on_master_audio_slider_changed")
+	music_audio_slider.set_value(settings.get_audio_music_percent())
+	music_audio_slider.connect("value_changed", self, "_on_music_audio_slider_changed")
+	sound_effects_audio_slider.set_value(settings.get_audio_sound_effects_percent())
+	sound_effects_audio_slider.connect("value_changed", self, "_on_sound_effects_audio_slider_changed")
+
+	# Controls
 	keybind_popup.connect("about_to_show", self, "show_popup_backdrop")
 	keybind_popup.connect("popup_hide", self, "hide_popup_backdrop")
 
@@ -242,6 +267,30 @@ func _on_keybind_popup_accept_pressed():
 
 func _on_keybind_popup_cancel_pressed():
 	keybind_popup.hide()
+
+
+func _on_master_audio_slider_changed(percent: float):
+	settings.set_audio_master_percent(percent)
+
+
+func _on_master_mute_toggled(button_pressed: bool):
+	settings.set_audio_master_mute(button_pressed)
+
+
+func _on_music_audio_slider_changed(percent: float):
+	settings.set_audio_music_percent(percent)
+
+
+func _on_music_mute_toggled(button_pressed: bool):
+	settings.set_audio_music_mute(button_pressed)
+
+
+func _on_sound_effects_audio_slider_changed(percent: float):
+	settings.set_audio_sound_effects_percent(percent)
+
+
+func _on_sound_effects_mute_toggled(button_pressed: bool):
+	settings.set_audio_sound_effects_mute(button_pressed)
 
 
 func _on_reflections_accept_pressed():
