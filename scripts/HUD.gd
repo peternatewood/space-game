@@ -4,6 +4,7 @@ export (NodePath) var camera_path
 export (NodePath) var player_path
 
 onready var debug = get_node("Debug")
+onready var distance_units_label = get_node("Target View Container/Target View Rows/Target Distance Container/Distance Units")
 onready var edge_target_icon = get_node("Edge Target Icon")
 onready var energy_weapon_rows = get_node("Weapons Container/Weapons Rows/Energy Weapons").get_children()
 onready var hud_bars = get_node("HUD Bars")
@@ -16,7 +17,9 @@ onready var player_overhead = get_node("Player Overhead")
 onready var player_hull_bar = get_node("Hull Bar")
 onready var power_container = get_node("Power Container")
 onready var radar = get_node("Radar")
+onready var settings = get_node("/root/GlobalSettings")
 onready var speed_indicator = get_node("Throttle Bar Container/Speed Indicator")
+onready var speed_units_label = get_node("Target View Container/Target View Rows/Target Distance Container/Speed Units")
 onready var target_details_minimal = get_node("Target Details Minimal")
 onready var target_icon = get_node("Target Icon")
 onready var target_overhead = get_node("Target Overhead")
@@ -53,6 +56,12 @@ func _ready():
 	target_view_cam = target_viewport.get_node("Camera")
 	target_view_model = target_viewport.get_node("Frog Fighter")
 
+	var units = settings.units.get_value()
+	distance_units_label.set_text(GlobalSettings.DISTANCE_UNITS[units])
+	speed_units_label.set_text(GlobalSettings.SPEED_UNITS[units])
+
+	settings.connect("units_changed", self, "_on_units_changed")
+
 	mission_controller.connect("mission_ready", self, "_on_mission_ready")
 	set_process(false)
 
@@ -66,8 +75,106 @@ func _disconnect_target_signals(target):
 		target.shields[index].disconnect("hitpoints_changed", self, "_on_target_shield_changed")
 
 
+func _on_mission_ready():
+	camera = get_node(camera_path)
+	player = get_node(player_path)
+
+	var overhead_icon = player.get_overhead_icon()
+	if overhead_icon != null:
+		player_overhead.set_overhead_icon(overhead_icon)
+
+	player_hull_bar.set_max(player.hull_hitpoints)
+	player_hull_bar.set_value(player.hull_hitpoints)
+
+	player.connect("cam_changed", self, "_on_player_cam_changed")
+	player.connect("power_distribution_changed", self, "_on_player_power_distribution_changed")
+	player.connect("shield_boost_changed", self, "_on_player_shield_boost_changed")
+	player.connect("target_changed", self, "_on_player_target_changed")
+	player.connect("began_warp_out", self, "_on_player_began_warp_out")
+
+	player.connect("damaged", self, "_on_player_damaged")
+	player.connect("destroyed", self, "_on_player_destroyed")
+	player.connect("warped_out", self, "_on_player_destroyed")
+
+	for index in range(player.QUADRANT_COUNT):
+		player.shields[index].connect("hitpoints_changed", self, "_on_player_shield_changed", [ index ])
+
+	_on_player_throttle_changed()
+	player.connect("throttle_changed", self, "_on_player_throttle_changed")
+	player.connect("energy_weapon_changed", self, "_on_player_energy_weapon_changed")
+	player.connect("missile_weapon_changed", self, "_on_player_missile_weapon_changed")
+
+	power_container.set_power_bars(player.power_distribution)
+
+	# Add radar icons
+	for node in mission_controller.get_targets(true):
+		if node != mission_controller.player:
+			var icon = RADAR_ICON.instance()
+			icon.set_target(node)
+			# Set icon color based on alignment
+			var alignment = mission_controller.get_alignment(player.faction, node.faction)
+			if alignment != -1:
+				icon.set_modulate(ALIGNMENT_COLORS_FADED[alignment])
+			else:
+				icon.set_modulate(Color.white)
+
+			radar_icons_container.add_child(icon)
+
+	# Set up weapons display based on player loadout
+	energy_hardpoint_count = player.energy_weapon_hardpoints.size()
+	for index in range(energy_weapon_rows.size()):
+		if index < energy_hardpoint_count:
+			energy_weapon_rows[index].show()
+			energy_weapon_rows[index].set_name(player.energy_weapon_hardpoints[index].weapon_data.get("weapon_name", "none"))
+		else:
+			energy_weapon_rows[index].hide()
+
+		energy_weapon_rows[index].toggle_arrow(index == 0)
+
+	missile_hardpoint_count = player.missile_weapon_hardpoints.size()
+	for index in range(missile_weapon_rows.size()):
+		if index < missile_hardpoint_count:
+			missile_weapon_rows[index].show()
+			missile_weapon_rows[index].set_capacity(player.missile_weapon_hardpoints[index].ammo_capacity)
+			missile_weapon_rows[index].set_name(player.missile_weapon_hardpoints[index].weapon_data.get("weapon_name", "none"))
+			player.missile_weapon_hardpoints[index].connect("ammo_count_changed", self, "_on_player_ammo_count_changed", [ index ])
+		else:
+			missile_weapon_rows[index].hide()
+
+		missile_weapon_rows[index].toggle_arrow(index == 0)
+
+	if not player.has_target:
+		target_details_minimal.hide()
+
+	for index in range(mission_controller.mission_data.objectives.size()):
+		for objective in mission_controller.mission_data.objectives[index]:
+			var objective_label = OBJECTIVE_LABEL.instance()
+			objective_label.set_text(objective.name)
+			objectives_rows.add_child(objective_label)
+
+			# Only show secret objectives once completed, show other objective types when triggered
+			if index == objective.SECRET:
+				objective_label.hide()
+				objective.connect("completed", objective_label, "_on_objective_triggered")
+			elif not objective.enabled:
+				objective_label.hide()
+				objective.connect("triggered", objective_label, "_on_objective_triggered")
+
+			objective.connect("completed", objective_label, "_on_objective_completed")
+			objective.connect("failed", objective_label, "_on_objective_failed")
+
+	# Run this once so that everything looks right at the prompt overlay
+	_process(0)
+	set_process(true)
+
+
 func _on_player_ammo_count_changed(ammo_count: int, index: int):
 	missile_weapon_rows[index].set_ammo(ammo_count)
+
+
+func _on_player_began_warp_out():
+	hide()
+	set_process(false)
 
 
 func _on_player_cam_changed(cam_mode: int):
@@ -193,104 +300,6 @@ func _on_player_throttle_changed():
 	throttle_line.set_position(line_pos)
 
 
-func _on_player_began_warp_out():
-	hide()
-	set_process(false)
-
-
-func _on_mission_ready():
-	camera = get_node(camera_path)
-	player = get_node(player_path)
-
-	var overhead_icon = player.get_overhead_icon()
-	if overhead_icon != null:
-		player_overhead.set_overhead_icon(overhead_icon)
-
-	player_hull_bar.set_max(player.hull_hitpoints)
-	player_hull_bar.set_value(player.hull_hitpoints)
-
-	player.connect("cam_changed", self, "_on_player_cam_changed")
-	player.connect("power_distribution_changed", self, "_on_player_power_distribution_changed")
-	player.connect("shield_boost_changed", self, "_on_player_shield_boost_changed")
-	player.connect("target_changed", self, "_on_player_target_changed")
-	player.connect("began_warp_out", self, "_on_player_began_warp_out")
-
-	player.connect("damaged", self, "_on_player_damaged")
-	player.connect("destroyed", self, "_on_player_destroyed")
-	player.connect("warped_out", self, "_on_player_destroyed")
-
-	for index in range(player.QUADRANT_COUNT):
-		player.shields[index].connect("hitpoints_changed", self, "_on_player_shield_changed", [ index ])
-
-	_on_player_throttle_changed()
-	player.connect("throttle_changed", self, "_on_player_throttle_changed")
-	player.connect("energy_weapon_changed", self, "_on_player_energy_weapon_changed")
-	player.connect("missile_weapon_changed", self, "_on_player_missile_weapon_changed")
-
-	power_container.set_power_bars(player.power_distribution)
-
-	# Add radar icons
-	for node in mission_controller.get_targets(true):
-		if node != mission_controller.player:
-			var icon = RADAR_ICON.instance()
-			icon.set_target(node)
-			# Set icon color based on alignment
-			var alignment = mission_controller.get_alignment(player.faction, node.faction)
-			if alignment != -1:
-				icon.set_modulate(ALIGNMENT_COLORS_FADED[alignment])
-			else:
-				icon.set_modulate(Color.white)
-
-			radar_icons_container.add_child(icon)
-
-	# Set up weapons display based on player loadout
-	energy_hardpoint_count = player.energy_weapon_hardpoints.size()
-	for index in range(energy_weapon_rows.size()):
-		if index < energy_hardpoint_count:
-			energy_weapon_rows[index].show()
-			energy_weapon_rows[index].set_name(player.energy_weapon_hardpoints[index].weapon_data.get("weapon_name", "none"))
-		else:
-			energy_weapon_rows[index].hide()
-
-		energy_weapon_rows[index].toggle_arrow(index == 0)
-
-	missile_hardpoint_count = player.missile_weapon_hardpoints.size()
-	for index in range(missile_weapon_rows.size()):
-		if index < missile_hardpoint_count:
-			missile_weapon_rows[index].show()
-			missile_weapon_rows[index].set_capacity(player.missile_weapon_hardpoints[index].ammo_capacity)
-			missile_weapon_rows[index].set_name(player.missile_weapon_hardpoints[index].weapon_data.get("weapon_name", "none"))
-			player.missile_weapon_hardpoints[index].connect("ammo_count_changed", self, "_on_player_ammo_count_changed", [ index ])
-		else:
-			missile_weapon_rows[index].hide()
-
-		missile_weapon_rows[index].toggle_arrow(index == 0)
-
-	if not player.has_target:
-		target_details_minimal.hide()
-
-	for index in range(mission_controller.mission_data.objectives.size()):
-		for objective in mission_controller.mission_data.objectives[index]:
-			var objective_label = OBJECTIVE_LABEL.instance()
-			objective_label.set_text(objective.name)
-			objectives_rows.add_child(objective_label)
-
-			# Only show secret objectives once completed, show other objective types when triggered
-			if index == objective.SECRET:
-				objective_label.hide()
-				objective.connect("completed", objective_label, "_on_objective_triggered")
-			elif not objective.enabled:
-				objective_label.hide()
-				objective.connect("triggered", objective_label, "_on_objective_triggered")
-
-			objective.connect("completed", objective_label, "_on_objective_completed")
-			objective.connect("failed", objective_label, "_on_objective_failed")
-
-	# Run this once so that everything looks right at the prompt overlay
-	_process(0)
-	set_process(true)
-
-
 func _on_target_damaged():
 	var hull_percent = max(0, player.current_target.get_hull_percent())
 	target_details_minimal.set_hull(hull_percent)
@@ -309,6 +318,18 @@ func _on_target_destroyed(target):
 func _on_target_shield_changed(percent: float, quadrant: int):
 	target_details_minimal.set_shield_alpha(quadrant, percent)
 	target_overhead.set_shield_alpha(quadrant, percent)
+
+
+func _on_units_changed(units: int):
+	distance_units_label.set_text(GlobalSettings.DISTANCE_UNITS[units])
+	speed_units_label.set_text(GlobalSettings.SPEED_UNITS[units])
+
+	if player.has_target:
+		var to_target = player.current_target.transform.origin - player.transform.origin
+		target_distance.set_text(str(round(MathHelper.units_to_distance(to_target.length(), units))))
+		target_speed.set_text(str(round(MathHelper.units_to_speed(player.current_target.linear_velocity.length(), units))))
+
+	_update_speed_indicator()
 
 
 func _process(delta):
@@ -347,7 +368,7 @@ func _process(delta):
 		var cam_target_dist = (player.current_target.transform.origin - camera.transform.origin).length()
 		var icon_pos: Vector2 = camera.unproject_position(player.current_target.transform.origin)
 		# Multiply all units by 10 to get meters
-		var target_dist = 10 * to_target.length()
+		var target_dist = MathHelper.units_to_distance(to_target.length(), settings.units._value)
 
 		if camera.is_position_in_view(player.current_target.transform.origin):
 			if not target_icon.visible:
@@ -386,7 +407,7 @@ func _process(delta):
 		target_view_model.set_rotation(player.current_target.rotation)
 
 		target_distance.set_text(str(round(target_dist)))
-		target_speed.set_text(str(round(10 * player.current_target.linear_velocity.length())))
+		target_speed.set_text(str(round(MathHelper.units_to_speed(player.current_target.linear_velocity.length(), settings.units._value))))
 	else:
 		if target_icon.visible:
 			target_icon.hide()
@@ -456,7 +477,7 @@ func _update_speed_indicator():
 		throttle_bar.set_value(speed_percent)
 
 		# Multiply all units by 10 to get meters
-		speed_indicator.set_text(str(round(10 * speed)))
+		speed_indicator.set_text(str(round(MathHelper.units_to_speed(speed, settings.units.get_value()))))
 		var indicator_pos = Vector2(speed_indicator.rect_position.x, throttle_bar.rect_size.y - (speed_indicator.rect_size.y / 2) - (throttle_bar.value / throttle_bar.max_value) * throttle_bar.rect_size.y)
 		speed_indicator.set_position(indicator_pos)
 
