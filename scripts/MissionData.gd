@@ -6,6 +6,7 @@ var energy_weapon_models: Dictionary
 var missile_weapon_models: Dictionary
 var mission_name: String
 var mission_scene_path: String
+var non_player_loadout: Dictionary
 var objectives: Array
 var ship_models: Dictionary
 var wing_loadouts: Dictionary
@@ -197,6 +198,23 @@ func load_mission_data(folder_name: String):
 									break
 
 							wing_loadouts[wing_name].append(ship_loadout)
+
+				# Get the loadouts for all non-player-accessible ships
+				var result_loadout = parse_result.result.get("non_player_loadout", {})
+				non_player_loadout = {}
+				for ship_name in result_loadout.keys():
+					non_player_loadout[ship_name] = {
+						"energy_weapons": [],
+						"missile_weapons": []
+					}
+
+					for energy_weapon_name in result_loadout[ship_name].get("energy_weapons", []):
+						if energy_weapon_models.has(energy_weapon_name):
+							non_player_loadout[ship_name].energy_weapons.append(energy_weapon_models[energy_weapon_name])
+
+					for missile_weapon_name in result_loadout[ship_name].get("missile_weapons", []):
+						if missile_weapon_models.has(missile_weapon_name):
+							non_player_loadout[ship_name].missile_weapons.append(missile_weapon_models[missile_weapon_name])
 
 				# Get mission objectives
 				objectives = [ [], [], [] ]

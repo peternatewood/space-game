@@ -81,6 +81,12 @@ func _on_scene_loaded():
 			else:
 				ship.set_weapon_hardpoints(mission_data.get_weapon_models("energy_weapons", wing_name, index), mission_data.get_weapon_models("missile_weapons", wing_name, index))
 
+	# And don't forget the non-player-accessible ships!
+	for ship_name in mission_data.non_player_loadout.keys():
+		var ship = targets_container.get_node_or_null(ship_name)
+		if ship != null:
+			ship.set_weapon_hardpoints(mission_data.non_player_loadout[ship_name].energy_weapons, mission_data.non_player_loadout[ship_name].missile_weapons)
+
 	player = get_node(player_path)
 	player.connect("warped_out", self, "_on_player_warped_out")
 

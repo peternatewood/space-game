@@ -18,6 +18,12 @@
       { "ship_class": "Spider Fighter", "energy_weapons": [ "Energy Bolt", "Disintigrator" ], "missile_weapons": [ "Heat Seeker", "Heat Seeker" ] }
     ]
   },
+  "non_player_loadout": {
+    "Hyla 1": { "energy_weapons": [ "Energy Bolt" ], "missile_weapons": [ "Heat Seeker" ] },
+    "Hyla 2": { "energy_weapons": [ "Energy Bolt" ], "missile_weapons": [ "Heat Seeker" ] },
+    "Buteo 1": { "energy_weapons": [ "Energy Bolt" ], "missile_weapons": [ "Heat Seeker" ] },
+    "Buteo 2": { "energy_weapons": [ "Energy Bolt" ], "missile_weapons": [ "Heat Seeker" ] }
+  },
   "objectives": [
     [
       {
