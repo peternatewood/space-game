@@ -87,6 +87,8 @@ func clear_keybind(input_type: int, button_index: int = -1):
 				JOY_AXIS:
 					joypad_axis_button.set_text("none")
 
+	emit_signal("keybind_changed", action)
+
 
 func conflicts_with(other_action: String, event):
 	if action == other_action:
@@ -109,6 +111,53 @@ func conflicts_with(other_action: String, event):
 			return events[JOY_AXIS].axis == event.axis and axis_direction == other_axis_direction
 
 	return false
+
+
+func load_from_simplified_events(simplified_events: Dictionary):
+	for key in simplified_events.keys():
+		var new_event
+
+		match key:
+			"key_one":
+				new_event = InputEventKey.new()
+				new_event.set_pressed(true)
+				new_event.set_scancode(simplified_events[key].scancode)
+				new_event.set_alt(simplified_events[key].alt)
+				new_event.set_command(simplified_events[key].command)
+				new_event.set_control(simplified_events[key].control)
+				new_event.set_metakey(simplified_events[key].meta)
+				new_event.set_shift(simplified_events[key].shift)
+
+				update_keybind(KEY, new_event, 0)
+			"key_two":
+				new_event = InputEventKey.new()
+				new_event.set_pressed(true)
+				new_event.set_scancode(simplified_events[key].scancode)
+				new_event.set_alt(simplified_events[key].alt)
+				new_event.set_command(simplified_events[key].command)
+				new_event.set_control(simplified_events[key].control)
+				new_event.set_metakey(simplified_events[key].meta)
+				new_event.set_shift(simplified_events[key].shift)
+
+				update_keybind(KEY, new_event, 1)
+			"mouse_button":
+				new_event = InputEventMouseButton.new()
+				new_event.set_pressed(true)
+				new_event.set_button_index(simplified_events[key].button_index)
+
+				update_keybind(MOUSE, new_event)
+			"joypad_button":
+				new_event = InputEventJoypadButton.new()
+				new_event.set_pressed(true)
+				new_event.set_button_index(simplified_events[key].button_index)
+
+				update_keybind(JOY_BUTTON, new_event)
+			"joypad_axis":
+				new_event = InputEventJoypadMotion.new()
+				new_event.set_axis(simplified_events[key].axis)
+				new_event.set_axis_value(simplified_events[key].axis_direction)
+
+				update_keybind(JOY_AXIS, new_event)
 
 
 func toggle_conflict(toggle_on: bool, event):
@@ -166,6 +215,9 @@ func update_keybind(input_type: int, new_event, button_index: int = -1):
 			events[input_type] = new_event
 
 		InputMap.action_add_event(action, new_event)
+		emit_signal("keybind_changed", action)
+	else:
+		print("Invalid keybind update: " + var2str(new_event))
 
 
 static func action_to_simplified_events(action: String):
@@ -252,5 +304,6 @@ static func event_to_text(event = null):
 
 
 signal keybind_button_pressed
+signal keybind_changed
 
 const KEYBIND_CONFLICT_THEME = preload("res://themes/keybind_conflict.tres")
