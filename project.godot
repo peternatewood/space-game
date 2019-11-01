@@ -19,6 +19,8 @@ config/name="Space Game"
 run/main_scene="res://title.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="Space Game"
+boot_splash/image="res://images/boot_splash.png"
+boot_splash/bg_color=Color( 0, 0, 0, 1 )
 config/icon="res://images/icon.png"
 
 [autoload]
