@@ -107,21 +107,29 @@ func _ready():
 		missile_weapon_slots[index].set_options(missile_weapon_data)
 		missile_weapon_slots[index].connect("icon_pressed", self, "_on_missile_weapon_slot_pressed", [ index ])
 
+	var wing_radios: Dictionary = {
+		"Alpha": get_node("Left Rows/Wings Panel/Wing Selection Container/Alpha CheckBox"),
+		"Beta": get_node("Left Rows/Wings Panel/Wing Selection Container/Beta CheckBox")
+	}
 	# Set wing ship icons based on wing defaults
 	for wing_name in wing_containers.keys():
-		var ship_radials = wing_containers[wing_name].get_children()
-		for ship_index in range(4):
-			if ship_index < mission_data.wing_loadouts[wing_name].size():
-				# Initialize ship options
-				ship_radials[ship_index].set_options(ship_data)
+		if mission_data.wing_loadouts.has(wing_name):
+			wing_containers[wing_name].show()
+			var ship_radials = wing_containers[wing_name].get_children()
+			for ship_index in range(4):
+				if ship_index < mission_data.wing_loadouts[wing_name].size():
+					# Initialize ship options
+					ship_radials[ship_index].set_options(ship_data)
 
-				var ship_class = mission_data.wing_loadouts[wing_name][ship_index].ship_class
+					var ship_class = mission_data.wing_loadouts[wing_name][ship_index].ship_class
 
-				ship_radials[ship_index].set_current_icon(ship_data[ship_class].icon)
-				ship_radials[ship_index].connect("radial_pressed", self, "_on_wing_radial_pressed", [ wing_name, ship_index ])
-				ship_radials[ship_index].connect("icon_pressed", self, "_on_wing_icon_pressed")
-			else:
-				ship_radials[ship_index].disable()
+					ship_radials[ship_index].set_current_icon(ship_data[ship_class].icon)
+					ship_radials[ship_index].connect("radial_pressed", self, "_on_wing_radial_pressed", [ wing_name, ship_index ])
+					ship_radials[ship_index].connect("icon_pressed", self, "_on_wing_icon_pressed")
+				else:
+					ship_radials[ship_index].disable()
+		else:
+			wing_radios[wing_name].hide()
 
 	var index: int = 0
 	for node in get_node("Left Rows/Wings Panel/Wing Selection Container").get_children():

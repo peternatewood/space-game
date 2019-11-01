@@ -44,8 +44,9 @@ func _on_player_warped_out():
 
 func _on_scene_loaded():
 	targets_container = get_node("Targets Container")
-	waypoints_container = get_node("Waypoints Container")
-	waypoints = waypoints_container.get_children()
+	waypoints_container = get_node_or_null("Waypoints Container")
+	if waypoints_container != null:
+		waypoints = waypoints_container.get_children()
 
 	# Assign loadouts from mission data to ships in scene
 	for wing_name in mission_data.wing_loadouts.keys():

@@ -426,10 +426,10 @@ light_color = Color( 0.847059, 0.933333, 0.996078, 1 )
 [node name="Ship Container" type="Spatial" parent="Ship Preview Viewport"]
 
 [node name="Ship" parent="Ship Preview Viewport/Ship Container" instance=ExtResource( 8 )]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0 )
+transform = Transform( -4.37114e-008, 0, 1, 0, 1, 0, -1, 0, -4.37114e-008, 0, 0, 0 )
 
 [node name="Camera" type="Camera" parent="Ship Preview Viewport"]
-transform = Transform( -1, -8.74228e-08, 0, 8.44439e-08, -0.965926, 0.258819, -2.26267e-08, 0.258819, 0.965926, 0, 1, 4 )
+transform = Transform( -1, -8.74228e-008, 0, 8.44439e-008, -0.965926, 0.258819, -2.26267e-008, 0.258819, 0.965926, 0, 1, 4 )
 current = true
 fov = 45.0
 size = 3.0
