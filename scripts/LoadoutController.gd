@@ -114,7 +114,6 @@ func _ready():
 	# Set wing ship icons based on wing defaults
 	for wing_name in wing_containers.keys():
 		if mission_data.wing_loadouts.has(wing_name):
-			wing_containers[wing_name].show()
 			var ship_radials = wing_containers[wing_name].get_children()
 			for ship_index in range(4):
 				if ship_index < mission_data.wing_loadouts[wing_name].size():
