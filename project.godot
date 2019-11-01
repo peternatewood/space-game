@@ -19,7 +19,7 @@ config/name="Space Game"
 run/main_scene="res://title.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="Space Game"
-config/icon="res://icon.png"
+config/icon="res://images/icon.png"
 
 [autoload]
 
