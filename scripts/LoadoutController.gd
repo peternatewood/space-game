@@ -44,14 +44,14 @@ func _ready():
 			var missile_weapon_slot_count = ship_instance.get_node("Missile Weapon Groups").get_child_count()
 
 			var icon = ImageTexture.new()
-			var icon_load_error = icon.load(source_folder + "/icon.png")
-			if icon_load_error != OK:
-				print("Error loading ship icon: " + str(icon_load_error))
+			var icon_stream_texture = load(source_folder + "/icon.png")
+			var icon_texture = icon_stream_texture.get_data()
+			icon.create_from_image(icon_texture, 0)
 
 			var overhead = ImageTexture.new()
-			var overhead_load_error = overhead.load(source_folder + "/loadout_overhead.png")
-			if overhead_load_error != OK:
-				print("Error loading overhead icon: " + str(overhead_load_error))
+			var overhead_stream_texture = load(source_folder + "/loadout_overhead.png")
+			var overhead_texture = overhead_stream_texture.get_data()
+			overhead.create_from_image(overhead_texture, 0)
 
 			var radial_icon = RADIAL_ICON.instance()
 			ship_selection_container.add_child(radial_icon)
@@ -79,9 +79,9 @@ func _ready():
 			var source_folder = energy_weapon_instance.get_meta("source_folder")
 
 			var icon = ImageTexture.new()
-			var icon_load_error = icon.load(source_folder + "/icon.png")
-			if icon_load_error != OK:
-				print("Error loading ship icon: " + str(icon_load_error))
+			var icon_stream_texture = load(source_folder + "/icon.png")
+			var icon_texture = icon_stream_texture.get_data()
+			icon.create_from_image(icon_texture, 0)
 
 			energy_weapon_data[energy_weapon_name] = { "model": model, "icon": icon }
 
@@ -97,9 +97,9 @@ func _ready():
 			var source_folder = missile_weapon_instance.get_meta("source_folder")
 
 			var icon = ImageTexture.new()
-			var icon_load_error = icon.load(source_folder + "/icon.png")
-			if icon_load_error != OK:
-				print("Error loading ship icon: " + str(icon_load_error))
+			var icon_stream_texture = load(source_folder + "/icon.png")
+			var icon_texture = icon_stream_texture.get_data()
+			icon.create_from_image(icon_texture, 0)
 
 			missile_weapon_data[missile_weapon_name] = { "model": model, "icon": icon }
 
