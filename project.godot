@@ -27,6 +27,10 @@ GlobalSettings="*res://scripts/GlobalSettings.gd"
 SceneLoader="*res://scripts/SceneLoader.gd"
 MissionData="*res://scripts/MissionData.gd"
 
+[display]
+
+window/size/resizable=false
+
 [input]
 
 pitch_up={
