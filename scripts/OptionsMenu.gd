@@ -116,6 +116,10 @@ func _ready():
 	reflections_accept.connect("pressed", self, "_on_reflections_accept_pressed")
 	reflections_cancel.connect("pressed", self, "_on_reflections_cancel_pressed")
 
+	var fov_slider = get_node("Options Rows/TabContainer/Video/FOV Container/FOV Slider")
+	fov_slider.set_value(settings.get_fov())
+	fov_slider.connect("value_changed", self, "_on_fov_changed")
+
 	# Audio
 	var master_mute = get_node("Options Rows/TabContainer/Audio/Master Mute")
 	var music_mute = get_node("Options Rows/TabContainer/Audio/Music Mute")
@@ -214,6 +218,10 @@ func _on_borderless_checkbox_toggled(button_pressed: bool):
 
 func _on_dyslexia_checkbox_toggled(button_pressed: bool):
 	settings.set_dyslexia(button_pressed)
+
+
+func _on_fov_changed(value: float):
+	settings.set_fov(int(value))
 
 
 func _on_fullscreen_checkbox_toggled(button_pressed: bool):
