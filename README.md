@@ -85,3 +85,25 @@ I've followed the official [GDScript style guide](https://docs.godotengine.org/e
 8. Signals
 9. script Constants (custom scripts get loaded in pascal case instead of capital snake like other constants)
 10. Constants
+
+## Version Rules
+
+Software version numbers are often obscure, so I've taken some time to write up some rules I'll follow to make sense of the version numbers I apply to this game. I'll follow the familiar format for version numbers: three whole numbers, each separated by a period. In addition to the version number, I'll be using the terms "Alpha", "Beta", and "Release" to better indicate the state of the software.
+
+### Alpha, Beta, Release
+
+I've heard the terms "Alpha" and "Beta" used very loosely in discussion about game development. I've never gotten a good sense that those terms have any concrete meaning apart from a general sense of pre-release status. In light of this confusion, I've come up with my own distinct descriptions for each classification:
+
+- __Alpha__ refers to pre-build versions of the software. These versions do not exist as compiled executables, and are typically lacking necessary features for the complete release. This stage of development is largely constructive: building the basic structures needed to make the core game work.
+- __Beta__ refers to pre-release versions of the software. These versions exist as compiled executables, but are lacking Minimal Viable Product (MVP) features. This stage is based around experimentation and building more complex features.
+- __Release__ refers to release versions of the software. Once released, the only version updates should be to fix bugs, make quality-of-life improvements, and add content.
+
+### Version Numbers
+
+Version numbers are more sensible, though initially confusing. The use of a period as separator can make the number look like a decimal, but this is not the case. I'll list the version numbers and what they mean for my project.
+
+- __First Digit: Major Version__ - This refers to a significant, or *major*, update as the culmination of minor updates.
+- __Second Digit: Minor Version__ - This refers to the addition of a feature or content.
+- __Third Digit: Patch Version__ - This refers to adjustments and fixes to the current minor version.
+
+A complete version number will begin with the development stage name, followed by the version numbers. E.G. A build in the Beta stage at major version 2, minor version 12, patch version 3 would look like this `Beta 2.12.3`
