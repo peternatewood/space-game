@@ -154,6 +154,13 @@ func _ready():
 					if node is Keybind:
 						node.load_from_simplified_events(settings.keybinds[node.action])
 						# TODO: Check for conflicts
+						for keybind in keybinds:
+							for event in node.events:
+								if keybind.conflicts_with(node.action, event):
+									node.toggle_conflict(true, event)
+									keybind.toggle_conflict(true, event)
+									break
+
 						node.connect("keybind_button_pressed", self, "_on_keybind_button_pressed")
 						node.connect("keybind_changed", settings, "_on_keybind_changed")
 						keybinds.append(node)
@@ -229,6 +236,9 @@ func _on_keybind_button_pressed(keybind, event, input_type, button):
 		keybind_accept_button.release_focus()
 	elif clear_binding_checkbox.pressed:
 		keybind.clear_keybind(input_type)
+
+		for keybind in keybinds:
+			keybind.toggle_conflict(false, event)
 	elif go_to_conflict_checkbox.pressed:
 		# Find the first conflicting action
 		for control in keybinds:

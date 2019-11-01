@@ -85,7 +85,6 @@ func _load_settings_from_file():
 
 
 func _on_keybind_changed(action):
-	print(action + " action changed")
 	var simplified_events = Keybind.action_to_simplified_events(action)
 	keybinds[action] = simplified_events
 
