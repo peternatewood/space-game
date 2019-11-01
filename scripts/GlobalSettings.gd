@@ -163,6 +163,10 @@ func get_dyslexia():
 	return settings.dyslexia.get_value()
 
 
+func get_fov():
+	return settings.fov.get_value()
+
+
 func get_fullscreen():
 	return settings.fullscreen.get_value()
 
@@ -251,6 +255,13 @@ func set_dyslexia(toggle_on: bool):
 	_save_settings_to_file()
 
 
+func set_fov(value: int):
+	settings.fov.set_value(value)
+	emit_signal("fov_changed", settings.fov._value)
+
+	_save_settings_to_file()
+
+
 func set_fullscreen(toggle_on: bool):
 	settings.fullscreen.set_value(toggle_on)
 	_update_fullscreen()
@@ -308,6 +319,7 @@ func set_vsync(toggle_on: bool):
 
 
 signal dyslexia_toggled
+signal fov_changed
 signal units_changed
 
 const Keybind = preload("Keybind.gd")
