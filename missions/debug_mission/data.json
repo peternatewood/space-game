@@ -4,7 +4,7 @@
     "Test everything to do with individual missions."
   ],
   "armory": {
-    "ships": [ "Spider Fighter", "Spider Bomber" ],
+    "ships": [ "Spider Fighter", "Spider Interceptor", "Spider Bomber" ],
     "energy_weapons": [ "Energy Bolt", "Disintigrator" ],
     "missile_weapons": [ "Heat Seeker" ]
   },
