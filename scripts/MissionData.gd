@@ -36,7 +36,7 @@ func _ready():
 					if data_parsed.error != OK:
 						print("Error parsing data file at " + model_dir + ": " + data_parsed.error_string)
 					elif model_file == null:
-						print("Unable to load model file at " + model_file)
+						print("Unable to load model file at " + model_dir)
 					else:
 						ship_models[data_parsed.result.get("ship_class", "ship")] = model_file
 

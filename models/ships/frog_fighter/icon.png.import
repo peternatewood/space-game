@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/icon.png-6dc037120809902f6c7a73b86f723ae7.stex"
+path="res://.import/icon.png-ffaf6c9e83fa2333e849f0c643f1b890.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://models/ships/fighter_hawk/icon.png"
-dest_files=[ "res://.import/icon.png-6dc037120809902f6c7a73b86f723ae7.stex" ]
+source_file="res://models/ships/frog_fighter/icon.png"
+dest_files=[ "res://.import/icon.png-ffaf6c9e83fa2333e849f0c643f1b890.stex" ]
 
 [params]
 

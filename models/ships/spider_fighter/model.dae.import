@@ -2,17 +2,17 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/model.dae-ecd46c81325451510d93d6e5aa912943.scn"
+path="res://.import/model.dae-3cfe796c9091dabbee4abb1fbd43a101.scn"
 
 [deps]
 
-source_file="res://models/ships/fighter_frog/model.dae"
-dest_files=[ "res://.import/model.dae-ecd46c81325451510d93d6e5aa912943.scn" ]
+source_file="res://models/ships/spider_fighter/model.dae"
+dest_files=[ "res://.import/model.dae-3cfe796c9091dabbee4abb1fbd43a101.scn" ]
 
 [params]
 
 nodes/root_type="RigidBody"
-nodes/root_name="Frog Fighter"
+nodes/root_name="Spider Fighter"
 nodes/root_scale=1.0
 nodes/custom_script="res://scripts/PostImportShip.gd"
 nodes/storage=0

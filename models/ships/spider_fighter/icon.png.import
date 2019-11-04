@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/loadout_overhead.png-68f215929a52fe002651e817a7afd660.stex"
+path="res://.import/icon.png-cd0235ce2a3341fcf5d0168d3ad435db.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://models/ships/fighter_spider/loadout_overhead.png"
-dest_files=[ "res://.import/loadout_overhead.png-68f215929a52fe002651e817a7afd660.stex" ]
+source_file="res://models/ships/spider_fighter/icon.png"
+dest_files=[ "res://.import/icon.png-cd0235ce2a3341fcf5d0168d3ad435db.stex" ]
 
 [params]
 

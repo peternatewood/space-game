@@ -2,8 +2,8 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/fuselage.png-b2eafd4f144c6d0df4e9ebef43f56765.s3tc.stex"
-path.etc2="res://.import/fuselage.png-b2eafd4f144c6d0df4e9ebef43f56765.etc2.stex"
+path.s3tc="res://.import/fuselage.png-ddc9b15864825d59ef20102fa02430ef.s3tc.stex"
+path.etc2="res://.import/fuselage.png-ddc9b15864825d59ef20102fa02430ef.etc2.stex"
 metadata={
 "imported_formats": [ "s3tc", "etc2" ],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://models/ships/fighter_hawk/images/fuselage.png"
-dest_files=[ "res://.import/fuselage.png-b2eafd4f144c6d0df4e9ebef43f56765.s3tc.stex", "res://.import/fuselage.png-b2eafd4f144c6d0df4e9ebef43f56765.etc2.stex" ]
+source_file="res://models/ships/spider_fighter/images/fuselage.png"
+dest_files=[ "res://.import/fuselage.png-ddc9b15864825d59ef20102fa02430ef.s3tc.stex", "res://.import/fuselage.png-ddc9b15864825d59ef20102fa02430ef.etc2.stex" ]
 
 [params]
 
