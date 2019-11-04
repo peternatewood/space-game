@@ -65,16 +65,17 @@ func _on_scene_loaded():
 				ship_instance.wing_name = ship.wing_name
 				ship_instance.is_warped_in = ship.is_warped_in
 
-				if ship_instance is Player:
-					ship_instance.camera_path = ship.camera_path
-				elif ship_instance is NPCShip:
-					ship_instance.initial_orders = ship.initial_orders
-
 				var ship_tree_pos = ship.get_position_in_parent()
 				targets_container.remove_child(ship)
 				targets_container.add_child(ship_instance)
 				targets_container.move_child(ship_instance, ship_tree_pos)
 
+				if ship_instance is Player:
+					ship_instance.camera_path = ship.camera_path
+				elif ship_instance is NPCShip:
+					ship_instance.initial_orders = ship.initial_orders
+
+				ship.free()
 				ship = ship_instance
 
 			if ship == null:
