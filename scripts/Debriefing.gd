@@ -15,13 +15,18 @@ func _ready():
 	]
 
 	for index in range(objective_containers.size()):
-		if mission_data.objectives[index].size() == 0:
-			objective_containers[index].hide()
-		else:
-			for objective in mission_data.objectives[index]:
+		var hide_container: bool = true
+		for objective in mission_data.objectives[index]:
+			if objective.enabled and (index != objective.SECRET or objective.state == objective.COMPLETED):
+				if hide_container:
+					hide_container = false
+
 				var objective_label = DEBRIEF_OBJECTIVE.instance()
 				objective_containers[index].get_node("Objective Rows").add_child(objective_label)
 				objective_label.set_props(objective)
+
+			if hide_container:
+				objective_containers[index].hide()
 
 
 const DEBRIEF_OBJECTIVE = preload("res://icons/debrief_objective.tscn")

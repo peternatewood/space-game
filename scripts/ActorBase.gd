@@ -4,6 +4,7 @@ export (int) var hull_hitpoints = -1
 
 onready var bounding_box_extents = get_meta("bounding_box_extents")
 onready var mission_controller = get_tree().get_root().get_node("Mission Controller")
+onready var settings = get_node("/root/GlobalSettings")
 
 var destruction_countdown: float
 var destruction_delay: float = 0.0

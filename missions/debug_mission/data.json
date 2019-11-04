@@ -18,6 +18,12 @@
       { "ship_class": "Spider Fighter", "energy_weapons": [ "Energy Bolt", "Disintigrator" ], "missile_weapons": [ "Heat Seeker", "Heat Seeker" ] }
     ]
   },
+  "non_player_loadout": {
+    "Hyla 1": { "energy_weapons": [ "Energy Bolt" ], "missile_weapons": [ "Heat Seeker" ] },
+    "Hyla 2": { "energy_weapons": [ "Energy Bolt" ], "missile_weapons": [ "Heat Seeker" ] },
+    "Buteo 1": { "energy_weapons": [ "Energy Bolt" ], "missile_weapons": [ "Heat Seeker" ] },
+    "Buteo 2": { "energy_weapons": [ "Energy Bolt" ], "missile_weapons": [ "Heat Seeker" ] }
+  },
   "objectives": [
     [
       {
@@ -37,10 +43,24 @@
           { "type": 3, "objective_type": 0, "objective_index": 0 }
         ],
         "failure_requirements": [
-          { "type": 2, "targets": [ "Alpha 2", "Alpha 3" ] }
+          { "type": 1, "targets": [ "Alpha 2", "Alpha 3" ] }
+        ],
+        "trigger_requirements": [
+          { "type": 4, "targets": [ "Alpha 2", "Alpha 3" ] }
         ]
       }
     ],
-    []
+    [
+      {
+        "name": "Don't Call In Reinforcements",
+        "description": "Complete the mission without calling in Beta wing: your reinforcements.",
+        "success_requirements": [
+          { "type": 3, "objective_type": 0, "objective_index": 0 }
+        ],
+        "failure_requirements": [
+          { "type": 4, "targets": [ "Beta 1" ] }
+        ]
+      }
+    ]
   ]
 }

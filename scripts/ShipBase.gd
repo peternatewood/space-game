@@ -362,6 +362,28 @@ func warp(warp_in: bool):
 	warping_countdown = WARP_DURATION
 
 
+static func get_hitpoints_strength(hitpoints: float):
+	if hitpoints < 100:
+		return "Low"
+	if hitpoints < 200:
+		return "Moderate"
+	if hitpoints < 300:
+		return "High"
+
+	return "Very High"
+
+
+static func get_weapon_capacity_level(capacity: float):
+	if capacity < 50:
+		return "Low"
+	if capacity < 100:
+		return "Moderate"
+	if capacity < 150:
+		return "High"
+
+	return "Very High"
+
+
 signal energy_weapon_changed
 signal missile_weapon_changed
 signal warped_in

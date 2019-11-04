@@ -6,6 +6,7 @@ var energy_weapon_models: Dictionary
 var missile_weapon_models: Dictionary
 var mission_name: String
 var mission_scene_path: String
+var non_player_loadout: Dictionary
 var objectives: Array
 var ship_models: Dictionary
 var wing_loadouts: Dictionary
@@ -39,6 +40,8 @@ func _ready():
 					else:
 						ship_models[data_parsed.result.get("ship_class", "ship")] = model_file
 
+				data_file.close()
+
 			file_name = dir.get_next()
 
 	if dir.open("res://models/energy_weapons") != OK:
@@ -66,6 +69,8 @@ func _ready():
 					else:
 						energy_weapon_models[data_parsed.result.get("name", "energy weapon")] = model_file
 
+				data_file.close()
+
 			file_name = dir.get_next()
 
 	if dir.open("res://models/missile_weapons") != OK:
@@ -92,6 +97,8 @@ func _ready():
 						print("Unable to load model file at " + model_file)
 					else:
 						missile_weapon_models[data_parsed.result.get("name", "missile weapon")] = model_file
+
+				data_file.close()
 
 			file_name = dir.get_next()
 
@@ -198,6 +205,23 @@ func load_mission_data(folder_name: String):
 
 							wing_loadouts[wing_name].append(ship_loadout)
 
+				# Get the loadouts for all non-player-accessible ships
+				var result_loadout = parse_result.result.get("non_player_loadout", {})
+				non_player_loadout = {}
+				for ship_name in result_loadout.keys():
+					non_player_loadout[ship_name] = {
+						"energy_weapons": [],
+						"missile_weapons": []
+					}
+
+					for energy_weapon_name in result_loadout[ship_name].get("energy_weapons", []):
+						if energy_weapon_models.has(energy_weapon_name):
+							non_player_loadout[ship_name].energy_weapons.append(energy_weapon_models[energy_weapon_name])
+
+					for missile_weapon_name in result_loadout[ship_name].get("missile_weapons", []):
+						if missile_weapon_models.has(missile_weapon_name):
+							non_player_loadout[ship_name].missile_weapons.append(missile_weapon_models[missile_weapon_name])
+
 				# Get mission objectives
 				objectives = [ [], [], [] ]
 				var objective_data = parse_result.result.get("objectives", [])
@@ -205,11 +229,31 @@ func load_mission_data(folder_name: String):
 					for objective in objective_data[index]:
 						objectives[index].append(Objective.new(objective))
 
+				# Take a second pass to connect any objectives that require another objective to succeed/fail
+				for index in range(min(3, objectives.size())):
+					for objective in objectives[index]:
+						for success in objective.success_requirements:
+							match success.type:
+								Objective.OBJECTIVE:
+									if success.objective_index != -1 and success.objective_type != -1:
+										objectives[success.objective_type][success.objective_index].connect("completed", success, "_on_objective_completed")
+										objectives[success.objective_type][success.objective_index].connect("failed", success, "_on_objective_failed")
+
+						# And for failure requirements
+						for failure in objective.failure_requirements:
+							match failure.type:
+								Objective.OBJECTIVE:
+									if failure.objective_index != -1 and failure.objective_type != -1:
+										objectives[failure.objective_type][failure.objective_index].connect("completed", failure, "_on_objective_completed")
+										objectives[failure.objective_type][failure.objective_index].connect("failed", failure, "_on_objective_failed")
+
 				mission_scene_path = "res://missions/" + folder_name + "/scene.tscn"
 			else:
 				print("Error parsing " + directory + ": " + parse_result.error_string)
 		else:
 			print("Error opening " + directory + ": " + str(file_error))
+
+		data_file.close()
 	else:
 		print("Unable to open mission data file: no such file at " + directory)
 

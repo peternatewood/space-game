@@ -37,6 +37,8 @@ func post_import(scene):
 				missile_data["weapon_name"] = weapon_name
 		else:
 			print("Error while parsing data file: ", data_file_name + " " + data_parsed.error_string)
+
+		data_file.close()
 	else:
 		print("No such file: " + data_file_name)
 

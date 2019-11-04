@@ -7,6 +7,7 @@ export (Array, String) var reinforcement_wings = []
 
 onready var loader = get_node("/root/SceneLoader")
 onready var mission_data = get_node("/root/MissionData")
+onready var pause_menu = get_node("Pause Menu")
 
 var factions = {
 	"frog": { "hawk": FRIENDLY, "spider": NEUTRAL },
@@ -25,14 +26,27 @@ func _ready():
 	set_process(false)
 
 
+func _input(event):
+	if event.is_action("pause") and event.pressed:
+		var tree = get_tree()
+		if not tree.paused:
+			tree.set_pause(true)
+			pause_menu.show()
+
+
+func _on_main_menu_confirmed():
+	loader.load_scene("res://title.tscn")
+
+
 func _on_player_warped_out():
 	loader.change_scene("res://debriefing.tscn")
 
 
 func _on_scene_loaded():
 	targets_container = get_node("Targets Container")
-	waypoints_container = get_node("Waypoints Container")
-	waypoints = waypoints_container.get_children()
+	waypoints_container = get_node_or_null("Waypoints Container")
+	if waypoints_container != null:
+		waypoints = waypoints_container.get_children()
 
 	# Assign loadouts from mission data to ships in scene
 	for wing_name in mission_data.wing_loadouts.keys():
@@ -51,16 +65,17 @@ func _on_scene_loaded():
 				ship_instance.wing_name = ship.wing_name
 				ship_instance.is_warped_in = ship.is_warped_in
 
-				if ship_instance is Player:
-					ship_instance.camera_path = ship.camera_path
-				elif ship_instance is NPCShip:
-					ship_instance.initial_orders = ship.initial_orders
-
 				var ship_tree_pos = ship.get_position_in_parent()
 				targets_container.remove_child(ship)
 				targets_container.add_child(ship_instance)
 				targets_container.move_child(ship_instance, ship_tree_pos)
 
+				if ship_instance is Player:
+					ship_instance.camera_path = ship.camera_path
+				elif ship_instance is NPCShip:
+					ship_instance.initial_orders = ship.initial_orders
+
+				ship.free()
 				ship = ship_instance
 
 			if ship == null:
@@ -68,21 +83,25 @@ func _on_scene_loaded():
 			else:
 				ship.set_weapon_hardpoints(mission_data.get_weapon_models("energy_weapons", wing_name, index), mission_data.get_weapon_models("missile_weapons", wing_name, index))
 
+	# And don't forget the non-player-accessible ships!
+	for ship_name in mission_data.non_player_loadout.keys():
+		var ship = targets_container.get_node_or_null(ship_name)
+		if ship != null:
+			ship.set_weapon_hardpoints(mission_data.non_player_loadout[ship_name].energy_weapons, mission_data.non_player_loadout[ship_name].missile_weapons)
+
 	player = get_node(player_path)
 	player.connect("warped_out", self, "_on_player_warped_out")
 
 	# Prepare mission objectives
 	for index in range(mission_data.objectives.size()):
 		for objective in mission_data.objectives[index]:
-			for requirement in objective.success_requirements:
-				for target_name in requirement.target_names:
-					var target_node = targets_container.get_node_or_null(target_name)
-					if target_node != null:
-						requirement.targets.append(target_node)
-						target_node.connect("destroyed", requirement, "_on_target_destroyed")
+			objective.connect_targets_to_requirements(targets_container)
+
+	pause_menu.connect("main_menu_confirmed", self, "_on_main_menu_confirmed")
 
 	set_process(true)
 	emit_signal("mission_ready")
+
 	get_tree().set_pause(true)
 
 

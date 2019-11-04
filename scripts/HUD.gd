@@ -4,6 +4,7 @@ export (NodePath) var camera_path
 export (NodePath) var player_path
 
 onready var debug = get_node("Debug")
+onready var distance_units_label = get_node("Target View Container/Target View Rows/Target Distance Container/Distance Units")
 onready var edge_target_icon = get_node("Edge Target Icon")
 onready var energy_weapon_rows = get_node("Weapons Container/Weapons Rows/Energy Weapons").get_children()
 onready var hud_bars = get_node("HUD Bars")
@@ -16,7 +17,9 @@ onready var player_overhead = get_node("Player Overhead")
 onready var player_hull_bar = get_node("Hull Bar")
 onready var power_container = get_node("Power Container")
 onready var radar = get_node("Radar")
+onready var settings = get_node("/root/GlobalSettings")
 onready var speed_indicator = get_node("Throttle Bar Container/Speed Indicator")
+onready var speed_units_label = get_node("Target View Container/Target View Rows/Target Distance Container/Speed Units")
 onready var target_details_minimal = get_node("Target Details Minimal")
 onready var target_icon = get_node("Target Icon")
 onready var target_overhead = get_node("Target Overhead")
@@ -53,6 +56,12 @@ func _ready():
 	target_view_cam = target_viewport.get_node("Camera")
 	target_view_model = target_viewport.get_node("Frog Fighter")
 
+	var units = settings.get_units()
+	distance_units_label.set_text(GlobalSettings.DISTANCE_UNITS[units])
+	speed_units_label.set_text(GlobalSettings.SPEED_UNITS[units])
+
+	settings.connect("units_changed", self, "_on_units_changed")
+
 	mission_controller.connect("mission_ready", self, "_on_mission_ready")
 	set_process(false)
 
@@ -64,135 +73,6 @@ func _disconnect_target_signals(target):
 
 	for index in range(target.QUADRANT_COUNT):
 		target.shields[index].disconnect("hitpoints_changed", self, "_on_target_shield_changed")
-
-
-func _on_player_ammo_count_changed(ammo_count: int, index: int):
-	missile_weapon_rows[index].set_ammo(ammo_count)
-
-
-func _on_player_cam_changed(cam_mode: int):
-	if cam_mode == player.COCKPIT:
-		hud_bars.show()
-		target_reticule.set_position(viewport.get_visible_rect().size / 2)
-		target_reticule_outer.set_position(target_reticule.rect_position)
-	else:
-		hud_bars.hide()
-
-
-func _on_player_damaged():
-	player_hull_bar.set_value(player.hull_hitpoints)
-
-
-func _on_player_destroyed():
-	hide()
-	set_process(false)
-
-
-func _on_player_energy_weapon_changed():
-	energy_hardpoint_count = player.energy_weapon_hardpoints.size()
-	for index in range(energy_weapon_rows.size()):
-		energy_weapon_rows[index].toggle_arrow(index == player.energy_weapon_index)
-
-
-func _on_player_missile_weapon_changed():
-	missile_hardpoint_count = player.missile_weapon_hardpoints.size()
-	for index in range(missile_weapon_rows.size()):
-		missile_weapon_rows[index].toggle_arrow(index == player.missile_weapon_index)
-
-
-func _on_player_power_distribution_changed():
-	power_container.set_power_bars(player.power_distribution)
-
-
-func _on_player_shield_changed(percent: float, quadrant: int):
-	player_overhead.set_shield_alpha(quadrant, percent)
-
-
-func _on_player_shield_boost_changed():
-	player_overhead.set_shield_boosted(player.shields)
-
-
-func _on_player_target_changed(last_target):
-	var radar_icons = radar_icons_container.get_children()
-
-	# Disconnect signals from old target
-	if last_target != null:
-		_disconnect_target_signals(last_target)
-
-		for icon in radar_icons:
-			icon.set_modulate(ALIGNMENT_COLORS_FADED[mission_controller.get_alignment(player.faction, icon.target.faction)])
-
-	if player.has_target:
-		target_viewport.remove_child(target_view_model)
-		# Duplicating the target node turns out to be much faster than trying to load a new model, though the viewport is blank for a second or two
-		target_view_model = player.current_target.duplicate(Node.DUPLICATE_USE_INSTANCING)
-
-		var overhead_icon = player.current_target.get_overhead_icon()
-		if overhead_icon == null:
-			print("Missing overhead icon for " + player.current_target.name)
-			return
-
-		player.current_target.connect("damaged", self, "_on_target_damaged")
-		player.current_target.connect("destroyed", self, "_on_target_destroyed", [ player.current_target ])
-		player.current_target.connect("warped_out", self, "_on_target_destroyed", [ player.current_target ])
-
-		for index in range(player.current_target.QUADRANT_COUNT):
-			player.current_target.shields[index].connect("hitpoints_changed", self, "_on_target_shield_changed", [ index ])
-
-		# Update icons
-		target_overhead.set_overhead_icon(overhead_icon)
-
-		var alignment = mission_controller.get_alignment(player.faction, player.current_target.faction)
-		for icon in radar_icons:
-			if icon.target == player.current_target:
-				icon.set_modulate(Color.white if alignment == -1 else ALIGNMENT_COLORS[alignment])
-				break
-
-		if alignment != -1:
-			target_name.set_modulate(ALIGNMENT_COLORS[alignment])
-			target_class.set_modulate(ALIGNMENT_COLORS[alignment])
-			edge_target_icon.set_modulate(ALIGNMENT_COLORS[alignment])
-			target_icon.set_modulate(ALIGNMENT_COLORS[alignment])
-		else:
-			target_name.set_modulate(Color.white)
-			target_class.set_modulate(Color.white)
-			edge_target_icon.set_modulate(Color.white)
-			target_icon.set_modulate(Color.white)
-
-		if not target_details_minimal.visible:
-			target_details_minimal.set_hull(player.current_target.get_hull_percent())
-			for index in range(player.current_target.QUADRANT_COUNT):
-				target_details_minimal.set_shield_alpha(index, player.current_target.shields[index].get_hitpoints_fraction())
-			target_details_minimal.show()
-
-		# Update target viewport
-		target_class.set_text(player.current_target.ship_class)
-		target_name.set_text(player.current_target.name)
-		target_viewport.add_child(target_view_model)
-		target_view_model.transform.origin = Vector3.ZERO
-		target_hull.set_text(str(round(player.current_target.get_hull_percent())))
-
-		if not target_view_container.visible:
-			target_view_container.show()
-			target_overhead.show()
-	else:
-		# No target selected
-		target_details_minimal.hide()
-		target_icon.hide()
-		edge_target_icon.hide()
-		target_view_container.hide()
-		target_overhead.hide()
-
-
-func _on_player_throttle_changed():
-	var line_pos: Vector2 = Vector2(0, throttle_bar.rect_size.y) + player.throttle * throttle_bar.rect_size.y * Vector2.UP
-	line_pos.y = min(line_pos.y, throttle_bar.rect_size.y - 1)
-	throttle_line.set_position(line_pos)
-
-
-func _on_player_began_warp_out():
-	hide()
-	set_process(false)
 
 
 func _on_mission_ready():
@@ -272,10 +152,152 @@ func _on_mission_ready():
 			objective_label.set_text(objective.name)
 			objectives_rows.add_child(objective_label)
 
+			# Only show secret objectives once completed, show other objective types when triggered
+			if index == objective.SECRET:
+				objective_label.hide()
+				objective.connect("completed", objective_label, "_on_objective_triggered")
+			elif not objective.enabled:
+				objective_label.hide()
+				objective.connect("triggered", objective_label, "_on_objective_triggered")
+
 			objective.connect("completed", objective_label, "_on_objective_completed")
 			objective.connect("failed", objective_label, "_on_objective_failed")
 
+	# Run this once so that everything looks right at the prompt overlay
+	_process(0)
 	set_process(true)
+
+
+func _on_player_ammo_count_changed(ammo_count: int, index: int):
+	missile_weapon_rows[index].set_ammo(ammo_count)
+
+
+func _on_player_began_warp_out():
+	hide()
+	set_process(false)
+
+
+func _on_player_cam_changed(cam_mode: int):
+	if cam_mode == player.COCKPIT:
+		hud_bars.show()
+		target_reticule.set_position(viewport.get_visible_rect().size / 2)
+		target_reticule_outer.set_position(target_reticule.rect_position)
+	else:
+		hud_bars.hide()
+
+
+func _on_player_damaged():
+	player_hull_bar.set_value(player.hull_hitpoints)
+
+
+func _on_player_destroyed():
+	hide()
+	set_process(false)
+
+
+func _on_player_energy_weapon_changed():
+	energy_hardpoint_count = player.energy_weapon_hardpoints.size()
+	for index in range(energy_weapon_rows.size()):
+		energy_weapon_rows[index].toggle_arrow(index == player.energy_weapon_index)
+
+
+func _on_player_missile_weapon_changed():
+	missile_hardpoint_count = player.missile_weapon_hardpoints.size()
+	for index in range(missile_weapon_rows.size()):
+		missile_weapon_rows[index].toggle_arrow(index == player.missile_weapon_index)
+
+
+func _on_player_power_distribution_changed():
+	power_container.set_power_bars(player.power_distribution)
+
+
+func _on_player_shield_changed(percent: float, quadrant: int):
+	player_overhead.set_shield_alpha(quadrant, percent)
+
+
+func _on_player_shield_boost_changed():
+	player_overhead.set_shield_boosted(player.shields)
+
+
+func _on_player_target_changed(last_target):
+	var radar_icons = radar_icons_container.get_children()
+
+	# Disconnect signals from old target
+	if last_target != null:
+		_disconnect_target_signals(last_target)
+
+		for icon in radar_icons:
+			icon.set_modulate(ALIGNMENT_COLORS_FADED[mission_controller.get_alignment(player.faction, icon.target.faction)])
+
+	if player.has_target:
+		target_viewport.remove_child(target_view_model)
+		# Duplicating the target node turns out to be much faster than trying to load a new model, though the viewport is blank for a second or two
+		target_view_model = player.current_target.duplicate(Node.DUPLICATE_USE_INSTANCING)
+
+		var overhead_icon = player.current_target.get_overhead_icon()
+		if overhead_icon == null:
+			print("Missing overhead icon for " + player.current_target.name)
+			return
+
+		player.current_target.connect("damaged", self, "_on_target_damaged")
+		player.current_target.connect("destroyed", self, "_on_target_destroyed", [ player.current_target ])
+		player.current_target.connect("warped_out", self, "_on_target_destroyed", [ player.current_target ])
+
+		for index in range(player.current_target.QUADRANT_COUNT):
+			player.current_target.shields[index].connect("hitpoints_changed", self, "_on_target_shield_changed", [ index ])
+			# Also update the icons manually
+			_on_target_shield_changed(player.current_target.shields[index].get_hitpoints_fraction(), index)
+
+		# Update icons
+		target_overhead.set_overhead_icon(overhead_icon)
+
+		var alignment = mission_controller.get_alignment(player.faction, player.current_target.faction)
+		for icon in radar_icons:
+			if icon.target == player.current_target:
+				icon.set_modulate(Color.white if alignment == -1 else ALIGNMENT_COLORS[alignment])
+				break
+
+		if alignment != -1:
+			target_name.set_modulate(ALIGNMENT_COLORS[alignment])
+			target_class.set_modulate(ALIGNMENT_COLORS[alignment])
+			edge_target_icon.set_modulate(ALIGNMENT_COLORS[alignment])
+			target_icon.set_modulate(ALIGNMENT_COLORS[alignment])
+		else:
+			target_name.set_modulate(Color.white)
+			target_class.set_modulate(Color.white)
+			edge_target_icon.set_modulate(Color.white)
+			target_icon.set_modulate(Color.white)
+
+		if not target_details_minimal.visible:
+			target_details_minimal.show()
+
+		target_details_minimal.set_hull(player.current_target.get_hull_percent())
+		for index in range(player.current_target.QUADRANT_COUNT):
+			target_details_minimal.set_shield_alpha(index, player.current_target.shields[index].get_hitpoints_fraction())
+
+		# Update target viewport
+		target_class.set_text(player.current_target.ship_class)
+		target_name.set_text(player.current_target.name)
+		target_viewport.add_child(target_view_model)
+		target_view_model.transform.origin = Vector3.ZERO
+		target_hull.set_text(str(round(player.current_target.get_hull_percent())))
+
+		if not target_view_container.visible:
+			target_view_container.show()
+			target_overhead.show()
+	else:
+		# No target selected
+		target_details_minimal.hide()
+		target_icon.hide()
+		edge_target_icon.hide()
+		target_view_container.hide()
+		target_overhead.hide()
+
+
+func _on_player_throttle_changed():
+	var line_pos: Vector2 = Vector2(0, throttle_bar.rect_size.y) + player.throttle * throttle_bar.rect_size.y * Vector2.UP
+	line_pos.y = min(line_pos.y, throttle_bar.rect_size.y - 1)
+	throttle_line.set_position(line_pos)
 
 
 func _on_target_damaged():
@@ -296,6 +318,18 @@ func _on_target_destroyed(target):
 func _on_target_shield_changed(percent: float, quadrant: int):
 	target_details_minimal.set_shield_alpha(quadrant, percent)
 	target_overhead.set_shield_alpha(quadrant, percent)
+
+
+func _on_units_changed(units: int):
+	distance_units_label.set_text(GlobalSettings.DISTANCE_UNITS[units])
+	speed_units_label.set_text(GlobalSettings.SPEED_UNITS[units])
+
+	if player.has_target:
+		var to_target = player.current_target.transform.origin - player.transform.origin
+		target_distance.set_text(str(round(MathHelper.units_to_distance(to_target.length(), units))))
+		target_speed.set_text(str(round(MathHelper.units_to_speed(player.current_target.linear_velocity.length(), units))))
+
+	_update_speed_indicator()
 
 
 func _process(delta):
@@ -334,7 +368,7 @@ func _process(delta):
 		var cam_target_dist = (player.current_target.transform.origin - camera.transform.origin).length()
 		var icon_pos: Vector2 = camera.unproject_position(player.current_target.transform.origin)
 		# Multiply all units by 10 to get meters
-		var target_dist = 10 * to_target.length()
+		var target_dist = MathHelper.units_to_distance(to_target.length(), settings.get_units())
 
 		if camera.is_position_in_view(player.current_target.transform.origin):
 			if not target_icon.visible:
@@ -373,7 +407,7 @@ func _process(delta):
 		target_view_model.set_rotation(player.current_target.rotation)
 
 		target_distance.set_text(str(round(target_dist)))
-		target_speed.set_text(str(round(10 * player.current_target.linear_velocity.length())))
+		target_speed.set_text(str(round(MathHelper.units_to_speed(player.current_target.linear_velocity.length(), settings.get_units()))))
 	else:
 		if target_icon.visible:
 			target_icon.hide()
@@ -443,7 +477,7 @@ func _update_speed_indicator():
 		throttle_bar.set_value(speed_percent)
 
 		# Multiply all units by 10 to get meters
-		speed_indicator.set_text(str(round(10 * speed)))
+		speed_indicator.set_text(str(round(MathHelper.units_to_speed(speed, settings.get_units()))))
 		var indicator_pos = Vector2(speed_indicator.rect_position.x, throttle_bar.rect_size.y - (speed_indicator.rect_size.y / 2) - (throttle_bar.value / throttle_bar.max_value) * throttle_bar.rect_size.y)
 		speed_indicator.set_position(indicator_pos)
 

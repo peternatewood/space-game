@@ -8,8 +8,10 @@ corner_detail = 1
 
 [node name="Mission Start Overlay" type="PanelContainer"]
 pause_mode = 2
-margin_right = 1024.0
-margin_bottom = 600.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 custom_styles/panel = SubResource( 1 )
 script = ExtResource( 1 )
 

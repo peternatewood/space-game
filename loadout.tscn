@@ -3,9 +3,9 @@
 [ext_resource path="res://scripts/LoadoutController.gd" type="Script" id=1]
 [ext_resource path="res://models/ships/fighter_spider/loadout_overhead.png" type="Texture" id=2]
 [ext_resource path="res://button_groups/loadout_wing_group.tres" type="ButtonGroup" id=3]
-[ext_resource path="res://icons/weapon_slot.tscn" type="PackedScene" id=4]
+[ext_resource path="res://prefabs/radial_menu_weapons.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scripts/WingContainer.gd" type="Script" id=5]
-[ext_resource path="res://icons/wing_ship_icon.tscn" type="PackedScene" id=6]
+[ext_resource path="res://prefabs/radial_menu_ships.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scripts/LoadoutShipPreview.gd" type="Script" id=7]
 [ext_resource path="res://models/ships/fighter_frog/model.dae" type="PackedScene" id=8]
 
@@ -36,27 +36,124 @@ margin_bottom = 200.0
 texture = ExtResource( 2 )
 
 [node name="Ship Preview Container" type="HBoxContainer" parent="."]
-visible = false
 anchor_left = 1.0
 anchor_right = 1.0
 margin_left = -231.0
 margin_bottom = 150.0
 grow_horizontal = 0
 
-[node name="Ship Details" type="VBoxContainer" parent="Ship Preview Container"]
-margin_right = 27.0
+[node name="Ship Details" type="GridContainer" parent="Ship Preview Container"]
+margin_right = 182.0
 margin_bottom = 150.0
 grow_horizontal = 0
+columns = 2
+
+[node name="Ship Class Label" type="Label" parent="Ship Preview Container/Ship Details"]
+margin_right = 141.0
+margin_bottom = 14.0
+grow_horizontal = 0
+text = "Class:"
 
 [node name="Ship Class" type="Label" parent="Ship Preview Container/Ship Details"]
-margin_right = 27.0
+margin_left = 145.0
+margin_right = 182.0
 margin_bottom = 14.0
 grow_horizontal = 0
 text = "Ship"
 
+[node name="Speed Label" type="Label" parent="Ship Preview Container/Ship Details"]
+margin_top = 18.0
+margin_right = 141.0
+margin_bottom = 32.0
+grow_horizontal = 0
+text = "Top Speed:"
+
+[node name="Ship Speed" type="Label" parent="Ship Preview Container/Ship Details"]
+margin_left = 145.0
+margin_top = 18.0
+margin_right = 182.0
+margin_bottom = 32.0
+grow_horizontal = 0
+text = "0 m/s"
+
+[node name="Hull Strength Label" type="Label" parent="Ship Preview Container/Ship Details"]
+margin_top = 36.0
+margin_right = 141.0
+margin_bottom = 50.0
+grow_horizontal = 0
+text = "Hull Strength:"
+
+[node name="Hull Strength" type="Label" parent="Ship Preview Container/Ship Details"]
+margin_left = 145.0
+margin_top = 36.0
+margin_right = 182.0
+margin_bottom = 50.0
+grow_horizontal = 0
+text = "n/a"
+
+[node name="Shield Strength Label" type="Label" parent="Ship Preview Container/Ship Details"]
+margin_top = 54.0
+margin_right = 141.0
+margin_bottom = 68.0
+grow_horizontal = 0
+text = "Shield Strength:"
+
+[node name="Shield Strength" type="Label" parent="Ship Preview Container/Ship Details"]
+margin_left = 145.0
+margin_top = 54.0
+margin_right = 182.0
+margin_bottom = 68.0
+grow_horizontal = 0
+text = "n/a"
+
+[node name="Energy Weapon Slots Label" type="Label" parent="Ship Preview Container/Ship Details"]
+margin_top = 72.0
+margin_right = 141.0
+margin_bottom = 86.0
+grow_horizontal = 0
+text = "Energy Weapon Slots:"
+
+[node name="Energy Weapon Slots" type="Label" parent="Ship Preview Container/Ship Details"]
+margin_left = 145.0
+margin_top = 72.0
+margin_right = 182.0
+margin_bottom = 86.0
+grow_horizontal = 0
+text = "0"
+
+[node name="Missile Weapon Slots Label" type="Label" parent="Ship Preview Container/Ship Details"]
+margin_top = 90.0
+margin_right = 141.0
+margin_bottom = 104.0
+grow_horizontal = 0
+text = "Missile Weapon Slots:"
+
+[node name="Missile Weapon Slots" type="Label" parent="Ship Preview Container/Ship Details"]
+margin_left = 145.0
+margin_top = 90.0
+margin_right = 182.0
+margin_bottom = 104.0
+grow_horizontal = 0
+text = "0"
+
+[node name="Weapon Capacity Label" type="Label" parent="Ship Preview Container/Ship Details"]
+margin_top = 108.0
+margin_right = 141.0
+margin_bottom = 122.0
+grow_horizontal = 0
+text = "Weapon Capacity"
+
+[node name="Weapon Capacity" type="Label" parent="Ship Preview Container/Ship Details"]
+margin_left = 145.0
+margin_top = 108.0
+margin_right = 182.0
+margin_bottom = 122.0
+grow_horizontal = 0
+text = "n/a"
+
 [node name="Ship Preview" type="TextureRect" parent="Ship Preview Container"]
-margin_left = 31.0
-margin_right = 231.0
+margin_left = 186.0
+margin_right = 386.0
 margin_bottom = 150.0
 texture = SubResource( 1 )
 
@@ -180,21 +277,21 @@ margin_top = 44.0
 margin_right = 109.0
 margin_bottom = 148.0
 
-[node name="Energy Weapon Slot 1" parent="Weapon Slots Rows/Energy Weapon Rows" instance=ExtResource( 4 )]
-margin_right = 109.0
-slot_type = 1
+[node name="Energy Weapon 1" parent="Weapon Slots Rows/Energy Weapon Rows" instance=ExtResource( 4 )]
+margin_left = 22.0
+margin_right = 86.0
 
-[node name="Energy Weapon Slot 2" parent="Weapon Slots Rows/Energy Weapon Rows" instance=ExtResource( 4 )]
+[node name="Energy Weapon 2" parent="Weapon Slots Rows/Energy Weapon Rows" instance=ExtResource( 4 )]
+margin_left = 22.0
 margin_top = 36.0
-margin_right = 109.0
+margin_right = 86.0
 margin_bottom = 68.0
-slot_type = 1
 
-[node name="Energy Weapon Slot 3" parent="Weapon Slots Rows/Energy Weapon Rows" instance=ExtResource( 4 )]
+[node name="Energy Weapon 3" parent="Weapon Slots Rows/Energy Weapon Rows" instance=ExtResource( 4 )]
+margin_left = 22.0
 margin_top = 72.0
-margin_right = 109.0
+margin_right = 86.0
 margin_bottom = 104.0
-slot_type = 1
 
 [node name="Missile Weapon Label" type="Label" parent="Weapon Slots Rows"]
 margin_top = 152.0
@@ -205,29 +302,23 @@ text = "Missile Weapons"
 [node name="Missile Weapon Rows" type="VBoxContainer" parent="Weapon Slots Rows"]
 margin_top = 170.0
 margin_right = 109.0
-margin_bottom = 310.0
+margin_bottom = 274.0
 
-[node name="Missile Weapon Slot 1" parent="Weapon Slots Rows/Missile Weapon Rows" instance=ExtResource( 4 )]
-margin_right = 109.0
-slot_type = 2
+[node name="Missile Weapon 1" parent="Weapon Slots Rows/Missile Weapon Rows" instance=ExtResource( 4 )]
+margin_left = 22.0
+margin_right = 86.0
 
-[node name="Missile Weapon Slot 2" parent="Weapon Slots Rows/Missile Weapon Rows" instance=ExtResource( 4 )]
+[node name="Missile Weapon 2" parent="Weapon Slots Rows/Missile Weapon Rows" instance=ExtResource( 4 )]
+margin_left = 22.0
 margin_top = 36.0
-margin_right = 109.0
+margin_right = 86.0
 margin_bottom = 68.0
-slot_type = 2
 
-[node name="Missile Weapon Slot 3" parent="Weapon Slots Rows/Missile Weapon Rows" instance=ExtResource( 4 )]
+[node name="Missile Weapon 3" parent="Weapon Slots Rows/Missile Weapon Rows" instance=ExtResource( 4 )]
+margin_left = 22.0
 margin_top = 72.0
-margin_right = 109.0
+margin_right = 86.0
 margin_bottom = 104.0
-slot_type = 2
-
-[node name="Missile Weapon Slot 4" parent="Weapon Slots Rows/Missile Weapon Rows" instance=ExtResource( 4 )]
-margin_top = 108.0
-margin_right = 109.0
-margin_bottom = 140.0
-slot_type = 2
 
 [node name="Wing Ships Container" type="Control" parent="."]
 anchor_left = 0.5
@@ -243,39 +334,79 @@ rect_min_size = Vector2( 120, 180 )
 [node name="Alpha Wing Container" type="Control" parent="Wing Ships Container"]
 margin_right = 120.0
 margin_bottom = 180.0
-rect_min_size = Vector2( 120, 180 )
+rect_min_size = Vector2( 140, 180 )
 script = ExtResource( 5 )
 
 [node name="Alpha Icon 1" parent="Wing Ships Container/Alpha Wing Container" instance=ExtResource( 6 )]
-position = Vector2( 60, 32 )
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -19.0
+margin_right = 19.0
+margin_bottom = 63.0
 
 [node name="Alpha Icon 2" parent="Wing Ships Container/Alpha Wing Container" instance=ExtResource( 6 )]
-position = Vector2( 19, 90 )
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_top = -31.5
+margin_right = 38.0
+margin_bottom = 31.5
 
 [node name="Alpha Icon 3" parent="Wing Ships Container/Alpha Wing Container" instance=ExtResource( 6 )]
-position = Vector2( 101, 90 )
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -38.0
+margin_top = -31.5
+margin_bottom = 31.5
 
 [node name="Alpha Icon 4" parent="Wing Ships Container/Alpha Wing Container" instance=ExtResource( 6 )]
-position = Vector2( 60, 148 )
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -19.0
+margin_top = -63.0
+margin_right = 19.0
 
 [node name="Beta Wing Container" type="Control" parent="Wing Ships Container"]
 visible = false
-margin_right = 120.0
+margin_right = 140.0
 margin_bottom = 180.0
-rect_min_size = Vector2( 120, 180 )
+rect_min_size = Vector2( 140, 180 )
 script = ExtResource( 5 )
 
 [node name="Beta Icon 1" parent="Wing Ships Container/Beta Wing Container" instance=ExtResource( 6 )]
-position = Vector2( 60, 32 )
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -19.0
+margin_right = 19.0
+margin_bottom = 63.0
 
 [node name="Beta Icon 2" parent="Wing Ships Container/Beta Wing Container" instance=ExtResource( 6 )]
-position = Vector2( 19, 90 )
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_top = -31.5
+margin_right = 38.0
+margin_bottom = 31.5
 
 [node name="Beta Icon 3" parent="Wing Ships Container/Beta Wing Container" instance=ExtResource( 6 )]
-position = Vector2( 101, 90 )
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -38.0
+margin_top = -31.5
+margin_bottom = 31.5
 
 [node name="Beta Icon 4" parent="Wing Ships Container/Beta Wing Container" instance=ExtResource( 6 )]
-position = Vector2( 60, 148 )
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -19.0
+margin_top = -63.0
+margin_right = 19.0
 
 [node name="Ship Preview Viewport" type="Viewport" parent="."]
 editor/display_folded = true
@@ -295,10 +426,10 @@ light_color = Color( 0.847059, 0.933333, 0.996078, 1 )
 [node name="Ship Container" type="Spatial" parent="Ship Preview Viewport"]
 
 [node name="Ship" parent="Ship Preview Viewport/Ship Container" instance=ExtResource( 8 )]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0 )
+transform = Transform( -4.37114e-008, 0, 1, 0, 1, 0, -1, 0, -4.37114e-008, 0, 0, 0 )
 
 [node name="Camera" type="Camera" parent="Ship Preview Viewport"]
-transform = Transform( -1, -8.74228e-08, 0, 8.44439e-08, -0.965926, 0.258819, -2.26267e-08, 0.258819, 0.965926, 0, 1, 4 )
+transform = Transform( -1, -8.74228e-008, 0, 8.44439e-008, -0.965926, 0.258819, -2.26267e-008, 0.258819, 0.965926, 0, 1, 4 )
 current = true
 fov = 45.0
 size = 3.0

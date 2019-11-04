@@ -171,8 +171,14 @@ func _input(event):
 			emit_signal("missile_weapon_changed")
 
 
+func _on_fov_changed(value: int):
+	camera.set_fov(value)
+
+
 func _on_mission_ready():
 	camera = get_node(camera_path)
+	camera.set_fov(settings.get_fov())
+	settings.connect("fov_changed", self, "_on_fov_changed")
 	_set_cam_mode(COCKPIT)
 
 	._on_mission_ready()
