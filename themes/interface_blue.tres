@@ -149,6 +149,7 @@ CheckBox/styles/pressed = null
 Panel/styles/panel = null
 Panel/styles/panelf = SubResource( 5 )
 Panel/styles/panelnc = null
+PanelContainer/styles/panel = SubResource( 3 )
 PopupMenu/colors/font_color = Color( 0.878431, 0.878431, 0.878431, 1 )
 PopupMenu/colors/font_color_accel = Color( 0.7, 0.7, 0.7, 0.8 )
 PopupMenu/colors/font_color_disabled = Color( 0.4, 0.4, 0.4, 0.8 )
