@@ -1,7 +1,7 @@
 extends "res://scripts/ShipBase.gd"
 
 enum { WEAPON, SHIELD, ENGINE, TOTAL_POWER_LEVELS }
-enum { FRONT, REAR, LEFT, RIGHT, QUADRANT_COUNT }
+enum { FRONT, REAR, LEFT, RIGHT }
 
 export (String) var wing_name
 

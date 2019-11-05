@@ -71,8 +71,9 @@ func _disconnect_target_signals(target):
 	target.disconnect("destroyed", self, "_on_target_destroyed")
 	target.disconnect("warped_out", self, "_on_target_destroyed")
 
-	for index in range(target.QUADRANT_COUNT):
-		target.shields[index].disconnect("hitpoints_changed", self, "_on_target_shield_changed")
+	if target is AttackShipBase:
+		for index in range(4):
+			target.shields[index].disconnect("hitpoints_changed", self, "_on_target_shield_changed")
 
 
 func _on_mission_ready():
@@ -96,7 +97,7 @@ func _on_mission_ready():
 	player.connect("destroyed", self, "_on_player_destroyed")
 	player.connect("warped_out", self, "_on_player_destroyed")
 
-	for index in range(player.QUADRANT_COUNT):
+	for index in range(4):
 		player.shields[index].connect("hitpoints_changed", self, "_on_player_shield_changed", [ index ])
 
 	_on_player_throttle_changed()
@@ -234,22 +235,27 @@ func _on_player_target_changed(last_target):
 		# Duplicating the target node turns out to be much faster than trying to load a new model, though the viewport is blank for a second or two
 		target_view_model = player.current_target.duplicate(Node.DUPLICATE_USE_INSTANCING)
 
-		var overhead_icon = player.current_target.get_overhead_icon()
-		if overhead_icon == null:
-			print("Missing overhead icon for " + player.current_target.name)
-			return
-
 		player.current_target.connect("damaged", self, "_on_target_damaged")
 		player.current_target.connect("destroyed", self, "_on_target_destroyed", [ player.current_target ])
 		player.current_target.connect("warped_out", self, "_on_target_destroyed", [ player.current_target ])
 
-		for index in range(player.current_target.QUADRANT_COUNT):
-			player.current_target.shields[index].connect("hitpoints_changed", self, "_on_target_shield_changed", [ index ])
-			# Also update the icons manually
-			_on_target_shield_changed(player.current_target.shields[index].get_hitpoints_fraction(), index)
+		for index in range(4):
+			if player.current_target is AttackShipBase:
+				player.current_target.shields[index].connect("hitpoints_changed", self, "_on_target_shield_changed", [ index ])
+				# Also update the icons manually
+				_on_target_shield_changed(player.current_target.shields[index].get_hitpoints_fraction(), index)
+			else:
+				_on_target_shield_changed(0, index)
 
 		# Update icons
-		target_overhead.set_overhead_icon(overhead_icon)
+		if player.current_target is AttackShipBase:
+			var overhead_icon = player.current_target.get_overhead_icon()
+			if overhead_icon == null:
+				print("Missing overhead icon for " + player.current_target.name)
+			else:
+				target_overhead.set_overhead_icon(overhead_icon)
+		else:
+			target_overhead.hide()
 
 		var alignment = mission_controller.get_alignment(player.faction, player.current_target.faction)
 		for icon in radar_icons:
@@ -272,8 +278,11 @@ func _on_player_target_changed(last_target):
 			target_details_minimal.show()
 
 		target_details_minimal.set_hull(player.current_target.get_hull_percent())
-		for index in range(player.current_target.QUADRANT_COUNT):
-			target_details_minimal.set_shield_alpha(index, player.current_target.shields[index].get_hitpoints_fraction())
+		for index in range(4):
+			if player.current_target is AttackShipBase:
+				target_details_minimal.set_shield_alpha(index, player.current_target.shields[index].get_hitpoints_fraction())
+			else:
+				target_details_minimal.set_shield_alpha(index, 0)
 
 		# Update target viewport
 		target_class.set_text(player.current_target.ship_class)
@@ -482,6 +491,8 @@ func _update_speed_indicator():
 		speed_indicator.set_position(indicator_pos)
 
 
+const AttackShipBase = preload("AttackShipBase.gd")
+const CapitalShipBase = preload("CapitalShipBase.gd")
 const EdgeTargetIcon = preload("EdgeTargetIcon.gd")
 const MathHelper = preload("MathHelper.gd")
 const ShipIcon = preload("ShipIcon.gd")
