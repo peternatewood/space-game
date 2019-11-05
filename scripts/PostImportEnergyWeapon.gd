@@ -3,12 +3,14 @@ extends "res://scripts/PostImportActor.gd"
 
 
 func post_import(scene):
-	# Note: the imported model's material is on the mesh property, not the MeshInstance node
-	for node in scene.get_children():
-		if node is MeshInstance:
-			node.mesh.surface_get_material(0).flags_unshaded = true
-			node.mesh.surface_get_material(0).flags_do_not_receive_shadows = true
-			node.mesh.surface_get_material(0).flags_disable_ambient_light = true
+	# TODO: This doesn't actually change the materials on import. Not sure why
+	var shell = scene.get_node("Shell")
+	shell.mesh.surface_get_material(0).set_blend_mode(SpatialMaterial.BLEND_MODE_ADD)
+	shell.mesh.surface_get_material(0).set_flag(SpatialMaterial.FLAG_DONT_RECEIVE_SHADOWS, true)
+
+	var core = scene.get_node("Core")
+	core.mesh.surface_get_material(0).set_flag(SpatialMaterial.FLAG_DONT_RECEIVE_SHADOWS, true)
+	core.mesh.surface_get_material(0).set_flag(SpatialMaterial.FLAG_DISABLE_AMBIENT_LIGHT, true)
 
 	# This is used for loading the data file and other resources
 	var source_folder = get_source_folder()
