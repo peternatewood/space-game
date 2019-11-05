@@ -290,6 +290,7 @@ func _on_player_target_changed(last_target):
 		target_viewport.add_child(target_view_model)
 		target_view_model.transform.origin = Vector3.ZERO
 		target_hull.set_text(str(round(player.current_target.get_hull_percent())))
+		target_view_cam.set_size(player.current_target.cam_distance * 2)
 
 		if not target_view_container.visible:
 			target_view_container.show()
@@ -410,7 +411,7 @@ func _process(delta):
 				edge_target_icon.show()
 			_update_edge_icon()
 
-		target_view_cam.transform.origin = -2 * to_target.normalized()
+		target_view_cam.transform.origin = -20 * to_target.normalized()
 		target_view_cam.look_at(Vector3.ZERO, player.transform.basis.y)
 
 		target_view_model.set_rotation(player.current_target.rotation)

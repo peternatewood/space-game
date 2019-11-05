@@ -675,7 +675,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="Target View Container" type="MarginContainer" parent="."]
-editor/display_folded = true
 visible = false
 anchor_top = 1.0
 anchor_bottom = 1.0
@@ -683,10 +682,12 @@ margin_left = 16.0
 margin_top = -164.0
 margin_right = 180.0
 margin_bottom = -16.0
+grow_vertical = 0
 
 [node name="Target View Rows" type="VBoxContainer" parent="Target View Container"]
 margin_right = 164.0
-margin_bottom = 148.0
+margin_bottom = 218.0
+grow_vertical = 0
 custom_constants/separation = 0
 
 [node name="Target Name" type="Label" parent="Target View Container/Target View Rows"]
@@ -755,14 +756,16 @@ text = "m/s"
 [node name="Target View Panel Container" type="Control" parent="Target View Container/Target View Rows"]
 margin_top = 54.0
 margin_right = 164.0
-margin_bottom = 148.0
-rect_min_size = Vector2( 164, 94 )
+margin_bottom = 218.0
+grow_vertical = 0
+rect_min_size = Vector2( 164, 164 )
 
 [node name="Target View Panel" type="PanelContainer" parent="Target View Container/Target View Rows/Target View Panel Container"]
 editor/display_folded = true
 self_modulate = Color( 0.501961, 0.752941, 1, 1 )
 margin_right = 164.0
-margin_bottom = 94.0
+margin_bottom = 164.0
+grow_vertical = 0
 rect_min_size = Vector2( 164, 94 )
 custom_styles/panel = SubResource( 8 )
 
@@ -770,17 +773,18 @@ custom_styles/panel = SubResource( 8 )
 margin_left = 2.0
 margin_top = 2.0
 margin_right = 162.0
-margin_bottom = 92.0
+margin_bottom = 162.0
 texture = SubResource( 9 )
 
 [node name="Target Hull Container" type="HBoxContainer" parent="Target View Container/Target View Rows/Target View Panel Container"]
 modulate = Color( 0.501961, 0.752941, 1, 1 )
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -35.0
-margin_top = 2.0
-margin_right = -3.0
-margin_bottom = 20.0
+margin_left = -34.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = 18.0
+grow_horizontal = 0
 custom_constants/separation = 0
 alignment = 2
 
@@ -990,7 +994,7 @@ margin_bottom = 14.0
 
 [node name="Target Viewport" type="Viewport" parent="."]
 editor/display_folded = true
-size = Vector2( 160, 90 )
+size = Vector2( 160, 160 )
 own_world = true
 transparent_bg = true
 render_target_v_flip = true
@@ -1000,7 +1004,7 @@ environment = SubResource( 10 )
 projection = 1
 current = true
 size = 3.0
-far = 10.0
+far = 50.0
 
 [node name="Frog Fighter" parent="Target Viewport" instance=ExtResource( 26 )]
 input_ray_pickable = false
