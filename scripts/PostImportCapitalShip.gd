@@ -12,16 +12,31 @@ func post_import(scene):
 	if exhaust_points != null:
 		exhaust_points.set_surface_material(0, EXHAUST_LIGHT_MATERIAL)
 
-	# Replace turret placeholders with turret instances
-	var turrets_container = scene.get_node("Turrets")
-	for turret_placeholder in turrets_container.get_children():
-		var turret_xform: Transform = turret_placeholder.transform
-		turret_placeholder.free()
+	# Not all capital ships will have all types of turret
+	var has_beam_weapons = scene.has_node("Beam Weapon Turrets")
+	scene.set_meta("has_beam_weapon_turrets", has_beam_weapons)
+	var has_energy_weapons = scene.has_node("Energy Weapon Turrets")
+	scene.set_meta("has_energy_weapon_turrets", has_energy_weapons)
+	var has_missile_weapons = scene.has_node("Missile Weapon Turrets")
+	scene.set_meta("has_missile_weapon_turrets", has_missile_weapons)
 
-		var turret = ENERGY_WEAPON_TURRET.instance()
-		turret.transform = turret_xform
-		turrets_container.add_child(turret)
-		turret.set_owner(scene)
+	# Replace turret placeholders with turret instances
+	if has_beam_weapons:
+		pass
+
+	if has_energy_weapons:
+		var turrets_container = scene.get_node("Energy Weapon Turrets")
+		for turret_placeholder in turrets_container.get_children():
+			var turret_xform: Transform = turret_placeholder.transform
+			turret_placeholder.free()
+
+			var turret = ENERGY_WEAPON_TURRET.instance()
+			turret.transform = turret_xform
+			turrets_container.add_child(turret)
+			turret.set_owner(scene)
+
+	if has_missile_weapons:
+		pass
 
 	# This is used for loading the data file and other resources
 	var source_folder = get_source_folder()
