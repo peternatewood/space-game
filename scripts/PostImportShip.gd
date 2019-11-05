@@ -3,9 +3,6 @@ extends "PostImportActor.gd"
 
 
 func post_import(scene):
-	var models_directory_regex = RegEx.new()
-	models_directory_regex.compile("res://models/(?<directory>.+)")
-
 	# Change shield collision meshes to Area nodes
 	for child in scene.get_children():
 		if child.name.begins_with("Shield") and child is MeshInstance:
