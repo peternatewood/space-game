@@ -1,0 +1,6 @@
+{
+  "ship_class": "Spider Destroyer",
+  "hull_hitpoints": 800.0,
+  "mass": 100,
+  "max_speed": 30.0
+}
