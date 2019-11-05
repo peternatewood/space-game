@@ -41,6 +41,7 @@ func post_import(scene):
 		Vector3( max_mesh_size.x,-max_mesh_size.y,-max_mesh_size.z)
 	]
 	scene.set_meta("bounding_box_extents", bounding_box_extents)
+	scene.set_meta("cam_distance", max_mesh_size.length())
 
 	# Skip this step if we already got hull_hitpoints, e.g. in PostImportShip.gd
 	if not scene.has_meta("hull_hitpoints"):
