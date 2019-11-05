@@ -1,6 +1,7 @@
 extends Node
 
 var armory: Dictionary
+var beam_weapon_models: Dictionary
 var briefing: Array
 var energy_weapon_models: Dictionary
 var missile_weapon_models: Dictionary
@@ -210,9 +211,14 @@ func load_mission_data(folder_name: String):
 				non_player_loadout = {}
 				for ship_name in result_loadout.keys():
 					non_player_loadout[ship_name] = {
+						"beam_weapons": [],
 						"energy_weapons": [],
 						"missile_weapons": []
 					}
+
+					for beam_weapon_name in result_loadout[ship_name].get("beam_weapons", []):
+						if beam_weapon_models.has(beam_weapon_name):
+							non_player_loadout[ship_name].beam_weapons.append(beam_weapon_models[beam_weapon_name])
 
 					for energy_weapon_name in result_loadout[ship_name].get("energy_weapons", []):
 						if energy_weapon_models.has(energy_weapon_name):

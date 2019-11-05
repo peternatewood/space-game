@@ -89,6 +89,8 @@ func _on_scene_loaded():
 		if ship != null:
 			if ship is NPCShip:
 				ship.set_weapon_hardpoints(mission_data.non_player_loadout[ship_name].energy_weapons, mission_data.non_player_loadout[ship_name].missile_weapons)
+			elif ship is CapitalShipBase:
+				ship.set_weapon_turrets(mission_data.non_player_loadout[ship_name].beam_weapons, mission_data.non_player_loadout[ship_name].energy_weapons, mission_data.non_player_loadout[ship_name].missile_weapons)
 			else:
 				print("Invalid node in targets container: " + ship.name)
 
@@ -218,6 +220,7 @@ func get_targets_by_distance(ship, targets: Array, only_alignment: int = -1):
 
 signal mission_ready
 
+const CapitalShipBase = preload("CapitalShipBase.gd")
 const NPCShip = preload("NPCShip.gd")
 const Objective = preload("Objective.gd")
 const Player = preload("Player.gd")
