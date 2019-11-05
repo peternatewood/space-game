@@ -34,3 +34,20 @@ func _on_mission_ready():
 		turret._on_mission_ready()
 
 	._on_mission_ready()
+
+
+# PUBLIC
+
+
+func set_weapon_turrets(beam_weapons: Array = [], energy_weapons: Array = [], missile_weapons: Array = []):
+	if beam_weapons.size() == beam_weapon_turrets.size():
+		for index in range(beam_weapons.size()):
+			beam_weapon_turrets[index].set_weapon(beam_weapons[index])
+
+	if energy_weapons.size() == energy_weapon_turrets.size():
+		for index in range(energy_weapons.size()):
+			energy_weapon_turrets[index].set_weapon(energy_weapons[index])
+
+	if missile_weapons.size() == missile_weapon_turrets.size():
+		for index in range(missile_weapons.size()):
+			missile_weapon_turrets[index].set_weapon(missile_weapons[index])
