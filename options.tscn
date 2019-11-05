@@ -64,7 +64,7 @@ tab_align = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 8.0
-margin_top = 32.0
+margin_top = 36.0
 margin_right = -8.0
 margin_bottom = -8.0
 
@@ -369,7 +369,7 @@ editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 8.0
-margin_top = 32.0
+margin_top = 36.0
 margin_right = -8.0
 margin_bottom = -8.0
 size_flags_horizontal = 3

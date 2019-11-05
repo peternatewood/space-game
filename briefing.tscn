@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://scripts/Briefing.gd" type="Script" id=1]
-[ext_resource path="res://images/background_blue.png" type="Texture" id=2]
-[ext_resource path="res://button_groups/briefing_menu_buttons.tres" type="ButtonGroup" id=3]
-[ext_resource path="res://loadout.tscn" type="PackedScene" id=4]
+[ext_resource path="res://themes/interface_blue.tres" type="Theme" id=1]
+[ext_resource path="res://scripts/Briefing.gd" type="Script" id=2]
+[ext_resource path="res://images/background_blue.png" type="Texture" id=3]
+[ext_resource path="res://button_groups/briefing_menu_buttons.tres" type="ButtonGroup" id=4]
+[ext_resource path="res://loadout.tscn" type="PackedScene" id=5]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.498039 )
@@ -18,12 +19,13 @@ expand_margin_bottom = 16.0
 [node name="Briefing" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = ExtResource( 1 )
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
 
 [node name="Background" type="TextureRect" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-texture = ExtResource( 2 )
+texture = ExtResource( 3 )
 expand = true
 stretch_mode = 1
 
@@ -36,32 +38,32 @@ margin_right = -16.0
 margin_bottom = -16.0
 
 [node name="Menu Buttons" type="VBoxContainer" parent="Columns"]
-margin_right = 97.0
+margin_right = 105.0
 margin_bottom = 568.0
 
 [node name="Briefing Button" type="CheckBox" parent="Columns/Menu Buttons"]
-margin_right = 97.0
+margin_right = 105.0
 margin_bottom = 24.0
 pressed = true
-group = ExtResource( 3 )
+group = ExtResource( 4 )
 text = "Briefing"
 
 [node name="Loadout Button" type="CheckBox" parent="Columns/Menu Buttons"]
 margin_top = 28.0
-margin_right = 97.0
+margin_right = 105.0
 margin_bottom = 52.0
-group = ExtResource( 3 )
+group = ExtResource( 4 )
 text = "Loadout"
 
 [node name="Objectives Button" type="CheckBox" parent="Columns/Menu Buttons"]
 margin_top = 56.0
-margin_right = 97.0
+margin_right = 105.0
 margin_bottom = 80.0
-group = ExtResource( 3 )
+group = ExtResource( 4 )
 text = "Objectives"
 
 [node name="Menus Container" type="Control" parent="Columns"]
-margin_left = 101.0
+margin_left = 109.0
 margin_right = 992.0
 margin_bottom = 568.0
 size_flags_horizontal = 3
@@ -83,10 +85,10 @@ custom_styles/panel = SubResource( 1 )
 [node name="Briefing Rows" type="VBoxContainer" parent="Columns/Menus Container/Briefing Container/Briefing Panel"]
 margin_left = 1.0
 margin_top = 1.0
-margin_right = 811.0
+margin_right = 803.0
 margin_bottom = 488.0
 
-[node name="Loadout" parent="Columns/Menus Container" instance=ExtResource( 4 )]
+[node name="Loadout" parent="Columns/Menus Container" instance=ExtResource( 5 )]
 visible = false
 
 [node name="Objectives Container" type="Control" parent="Columns/Menus Container"]
@@ -103,7 +105,7 @@ margin_bottom = -16.0
 
 [node name="Primary Container" type="VBoxContainer" parent="Columns/Menus Container/Objectives Container/Objective Rows"]
 margin_right = 138.0
-margin_bottom = 32.0
+margin_bottom = 26.0
 
 [node name="Primary Label" type="Label" parent="Columns/Menus Container/Objectives Container/Objective Rows/Primary Container"]
 margin_right = 138.0
@@ -113,18 +115,18 @@ text = "Primary Objectives"
 [node name="Primary Panel" type="PanelContainer" parent="Columns/Menus Container/Objectives Container/Objective Rows/Primary Container"]
 margin_top = 18.0
 margin_right = 138.0
-margin_bottom = 32.0
+margin_bottom = 26.0
 
 [node name="Primary Rows" type="VBoxContainer" parent="Columns/Menus Container/Objectives Container/Objective Rows/Primary Container/Primary Panel"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 131.0
-margin_bottom = 7.0
+margin_left = 8.0
+margin_top = 4.0
+margin_right = 130.0
+margin_bottom = 4.0
 
 [node name="Secondary Container" type="VBoxContainer" parent="Columns/Menus Container/Objectives Container/Objective Rows"]
-margin_top = 36.0
+margin_top = 30.0
 margin_right = 138.0
-margin_bottom = 68.0
+margin_bottom = 56.0
 
 [node name="Secondary Label" type="Label" parent="Columns/Menus Container/Objectives Container/Objective Rows/Secondary Container"]
 margin_right = 138.0
@@ -134,13 +136,13 @@ text = "Secondary Objectives"
 [node name="Secondary Panel" type="PanelContainer" parent="Columns/Menus Container/Objectives Container/Objective Rows/Secondary Container"]
 margin_top = 18.0
 margin_right = 138.0
-margin_bottom = 32.0
+margin_bottom = 26.0
 
 [node name="Secondary Rows" type="VBoxContainer" parent="Columns/Menus Container/Objectives Container/Objective Rows/Secondary Container/Secondary Panel"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 131.0
-margin_bottom = 7.0
+margin_left = 8.0
+margin_top = 4.0
+margin_right = 130.0
+margin_bottom = 4.0
 
 [node name="Start Button" type="Button" parent="Columns/Menus Container"]
 anchor_left = 1.0
