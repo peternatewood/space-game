@@ -3,13 +3,13 @@ extends RigidBody
 export (int) var hull_hitpoints = -1
 
 onready var bounding_box_extents = get_meta("bounding_box_extents")
+onready var max_hull_hitpoints: int = get_meta("hull_hitpoints")
 onready var mission_controller = get_tree().get_root().get_node("Mission Controller")
 onready var settings = get_node("/root/GlobalSettings")
 
 var destruction_countdown: float
 var destruction_delay: float = 0.0
 var is_alive: bool = true
-var max_hull_hitpoints: int = get_meta("hull_hitpoints")
 
 
 func _ready():
