@@ -151,6 +151,8 @@ margin_top = 108.0
 margin_right = 182.0
 margin_bottom = 122.0
 grow_horizontal = 0
+hint_tooltip = "Capacity for missile weapon rounds"
+mouse_filter = 1
 text = "n/a"
 
 [node name="Ship Preview" type="TextureRect" parent="Ship Preview Container"]
@@ -226,6 +228,8 @@ margin_left = 103.0
 margin_top = 54.0
 margin_right = 152.0
 margin_bottom = 68.0
+hint_tooltip = "Battery power this weapon consumes when firing"
+mouse_filter = 1
 text = "n/a"
 
 [node name="Weight Label" type="Label" parent="Weapon Preview Container/Weapon Details"]
@@ -239,6 +243,9 @@ margin_left = 103.0
 margin_top = 72.0
 margin_right = 152.0
 margin_bottom = 86.0
+hint_tooltip = "Cost to a ship's weapon capacity.
+Higher weight means fewer rounds per weapon slot "
+mouse_filter = 1
 text = "n/a"
 
 [node name="Fire Rate Label" type="Label" parent="Weapon Preview Container/Weapon Details"]
@@ -252,6 +259,8 @@ margin_left = 103.0
 margin_top = 90.0
 margin_right = 152.0
 margin_bottom = 104.0
+hint_tooltip = "(rounds per second)"
+mouse_filter = 1
 text = "n/a"
 
 [node name="Video Player" type="VideoPlayer" parent="Weapon Preview Container"]
