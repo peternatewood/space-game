@@ -29,7 +29,7 @@ func set_weapon(type: String, weapon_name: String, weapon_data):
 
 	match type:
 		"energy_weapon":
-			cost.set_text(str(weapon_data.cost))
+			cost.set_text(WeaponBase.get_battery_cost_description(weapon_data.cost))
 			cost.show()
 			cost_label.show()
 			weight.hide()
@@ -47,3 +47,4 @@ func set_weapon(type: String, weapon_name: String, weapon_data):
 
 
 const MathHelper = preload("MathHelper.gd")
+const WeaponBase = preload("WeaponBase.gd")

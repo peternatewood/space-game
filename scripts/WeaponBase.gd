@@ -50,6 +50,17 @@ static func get_ammo_cost_description(cost: float):
 	return "Very High"
 
 
+static func get_battery_cost_description(cost: float):
+	if cost < 2:
+		return "Low"
+	if cost < 4:
+		return "Moderate"
+	if cost < 6:
+		return "High"
+
+	return "Very High"
+
+
 static func get_damage_strength(damage: float):
 	if damage < 15:
 		return "Low"
