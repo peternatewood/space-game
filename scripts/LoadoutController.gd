@@ -83,6 +83,12 @@ func _ready():
 			var icon_texture = icon_stream_texture.get_data()
 			icon.create_from_image(icon_texture, 0)
 
+			var energy_weapon_icon = RADIAL_ICON.instance()
+			energy_weapons_container.add_child(energy_weapon_icon)
+			energy_weapon_icon.set_normal_texture(icon)
+			energy_weapon_icon.set_h_size_flags(SIZE_SHRINK_CENTER)
+			energy_weapon_icon.connect("pressed", self, "_update_weapon_preview", [ "energy_weapon", energy_weapon_name ])
+
 			energy_weapon_data[energy_weapon_name] = { "model": model, "icon": icon }
 
 	for index in range(energy_weapon_slots.size()):
@@ -100,6 +106,12 @@ func _ready():
 			var icon_stream_texture = load(source_folder + "/icon.png")
 			var icon_texture = icon_stream_texture.get_data()
 			icon.create_from_image(icon_texture, 0)
+
+			var missile_weapon_icon = RADIAL_ICON.instance()
+			missile_weapons_container.add_child(missile_weapon_icon)
+			missile_weapon_icon.set_normal_texture(icon)
+			missile_weapon_icon.set_h_size_flags(SIZE_SHRINK_CENTER)
+			missile_weapon_icon.connect("pressed", self, "_update_weapon_preview", [ "missile_weapon", missile_weapon_name ])
 
 			missile_weapon_data[missile_weapon_name] = { "model": model, "icon": icon }
 
@@ -235,6 +247,10 @@ func _update_ship_preview(ship_class: String):
 		return true
 
 	return false
+
+
+func _update_weapon_preview(weapon_type: String, weapon_name: String):
+	pass
 
 
 const ShipBase = preload("ShipBase.gd")
