@@ -92,7 +92,15 @@ func _ready():
 
 			var energy_weapon_video = load(source_folder + "/video.ogv")
 
-			energy_weapon_data[energy_weapon_name] = { "model": model, "icon": icon, "video": energy_weapon_video }
+			energy_weapon_data[energy_weapon_name] = {
+				"cost": energy_weapon_instance.get_meta("cost"),
+				"fire_delay": energy_weapon_instance.get_meta("fire_delay"),
+				"hull_damage": energy_weapon_instance.get_meta("damage_hull"),
+				"icon": icon,
+				"model": model,
+				"shield_damage": energy_weapon_instance.get_meta("damage_shield"),
+				"video": energy_weapon_video
+			}
 
 	for index in range(energy_weapon_slots.size()):
 		energy_weapon_slots[index].set_options(energy_weapon_data)
@@ -118,7 +126,15 @@ func _ready():
 
 			var missile_weapon_video = load(source_folder + "/video.ogv")
 
-			missile_weapon_data[missile_weapon_name] = { "model": model, "icon": icon, "video": missile_weapon_video }
+			missile_weapon_data[missile_weapon_name] = {
+				"fire_delay": missile_weapon_instance.get_meta("fire_delay"),
+				"hull_damage": missile_weapon_instance.get_meta("damage_hull"),
+				"icon": icon,
+				"model": model,
+				"shield_damage": missile_weapon_instance.get_meta("damage_shield"),
+				"weight": missile_weapon_instance.get_meta("ammo_cost"),
+				"video": missile_weapon_video
+			}
 
 	for index in range(missile_weapon_slots.size()):
 		missile_weapon_slots[index].set_options(missile_weapon_data)
@@ -264,7 +280,7 @@ func _update_weapon_preview(weapon_type: String, weapon_name: String):
 			data = missile_weapon_data[weapon_name]
 
 	if data != null:
-		weapon_preview.set_weapon(weapon_type, data)
+		weapon_preview.set_weapon(weapon_type, weapon_name, data)
 
 
 const ShipBase = preload("ShipBase.gd")
