@@ -95,10 +95,10 @@ func _ready():
 			energy_weapon_data[energy_weapon_name] = {
 				"cost": energy_weapon_instance.get_meta("cost"),
 				"fire_delay": energy_weapon_instance.get_meta("fire_delay"),
-				"hull_damage": energy_weapon_instance.get_meta("damage_hull"),
+				"hull_damage": WeaponBase.get_damage_strength(energy_weapon_instance.get_meta("damage_hull")),
 				"icon": icon,
 				"model": model,
-				"shield_damage": energy_weapon_instance.get_meta("damage_shield"),
+				"shield_damage": WeaponBase.get_damage_strength(energy_weapon_instance.get_meta("damage_shield")),
 				"video": energy_weapon_video
 			}
 
@@ -128,10 +128,10 @@ func _ready():
 
 			missile_weapon_data[missile_weapon_name] = {
 				"fire_delay": missile_weapon_instance.get_meta("fire_delay"),
-				"hull_damage": missile_weapon_instance.get_meta("damage_hull"),
+				"hull_damage": WeaponBase.get_damage_strength(missile_weapon_instance.get_meta("damage_hull")),
 				"icon": icon,
 				"model": model,
-				"shield_damage": missile_weapon_instance.get_meta("damage_shield"),
+				"shield_damage": WeaponBase.get_damage_strength(missile_weapon_instance.get_meta("damage_shield")),
 				"weight": missile_weapon_instance.get_meta("ammo_cost"),
 				"video": missile_weapon_video
 			}
@@ -285,6 +285,7 @@ func _update_weapon_preview(weapon_type: String, weapon_name: String):
 
 const ShipBase = preload("ShipBase.gd")
 const ShipSlot = preload("ShipSlot.gd")
+const WeaponBase = preload("WeaponBase.gd")
 const WeaponSlot = preload("WeaponSlot.gd")
 
 const RADIAL_ICON = preload("res://prefabs/radial_icon.tscn")

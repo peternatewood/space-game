@@ -23,9 +23,9 @@ func set_weapon(type: String, weapon_name: String, weapon_data):
 		show()
 
 	fire_rate.set_text(str(1 / weapon_data.fire_delay) + " rps")
-	hull_damage.set_text(str(weapon_data.hull_damage))
+	hull_damage.set_text(weapon_data.hull_damage)
 	name_label.set_text(weapon_name)
-	shield_damage.set_text(str(weapon_data.shield_damage))
+	shield_damage.set_text(weapon_data.shield_damage)
 
 	match type:
 		"energy_weapon":
