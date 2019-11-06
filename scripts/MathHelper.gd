@@ -68,6 +68,15 @@ static func percent_to_db(percent: float):
 	return 20 * log(percent) / log(10) - 40
 
 
+static func round_to_places(amount: float, places: int):
+	if places < 1:
+		return round(amount)
+
+	var multiplier = pow(10, places)
+
+	return round(multiplier * amount) / multiplier
+
+
 static func units_to_distance(amount: float, units: int):
 	match units:
 		Units.METRIC:
