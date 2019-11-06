@@ -37,3 +37,14 @@ func _process(delta):
 
 func destroy():
 	queue_free()
+
+
+static func get_damage_strength(damage: float):
+	if damage < 15:
+		return "Low"
+	if damage < 25:
+		return "Moderate"
+	if damage < 35:
+		return "High"
+
+	return "Very High"
