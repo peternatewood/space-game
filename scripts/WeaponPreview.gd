@@ -22,7 +22,7 @@ func set_weapon(type: String, weapon_name: String, weapon_data):
 	if not visible:
 		show()
 
-	fire_rate.set_text(str(1 / weapon_data.fire_delay) + " rps")
+	fire_rate.set_text(str(MathHelper.round_to_places(1 / weapon_data.fire_delay, 2)).pad_decimals(2) + " rps")
 	hull_damage.set_text(weapon_data.hull_damage)
 	name_label.set_text(weapon_name)
 	shield_damage.set_text(weapon_data.shield_damage)
@@ -44,3 +44,6 @@ func set_weapon(type: String, weapon_name: String, weapon_data):
 	video_player.set_stream(weapon_data.video)
 
 	video_player.play()
+
+
+const MathHelper = preload("MathHelper.gd")
