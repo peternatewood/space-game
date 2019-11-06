@@ -132,7 +132,7 @@ func _ready():
 				"icon": icon,
 				"model": model,
 				"shield_damage": WeaponBase.get_damage_strength(missile_weapon_instance.get_meta("damage_shield")),
-				"weight": missile_weapon_instance.get_meta("ammo_cost"),
+				"weight": WeaponBase.get_ammo_cost_description(missile_weapon_instance.get_meta("ammo_cost")),
 				"video": missile_weapon_video
 			}
 

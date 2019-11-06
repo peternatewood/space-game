@@ -37,7 +37,7 @@ func set_weapon(type: String, weapon_name: String, weapon_data):
 		"missile_weapon":
 			cost.hide()
 			cost_label.hide()
-			weight.set_text(str(weapon_data.weight))
+			weight.set_text(weapon_data.weight)
 			weight.show()
 			weight_label.show()
 
