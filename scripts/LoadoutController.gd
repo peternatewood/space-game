@@ -16,6 +16,7 @@ onready var ship_missile_slots_label = get_node("Ship Preview Container/Ship Det
 onready var ship_weapon_capacity_label = get_node("Ship Preview Container/Ship Details/Weapon Capacity")
 onready var ship_wing_name = get_node("Weapon Slots Rows/Ship Wing Name")
 onready var weapon_slots_rows = get_node("Weapon Slots Rows")
+onready var weapon_preview = get_node("Weapon Preview Container")
 onready var wing_ships_container = get_node("Wing Ships Container")
 
 var current_ship_class: String
@@ -89,7 +90,9 @@ func _ready():
 			energy_weapon_icon.set_h_size_flags(SIZE_SHRINK_CENTER)
 			energy_weapon_icon.connect("pressed", self, "_update_weapon_preview", [ "energy_weapon", energy_weapon_name ])
 
-			energy_weapon_data[energy_weapon_name] = { "model": model, "icon": icon }
+			var energy_weapon_video = load(source_folder + "/video.ogv")
+
+			energy_weapon_data[energy_weapon_name] = { "model": model, "icon": icon, "video": energy_weapon_video }
 
 	for index in range(energy_weapon_slots.size()):
 		energy_weapon_slots[index].set_options(energy_weapon_data)
@@ -113,7 +116,9 @@ func _ready():
 			missile_weapon_icon.set_h_size_flags(SIZE_SHRINK_CENTER)
 			missile_weapon_icon.connect("pressed", self, "_update_weapon_preview", [ "missile_weapon", missile_weapon_name ])
 
-			missile_weapon_data[missile_weapon_name] = { "model": model, "icon": icon }
+			var missile_weapon_video = load(source_folder + "/video.ogv")
+
+			missile_weapon_data[missile_weapon_name] = { "model": model, "icon": icon, "video": missile_weapon_video }
 
 	for index in range(missile_weapon_slots.size()):
 		missile_weapon_slots[index].set_options(missile_weapon_data)
@@ -250,7 +255,16 @@ func _update_ship_preview(ship_class: String):
 
 
 func _update_weapon_preview(weapon_type: String, weapon_name: String):
-	pass
+	var data
+
+	match weapon_type:
+		"energy_weapon":
+			data = energy_weapon_data[weapon_name]
+		"missile_weapon":
+			data = missile_weapon_data[weapon_name]
+
+	if data != null:
+		weapon_preview.set_weapon(weapon_type, data)
 
 
 const ShipBase = preload("ShipBase.gd")

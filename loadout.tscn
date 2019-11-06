@@ -1,14 +1,15 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://scripts/LoadoutController.gd" type="Script" id=1]
 [ext_resource path="res://models/ships/spider_fighter/loadout_overhead.png" type="Texture" id=2]
-[ext_resource path="res://models/missile_weapons/heat_seeker/video.ogv" type="VideoStream" id=3]
-[ext_resource path="res://button_groups/loadout_wing_group.tres" type="ButtonGroup" id=4]
-[ext_resource path="res://prefabs/radial_menu_weapons.tscn" type="PackedScene" id=5]
-[ext_resource path="res://scripts/WingContainer.gd" type="Script" id=6]
-[ext_resource path="res://prefabs/radial_menu_ships.tscn" type="PackedScene" id=7]
-[ext_resource path="res://scripts/LoadoutShipPreview.gd" type="Script" id=8]
-[ext_resource path="res://models/ships/frog_fighter/model.dae" type="PackedScene" id=9]
+[ext_resource path="res://scripts/WeaponPreview.gd" type="Script" id=3]
+[ext_resource path="res://models/missile_weapons/heat_seeker/video.ogv" type="VideoStream" id=4]
+[ext_resource path="res://button_groups/loadout_wing_group.tres" type="ButtonGroup" id=5]
+[ext_resource path="res://prefabs/radial_menu_weapons.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scripts/WingContainer.gd" type="Script" id=7]
+[ext_resource path="res://prefabs/radial_menu_ships.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scripts/LoadoutShipPreview.gd" type="Script" id=9]
+[ext_resource path="res://models/ships/frog_fighter/model.dae" type="PackedScene" id=10]
 
 [sub_resource type="ViewportTexture" id=1]
 viewport_path = NodePath("Ship Preview Viewport")
@@ -170,6 +171,7 @@ margin_bottom = 20.0
 grow_horizontal = 0
 size_flags_horizontal = 8
 size_flags_vertical = 4
+script = ExtResource( 3 )
 
 [node name="Weapon Details" type="GridContainer" parent="Weapon Preview Container"]
 margin_right = 152.0
@@ -252,14 +254,14 @@ margin_right = 152.0
 margin_bottom = 104.0
 text = "n/a"
 
-[node name="Weapon Video" type="VideoPlayer" parent="Weapon Preview Container"]
+[node name="Video Player" type="VideoPlayer" parent="Weapon Preview Container"]
 margin_left = 156.0
 margin_right = 356.0
 margin_bottom = 150.0
 rect_min_size = Vector2( 200, 150 )
 size_flags_horizontal = 0
 size_flags_vertical = 0
-stream = ExtResource( 3 )
+stream = ExtResource( 4 )
 autoplay = true
 
 [node name="Left Rows" type="VBoxContainer" parent="."]
@@ -341,14 +343,14 @@ margin_top = 18.0
 margin_right = 95.0
 margin_bottom = 42.0
 pressed = true
-group = ExtResource( 4 )
+group = ExtResource( 5 )
 text = "Alpha"
 
 [node name="Beta CheckBox" type="CheckBox" parent="Left Rows/Wings Panel/Wing Selection Container"]
 margin_top = 46.0
 margin_right = 95.0
 margin_bottom = 70.0
-group = ExtResource( 4 )
+group = ExtResource( 5 )
 text = "Beta"
 
 [node name="Weapon Slots Rows" type="VBoxContainer" parent="."]
@@ -384,17 +386,17 @@ margin_top = 44.0
 margin_right = 109.0
 margin_bottom = 148.0
 
-[node name="Energy Weapon 1" parent="Weapon Slots Rows/Energy Weapon Rows" instance=ExtResource( 5 )]
+[node name="Energy Weapon 1" parent="Weapon Slots Rows/Energy Weapon Rows" instance=ExtResource( 6 )]
 margin_left = 22.0
 margin_right = 86.0
 
-[node name="Energy Weapon 2" parent="Weapon Slots Rows/Energy Weapon Rows" instance=ExtResource( 5 )]
+[node name="Energy Weapon 2" parent="Weapon Slots Rows/Energy Weapon Rows" instance=ExtResource( 6 )]
 margin_left = 22.0
 margin_top = 36.0
 margin_right = 86.0
 margin_bottom = 68.0
 
-[node name="Energy Weapon 3" parent="Weapon Slots Rows/Energy Weapon Rows" instance=ExtResource( 5 )]
+[node name="Energy Weapon 3" parent="Weapon Slots Rows/Energy Weapon Rows" instance=ExtResource( 6 )]
 margin_left = 22.0
 margin_top = 72.0
 margin_right = 86.0
@@ -411,17 +413,17 @@ margin_top = 170.0
 margin_right = 109.0
 margin_bottom = 274.0
 
-[node name="Missile Weapon 1" parent="Weapon Slots Rows/Missile Weapon Rows" instance=ExtResource( 5 )]
+[node name="Missile Weapon 1" parent="Weapon Slots Rows/Missile Weapon Rows" instance=ExtResource( 6 )]
 margin_left = 22.0
 margin_right = 86.0
 
-[node name="Missile Weapon 2" parent="Weapon Slots Rows/Missile Weapon Rows" instance=ExtResource( 5 )]
+[node name="Missile Weapon 2" parent="Weapon Slots Rows/Missile Weapon Rows" instance=ExtResource( 6 )]
 margin_left = 22.0
 margin_top = 36.0
 margin_right = 86.0
 margin_bottom = 68.0
 
-[node name="Missile Weapon 3" parent="Weapon Slots Rows/Missile Weapon Rows" instance=ExtResource( 5 )]
+[node name="Missile Weapon 3" parent="Weapon Slots Rows/Missile Weapon Rows" instance=ExtResource( 6 )]
 margin_left = 22.0
 margin_top = 72.0
 margin_right = 86.0
@@ -443,23 +445,23 @@ rect_min_size = Vector2( 120, 180 )
 margin_right = 120.0
 margin_bottom = 180.0
 rect_min_size = Vector2( 140, 180 )
-script = ExtResource( 6 )
+script = ExtResource( 7 )
 
-[node name="Alpha Icon 1" parent="Wing Ships Container/Alpha Wing Container" instance=ExtResource( 7 )]
+[node name="Alpha Icon 1" parent="Wing Ships Container/Alpha Wing Container" instance=ExtResource( 8 )]
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -19.0
 margin_right = 19.0
 margin_bottom = 63.0
 
-[node name="Alpha Icon 2" parent="Wing Ships Container/Alpha Wing Container" instance=ExtResource( 7 )]
+[node name="Alpha Icon 2" parent="Wing Ships Container/Alpha Wing Container" instance=ExtResource( 8 )]
 anchor_top = 0.5
 anchor_bottom = 0.5
 margin_top = -31.5
 margin_right = 38.0
 margin_bottom = 31.5
 
-[node name="Alpha Icon 3" parent="Wing Ships Container/Alpha Wing Container" instance=ExtResource( 7 )]
+[node name="Alpha Icon 3" parent="Wing Ships Container/Alpha Wing Container" instance=ExtResource( 8 )]
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
@@ -468,7 +470,7 @@ margin_left = -38.0
 margin_top = -31.5
 margin_bottom = 31.5
 
-[node name="Alpha Icon 4" parent="Wing Ships Container/Alpha Wing Container" instance=ExtResource( 7 )]
+[node name="Alpha Icon 4" parent="Wing Ships Container/Alpha Wing Container" instance=ExtResource( 8 )]
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -482,23 +484,23 @@ visible = false
 margin_right = 140.0
 margin_bottom = 180.0
 rect_min_size = Vector2( 140, 180 )
-script = ExtResource( 6 )
+script = ExtResource( 7 )
 
-[node name="Beta Icon 1" parent="Wing Ships Container/Beta Wing Container" instance=ExtResource( 7 )]
+[node name="Beta Icon 1" parent="Wing Ships Container/Beta Wing Container" instance=ExtResource( 8 )]
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -19.0
 margin_right = 19.0
 margin_bottom = 63.0
 
-[node name="Beta Icon 2" parent="Wing Ships Container/Beta Wing Container" instance=ExtResource( 7 )]
+[node name="Beta Icon 2" parent="Wing Ships Container/Beta Wing Container" instance=ExtResource( 8 )]
 anchor_top = 0.5
 anchor_bottom = 0.5
 margin_top = -31.5
 margin_right = 38.0
 margin_bottom = 31.5
 
-[node name="Beta Icon 3" parent="Wing Ships Container/Beta Wing Container" instance=ExtResource( 7 )]
+[node name="Beta Icon 3" parent="Wing Ships Container/Beta Wing Container" instance=ExtResource( 8 )]
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
@@ -507,7 +509,7 @@ margin_left = -38.0
 margin_top = -31.5
 margin_bottom = 31.5
 
-[node name="Beta Icon 4" parent="Wing Ships Container/Beta Wing Container" instance=ExtResource( 7 )]
+[node name="Beta Icon 4" parent="Wing Ships Container/Beta Wing Container" instance=ExtResource( 8 )]
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -522,7 +524,7 @@ size = Vector2( 200, 150 )
 own_world = true
 world = SubResource( 2 )
 transparent_bg = true
-script = ExtResource( 8 )
+script = ExtResource( 9 )
 
 [node name="Hangar Environment" type="WorldEnvironment" parent="Ship Preview Viewport"]
 environment = SubResource( 3 )
@@ -533,7 +535,7 @@ light_color = Color( 0.847059, 0.933333, 0.996078, 1 )
 
 [node name="Ship Container" type="Spatial" parent="Ship Preview Viewport"]
 
-[node name="Ship" parent="Ship Preview Viewport/Ship Container" instance=ExtResource( 9 )]
+[node name="Ship" parent="Ship Preview Viewport/Ship Container" instance=ExtResource( 10 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0 )
 
 [node name="Camera" type="Camera" parent="Ship Preview Viewport"]
