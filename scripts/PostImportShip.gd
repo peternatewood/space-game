@@ -59,6 +59,21 @@ func post_import(scene):
 	engine_sound.set_owner(scene)
 	engine_sound.transform.origin = exhaust_points.transform.origin
 
+	# Other sound effects
+	var warp_boom = AudioStreamPlayer3D.new()
+	warp_boom.set_unit_size(10)
+	warp_boom.set_stream(WARP_BOOM)
+	warp_boom.set_name("Warp Boom Player")
+	scene.add_child(warp_boom)
+	warp_boom.set_owner(scene)
+
+	var warp_ramp_up = AudioStreamPlayer3D.new()
+	warp_ramp_up.set_unit_size(10)
+	warp_ramp_up.set_stream(WARP_RAMP_UP)
+	warp_ramp_up.set_name("Warp Ramp Up Player")
+	scene.add_child(warp_ramp_up)
+	warp_ramp_up.set_owner(scene)
+
 	# Add script to weapon hardpoints groups
 	for energy_hardpoints in scene.get_node("Energy Weapon Groups").get_children():
 		energy_hardpoints.set_script(WeaponHardpoints)
@@ -142,3 +157,5 @@ const BLUE_EXHAUST_MATERIAL = preload("res://materials/blue_exhaust.tres")
 const BLUE_SHIELD_MATERIAL = preload("res://materials/blue_shield.tres")
 const ENGINE_LOOP = preload("res://sounds/engine_loop.wav")
 const EXHAUST_LIGHT_MATERIAL = preload("res://materials/exhaust_light.tres")
+const WARP_BOOM = preload("res://sounds/warp_boom.wav")
+const WARP_RAMP_UP = preload("res://sounds/warp_ramp_up.wav")
