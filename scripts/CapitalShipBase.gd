@@ -23,6 +23,13 @@ func _ready():
 		turret.hull_hitpoints = turret.max_hull_hitpoints
 
 
+func _destroy():
+	var explosion = EXPLOSION_PREFAB.instance()
+	explosion.transform.origin = transform.origin
+	mission_controller.add_child(explosion)
+	._destroy()
+
+
 func _on_mission_ready():
 	for turret in energy_weapon_turrets:
 		turret._on_mission_ready()
@@ -45,3 +52,6 @@ func set_weapon_turrets(beam_weapons: Array = [], energy_weapons: Array = [], mi
 	if missile_weapons.size() == missile_weapon_turrets.size():
 		for index in range(missile_weapons.size()):
 			missile_weapon_turrets[index].set_weapon(missile_weapons[index])
+
+
+const EXPLOSION_PREFAB = preload("res://prefabs/capital_ship_explosion.tscn")
