@@ -12,6 +12,14 @@ func post_import(scene):
 	if exhaust_points != null:
 		exhaust_points.set_surface_material(0, EXHAUST_LIGHT_MATERIAL)
 
+	# Add engine effect sound at exhaust points center
+	var engine_sound = AudioStreamPlayer3D.new()
+	engine_sound.set_stream(ENGINE_LOOP)
+	engine_sound.set_name("Engine Loop")
+	scene.add_child(engine_sound)
+	engine_sound.set_owner(scene)
+	engine_sound.transform.origin = exhaust_points.transform.origin
+
 	# Not all capital ships will have all types of turret
 	var has_beam_weapons = scene.has_node("Beam Weapon Turrets")
 	scene.set_meta("has_beam_weapon_turrets", has_beam_weapons)
@@ -91,4 +99,5 @@ const MathHelper = preload("MathHelper.gd")
 
 const BLUE_EXHAUST_MATERIAL = preload("res://materials/blue_exhaust.tres")
 const ENERGY_WEAPON_TURRET = preload("res://models/turrets/energy_weapon_turret/model.dae")
+const ENGINE_LOOP = preload("res://sounds/engine_loop.wav")
 const EXHAUST_LIGHT_MATERIAL = preload("res://materials/exhaust_light.tres")
