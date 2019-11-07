@@ -32,6 +32,7 @@ func post_import(scene):
 
 			var turret = ENERGY_WEAPON_TURRET.instance()
 			turret.transform = turret_xform
+			scene.add_collision_exception_with(turret)
 			turrets_container.add_child(turret)
 			turret.set_owner(scene)
 

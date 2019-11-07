@@ -11,7 +11,7 @@ dest_files=[ "res://.import/model.dae-bc4ba392920ff85cab41b3f2a14adfb4.scn" ]
 
 [params]
 
-nodes/root_type="RigidBody"
+nodes/root_type="Area"
 nodes/root_name="Energy Weapon Turret"
 nodes/root_scale=1.0
 nodes/custom_script="res://scripts/PostImportTurret.gd"
