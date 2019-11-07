@@ -8,10 +8,14 @@ export (bool) var is_warped_in = true
 onready var engine_loop_player = get_node_or_null("Engine Loop")
 onready var ship_class: String = get_meta("ship_class")
 onready var source_folder = get_meta("source_folder")
+onready var warp_boom_player = get_node("Warp Boom Player")
+onready var warp_ramp_up_player = get_node("Warp Ramp Up Player")
 
 var current_target
 var has_engine_loop: bool = false
 var has_target: bool = false
+var has_warp_boom: bool = false
+var has_warp_ramp_up: bool = false
 var last_speed: float = 0.0
 var last_speed_sq: float = 0.0
 var max_speed: float
@@ -37,6 +41,8 @@ func _ready():
 		max_speed = get_meta("max_speed")
 
 	has_engine_loop = engine_loop_player != null
+	has_warp_boom = warp_boom_player != null
+	has_warp_ramp_up = warp_ramp_up_player != null
 
 	# Set turn speed based on mass
 	turn_speed = 2.5 * mass
@@ -100,11 +106,26 @@ func _process(delta):
 				show_and_enable()
 				warping = NONE
 				is_warped_in = true
+
+				if has_warp_boom:
+					warp_boom_player.play()
+				else:
+					print("Missing warp boom sound")
+
 				emit_signal("warped_in")
 		WARP_OUT:
+			var ramping_up: bool = warping_countdown > 0
 			warping_countdown -= delta
 
 			if warping_countdown <= 0:
+				if ramping_up:
+					emit_signal("warping_ramped_up")
+
+					if has_warp_boom:
+						warp_boom_player.play()
+					else:
+						print("Missing warp boom sound")
+
 				translate(delta * warp_speed * Vector3.FORWARD)
 
 				if warping_countdown <= -WARP_DURATION:
@@ -249,6 +270,7 @@ signal speed_changed
 signal warped_in
 signal warped_out
 signal warping_in
+signal warping_ramped_up
 
 const ActorBase = preload("ActorBase.gd")
 
