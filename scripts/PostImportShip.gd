@@ -51,6 +51,14 @@ func post_import(scene):
 	if exhaust_points != null:
 		exhaust_points.set_surface_material(0, EXHAUST_LIGHT_MATERIAL)
 
+	# Add engine effect sound at exhaust points center
+	var engine_sound = AudioStreamPlayer3D.new()
+	engine_sound.set_stream(ENGINE_LOOP)
+	engine_sound.set_name("Engine Loop")
+	scene.add_child(engine_sound)
+	engine_sound.set_owner(scene)
+	engine_sound.transform.origin = exhaust_points.transform.origin
+
 	# Add script to weapon hardpoints groups
 	for energy_hardpoints in scene.get_node("Energy Weapon Groups").get_children():
 		energy_hardpoints.set_script(WeaponHardpoints)
@@ -132,4 +140,5 @@ const WeaponHardpoints = preload("WeaponHardpoints.gd")
 
 const BLUE_EXHAUST_MATERIAL = preload("res://materials/blue_exhaust.tres")
 const BLUE_SHIELD_MATERIAL = preload("res://materials/blue_shield.tres")
+const ENGINE_LOOP = preload("res://sounds/engine_loop.wav")
 const EXHAUST_LIGHT_MATERIAL = preload("res://materials/exhaust_light.tres")
