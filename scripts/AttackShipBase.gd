@@ -58,6 +58,13 @@ func _cycle_missile_weapon(direction: int):
 	emit_signal("missile_weapon_changed")
 
 
+func _destroy():
+	var explosion = EXPLOSION_PREFAB.instance()
+	explosion.transform.origin = transform.origin
+	mission_controller.add_child(explosion)
+	._destroy()
+
+
 func _fire_energy_weapon():
 	var weapon_cost = energy_weapon_hardpoints[energy_weapon_index].weapon_data.get("cost", 1.0)
 	if energy_weapon_hardpoints[energy_weapon_index].countdown == 0 and weapon_battery >= weapon_cost:
@@ -202,6 +209,7 @@ signal missile_weapon_changed
 
 const ShieldQuadrant = preload("ShieldQuadrant.gd")
 
+const EXPLOSION_PREFAB = preload("res://prefabs/ship_explosion.tscn")
 const MAX_SYSTEM_POWER: float = 60.0
 const MAX_WEAPON_BATTERY: float = 100.0
 const POWER_INCREMENT: int = 10
