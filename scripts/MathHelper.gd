@@ -35,7 +35,7 @@ static func get_line_slope(start: Vector2, end: Vector2):
 
 
 static func get_propulsion_force_from_mass_and_speed(mass: float, max_speed: float):
-	return max_speed * mass / MASS_SPEED_FACTOR
+	return max_speed * mass * MASS_SPEED_FACTOR
 
 
 static func get_line_rect_intersect(start: Vector2, end: Vector2, rectangle: Rect2):
@@ -93,7 +93,9 @@ static func units_to_speed(amount: float, units: int):
 			return 19.438445 * amount
 
 
-const MASS_SPEED_FACTOR: float = 32.129448
+# This one turned out to be too high?
+#const MASS_SPEED_FACTOR: float = 0.031124095253675
+const MASS_SPEED_FACTOR: float = 0.015562047626838
 
 """
 TODO: figure out the curve for this conversion; for now we're just expecting 0.85 damping for all ships
