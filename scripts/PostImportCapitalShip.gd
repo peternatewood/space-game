@@ -20,6 +20,14 @@ func post_import(scene):
 	engine_sound.set_owner(scene)
 	engine_sound.transform.origin = exhaust_points.transform.origin
 
+	# Other sound effects
+	var warp_boom = AudioStreamPlayer3D.new()
+	warp_boom.set_unit_size(10)
+	warp_boom.set_stream(WARP_BOOM)
+	warp_boom.set_name("Warp Boom Player")
+	scene.add_child(warp_boom)
+	warp_boom.set_owner(scene)
+
 	# Not all capital ships will have all types of turret
 	var has_beam_weapons = scene.has_node("Beam Weapon Turrets")
 	scene.set_meta("has_beam_weapon_turrets", has_beam_weapons)
@@ -101,3 +109,4 @@ const BLUE_EXHAUST_MATERIAL = preload("res://materials/blue_exhaust.tres")
 const ENERGY_WEAPON_TURRET = preload("res://models/turrets/energy_weapon_turret/model.dae")
 const ENGINE_LOOP = preload("res://sounds/engine_loop.wav")
 const EXHAUST_LIGHT_MATERIAL = preload("res://materials/exhaust_light.tres")
+const WARP_BOOM = preload("res://sounds/warp_boom.wav")
