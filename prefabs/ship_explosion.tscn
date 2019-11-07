@@ -16,29 +16,30 @@ particles_anim_v_frames = 1
 particles_anim_loop = false
 albedo_texture = ExtResource( 2 )
 
-[sub_resource type="Gradient" id=6]
+[sub_resource type="Gradient" id=2]
 offsets = PoolRealArray( 0, 0.35, 1 )
 colors = PoolColorArray( 0.929412, 0.454902, 0.168627, 1, 0.607843, 0.396078, 0.270588, 1, 0, 0, 0, 1 )
 
-[sub_resource type="GradientTexture" id=7]
-gradient = SubResource( 6 )
+[sub_resource type="GradientTexture" id=3]
+gradient = SubResource( 2 )
 
-[sub_resource type="Curve" id=2]
-_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.470989 ), 0.0, 0.0, 0, 0 ]
+[sub_resource type="Curve" id=4]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.491958 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=3]
-curve = SubResource( 2 )
+[sub_resource type="CurveTexture" id=5]
+curve = SubResource( 4 )
 
-[sub_resource type="ParticlesMaterial" id=4]
+[sub_resource type="ParticlesMaterial" id=6]
 spread = 180.0
 gravity = Vector3( 0, 0, 0 )
-initial_velocity = 0.5
+initial_velocity = 1.0
 angle = 720.0
 angle_random = 1.0
-scale_curve = SubResource( 3 )
-color_ramp = SubResource( 7 )
+scale_curve = SubResource( 5 )
+color_ramp = SubResource( 3 )
 
-[sub_resource type="QuadMesh" id=5]
+[sub_resource type="QuadMesh" id=7]
+size = Vector2( 8, 8 )
 
 [node name="Ship Explosion" type="Spatial"]
 script = ExtResource( 1 )
@@ -47,8 +48,8 @@ script = ExtResource( 1 )
 material_override = SubResource( 1 )
 lifetime = 2.0
 explosiveness = 1.0
-process_material = SubResource( 4 )
-draw_pass_1 = SubResource( 5 )
+process_material = SubResource( 6 )
+draw_pass_1 = SubResource( 7 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )

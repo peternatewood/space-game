@@ -32,7 +32,7 @@ curve = SubResource( 4 )
 [sub_resource type="ParticlesMaterial" id=6]
 spread = 180.0
 gravity = Vector3( 0, 0, 0 )
-initial_velocity = 0.5
+initial_velocity = 1.5
 angular_velocity = 4.58757e-41
 angle = 720.0
 angle_random = 1.0
@@ -40,7 +40,7 @@ scale_curve = SubResource( 5 )
 color_ramp = SubResource( 3 )
 
 [sub_resource type="QuadMesh" id=7]
-size = Vector2( 4, 4 )
+size = Vector2( 24, 24 )
 
 [node name="Ship Explosion" type="Spatial"]
 script = ExtResource( 1 )
