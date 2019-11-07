@@ -70,7 +70,7 @@ func post_import(scene):
 		var audio_stream = load(source_folder + "/sound.wav")
 		var audio_player = AudioStreamPlayer3D.new()
 		audio_player.set_stream(audio_stream)
-		audio_player.set_name("Audio Player")
+		audio_player.set_autoplay(true)
 		scene.add_child(audio_player)
 		audio_player.set_owner(scene)
 	else:
