@@ -64,6 +64,18 @@ func post_import(scene):
 	scene.set_meta("firing_range", (energy_data["speed"] / 10) * energy_data["life"] + 1)
 
 	scene.set_mass(energy_data["mass"])
+
+	var sound_file = File.new()
+	if sound_file.file_exists(source_folder + "/sound.wav"):
+		var audio_stream = load(source_folder + "/sound.wav")
+		var audio_player = AudioStreamPlayer3D.new()
+		audio_player.set_stream(audio_stream)
+		audio_player.set_name("Audio Player")
+		scene.add_child(audio_player)
+		audio_player.set_owner(scene)
+	else:
+		print("sound.wav file not found at " + source_folder)
+
 	scene.set_script(EnergyBolt)
 
 	return .post_import(scene)
