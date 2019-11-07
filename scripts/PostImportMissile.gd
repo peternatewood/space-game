@@ -54,6 +54,17 @@ func post_import(scene):
 	var firing_range: float = ((missile_data["max_speed"] - missile_data["acceleration"]) / 2) * seconds_to_max + missile_data["max_speed"] * (missile_data["life"] - seconds_to_max)
 	scene.set_meta("firing_range", firing_range)
 
+	var sound_file = File.new()
+	if sound_file.file_exists(source_folder + "/sound.wav"):
+		var audio_stream = load(source_folder + "/sound.wav")
+		var audio_player = AudioStreamPlayer3D.new()
+		audio_player.set_stream(audio_stream)
+		audio_player.set_autoplay(true)
+		scene.add_child(audio_player)
+		audio_player.set_owner(scene)
+	else:
+		print("sound.wav file not found at " + source_folder)
+
 	scene.set_mass(0.2)
 	scene.set_script(Missile)
 

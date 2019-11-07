@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/sound.wav-134843d0d09325b0f11643fbb5c5c5d6.sample"
+
+[deps]
+
+source_file="res://models/missile_weapons/heat_seeker/sound.wav"
+dest_files=[ "res://.import/sound.wav-134843d0d09325b0f11643fbb5c5c5d6.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=false
+edit/loop=true
+compress/mode=0
