@@ -17,6 +17,9 @@ func _ready():
 	add_child(debris)
 	destruction_delay = 2.0
 
+	if has_warp_ramp_up:
+		self.connect("warping_ramped_up", warp_ramp_up_player, "stop")
+
 
 func _start_destruction():
 	# Move camera to exterior position
@@ -257,9 +260,13 @@ func warp_out():
 	_toggle_ship_mesh(true)
 	camera.transform.origin = transform.origin + 4 * ((randi() % 2) - 0.5) * transform.basis.x + 2 * transform.basis.y + 2 * transform.basis.z
 
-	warp_speed = WARP_IN_DISTANCE / WARP_DURATION
-	warping_countdown = WARP_DURATION
-	warping = WARP_OUT
+	if has_warp_ramp_up:
+		warp_ramp_up_player.play()
+	else:
+		print("Missing warp ramp up sound")
+
+	warp(false)
+
 	emit_signal("began_warp_out")
 
 
