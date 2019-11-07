@@ -5,11 +5,15 @@ enum { NONE, WARP_IN, WARP_OUT }
 export (String) var faction
 export (bool) var is_warped_in = true
 
+onready var engine_loop_player = get_node_or_null("Engine Loop")
 onready var ship_class: String = get_meta("ship_class")
 onready var source_folder = get_meta("source_folder")
 
 var current_target
+var has_engine_loop: bool = false
 var has_target: bool = false
+var last_speed: float = 0.0
+var last_speed_sq: float = 0.0
 var max_speed: float
 var propulsion_force: float = 1.0
 var target_index: int = 0
@@ -32,6 +36,8 @@ func _ready():
 	if has_meta("max_speed"):
 		max_speed = get_meta("max_speed")
 
+	has_engine_loop = engine_loop_player != null
+
 	# Set turn speed based on mass
 	turn_speed = 2.5 * mass
 
@@ -51,6 +57,11 @@ func _get_throttle_to_match_target_speed():
 
 
 func _on_mission_ready():
+	if has_engine_loop:
+		connect("speed_changed", self, "_on_speed_changed")
+		_on_speed_changed(0.0)
+		engine_loop_player.play()
+
 	._on_mission_ready()
 
 	if not is_warped_in:
@@ -100,6 +111,12 @@ func _process(delta):
 					hide_and_disable()
 					emit_signal("warped_out")
 					queue_free()
+
+	var speed_squared = linear_velocity.length_squared()
+	if speed_squared - last_speed_sq > pow(last_speed + 1, 2) - last_speed_sq or last_speed_sq - speed_squared > last_speed_sq - pow(last_speed - 1, 2):
+		last_speed_sq = speed_squared
+		last_speed = sqrt(speed_squared)
+		emit_signal("speed_changed", last_speed)
 
 
 func _set_current_target(node):
@@ -175,6 +192,13 @@ func hide_and_disable():
 	hide()
 
 
+func _on_speed_changed(speed: float):
+	if has_engine_loop:
+		var speed_percent = 100 * speed / get_max_speed()
+
+		engine_loop_player.set_unit_db(MathHelper.percent_to_db(speed_percent))
+
+
 func show_and_enable():
 	set_process(true)
 	_disable_shapes(false)
@@ -221,6 +245,7 @@ static func get_weapon_capacity_level(capacity: float):
 	return "Very High"
 
 
+signal speed_changed
 signal warped_in
 signal warped_out
 signal warping_in

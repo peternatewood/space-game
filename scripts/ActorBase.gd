@@ -83,4 +83,5 @@ func get_hull_percent():
 signal damaged
 signal destroyed
 
+const MathHelper = preload("MathHelper.gd")
 const WeaponBase = preload("WeaponBase.gd")
