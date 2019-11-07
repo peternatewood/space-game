@@ -15,7 +15,6 @@ var input_velocity: Vector3
 func _ready():
 	var debris = DEBRIS_PARTICLES.instance()
 	add_child(debris)
-	destruction_delay = 2.0
 
 	if has_warp_ramp_up:
 		self.connect("warping_ramped_up", warp_ramp_up_player, "stop")

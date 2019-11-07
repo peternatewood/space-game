@@ -9,7 +9,6 @@ onready var max_hull_hitpoints: int = get_meta("hull_hitpoints")
 onready var mission_controller = get_tree().get_root().get_node("Mission Controller")
 onready var settings = get_node("/root/GlobalSettings")
 
-var destruction_countdown: float
 var destruction_delay: float = 0.0
 var has_collision_sound: bool = false
 var is_alive: bool = true
@@ -60,17 +59,15 @@ func _on_mission_ready():
 	set_process(true)
 
 
-func _process(delta):
-	if not is_alive:
-		destruction_countdown -= delta
-		if destruction_countdown <= 0:
-			set_process(false)
-			_destroy()
-
-
 func _start_destruction():
 	is_alive = false
-	destruction_countdown = destruction_delay
+	set_process(false)
+	var destruction_timer = Timer.new()
+	destruction_timer.set_one_shot(true)
+	destruction_timer.set_autostart(true)
+	destruction_timer.set_wait_time(destruction_delay)
+	destruction_timer.connect("timeout", self, "_destroy")
+	mission_controller.add_child(destruction_timer)
 	emit_signal("destroyed")
 
 

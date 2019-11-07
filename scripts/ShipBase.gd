@@ -40,6 +40,8 @@ func _ready():
 	if has_meta("max_speed"):
 		max_speed = get_meta("max_speed")
 
+	destruction_delay = 2.0
+
 	has_engine_loop = engine_loop_player != null
 	has_warp_boom = warp_boom_player != null
 	has_warp_ramp_up = warp_ramp_up_player != null
