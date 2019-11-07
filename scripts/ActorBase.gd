@@ -4,18 +4,22 @@ export (int) var hull_hitpoints = -1
 
 onready var bounding_box_extents = get_meta("bounding_box_extents")
 onready var cam_distance: float = get_meta("cam_distance")
+onready var collision_sound_player = get_node_or_null("Collision Sound Player")
 onready var max_hull_hitpoints: int = get_meta("hull_hitpoints")
 onready var mission_controller = get_tree().get_root().get_node("Mission Controller")
 onready var settings = get_node("/root/GlobalSettings")
 
 var destruction_countdown: float
 var destruction_delay: float = 0.0
+var has_collision_sound: bool = false
 var is_alive: bool = true
 
 
 func _ready():
 	self.connect("body_entered", self, "_on_body_entered")
 	mission_controller.connect("mission_ready", self, "_on_mission_ready")
+
+	has_collision_sound = collision_sound_player != null
 
 	set_process(false)
 
@@ -42,6 +46,11 @@ func _on_body_entered(body):
 		_deal_damage(body.damage_hull)
 		body.destroy()
 	else:
+		if has_collision_sound:
+			collision_sound_player.play()
+		else:
+			print("collision sound player missing")
+
 		_deal_damage(1)
 
 
