@@ -100,6 +100,28 @@ func post_import(scene):
 	scene.set_meta("source_file", get_source_file())
 	scene.set_meta("source_folder", source_folder)
 
+	if scene.has_node("Debris"):
+		var debris_container = scene.get_node("Debris")
+		for node in debris_container.get_children():
+			# Just like importing actors, replace the static bodies with their collision shapes
+			for child in node.get_children():
+				if child is StaticBody:
+					for static_child in child.get_children():
+						if static_child is CollisionShape:
+							var collision_shape = static_child.duplicate(Node.DUPLICATE_USE_INSTANCING)
+							collision_shape.transform = child.transform
+							node.add_child(collision_shape)
+							collision_shape.set_owner(scene)
+							# Also disable the shape since this is just for debris
+							collision_shape.set_disabled(true)
+							collision_shape.set_name("Collision Shape")
+
+					node.remove_child(child)
+				elif child is MeshInstance:
+					child.set_name("Mesh")
+
+			node.hide()
+
 	return .post_import(scene)
 
 
