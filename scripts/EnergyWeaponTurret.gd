@@ -38,18 +38,18 @@ func _process(delta):
 
 	if is_alive:
 		if is_target_in_range():
-			fire_weapon(get_parent())
+			fire_weapon()
 
 
 # PUBLIC
 
 
-func fire_weapon(ship):
+func fire_weapon():
 	if is_weapon_loaded and fire_countdown <= 0:
 		var bolt = weapon.instance()
 		bolt.add_collision_exception_with(self)
-		bolt.add_collision_exception_with(ship)
-		bolt.owner_ship = ship
+		bolt.add_collision_exception_with(capital_ship)
+		bolt.owner_ship = capital_ship
 
 		get_tree().get_root().add_child(bolt)
 
