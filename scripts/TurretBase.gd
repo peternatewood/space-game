@@ -13,6 +13,7 @@ var current_target
 var destruction_countdown: float
 var destruction_delay: float = 0.0
 var fire_countdown: float = 0
+var firing_range: float = 0
 var has_target: bool = false
 var is_alive: bool = true
 var is_weapon_loaded: bool = false
@@ -95,6 +96,10 @@ func set_weapon(weapon_scene):
 	if weapon_scene != null:
 		is_weapon_loaded = true
 		weapon = weapon_scene
+
+		var weapon_instance = weapon.instance()
+		firing_range = weapon_instance.firing_range
+		weapon_instance.free()
 
 
 signal damaged
