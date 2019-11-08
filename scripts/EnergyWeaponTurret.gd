@@ -1,6 +1,7 @@
 extends "res://scripts/TurretBase.gd"
 
 onready var barrels = get_node("Barrels")
+onready var turret_base = get_node("Turret Base")
 
 var hardpoint_index: int = 0
 var hardpoint_count: int
@@ -11,6 +12,16 @@ func _ready():
 	for node in barrels.get_children():
 		hardpoints.append(node)
 		hardpoint_count += 1
+
+
+func _point_at_target(delta):
+	var direct_looking_at = barrels.global_transform.looking_at(current_target.transform.origin, global_transform.basis.y)
+	barrels.global_transform = barrels.global_transform.interpolate_with(direct_looking_at, delta * TURN_SPEED)
+
+	# Now adjust the base to line up with the barrel's position
+	var projected = -barrels.global_transform.basis.z.project(global_transform.basis.y)
+	var on_plane = -barrels.global_transform.basis.z - projected
+	turret_base.look_at(global_transform.origin + on_plane, global_transform.basis.y)
 
 
 # PUBLIC
@@ -32,3 +43,6 @@ func fire_weapon(ship):
 		fire_countdown += bolt.fire_delay
 
 		hardpoint_index = (hardpoint_index + 1) % hardpoint_count
+
+
+const TURN_SPEED: float = 0.5

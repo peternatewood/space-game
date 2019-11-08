@@ -9,9 +9,11 @@ onready var max_hull_hitpoints: int = get_meta("hull_hitpoints")
 onready var mission_controller = get_tree().get_root().get_node("Mission Controller")
 onready var settings = get_node("/root/GlobalSettings")
 
+var current_target
 var destruction_countdown: float
 var destruction_delay: float = 0.0
 var fire_countdown: float = 0
+var has_target: bool = false
 var is_alive: bool = true
 var is_weapon_loaded: bool = false
 var weapon
@@ -46,13 +48,21 @@ func _on_body_entered(body):
 func _on_mission_ready():
 	if hull_hitpoints < 0:
 		hull_hitpoints = max_hull_hitpoints
+
 	set_process(true)
+
+
+func _point_at_target(delta):
+	pass
 
 
 func _process(delta):
 	if is_alive:
 		if fire_countdown > 0:
 			fire_countdown -= delta
+
+		if has_target:
+			_point_at_target(delta)
 	else:
 		destruction_countdown -= delta
 		if destruction_countdown <= 0:
