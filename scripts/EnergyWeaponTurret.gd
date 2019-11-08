@@ -17,11 +17,19 @@ func _ready():
 
 func _point_at_target(delta):
 	var direct_looking_at = barrels.global_transform.looking_at(current_target.transform.origin, global_transform.basis.y)
+
+	var projected = -barrels.global_transform.basis.z.project(global_transform.basis.y)
+	var on_plane = -barrels.global_transform.basis.z - projected
+	# Clamp the barrels' angle if below the minimum angle
+	if -direct_looking_at.basis.z.dot(global_transform.basis.y) < 0:
+		var to_target = current_target.transform.origin - barrels.global_transform.origin
+		var direct_projected = to_target.project(global_transform.basis.y)
+		var direct_on_plane = to_target - direct_projected
+		direct_looking_at = barrels.global_transform.looking_at(barrels.global_transform.origin + direct_on_plane, global_transform.basis.y)
+
 	barrels.global_transform = barrels.global_transform.interpolate_with(direct_looking_at, delta * TURN_SPEED)
 
 	# Now adjust the base to line up with the barrel's position
-	var projected = -barrels.global_transform.basis.z.project(global_transform.basis.y)
-	var on_plane = -barrels.global_transform.basis.z - projected
 	turret_base.look_at(global_transform.origin + on_plane, global_transform.basis.y)
 
 
