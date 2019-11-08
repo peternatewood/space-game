@@ -38,22 +38,22 @@ size_flags_vertical = 3
 
 [node name="First Row" type="HBoxContainer" parent="Options Rows"]
 margin_right = 1008.0
-margin_bottom = 20.0
+margin_bottom = 26.0
 
 [node name="Title Label" type="Label" parent="Options Rows/First Row"]
-margin_top = 3.0
-margin_right = 51.0
-margin_bottom = 17.0
+margin_top = 4.0
+margin_right = 56.0
+margin_bottom = 22.0
 text = "Options"
 
 [node name="Back Button" type="Button" parent="Options Rows/First Row"]
-margin_left = 55.0
-margin_right = 97.0
-margin_bottom = 20.0
+margin_left = 60.0
+margin_right = 108.0
+margin_bottom = 26.0
 text = "Back"
 
 [node name="TabContainer" type="TabContainer" parent="Options Rows"]
-margin_top = 24.0
+margin_top = 30.0
 margin_right = 1008.0
 margin_bottom = 584.0
 size_flags_horizontal = 3
@@ -61,6 +61,7 @@ size_flags_vertical = 3
 tab_align = 0
 
 [node name="Video" type="VBoxContainer" parent="Options Rows/TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 8.0
@@ -70,100 +71,100 @@ margin_bottom = -8.0
 
 [node name="Resolution" type="Label" parent="Options Rows/TabContainer/Video"]
 margin_right = 992.0
-margin_bottom = 14.0
+margin_bottom = 18.0
 text = "Resolution"
 
 [node name="Resolution Options" type="OptionButton" parent="Options Rows/TabContainer/Video"]
-margin_top = 18.0
+margin_top = 22.0
 margin_right = 992.0
-margin_bottom = 38.0
+margin_bottom = 48.0
 text = "Custom"
 items = [ "Custom", null, false, -1, null ]
 selected = 0
 
 [node name="Custom Res Container" type="HBoxContainer" parent="Options Rows/TabContainer/Video"]
-margin_top = 42.0
+margin_top = 52.0
 margin_right = 992.0
-margin_bottom = 66.0
+margin_bottom = 80.0
 
 [node name="Custom Res Label" type="Label" parent="Options Rows/TabContainer/Video/Custom Res Container"]
 margin_top = 5.0
-margin_right = 49.0
-margin_bottom = 19.0
+margin_right = 48.0
+margin_bottom = 23.0
 text = "Custom"
 
 [node name="VSeparator" type="VSeparator" parent="Options Rows/TabContainer/Video/Custom Res Container"]
-margin_left = 53.0
-margin_right = 57.0
-margin_bottom = 24.0
+margin_left = 52.0
+margin_right = 56.0
+margin_bottom = 28.0
 
 [node name="Res X Label" type="Label" parent="Options Rows/TabContainer/Video/Custom Res Container"]
-margin_left = 61.0
+margin_left = 60.0
 margin_top = 5.0
-margin_right = 73.0
-margin_bottom = 19.0
+margin_right = 76.0
+margin_bottom = 23.0
 text = "X:"
 
 [node name="Res X SpinBox" type="SpinBox" parent="Options Rows/TabContainer/Video/Custom Res Container"]
-margin_left = 77.0
-margin_right = 151.0
-margin_bottom = 24.0
+margin_left = 80.0
+margin_right = 202.0
+margin_bottom = 28.0
 
 [node name="Res Y Label" type="Label" parent="Options Rows/TabContainer/Video/Custom Res Container"]
-margin_left = 155.0
+margin_left = 206.0
 margin_top = 5.0
-margin_right = 166.0
-margin_bottom = 19.0
+margin_right = 222.0
+margin_bottom = 23.0
 text = "Y:"
 
 [node name="Res Y SpinBox" type="SpinBox" parent="Options Rows/TabContainer/Video/Custom Res Container"]
-margin_left = 170.0
-margin_right = 244.0
-margin_bottom = 24.0
+margin_left = 226.0
+margin_right = 348.0
+margin_bottom = 28.0
 
 [node name="Res Button" type="Button" parent="Options Rows/TabContainer/Video/Custom Res Container"]
-margin_left = 248.0
-margin_right = 306.0
-margin_bottom = 24.0
+margin_left = 352.0
+margin_right = 416.0
+margin_bottom = 28.0
 text = "Update"
 
 [node name="HSeparator" type="HSeparator" parent="Options Rows/TabContainer/Video"]
-margin_top = 70.0
+margin_top = 84.0
 margin_right = 992.0
-margin_bottom = 74.0
+margin_bottom = 88.0
 
 [node name="Window Options Container" type="HBoxContainer" parent="Options Rows/TabContainer/Video"]
-margin_top = 78.0
+margin_top = 92.0
 margin_right = 992.0
-margin_bottom = 102.0
+margin_bottom = 118.0
 
 [node name="Fullscreen CheckBox" type="CheckBox" parent="Options Rows/TabContainer/Video/Window Options Container"]
-margin_right = 94.0
-margin_bottom = 24.0
+margin_right = 116.0
+margin_bottom = 26.0
 text = "Fullscreen"
 
 [node name="Borderless CheckBox" type="CheckBox" parent="Options Rows/TabContainer/Video/Window Options Container"]
-margin_left = 98.0
-margin_right = 250.0
-margin_bottom = 24.0
+margin_left = 120.0
+margin_right = 292.0
+margin_bottom = 26.0
 text = "Borderless Window"
 
 [node name="Two Columns" type="GridContainer" parent="Options Rows/TabContainer/Video"]
-margin_top = 106.0
+margin_top = 122.0
 margin_right = 992.0
-margin_bottom = 126.0
+margin_bottom = 148.0
 columns = 2
 
 [node name="AA Label" type="Label" parent="Options Rows/TabContainer/Video/Two Columns"]
-margin_top = 3.0
-margin_right = 214.0
-margin_bottom = 17.0
+margin_top = 4.0
+margin_right = 256.0
+margin_bottom = 22.0
 text = "Multisample Anti-Aliasing (MSAA)"
 
 [node name="AA Options" type="OptionButton" parent="Options Rows/TabContainer/Video/Two Columns"]
-margin_left = 218.0
-margin_right = 315.0
-margin_bottom = 20.0
+margin_left = 260.0
+margin_right = 354.0
+margin_bottom = 26.0
 text = "Disabled"
 items = [ "Disabled", null, false, 0, null, "2x", null, false, -1, null, "4x", null, false, -1, null, "8x", null, false, -1, null, "16x", null, false, -1, null ]
 selected = 0
@@ -199,29 +200,29 @@ margin_right = 214.0
 margin_bottom = 44.0
 
 [node name="Three Columns" type="GridContainer" parent="Options Rows/TabContainer/Video"]
-margin_top = 130.0
+margin_top = 152.0
 margin_right = 992.0
-margin_bottom = 150.0
+margin_bottom = 178.0
 columns = 3
 
 [node name="Shadows Label" type="Label" parent="Options Rows/TabContainer/Video/Three Columns"]
-margin_top = 3.0
-margin_right = 98.0
-margin_bottom = 17.0
+margin_top = 4.0
+margin_right = 112.0
+margin_bottom = 22.0
 text = "Shadow Quality"
 
 [node name="Shadow Quality Options" type="OptionButton" parent="Options Rows/TabContainer/Video/Three Columns"]
-margin_left = 102.0
-margin_right = 192.0
-margin_bottom = 20.0
+margin_left = 116.0
+margin_right = 194.0
+margin_bottom = 26.0
 text = "Custom"
 items = [ "Custom", null, false, 0, null, "Low", null, false, 1, null, "Medium", null, false, 2, null, "High", null, false, 3, null, "Maximum", null, false, 4, null ]
 selected = 0
 
 [node name="Shadows Atlas Button" type="Button" parent="Options Rows/TabContainer/Video/Three Columns"]
-margin_left = 196.0
-margin_right = 383.0
-margin_bottom = 20.0
+margin_left = 198.0
+margin_right = 414.0
+margin_bottom = 26.0
 text = "Customize Shadow Settings"
 
 [node name="Reflections Label" type="Label" parent="Options Rows/TabContainer/Video/Three Columns"]
@@ -245,108 +246,126 @@ margin_bottom = 44.0
 text = "Customize Reflection Settings"
 
 [node name="HDR CheckBox" type="CheckBox" parent="Options Rows/TabContainer/Video"]
-margin_top = 154.0
+margin_top = 182.0
 margin_right = 992.0
-margin_bottom = 178.0
+margin_bottom = 208.0
 text = "Enable HDR"
 
 [node name="Vsync CheckBox" type="CheckBox" parent="Options Rows/TabContainer/Video"]
-margin_top = 182.0
+margin_top = 212.0
 margin_right = 992.0
-margin_bottom = 206.0
+margin_bottom = 238.0
 text = "Enable Vsync"
 
 [node name="FOV Container" type="HBoxContainer" parent="Options Rows/TabContainer/Video"]
-margin_top = 210.0
+margin_top = 242.0
 margin_right = 992.0
-margin_bottom = 234.0
+margin_bottom = 270.0
 
 [node name="FOV Label" type="Label" parent="Options Rows/TabContainer/Video/FOV Container"]
 margin_top = 5.0
-margin_right = 26.0
-margin_bottom = 19.0
+margin_right = 24.0
+margin_bottom = 23.0
 text = "FOV"
 
 [node name="FOV Slider" parent="Options Rows/TabContainer/Video/FOV Container" instance=ExtResource( 3 )]
-margin_left = 30.0
+margin_left = 28.0
 margin_top = 0.0
 margin_right = 992.0
-margin_bottom = 24.0
+margin_bottom = 28.0
 size_flags_horizontal = 3
 default = 65.0
 max_value = 120.0
 min_value = 45.0
 
 [node name="Audio" type="GridContainer" parent="Options Rows/TabContainer"]
-editor/display_folded = true
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 32.0
-margin_right = -4.0
-margin_bottom = -4.0
+margin_left = 8.0
+margin_top = 36.0
+margin_right = -8.0
+margin_bottom = -8.0
 size_flags_horizontal = 3
 columns = 3
 
 [node name="Master Label" type="Label" parent="Options Rows/TabContainer/Audio"]
 margin_top = 5.0
-margin_right = 85.0
-margin_bottom = 19.0
+margin_right = 104.0
+margin_bottom = 23.0
 text = "Master"
 
 [node name="Master Audio Slider" parent="Options Rows/TabContainer/Audio" instance=ExtResource( 3 )]
-margin_left = 89.0
+margin_left = 108.0
 margin_top = 0.0
-margin_right = 919.0
-margin_bottom = 24.0
+margin_right = 920.0
+margin_bottom = 28.0
 size_flags_horizontal = 3
 default = 100.0
 
 [node name="Master Mute" type="CheckBox" parent="Options Rows/TabContainer/Audio"]
-margin_left = 923.0
+margin_left = 924.0
 margin_right = 992.0
-margin_bottom = 24.0
+margin_bottom = 28.0
 text = "Mute"
 
 [node name="Sound Effects Label" type="Label" parent="Options Rows/TabContainer/Audio"]
-margin_top = 33.0
-margin_right = 85.0
-margin_bottom = 47.0
+margin_top = 37.0
+margin_right = 104.0
+margin_bottom = 55.0
 text = "Sound Effects"
 
 [node name="Sound Effects Audio Slider" parent="Options Rows/TabContainer/Audio" instance=ExtResource( 3 )]
-margin_left = 89.0
-margin_top = 28.0
-margin_right = 919.0
-margin_bottom = 52.0
+margin_left = 108.0
+margin_top = 32.0
+margin_right = 920.0
+margin_bottom = 60.0
 default = 100.0
 
 [node name="Sound Effects Mute" type="CheckBox" parent="Options Rows/TabContainer/Audio"]
-margin_left = 923.0
-margin_top = 28.0
+margin_left = 924.0
+margin_top = 32.0
 margin_right = 992.0
-margin_bottom = 52.0
+margin_bottom = 60.0
 text = "Mute"
 
 [node name="Music Label" type="Label" parent="Options Rows/TabContainer/Audio"]
-margin_top = 61.0
-margin_right = 85.0
-margin_bottom = 75.0
+margin_top = 69.0
+margin_right = 104.0
+margin_bottom = 87.0
 text = "Music"
 
 [node name="Music Audio Slider" parent="Options Rows/TabContainer/Audio" instance=ExtResource( 3 )]
-margin_left = 89.0
-margin_top = 56.0
-margin_right = 919.0
-margin_bottom = 80.0
+margin_left = 108.0
+margin_top = 64.0
+margin_right = 920.0
+margin_bottom = 92.0
 default = 100.0
 
 [node name="Music Mute" type="CheckBox" parent="Options Rows/TabContainer/Audio"]
-margin_left = 923.0
-margin_top = 56.0
+margin_left = 924.0
+margin_top = 64.0
 margin_right = 992.0
-margin_bottom = 80.0
+margin_bottom = 92.0
+text = "Mute"
+
+[node name="UI Sounds Label" type="Label" parent="Options Rows/TabContainer/Audio"]
+margin_top = 101.0
+margin_right = 104.0
+margin_bottom = 119.0
+text = "UI Sounds"
+
+[node name="UI Sounds Audio Slider" parent="Options Rows/TabContainer/Audio" instance=ExtResource( 3 )]
+margin_left = 108.0
+margin_top = 96.0
+margin_right = 920.0
+margin_bottom = 124.0
+default = 100.0
+
+[node name="UI Sounds Mute" type="CheckBox" parent="Options Rows/TabContainer/Audio"]
+margin_left = 924.0
+margin_top = 96.0
+margin_right = 992.0
+margin_bottom = 124.0
 text = "Mute"
 
 [node name="Controls" type="VBoxContainer" parent="Options Rows/TabContainer"]
@@ -354,10 +373,10 @@ editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 32.0
-margin_right = -4.0
-margin_bottom = -4.0
+margin_left = 8.0
+margin_top = 36.0
+margin_right = -8.0
+margin_bottom = -8.0
 
 [node name="Controls Tabs" type="TabContainer" parent="Options Rows/TabContainer/Controls"]
 margin_right = 992.0
@@ -679,10 +698,10 @@ action = "deselect_target"
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 32.0
-margin_right = -4.0
-margin_bottom = -4.0
+margin_left = 8.0
+margin_top = 36.0
+margin_right = -8.0
+margin_bottom = -8.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -816,10 +835,10 @@ editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 32.0
-margin_right = -4.0
-margin_bottom = -4.0
+margin_left = 8.0
+margin_top = 36.0
+margin_right = -8.0
+margin_bottom = -8.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -1143,10 +1162,10 @@ editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 32.0
-margin_right = -4.0
-margin_bottom = -4.0
+margin_left = 8.0
+margin_top = 36.0
+margin_right = -8.0
+margin_bottom = -8.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -1299,10 +1318,10 @@ editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 32.0
-margin_right = -4.0
-margin_bottom = -4.0
+margin_left = 8.0
+margin_top = 36.0
+margin_right = -8.0
+margin_bottom = -8.0
 
 [node name="Units Container" type="HBoxContainer" parent="Options Rows/TabContainer/Game"]
 margin_right = 992.0
@@ -1327,10 +1346,10 @@ editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 32.0
-margin_right = -4.0
-margin_bottom = -4.0
+margin_left = 8.0
+margin_top = 36.0
+margin_right = -8.0
+margin_bottom = -8.0
 
 [node name="Dyslexia Checkbox" type="CheckBox" parent="Options Rows/TabContainer/Accessibility"]
 margin_right = 992.0
@@ -1359,10 +1378,10 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 
 [node name="Shadows Atlas Rows" type="VBoxContainer" parent="Shadows Atlas Settings"]
-margin_left = 4.0
-margin_top = 4.0
-margin_right = 240.0
-margin_bottom = 98.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 236.0
+margin_bottom = 94.0
 
 [node name="Shadows Popup Label" type="Label" parent="Shadows Atlas Settings/Shadows Atlas Rows"]
 margin_right = 236.0
@@ -1436,10 +1455,10 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 
 [node name="Reflections Rows" type="VBoxContainer" parent="Reflections Popup"]
-margin_left = 4.0
-margin_top = 4.0
-margin_right = 134.0
-margin_bottom = 70.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 176.0
+margin_bottom = 88.0
 
 [node name="Reflections Popup Label" type="Label" parent="Reflections Popup/Reflections Rows"]
 margin_right = 130.0
@@ -1483,10 +1502,10 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 
 [node name="Popup Rows" type="VBoxContainer" parent="Keybind Popup"]
-margin_left = 4.0
-margin_top = 4.0
-margin_right = 118.0
-margin_bottom = 60.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 140.0
+margin_bottom = 78.0
 
 [node name="Popup Label" type="Label" parent="Keybind Popup/Popup Rows"]
 margin_right = 114.0
