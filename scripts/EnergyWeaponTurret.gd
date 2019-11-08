@@ -1,6 +1,7 @@
 extends "res://scripts/TurretBase.gd"
 
 onready var barrels = get_node("Barrels")
+onready var target_raycast = get_node("Barrels/Target Raycast")
 onready var turret_base = get_node("Turret Base")
 
 var hardpoint_index: int = 0
@@ -24,6 +25,14 @@ func _point_at_target(delta):
 	turret_base.look_at(global_transform.origin + on_plane, global_transform.basis.y)
 
 
+func _process(delta):
+	._process(delta)
+
+	if is_alive:
+		if is_target_in_range():
+			fire_weapon(get_parent())
+
+
 # PUBLIC
 
 
@@ -43,6 +52,15 @@ func fire_weapon(ship):
 		fire_countdown += bolt.fire_delay
 
 		hardpoint_index = (hardpoint_index + 1) % hardpoint_count
+
+
+func is_target_in_range():
+	if not has_target:
+		return false
+
+	var raycast_collider = target_raycast.get_collider()
+
+	return raycast_collider == current_target and .is_target_in_range()
 
 
 const TURN_SPEED: float = 0.5
