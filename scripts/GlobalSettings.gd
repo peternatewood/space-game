@@ -10,6 +10,8 @@ var settings: Dictionary = {
 	"audio_music_mute": Setting.new("audio_music_mute", false),
 	"audio_sound_effects_percent": Setting.new("audio_sound_effects_percent", 100),
 	"audio_sound_effects_mute": Setting.new("audio_sound_effects_mute", false),
+	"audio_ui_sounds_percent": Setting.new("audio_ui_sounds_percent", 100),
+	"audio_ui_sounds_mute": Setting.new("audio_ui_sounds_mute", false),
 	"borderless": Setting.new("borderless", false),
 	"dyslexia": Setting.new("dyslexia", false),
 	"fov": Setting.new("fov", 70),
@@ -155,6 +157,14 @@ func get_audio_sound_effects_mute():
 	return settings.audio_sound_effects_mute.get_value()
 
 
+func get_audio_ui_sounds_percent():
+	return settings.audio_ui_sounds_percent.get_value()
+
+
+func get_audio_ui_sounds_mute():
+	return settings.audio_ui_sounds_mute.get_value()
+
+
 func get_borderless_window():
 	return settings.borderless_window.get_value()
 
@@ -237,6 +247,20 @@ func set_audio_sound_effects_percent(percent: float):
 func set_audio_sound_effects_mute(toggle_on: bool):
 	settings.audio_sound_effects_mute.set_value(toggle_on)
 	AudioServer.set_bus_mute(2, toggle_on)
+
+	_save_settings_to_file()
+
+
+func set_audio_ui_sounds_percent(percent: float):
+	settings.audio_ui_sounds_percent.set_value(percent)
+	AudioServer.set_bus_volume_db(3, MathHelper.percent_to_db(percent))
+
+	_save_settings_to_file()
+
+
+func set_audio_ui_sounds_mute(toggle_on: bool):
+	settings.audio_ui_sounds_mute.set_value(toggle_on)
+	AudioServer.set_bus_mute(3, toggle_on)
 
 	_save_settings_to_file()
 
