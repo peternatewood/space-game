@@ -92,6 +92,10 @@ func get_hull_percent():
 	return 100 * float(hull_hitpoints) / float(max_hull_hitpoints)
 
 
+func is_target_in_range():
+	return has_target and (current_target.transform.origin - global_transform.origin).length_squared() <= firing_range * firing_range
+
+
 func set_weapon(weapon_scene):
 	if weapon_scene != null:
 		is_weapon_loaded = true
