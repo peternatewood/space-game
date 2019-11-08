@@ -37,7 +37,7 @@ func fire_weapon(ship):
 		get_tree().get_root().add_child(bolt)
 
 		bolt.transform.origin = hardpoints[hardpoint_index].global_transform.origin
-		bolt.look_at(bolt.global_transform.origin + barrels.global_transform.basis.y, Vector3.UP)
+		bolt.look_at(bolt.global_transform.origin - barrels.global_transform.basis.z, Vector3.UP)
 		bolt.add_speed(0.0)
 
 		fire_countdown += bolt.fire_delay
