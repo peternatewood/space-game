@@ -83,7 +83,7 @@ faction = "hawk"
 wing_name = "Buteo"
 
 [node name="Spider Destroyer" parent="Targets Container" instance=ExtResource( 8 )]
-transform = Transform( 0.697362, -0.264239, 0.666231, 0.473604, 0.867587, -0.151634, -0.537945, 0.421273, 0.730167, 1.19739, 2.53615, -39.9753 )
+transform = Transform( 0.488285, -0.115362, 0.865025, 0.473604, 0.867587, -0.151634, -0.732991, 0.48372, 0.478266, 17.7772, 2.62768, -38.5596 )
 script = ExtResource( 9 )
 faction = "spider"
 
