@@ -1,6 +1,6 @@
 extends Node
 
-enum { MASTER, MUSIC, SOUND_EFFECTS, UI_SOUNDS }
+enum { MASTER, MUSIC, SOUND_EFFECTS, UI_SOUNDS, AUDIO_BUS_COUNT }
 
 var keybinds: Dictionary = {}
 # Default settings
@@ -84,6 +84,29 @@ func _load_settings_from_file():
 	_save_settings_to_file()
 
 	# Actually update settings from file settings
+	for bus_index in range(AUDIO_BUS_COUNT):
+		var percent: float
+		var toggle_on: bool
+
+		match bus_index:
+			MASTER:
+				percent = settings.audio_master_percent.get_value()
+				toggle_on = settings.audio_master_mute.get_value()
+			MUSIC:
+				percent = settings.audio_music_percent.get_value()
+				toggle_on = settings.audio_music_mute.get_value()
+			SOUND_EFFECTS:
+				percent = settings.audio_sound_effects_percent.get_value()
+				toggle_on = settings.audio_sound_effects_mute.get_value()
+			UI_SOUNDS:
+				percent = settings.audio_ui_sounds_percent.get_value()
+				toggle_on = settings.audio_ui_sounds_mute.get_value()
+			_:
+				continue
+
+		AudioServer.set_bus_volume_db(bus_index, MathHelper.percent_to_db(percent))
+		AudioServer.set_bus_mute(bus_index, toggle_on)
+
 	_update_fullscreen()
 	_update_resolution()
 
