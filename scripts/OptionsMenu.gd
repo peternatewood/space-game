@@ -300,7 +300,7 @@ func _on_keybind_popup_cancel_pressed():
 
 
 func _on_mute_toggled(button_pressed: bool, bus_index: int):
-	settings.set_mute(bus_index, button_pressed)
+	settings.set_audio_mute(bus_index, button_pressed)
 
 
 func _on_reflections_accept_pressed():
