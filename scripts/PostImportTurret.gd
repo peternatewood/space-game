@@ -36,6 +36,16 @@ func post_import(scene):
 	match turret_type:
 		"energy_weapon":
 			scene.set_script(EnergyWeaponTurret)
+			var barrels = scene.get_node("Barrels")
+			# Add raycast to barrels for targeting
+			var raycast_start: Vector3 = barrels.transform.origin
+			var target_raycast = RayCast.new()
+			barrels.add_child(target_raycast)
+			target_raycast.set_owner(scene)
+			target_raycast.transform.origin = raycast_start
+			target_raycast.set_name("Target Raycast")
+			target_raycast.set_cast_to(raycast_start + 200 * Vector3.FORWARD)
+			target_raycast.set_enabled(true)
 
 	var max_mesh_size: Vector3
 
