@@ -3,6 +3,14 @@ extends EditorScenePostImport
 
 
 func post_import(scene):
+	# Collision sound effects
+	var collision_sound = AudioStreamPlayer3D.new()
+	collision_sound.set_stream(COLLISION_SOUND)
+	collision_sound.set_name("Collision Sound Player")
+	collision_sound.set_bus("Sound Effects")
+	scene.add_child(collision_sound)
+	collision_sound.set_owner(scene)
+
 	# This is used for loading the data file and other resources
 	var source_folder = get_source_folder()
 	var data_file = File.new()
@@ -92,3 +100,5 @@ func post_import(scene):
 
 
 const EnergyWeaponTurret = preload("EnergyWeaponTurret.gd")
+
+const COLLISION_SOUND = preload("res://sounds/collision.wav")

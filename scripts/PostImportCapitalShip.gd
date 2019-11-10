@@ -21,9 +21,17 @@ func post_import(scene):
 	engine_sound.transform.origin = exhaust_points.transform.origin
 
 	# Other sound effects
+	var collision_sound = AudioStreamPlayer3D.new()
+	collision_sound.set_stream(COLLISION_SOUND)
+	collision_sound.set_bus("Sound Effects")
+	collision_sound.set_name("Collision Sound Player")
+	scene.add_child(collision_sound)
+	collision_sound.set_owner(scene)
+
 	var warp_boom = AudioStreamPlayer3D.new()
 	warp_boom.set_unit_size(10)
 	warp_boom.set_stream(WARP_BOOM)
+	warp_boom.set_bus("Sound Effects")
 	warp_boom.set_name("Warp Boom Player")
 	scene.add_child(warp_boom)
 	warp_boom.set_owner(scene)
@@ -128,6 +136,7 @@ func post_import(scene):
 const MathHelper = preload("MathHelper.gd")
 
 const BLUE_EXHAUST_MATERIAL = preload("res://materials/blue_exhaust.tres")
+const COLLISION_SOUND = preload("res://sounds/collision.wav")
 const ENERGY_WEAPON_TURRET = preload("res://models/turrets/energy_weapon_turret/model.dae")
 const ENGINE_LOOP = preload("res://sounds/engine_loop.wav")
 const EXHAUST_LIGHT_MATERIAL = preload("res://materials/exhaust_light.tres")

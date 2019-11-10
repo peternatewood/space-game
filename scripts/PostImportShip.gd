@@ -54,15 +54,24 @@ func post_import(scene):
 	# Add engine effect sound at exhaust points center
 	var engine_sound = AudioStreamPlayer3D.new()
 	engine_sound.set_stream(ENGINE_LOOP)
+	engine_sound.set_bus("Sound Effects")
 	engine_sound.set_name("Engine Loop")
 	scene.add_child(engine_sound)
 	engine_sound.set_owner(scene)
 	engine_sound.transform.origin = exhaust_points.transform.origin
 
 	# Other sound effects
+	var collision_sound = AudioStreamPlayer3D.new()
+	collision_sound.set_stream(COLLISION_SOUND)
+	collision_sound.set_bus("Sound Effects")
+	collision_sound.set_name("Collision Sound Player")
+	scene.add_child(collision_sound)
+	collision_sound.set_owner(scene)
+
 	var warp_boom = AudioStreamPlayer3D.new()
 	warp_boom.set_unit_size(10)
 	warp_boom.set_stream(WARP_BOOM)
+	warp_boom.set_bus("Sound Effects")
 	warp_boom.set_name("Warp Boom Player")
 	scene.add_child(warp_boom)
 	warp_boom.set_owner(scene)
@@ -70,6 +79,7 @@ func post_import(scene):
 	var warp_ramp_up = AudioStreamPlayer3D.new()
 	warp_ramp_up.set_unit_size(10)
 	warp_ramp_up.set_stream(WARP_RAMP_UP)
+	warp_ramp_up.set_bus("Sound Effects")
 	warp_ramp_up.set_name("Warp Ramp Up Player")
 	scene.add_child(warp_ramp_up)
 	warp_ramp_up.set_owner(scene)
@@ -155,6 +165,7 @@ const WeaponHardpoints = preload("WeaponHardpoints.gd")
 
 const BLUE_EXHAUST_MATERIAL = preload("res://materials/blue_exhaust.tres")
 const BLUE_SHIELD_MATERIAL = preload("res://materials/blue_shield.tres")
+const COLLISION_SOUND = preload("res://sounds/collision.wav")
 const ENGINE_LOOP = preload("res://sounds/engine_loop.wav")
 const EXHAUST_LIGHT_MATERIAL = preload("res://materials/exhaust_light.tres")
 const WARP_BOOM = preload("res://sounds/warp_boom.wav")

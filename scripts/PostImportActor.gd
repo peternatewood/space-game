@@ -67,17 +67,7 @@ func post_import(scene):
 
 		scene.set_meta("hull_hitpoints", actor_data["hull_hitpoints"])
 
-	# Collision sound
-	var collision_sound = AudioStreamPlayer3D.new()
-	collision_sound.set_stream(COLLISION_SOUND)
-	collision_sound.set_name("Collision Sound Player")
-	scene.add_child(collision_sound)
-	collision_sound.set_owner(scene)
-
 	scene.set_contact_monitor(true)
 	scene.set_max_contacts_reported(4)
 
 	return scene
-
-
-const COLLISION_SOUND = preload("res://sounds/collision.wav")
