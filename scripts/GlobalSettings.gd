@@ -1,6 +1,6 @@
 extends Node
 
-enum { MASTER, MUSIC, SOUND_EFFECTS, UI_SOUNDS, AUDIO_BUS_COUNT }
+enum { MASTER, SOUND_EFFECTS, MUSIC, UI_SOUNDS, AUDIO_BUS_COUNT }
 
 var keybinds: Dictionary = {}
 # Default settings
