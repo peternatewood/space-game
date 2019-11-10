@@ -24,10 +24,11 @@ func _ready():
 
 
 func _deal_damage(amount: int):
-	hull_hitpoints -= amount
-	emit_signal("damaged")
-	if hull_hitpoints <= 0:
-		_start_destruction()
+	if hull_hitpoints > 0:
+		hull_hitpoints -= amount
+		emit_signal("damaged")
+		if hull_hitpoints <= 0:
+			_start_destruction()
 
 
 func _destroy():
