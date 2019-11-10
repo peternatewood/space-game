@@ -75,7 +75,7 @@ content_margin_left = 4.0
 content_margin_right = 4.0
 content_margin_top = 4.0
 content_margin_bottom = 4.0
-bg_color = Color( 0.25098, 0.25098, 0.25098, 0.501961 )
+bg_color = Color( 0, 0, 0, 0.501961 )
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -286,18 +286,21 @@ anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-margin_left = -46.0
+margin_left = -14.0
 margin_top = -10.0
 margin_right = -32.0
 margin_bottom = 10.0
 grow_horizontal = 0
+size_flags_vertical = 4
 custom_styles/panel = SubResource( 5 )
 
 [node name="Objective Rows" type="VBoxContainer" parent="Objectives Container"]
 margin_left = 1.0
-margin_top = 1.0
-margin_right = 13.0
-margin_bottom = 19.0
+margin_top = 10.0
+margin_right = 1.0
+margin_bottom = 10.0
+size_flags_vertical = 4
+alignment = 1
 
 [node name="Player Overhead" parent="." instance=ExtResource( 6 )]
 modulate = Color( 0.501961, 0.752941, 1, 1 )
@@ -458,14 +461,15 @@ texture_progress = ExtResource( 15 )
 fill_mode = 3
 
 [node name="Weapons Container" type="PanelContainer" parent="."]
-editor/display_folded = true
 modulate = Color( 0.501961, 0.752941, 1, 1 )
 anchor_top = 0.5
 anchor_bottom = 0.5
 margin_left = 32.0
-margin_top = -31.0
-margin_right = 150.0
-margin_bottom = 25.0
+margin_top = -39.0
+margin_right = 134.0
+margin_bottom = 39.0
+size_flags_horizontal = 0
+size_flags_vertical = 4
 custom_styles/panel = SubResource( 6 )
 
 [node name="Weapons Rows" type="VBoxContainer" parent="Weapons Container"]
@@ -473,10 +477,14 @@ margin_left = 4.0
 margin_top = 4.0
 margin_right = 130.0
 margin_bottom = 74.0
+size_flags_vertical = 4
+alignment = 1
 
 [node name="Energy Weapons" type="VBoxContainer" parent="Weapons Container/Weapons Rows"]
 margin_right = 126.0
 margin_bottom = 18.0
+size_flags_vertical = 4
+alignment = 1
 
 [node name="Energy Weapon Container 1" parent="Weapons Container/Weapons Rows/Energy Weapons" instance=ExtResource( 16 )]
 margin_right = 126.0
@@ -496,6 +504,8 @@ custom_styles/separator = SubResource( 7 )
 margin_top = 30.0
 margin_right = 126.0
 margin_bottom = 70.0
+size_flags_vertical = 4
+alignment = 1
 
 [node name="Missile Weapon Container 1" parent="Weapons Container/Weapons Rows/Missile Weapons" instance=ExtResource( 17 )]
 margin_right = 126.0
