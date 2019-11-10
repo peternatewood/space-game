@@ -1,5 +1,7 @@
 extends Node
 
+enum { MASTER, SOUND_EFFECTS, MUSIC, UI_SOUNDS, AUDIO_BUS_COUNT }
+
 var keybinds: Dictionary = {}
 # Default settings
 var settings: Dictionary = {
@@ -10,6 +12,8 @@ var settings: Dictionary = {
 	"audio_music_mute": Setting.new("audio_music_mute", false),
 	"audio_sound_effects_percent": Setting.new("audio_sound_effects_percent", 100),
 	"audio_sound_effects_mute": Setting.new("audio_sound_effects_mute", false),
+	"audio_ui_sounds_percent": Setting.new("audio_ui_sounds_percent", 100),
+	"audio_ui_sounds_mute": Setting.new("audio_ui_sounds_mute", false),
 	"borderless": Setting.new("borderless", false),
 	"dyslexia": Setting.new("dyslexia", false),
 	"fov": Setting.new("fov", 70),
@@ -80,6 +84,29 @@ func _load_settings_from_file():
 	_save_settings_to_file()
 
 	# Actually update settings from file settings
+	for bus_index in range(AUDIO_BUS_COUNT):
+		var percent: float
+		var toggle_on: bool
+
+		match bus_index:
+			MASTER:
+				percent = settings.audio_master_percent.get_value()
+				toggle_on = settings.audio_master_mute.get_value()
+			MUSIC:
+				percent = settings.audio_music_percent.get_value()
+				toggle_on = settings.audio_music_mute.get_value()
+			SOUND_EFFECTS:
+				percent = settings.audio_sound_effects_percent.get_value()
+				toggle_on = settings.audio_sound_effects_mute.get_value()
+			UI_SOUNDS:
+				percent = settings.audio_ui_sounds_percent.get_value()
+				toggle_on = settings.audio_ui_sounds_mute.get_value()
+			_:
+				continue
+
+		AudioServer.set_bus_volume_db(bus_index, MathHelper.percent_to_db(percent))
+		AudioServer.set_bus_mute(bus_index, toggle_on)
+
 	_update_fullscreen()
 	_update_resolution()
 
@@ -131,28 +158,28 @@ func _update_resolution():
 # PUBLIC
 
 
-func get_audio_master_percent():
-	return settings.audio_master_percent.get_value()
+func get_audio_percent(bus_index: int):
+	match bus_index:
+		MASTER:
+			return settings.audio_master_percent.get_value()
+		MUSIC:
+			return settings.audio_music_percent.get_value()
+		SOUND_EFFECTS:
+			return settings.audio_sound_effects_percent.get_value()
+		UI_SOUNDS:
+			return settings.audio_ui_sounds_percent.get_value()
 
 
-func get_audio_master_mute():
-	return settings.audio_master_mute.get_value()
-
-
-func get_audio_music_percent():
-	return settings.audio_music_percent.get_value()
-
-
-func get_audio_music_mute():
-	return settings.audio_music_mute.get_value()
-
-
-func get_audio_sound_effects_percent():
-	return settings.audio_sound_effects_percent.get_value()
-
-
-func get_audio_sound_effects_mute():
-	return settings.audio_sound_effects_mute.get_value()
+func get_audio_mute(bus_index: int):
+	match bus_index:
+		MASTER:
+			return settings.audio_master_mute.get_value()
+		MUSIC:
+			return settings.audio_music_mute.get_value()
+		SOUND_EFFECTS:
+			return settings.audio_sound_effects_mute.get_value()
+		UI_SOUNDS:
+			return settings.audio_ui_sounds_mute.get_value()
 
 
 func get_borderless_window():
@@ -199,45 +226,37 @@ func get_vsync():
 	return settings.vsync.get_value()
 
 
-func set_audio_master_percent(percent: float):
-	settings.audio_master_percent.set_value(percent)
-	AudioServer.set_bus_volume_db(0, MathHelper.percent_to_db(percent))
+func set_audio_percent(bus_index: int, percent: float):
+	match bus_index:
+		MASTER:
+			settings.audio_master_percent.set_value(percent)
+		MUSIC:
+			settings.audio_music_percent.set_value(percent)
+		SOUND_EFFECTS:
+			settings.audio_sound_effects_percent.set_value(percent)
+		UI_SOUNDS:
+			settings.audio_ui_sounds_percent.set_value(percent)
+		_:
+			return
 
+	AudioServer.set_bus_volume_db(bus_index, MathHelper.percent_to_db(percent))
 	_save_settings_to_file()
 
 
-func set_audio_master_mute(toggle_on: bool):
-	settings.audio_master_mute.set_value(toggle_on)
-	AudioServer.set_bus_mute(0, toggle_on)
+func set_audio_mute(bus_index: int, toggle_on: bool):
+	match bus_index:
+		MASTER:
+			settings.audio_master_mute.set_value(toggle_on)
+		MUSIC:
+			settings.audio_music_mute.set_value(toggle_on)
+		SOUND_EFFECTS:
+			settings.audio_sound_effects_mute.set_value(toggle_on)
+		UI_SOUNDS:
+			settings.audio_ui_sounds_mute.set_value(toggle_on)
+		_:
+			return
 
-	_save_settings_to_file()
-
-
-func set_audio_music_percent(percent: float):
-	settings.audio_music_percent.set_value(percent)
-	AudioServer.set_bus_volume_db(1, MathHelper.percent_to_db(percent))
-
-	_save_settings_to_file()
-
-
-func set_audio_music_mute(toggle_on: bool):
-	settings.audio_music_mute.set_value(toggle_on)
-	AudioServer.set_bus_mute(1, toggle_on)
-
-	_save_settings_to_file()
-
-
-func set_audio_sound_effects_percent(percent: float):
-	settings.audio_sound_effects_percent.set_value(percent)
-	AudioServer.set_bus_volume_db(2, MathHelper.percent_to_db(percent))
-
-	_save_settings_to_file()
-
-
-func set_audio_sound_effects_mute(toggle_on: bool):
-	settings.audio_sound_effects_mute.set_value(toggle_on)
-	AudioServer.set_bus_mute(2, toggle_on)
-
+	AudioServer.set_bus_mute(bus_index, toggle_on)
 	_save_settings_to_file()
 
 

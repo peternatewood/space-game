@@ -4,7 +4,7 @@
     "Test everything to do with individual missions."
   ],
   "armory": {
-    "ships": [ "Spider Fighter", "Spider Bomber" ],
+    "ships": [ "Spider Fighter", "Spider Interceptor", "Spider Bomber" ],
     "energy_weapons": [ "Energy Bolt", "Disintigrator" ],
     "missile_weapons": [ "Heat Seeker" ]
   },
@@ -22,7 +22,8 @@
     "Hyla 1": { "energy_weapons": [ "Energy Bolt" ], "missile_weapons": [ "Heat Seeker" ] },
     "Hyla 2": { "energy_weapons": [ "Energy Bolt" ], "missile_weapons": [ "Heat Seeker" ] },
     "Buteo 1": { "energy_weapons": [ "Energy Bolt" ], "missile_weapons": [ "Heat Seeker" ] },
-    "Buteo 2": { "energy_weapons": [ "Energy Bolt" ], "missile_weapons": [ "Heat Seeker" ] }
+    "Buteo 2": { "energy_weapons": [ "Energy Bolt" ], "missile_weapons": [ "Heat Seeker" ] },
+    "Spider Destroyer": { "energy_weapons": [ "Energy Bolt", "Energy Bolt", "Energy Bolt", "Disintigrator", "Disintigrator" ] }
   },
   "objectives": [
     [

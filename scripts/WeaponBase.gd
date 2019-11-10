@@ -1,5 +1,7 @@
 extends RigidBody
 
+onready var mission_controller = get_node("/root/Mission Controller")
+
 var damage_hull: int = 15
 var damage_shield: int = 10
 var fire_delay: float = 0.3 # In seconds
@@ -36,4 +38,44 @@ func _process(delta):
 
 
 func destroy():
+	var impact = IMPACT_PREFAB.instance()
+	mission_controller.add_child(impact)
+	impact.transform = global_transform
+
 	queue_free()
+
+
+static func get_ammo_cost_description(cost: float):
+	if cost < 2:
+		return "Low"
+	if cost < 8:
+		return "Moderate"
+	if cost < 15:
+		return "High"
+
+	return "Very High"
+
+
+static func get_battery_cost_description(cost: float):
+	if cost < 2:
+		return "Low"
+	if cost < 4:
+		return "Moderate"
+	if cost < 6:
+		return "High"
+
+	return "Very High"
+
+
+static func get_damage_strength(damage: float):
+	if damage < 15:
+		return "Low"
+	if damage < 25:
+		return "Moderate"
+	if damage < 35:
+		return "High"
+
+	return "Very High"
+
+
+const IMPACT_PREFAB = preload("res://prefabs/weapon_impact.tscn")

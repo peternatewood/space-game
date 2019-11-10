@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scripts/Debris.gd" type="Script" id=1]
+
+[node name="Ship Debris" type="RigidBody"]
+contacts_reported = 4
+contact_monitor = true
+script = ExtResource( 1 )

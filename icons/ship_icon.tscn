@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scripts/ShipIcon.gd" type="Script" id=1]
-[ext_resource path="res://models/ships/fighter_frog/overhead.png" type="Texture" id=2]
+[ext_resource path="res://models/ships/frog_fighter/overhead.png" type="Texture" id=2]
 [ext_resource path="res://images/shield_front.png" type="Texture" id=3]
 [ext_resource path="res://images/shield_left.png" type="Texture" id=4]
 [ext_resource path="res://images/shield_right.png" type="Texture" id=5]
@@ -10,6 +10,7 @@
 [ext_resource path="res://images/shield_left_outline.png" type="Texture" id=8]
 [ext_resource path="res://images/shield_right_outline.png" type="Texture" id=9]
 [ext_resource path="res://images/shield_rear_outline.png" type="Texture" id=10]
+
 
 
 [node name="Ship Icon" type="Control"]

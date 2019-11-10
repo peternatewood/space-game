@@ -1,7 +1,5 @@
 extends "res://scripts/WeaponBase.gd"
 
-onready var mission_controller = get_tree().get_root().get_node("Mission Controller")
-
 var acceleration: float
 var ammo_cost: float
 var has_target: bool = false

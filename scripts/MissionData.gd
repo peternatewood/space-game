@@ -1,6 +1,7 @@
 extends Node
 
 var armory: Dictionary
+var beam_weapon_models: Dictionary
 var briefing: Array
 var energy_weapon_models: Dictionary
 var missile_weapon_models: Dictionary
@@ -36,7 +37,7 @@ func _ready():
 					if data_parsed.error != OK:
 						print("Error parsing data file at " + model_dir + ": " + data_parsed.error_string)
 					elif model_file == null:
-						print("Unable to load model file at " + model_file)
+						print("Unable to load model file at " + model_dir)
 					else:
 						ship_models[data_parsed.result.get("ship_class", "ship")] = model_file
 
@@ -210,9 +211,14 @@ func load_mission_data(folder_name: String):
 				non_player_loadout = {}
 				for ship_name in result_loadout.keys():
 					non_player_loadout[ship_name] = {
+						"beam_weapons": [],
 						"energy_weapons": [],
 						"missile_weapons": []
 					}
+
+					for beam_weapon_name in result_loadout[ship_name].get("beam_weapons", []):
+						if beam_weapon_models.has(beam_weapon_name):
+							non_player_loadout[ship_name].beam_weapons.append(beam_weapon_models[beam_weapon_name])
 
 					for energy_weapon_name in result_loadout[ship_name].get("energy_weapons", []):
 						if energy_weapon_models.has(energy_weapon_name):

@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/energy_weapon_impact.wav-74e43b1ce13938cb857212104efd18f4.sample"
+
+[deps]
+
+source_file="res://sounds/energy_weapon_impact.wav"
+dest_files=[ "res://.import/energy_weapon_impact.wav-74e43b1ce13938cb857212104efd18f4.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=false
+edit/loop=false
+compress/mode=0

@@ -27,6 +27,9 @@ Here I'll be keeping track of the all the features I want to implement, and chec
 - [ ] Campaign Tree
 - [ ] Capital Ships
 - [ ] Carrier Ships
+- [ ] User Interface Sounds
+- [ ] Ship/Weapon Sound Effects
+- [ ] Music
 
 ### Accessibility Options
 

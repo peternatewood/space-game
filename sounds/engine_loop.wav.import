@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/engine_loop.wav-c4833c7abcdf0d46ed49f278d36033c3.sample"
+
+[deps]
+
+source_file="res://sounds/engine_loop.wav"
+dest_files=[ "res://.import/engine_loop.wav-c4833c7abcdf0d46ed49f278d36033c3.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=false
+edit/loop=true
+compress/mode=0

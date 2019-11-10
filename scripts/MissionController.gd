@@ -87,7 +87,12 @@ func _on_scene_loaded():
 	for ship_name in mission_data.non_player_loadout.keys():
 		var ship = targets_container.get_node_or_null(ship_name)
 		if ship != null:
-			ship.set_weapon_hardpoints(mission_data.non_player_loadout[ship_name].energy_weapons, mission_data.non_player_loadout[ship_name].missile_weapons)
+			if ship is NPCShip:
+				ship.set_weapon_hardpoints(mission_data.non_player_loadout[ship_name].energy_weapons, mission_data.non_player_loadout[ship_name].missile_weapons)
+			elif ship is CapitalShipBase:
+				ship.set_weapon_turrets(mission_data.non_player_loadout[ship_name].beam_weapons, mission_data.non_player_loadout[ship_name].energy_weapons, mission_data.non_player_loadout[ship_name].missile_weapons)
+			else:
+				print("Invalid node in targets container: " + ship.name)
 
 	player = get_node(player_path)
 	player.connect("warped_out", self, "_on_player_warped_out")
@@ -145,7 +150,7 @@ func get_commandable_ships(include_warped_out: bool = false):
 
 	for target in get_targets(include_warped_out):
 		# TODO: also check some other property like rank or ship class to determine whether player can command or not
-		if target != player and get_alignment(player.faction, target.faction) == FRIENDLY:
+		if target != player and target is NPCShip and get_alignment(player.faction, target.faction) == FRIENDLY:
 			commandable_ships.append(target)
 
 	return commandable_ships
@@ -159,7 +164,7 @@ func get_ships_in_wing(wing_name: String, exclude_ship = null, include_warped_ou
 	var ships: Array = []
 
 	for ship in get_targets(include_warped_out):
-		if ship != exclude_ship and ship.wing_name == wing_name:
+		if ship is NPCShip and ship != exclude_ship and ship.wing_name == wing_name:
 			ships.append(ship)
 
 	return ships
@@ -215,6 +220,7 @@ func get_targets_by_distance(ship, targets: Array, only_alignment: int = -1):
 
 signal mission_ready
 
+const CapitalShipBase = preload("CapitalShipBase.gd")
 const NPCShip = preload("NPCShip.gd")
 const Objective = preload("Objective.gd")
 const Player = preload("Player.gd")

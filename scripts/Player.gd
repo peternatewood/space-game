@@ -1,4 +1,4 @@
-extends "res://scripts/ShipBase.gd"
+extends "res://scripts/AttackShipBase.gd"
 
 enum { COCKPIT, CHASE }
 
@@ -15,7 +15,9 @@ var input_velocity: Vector3
 func _ready():
 	var debris = DEBRIS_PARTICLES.instance()
 	add_child(debris)
-	destruction_delay = 2.0
+
+	if has_warp_ramp_up:
+		self.connect("warping_ramped_up", warp_ramp_up_player, "stop")
 
 
 func _start_destruction():
@@ -139,22 +141,22 @@ func _input(event):
 			ShieldQuadrant.equalize_shields(shields)
 		# System power distribution
 		elif event.is_action("increment_weapon_power") and event.pressed:
-			_increment_power_level(ShipBase.WEAPON, 1)
+			_increment_power_level(AttackShipBase.WEAPON, 1)
 			emit_signal("power_distribution_changed")
 		elif event.is_action("decrement_weapon_power") and event.pressed:
-			_increment_power_level(ShipBase.WEAPON, -1)
+			_increment_power_level(AttackShipBase.WEAPON, -1)
 			emit_signal("power_distribution_changed")
 		elif event.is_action("increment_shield_power") and event.pressed:
-			_increment_power_level(ShipBase.SHIELD, 1)
+			_increment_power_level(AttackShipBase.SHIELD, 1)
 			emit_signal("power_distribution_changed")
 		elif event.is_action("decrement_shield_power") and event.pressed:
-			_increment_power_level(ShipBase.SHIELD, -1)
+			_increment_power_level(AttackShipBase.SHIELD, -1)
 			emit_signal("power_distribution_changed")
 		elif event.is_action("increment_engine_power") and event.pressed:
-			_increment_power_level(ShipBase.ENGINE, 1)
+			_increment_power_level(AttackShipBase.ENGINE, 1)
 			emit_signal("power_distribution_changed")
 		elif event.is_action("decrement_engine_power") and event.pressed:
-			_increment_power_level(ShipBase.ENGINE, -1)
+			_increment_power_level(AttackShipBase.ENGINE, -1)
 			emit_signal("power_distribution_changed")
 		elif event.is_action("equalize_power") and event.pressed:
 			power_distribution[WEAPON] = TOTAL_SYSTEM_POWER / 3
@@ -257,9 +259,13 @@ func warp_out():
 	_toggle_ship_mesh(true)
 	camera.transform.origin = transform.origin + 4 * ((randi() % 2) - 0.5) * transform.basis.x + 2 * transform.basis.y + 2 * transform.basis.z
 
-	warp_speed = WARP_IN_DISTANCE / WARP_DURATION
-	warping_countdown = WARP_DURATION
-	warping = WARP_OUT
+	if has_warp_ramp_up:
+		warp_ramp_up_player.play()
+	else:
+		print("Missing warp ramp up sound")
+
+	warp(false)
+
 	emit_signal("began_warp_out")
 
 
@@ -270,7 +276,7 @@ signal target_changed
 signal throttle_changed
 signal began_warp_out
 
-const ShipBase = preload("ShipBase.gd")
+const AttackShipBase = preload("AttackShipBase.gd")
 
 const CAM_ROLL_MOD: float = 0.25
 const CAM_THROTTLE_MOD: float = 1.5

@@ -7,7 +7,7 @@ onready var quit_to_desktop_popup = get_node("Desktop Quit Popup")
 
 func _ready():
 	var resume_button = get_node("PanelContainer/Buttons Container/Resume Button")
-	resume_button.connect("pressed", self, "_on_resume_button_pressed")
+	resume_button.connect("pressed", self, "_resume_game")
 
 	var options_button = get_node("PanelContainer/Buttons Container/Options Button")
 	options_button.connect("pressed", self, "_on_options_button_pressed")
@@ -23,6 +23,15 @@ func _ready():
 	quit_to_desktop_popup.connect("confirmed", self, "_on_quit_to_desktop_confirmed")
 
 
+func _input(event):
+	if get_tree().paused and event.is_action("pause") and event.pressed:
+		if options_menu.visible:
+			options_menu.hide()
+		elif visible:
+			_resume_game()
+			accept_event()
+
+
 func _on_main_menu_confirmed():
 	emit_signal("main_menu_confirmed")
 
@@ -35,11 +44,6 @@ func _on_options_button_pressed():
 	options_menu.show()
 
 
-func _on_resume_button_pressed():
-	hide()
-	get_tree().set_pause(false)
-
-
 func _on_quit_menu_button_pressed():
 	main_menu_popup.popup_centered()
 
@@ -50,6 +54,11 @@ func _on_quit_desktop_button_pressed():
 
 func _on_quit_to_desktop_confirmed():
 	get_tree().quit()
+
+
+func _resume_game():
+	hide()
+	get_tree().set_pause(false)
 
 
 signal main_menu_confirmed

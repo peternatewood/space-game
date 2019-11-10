@@ -124,24 +124,30 @@ func _ready():
 	var master_mute = get_node("Options Rows/TabContainer/Audio/Master Mute")
 	var music_mute = get_node("Options Rows/TabContainer/Audio/Music Mute")
 	var sound_effects_mute = get_node("Options Rows/TabContainer/Audio/Sound Effects Mute")
+	var ui_sounds_mute = get_node("Options Rows/TabContainer/Audio/UI Sounds Mute")
 
-	master_mute.set_pressed(settings.get_audio_master_mute())
-	master_mute.connect("toggled", self, "_on_master_mute_toggled")
-	music_mute.set_pressed(settings.get_audio_music_mute())
-	music_mute.connect("toggled", self, "_on_music_mute_toggled")
-	sound_effects_mute.set_pressed(settings.get_audio_sound_effects_mute())
-	sound_effects_mute.connect("toggled", self, "_on_sound_effects_mute_toggled")
+	master_mute.set_pressed(settings.get_audio_mute(settings.MASTER))
+	master_mute.connect("toggled", self, "_on_mute_toggled", [ settings.MASTER ])
+	music_mute.set_pressed(settings.get_audio_mute(settings.MUSIC))
+	music_mute.connect("toggled", self, "_on_mute_toggled", [ settings.MUSIC ])
+	sound_effects_mute.set_pressed(settings.get_audio_mute(settings.SOUND_EFFECTS))
+	sound_effects_mute.connect("toggled", self, "_on_mute_toggled", [ settings.SOUND_EFFECTS ])
+	ui_sounds_mute.set_pressed(settings.get_audio_mute(settings.UI_SOUNDS))
+	ui_sounds_mute.connect("toggled", self, "_on_mute_toggled", [ settings.UI_SOUNDS ])
 
 	var master_audio_slider = get_node("Options Rows/TabContainer/Audio/Master Audio Slider")
 	var music_audio_slider = get_node("Options Rows/TabContainer/Audio/Music Audio Slider")
 	var sound_effects_audio_slider = get_node("Options Rows/TabContainer/Audio/Sound Effects Audio Slider")
+	var ui_sounds_audio_slider = get_node("Options Rows/TabContainer/Audio/UI Sounds Audio Slider")
 
-	master_audio_slider.set_value(settings.get_audio_master_percent())
-	master_audio_slider.connect("value_changed", self, "_on_master_audio_slider_changed")
-	music_audio_slider.set_value(settings.get_audio_music_percent())
-	music_audio_slider.connect("value_changed", self, "_on_music_audio_slider_changed")
-	sound_effects_audio_slider.set_value(settings.get_audio_sound_effects_percent())
-	sound_effects_audio_slider.connect("value_changed", self, "_on_sound_effects_audio_slider_changed")
+	master_audio_slider.set_value(settings.get_audio_percent(settings.MASTER))
+	master_audio_slider.connect("value_changed", self, "_on_audio_slider_changed", [ settings.MASTER ])
+	music_audio_slider.set_value(settings.get_audio_percent(settings.MUSIC))
+	music_audio_slider.connect("value_changed", self, "_on_audio_slider_changed", [ settings.MUSIC ])
+	sound_effects_audio_slider.set_value(settings.get_audio_percent(settings.SOUND_EFFECTS))
+	sound_effects_audio_slider.connect("value_changed", self, "_on_audio_slider_changed", [ settings.SOUND_EFFECTS ])
+	ui_sounds_audio_slider.set_value(settings.get_audio_percent(settings.UI_SOUNDS))
+	ui_sounds_audio_slider.connect("value_changed", self, "_on_audio_slider_changed", [ settings.UI_SOUNDS ])
 
 	# Controls
 	keybind_popup.connect("about_to_show", self, "show_popup_backdrop")
@@ -206,6 +212,10 @@ func _input(event):
 
 func _on_aa_options_item_selected(item_index: int):
 	settings.set_msaa(item_index)
+
+
+func _on_audio_slider_changed(percent: float, bus_index: int):
+	settings.set_audio_percent(bus_index, percent)
 
 
 func _on_back_button_pressed():
@@ -289,28 +299,8 @@ func _on_keybind_popup_cancel_pressed():
 	keybind_popup.hide()
 
 
-func _on_master_audio_slider_changed(percent: float):
-	settings.set_audio_master_percent(percent)
-
-
-func _on_master_mute_toggled(button_pressed: bool):
-	settings.set_audio_master_mute(button_pressed)
-
-
-func _on_music_audio_slider_changed(percent: float):
-	settings.set_audio_music_percent(percent)
-
-
-func _on_music_mute_toggled(button_pressed: bool):
-	settings.set_audio_music_mute(button_pressed)
-
-
-func _on_sound_effects_audio_slider_changed(percent: float):
-	settings.set_audio_sound_effects_percent(percent)
-
-
-func _on_sound_effects_mute_toggled(button_pressed: bool):
-	settings.set_audio_sound_effects_mute(button_pressed)
+func _on_mute_toggled(button_pressed: bool, bus_index: int):
+	settings.set_audio_mute(bus_index, button_pressed)
 
 
 func _on_reflections_accept_pressed():

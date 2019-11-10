@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://images/smoke.png" type="Texture" id=1]
 
@@ -10,13 +10,28 @@ particles_anim_v_frames = 1
 particles_anim_loop = false
 albedo_texture = ExtResource( 1 )
 
-[sub_resource type="ParticlesMaterial" id=2]
+[sub_resource type="Curve" id=2]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=3]
+curve = SubResource( 2 )
+
+[sub_resource type="ParticlesMaterial" id=4]
+spread = 180.0
 gravity = Vector3( 0, 0, 0 )
+initial_velocity = 1.0
+angle = 180.0
+angle_random = 1.0
+scale_curve = SubResource( 3 )
+color = Color( 0, 0, 0, 1 )
 
-[sub_resource type="QuadMesh" id=3]
+[sub_resource type="QuadMesh" id=5]
+size = Vector2( 2, 2 )
 
-[node name="Particles" type="Particles"]
+[node name="Destruction Smoke" type="Spatial"]
+
+[node name="Particles" type="Particles" parent="."]
 material_override = SubResource( 1 )
 local_coords = false
-process_material = SubResource( 2 )
-draw_pass_1 = SubResource( 3 )
+process_material = SubResource( 4 )
+draw_pass_1 = SubResource( 5 )
