@@ -4,6 +4,7 @@ onready var camera = get_node("Editor Camera")
 onready var mission_node = get_node("Mission Scene")
 onready var open_file_dialog = get_node("Open File Dialog")
 onready var save_file_dialog = get_node("Save File Dialog")
+onready var transform_controls = get_node("Transform Controls")
 
 var current_mouse_button: int = -1
 var mouse_pos: Vector2
@@ -28,6 +29,11 @@ func _input(event):
 			match event.button_index:
 				BUTTON_LEFT:
 					selected_node = camera.get_node_at_position(event.position)
+
+					if selected_node == null:
+						transform_controls.hide()
+					else:
+						transform_controls.show()
 		else:
 			# TODO: Check which buttons are still pressed, if any
 			current_mouse_button = -1

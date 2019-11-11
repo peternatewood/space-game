@@ -1,9 +1,13 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://editor/scripts/Editor.gd" type="Script" id=1]
 [ext_resource path="res://editor/default_mission.tscn" type="PackedScene" id=2]
 [ext_resource path="res://editor/scripts/Camera.gd" type="Script" id=3]
-[ext_resource path="res://themes/editor_theme.tres" type="Theme" id=4]
+[ext_resource path="res://editor/scripts/TransformControls.gd" type="Script" id=4]
+[ext_resource path="res://editor/models/translate_arrow_x.dae" type="PackedScene" id=5]
+[ext_resource path="res://editor/models/translate_arrow_y.dae" type="PackedScene" id=6]
+[ext_resource path="res://editor/models/translate_arrow_z.dae" type="PackedScene" id=7]
+[ext_resource path="res://themes/editor_theme.tres" type="Theme" id=8]
 
 [node name="Editor" type="Spatial"]
 script = ExtResource( 1 )
@@ -17,15 +21,33 @@ script = ExtResource( 3 )
 transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 4, 4 )
 
 [node name="RayCast" type="RayCast" parent="Editor Camera/Camera"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 enabled = true
 cast_to = Vector3( 0, 0, -10 )
 collide_with_areas = true
 
+[node name="Transform Controls" type="Spatial" parent="."]
+visible = false
+script = ExtResource( 4 )
+
+[node name="Arrow X" parent="Transform Controls" instance=ExtResource( 5 )]
+transform = Transform( 0.075, 0, 0, 0, 0.075, 0, 0, 0, 0.075, 0, 0, 0 )
+monitoring = false
+monitorable = false
+
+[node name="Arrow Y" parent="Transform Controls" instance=ExtResource( 6 )]
+transform = Transform( 0.075, 0, 0, 0, 0.075, 0, 0, 0, 0.075, 0, 0, 0 )
+monitoring = false
+monitorable = false
+
+[node name="Arrow Z" parent="Transform Controls" instance=ExtResource( 7 )]
+transform = Transform( 0.075, 0, 0, 0, 0.075, 0, 0, 0, 0.075, 0, 0, 0 )
+monitoring = false
+monitorable = false
+
 [node name="Controls Container" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme = ExtResource( 4 )
+theme = ExtResource( 8 )
 
 [node name="PanelContainer" type="PanelContainer" parent="Controls Container"]
 anchor_right = 1.0
