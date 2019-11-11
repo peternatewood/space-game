@@ -1,6 +1,7 @@
 extends Spatial
 
 onready var camera = get_node("Camera")
+onready var raycast = get_node("Camera/RayCast")
 
 var move_vel: Vector2
 
@@ -15,6 +16,17 @@ func _process(delta):
 
 
 # PUBLIC
+
+
+func get_node_at_position(pos: Vector2):
+	var direction = 10 * camera.project_local_ray_normal(pos)
+	var position = camera.project_position(pos) - camera.global_transform.origin
+
+	raycast.transform.origin = position
+	raycast.set_cast_to(direction)
+	raycast.force_raycast_update()
+
+	return raycast.get_collider()
 
 
 func move_position(vel: Vector2):
