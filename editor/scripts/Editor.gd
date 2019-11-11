@@ -2,6 +2,7 @@ extends Spatial
 
 onready var camera = get_node("Editor Camera")
 onready var manipulator_overlay = get_node("Controls Container/Manipulator Overlay")
+onready var manipulator_viewport = get_node("Manipulator Viewport")
 onready var mission_node = get_node("Mission Scene")
 onready var open_file_dialog = get_node("Open File Dialog")
 onready var save_file_dialog = get_node("Save File Dialog")
@@ -35,6 +36,7 @@ func _input(event):
 						manipulator_overlay.hide()
 						transform_controls.toggle(false)
 					else:
+						manipulator_viewport.update_camera(camera)
 						manipulator_overlay.show()
 						transform_controls.toggle(true)
 		else:
@@ -48,6 +50,9 @@ func _input(event):
 				camera.move_position(event.relative)
 			else:
 				camera.orbit(event.relative)
+
+			if manipulator_overlay.visible:
+				manipulator_viewport.update_camera(camera)
 
 
 func _on_file_menu_id_pressed(item_id: int):
