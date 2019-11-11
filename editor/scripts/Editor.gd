@@ -8,6 +8,7 @@ onready var save_file_dialog = get_node("Save File Dialog")
 var current_mouse_button: int = -1
 var mouse_pos: Vector2
 var scene_file_regex = RegEx.new()
+var selected_node = null
 
 
 func _ready():
@@ -23,6 +24,10 @@ func _input(event):
 	if event is InputEventMouseButton:
 		if event.pressed:
 			current_mouse_button = event.button_index
+
+			match event.button_index:
+				BUTTON_LEFT:
+					selected_node = camera.get_node_at_position(event.position)
 		else:
 			# TODO: Check which buttons are still pressed, if any
 			current_mouse_button = -1
