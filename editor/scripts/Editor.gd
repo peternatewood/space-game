@@ -30,7 +30,10 @@ func _input(event):
 		mouse_pos = event.position
 
 		if current_mouse_button == BUTTON_MIDDLE:
-			camera.orbit(event.relative)
+			if event.shift:
+				camera.move_position(event.relative)
+			else:
+				camera.orbit(event.relative)
 
 
 func _on_file_menu_id_pressed(item_id: int):
