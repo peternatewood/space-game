@@ -1,13 +1,16 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://editor/scripts/Editor.gd" type="Script" id=1]
 [ext_resource path="res://editor/default_mission.tscn" type="PackedScene" id=2]
 [ext_resource path="res://editor/scripts/Camera.gd" type="Script" id=3]
-[ext_resource path="res://editor/scripts/TransformControls.gd" type="Script" id=4]
-[ext_resource path="res://editor/models/translate_arrow_x.dae" type="PackedScene" id=5]
-[ext_resource path="res://editor/models/translate_arrow_y.dae" type="PackedScene" id=6]
-[ext_resource path="res://editor/models/translate_arrow_z.dae" type="PackedScene" id=7]
-[ext_resource path="res://themes/editor_theme.tres" type="Theme" id=8]
+[ext_resource path="res://themes/editor_theme.tres" type="Theme" id=4]
+[ext_resource path="res://editor/scripts/TransformControls.gd" type="Script" id=5]
+[ext_resource path="res://editor/models/translate_arrow_x.dae" type="PackedScene" id=6]
+[ext_resource path="res://editor/models/translate_arrow_y.dae" type="PackedScene" id=7]
+[ext_resource path="res://editor/models/translate_arrow_z.dae" type="PackedScene" id=8]
+
+[sub_resource type="ViewportTexture" id=1]
+viewport_path = NodePath("Manipulator Viewport")
 
 [node name="Editor" type="Spatial"]
 script = ExtResource( 1 )
@@ -25,29 +28,17 @@ enabled = true
 cast_to = Vector3( 0, 0, -10 )
 collide_with_areas = true
 
-[node name="Transform Controls" type="Spatial" parent="."]
-visible = false
-script = ExtResource( 4 )
-
-[node name="Arrow X" parent="Transform Controls" instance=ExtResource( 5 )]
-transform = Transform( 0.075, 0, 0, 0, 0.075, 0, 0, 0, 0.075, 0, 0, 0 )
-monitoring = false
-monitorable = false
-
-[node name="Arrow Y" parent="Transform Controls" instance=ExtResource( 6 )]
-transform = Transform( 0.075, 0, 0, 0, 0.075, 0, 0, 0, 0.075, 0, 0, 0 )
-monitoring = false
-monitorable = false
-
-[node name="Arrow Z" parent="Transform Controls" instance=ExtResource( 7 )]
-transform = Transform( 0.075, 0, 0, 0, 0.075, 0, 0, 0, 0.075, 0, 0, 0 )
-monitoring = false
-monitorable = false
-
 [node name="Controls Container" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme = ExtResource( 8 )
+theme = ExtResource( 4 )
+
+[node name="Manipulator Overlay" type="TextureRect" parent="Controls Container"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = SubResource( 1 )
+expand = true
 
 [node name="PanelContainer" type="PanelContainer" parent="Controls Container"]
 anchor_right = 1.0
@@ -106,3 +97,32 @@ access = 1
 filters = PoolStringArray( "*.tscn" )
 current_dir = "user://"
 current_path = "user://"
+
+[node name="Manipulator Viewport" type="Viewport" parent="."]
+size = Vector2( 1920, 1080 )
+own_world = true
+transparent_bg = true
+render_target_v_flip = true
+
+[node name="Transform Controls" type="Spatial" parent="Manipulator Viewport"]
+script = ExtResource( 5 )
+
+[node name="Arrow X" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 6 )]
+transform = Transform( 0.075, 0, 0, 0, 0.075, 0, 0, 0, 0.075, 0, 0, 0 )
+monitoring = false
+monitorable = false
+
+[node name="Arrow Y" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 7 )]
+transform = Transform( 0.075, 0, 0, 0, 0.075, 0, 0, 0, 0.075, 0, 0, 0 )
+monitoring = false
+monitorable = false
+
+[node name="Arrow Z" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 8 )]
+transform = Transform( 0.075, 0, 0, 0, 0.075, 0, 0, 0, 0.075, 0, 0, 0 )
+monitoring = false
+monitorable = false
+
+[node name="Camera Gimbal" type="Spatial" parent="Manipulator Viewport"]
+
+[node name="Camera" type="Camera" parent="Manipulator Viewport/Camera Gimbal"]
+transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 4, 4 )
