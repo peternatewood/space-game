@@ -1,9 +1,12 @@
 extends Spatial
 
+onready var camera = get_node("Editor Camera")
 onready var mission_node = get_node("Mission Scene")
 onready var open_file_dialog = get_node("Open File Dialog")
 onready var save_file_dialog = get_node("Save File Dialog")
 
+var current_mouse_button: int = -1
+var mouse_pos: Vector2
 var scene_file_regex = RegEx.new()
 
 
@@ -14,6 +17,20 @@ func _ready():
 	file_menu.get_popup().connect("id_pressed", self, "_on_file_menu_id_pressed")
 
 	save_file_dialog.connect("confirmed", self, "_on_save_file_dialog_confirmed")
+
+
+func _input(event):
+	if event is InputEventMouseButton:
+		if event.pressed:
+			current_mouse_button = event.button_index
+		else:
+			# TODO: Check which buttons are still pressed, if any
+			current_mouse_button = -1
+	elif event is InputEventMouseMotion:
+		mouse_pos = event.position
+
+		if current_mouse_button == BUTTON_MIDDLE:
+			camera.orbit(event.relative)
 
 
 func _on_file_menu_id_pressed(item_id: int):
