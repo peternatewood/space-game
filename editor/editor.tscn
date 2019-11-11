@@ -16,6 +16,12 @@ script = ExtResource( 3 )
 [node name="Camera" type="Camera" parent="Editor Camera"]
 transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 4, 4 )
 
+[node name="RayCast" type="RayCast" parent="Editor Camera/Camera"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+enabled = true
+cast_to = Vector3( 0, 0, -10 )
+collide_with_areas = true
+
 [node name="Controls Container" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
