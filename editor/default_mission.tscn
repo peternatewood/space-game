@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://models/ships/spider_fighter/model.dae" type="PackedScene" id=1]
+
+[node name="Mission Scene" type="Spatial"]
+
+[node name="Sun Light" type="DirectionalLight" parent="."]
+transform = Transform( 0.707107, -0.612372, 0.353554, 0, 0.5, 0.866025, -0.707107, -0.612372, 0.353554, 0, 0, 0 )
+
+[node name="Spider Fighter" parent="." instance=ExtResource( 1 )]
