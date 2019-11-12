@@ -118,6 +118,7 @@ script = ExtResource( 5 )
 script = ExtResource( 6 )
 
 [node name="Arrow X" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 7 )]
+transform = Transform( -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0 )
 monitoring = false
 monitorable = false
 
@@ -126,6 +127,7 @@ monitoring = false
 monitorable = false
 
 [node name="Arrow Z" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0 )
 monitoring = false
 monitorable = false
 
