@@ -47,8 +47,9 @@ func _input(event):
 
 						if selected_node != null:
 							manipulator_viewport.update_camera(camera)
-							manipulator_overlay.show()
 							transform_controls.toggle(true)
+							transform_controls.scale = selected_node.get_meta("cam_distance") * Vector3.ONE
+							manipulator_overlay.show()
 						else:
 							manipulator_overlay.hide()
 							transform_controls.toggle(false)
