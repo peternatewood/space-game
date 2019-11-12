@@ -23,11 +23,12 @@ script = ExtResource( 3 )
 
 [node name="Camera" type="Camera" parent="Editor Camera"]
 transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 4, 4 )
+current = true
+far = 1000.0
 
 [node name="RayCast" type="RayCast" parent="Editor Camera/Camera"]
 enabled = true
 cast_to = Vector3( 0, 0, -10 )
-collide_with_areas = true
 
 [node name="Controls Container" type="Control" parent="."]
 anchor_right = 1.0
@@ -76,6 +77,13 @@ margin_right = 172.0
 margin_bottom = 22.0
 text = "Help"
 
+[node name="Debug" type="Label" parent="Controls Container"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -18.0
+text = "n/a"
+
 [node name="Open File Dialog" type="FileDialog" parent="."]
 margin_right = 400.0
 margin_bottom = 300.0
@@ -110,21 +118,18 @@ script = ExtResource( 5 )
 script = ExtResource( 6 )
 
 [node name="Arrow X" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 7 )]
-transform = Transform( 0.075, 0, 0, 0, 0.075, 0, 0, 0, 0.075, 0, 0, 0 )
 monitoring = false
 monitorable = false
 
 [node name="Arrow Y" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 8 )]
-transform = Transform( 0.075, 0, 0, 0, 0.075, 0, 0, 0, 0.075, 0, 0, 0 )
 monitoring = false
 monitorable = false
 
 [node name="Arrow Z" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 9 )]
-transform = Transform( 0.075, 0, 0, 0, 0.075, 0, 0, 0, 0.075, 0, 0, 0 )
 monitoring = false
 monitorable = false
 
-[node name="Camera Gimbal" type="Spatial" parent="Manipulator Viewport"]
-
-[node name="Camera" type="Camera" parent="Manipulator Viewport/Camera Gimbal"]
+[node name="Camera" type="Camera" parent="Manipulator Viewport"]
 transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 4, 4 )
+current = true
+far = 1000.0

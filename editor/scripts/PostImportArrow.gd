@@ -15,7 +15,5 @@ func post_import(scene):
 
 			# Remove unused StaticBody
 			scene.remove_child(child)
-		elif child is MeshInstance:
-			child.mesh.surface_get_material(0).set_flag(SpatialMaterial.FLAG_FIXED_SIZE, true)
 
 	return scene

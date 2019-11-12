@@ -1,6 +1,7 @@
 extends Spatial
 
 onready var camera = get_node("Editor Camera")
+onready var debug = get_node("Controls Container/Debug")
 onready var manipulator_overlay = get_node("Controls Container/Manipulator Overlay")
 onready var manipulator_viewport = get_node("Manipulator Viewport")
 onready var mission_node = get_node("Mission Scene")
@@ -9,6 +10,7 @@ onready var save_file_dialog = get_node("Save File Dialog")
 onready var transform_controls = get_node("Manipulator Viewport/Transform Controls")
 
 var current_mouse_button: int = -1
+var manipulator_node = null
 var mouse_pos: Vector2
 var scene_file_regex = RegEx.new()
 var selected_node = null
@@ -22,6 +24,9 @@ func _ready():
 
 	save_file_dialog.connect("confirmed", self, "_on_save_file_dialog_confirmed")
 
+	# TODO: update manipulator viewport if window size changes
+	manipulator_viewport.set_size(get_viewport().size)
+
 
 func _input(event):
 	if event is InputEventMouseButton:
@@ -30,15 +35,23 @@ func _input(event):
 
 			match event.button_index:
 				BUTTON_LEFT:
-					selected_node = camera.get_node_at_position(event.position)
-
-					if selected_node == null:
-						manipulator_overlay.hide()
-						transform_controls.toggle(false)
-					else:
+					# Check manipulator viewport raycast first
+					if manipulator_overlay.visible:
 						manipulator_viewport.update_camera(camera)
-						manipulator_overlay.show()
-						transform_controls.toggle(true)
+						manipulator_node = manipulator_viewport.get_node_at_position(event.position)
+
+					if manipulator_node != null:
+						print(manipulator_node.name)
+					else:
+						selected_node = camera.get_node_at_position(event.position)
+
+						if selected_node != null:
+							manipulator_viewport.update_camera(camera)
+							manipulator_overlay.show()
+							transform_controls.toggle(true)
+						else:
+							manipulator_overlay.hide()
+							transform_controls.toggle(false)
 		else:
 			# TODO: Check which buttons are still pressed, if any
 			current_mouse_button = -1
