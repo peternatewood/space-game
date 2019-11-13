@@ -8,6 +8,7 @@ onready var manipulator_viewport = get_node("Manipulator Viewport")
 onready var mission_node = get_node("Mission Scene")
 onready var open_file_dialog = get_node("Open File Dialog")
 onready var save_file_dialog = get_node("Save File Dialog")
+onready var ship_edit_dialog = get_node("Ship Edit Dialog")
 onready var transform_controls = get_node("Manipulator Viewport/Transform Controls")
 
 var current_mouse_button: int = -1
@@ -40,7 +41,7 @@ func _input(event):
 
 		match event.button_index:
 			BUTTON_LEFT:
-				if event.pressed:
+				if event.pressed and not ship_edit_dialog.has_point(event.position):
 					# Check manipulator viewport raycast first
 					var manipulator_intersect
 					if manipulator_overlay.visible:
@@ -58,9 +59,13 @@ func _input(event):
 							transform_controls.scale = selected_node.get_meta("cam_distance") * Vector3.ONE
 							transform_controls.transform.origin = selected_node.transform.origin
 							manipulator_overlay.show()
+
+							ship_edit_dialog.popup()
 						else:
 							manipulator_overlay.hide()
 							transform_controls.toggle(false)
+
+							ship_edit_dialog.hide()
 			BUTTON_WHEEL_UP:
 				camera.zoom_in()
 			BUTTON_WHEEL_DOWN:
