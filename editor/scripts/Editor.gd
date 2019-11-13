@@ -123,8 +123,12 @@ func _on_controls_gui_input(event):
 							ship_edit_dialog.hide()
 			BUTTON_WHEEL_UP:
 				camera.zoom_in()
+				if manipulator_overlay.visible:
+					manipulator_viewport.update_camera(camera)
 			BUTTON_WHEEL_DOWN:
 				camera.zoom_out()
+				if manipulator_overlay.visible:
+					manipulator_viewport.update_camera(camera)
 
 
 func _on_edit_menu_id_pressed(item_id: int):
