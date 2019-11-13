@@ -34,9 +34,13 @@ func _input(event):
 	if event is InputEventMouseButton:
 		if event.pressed:
 			current_mouse_button = event.button_index
+		else:
+			# TODO: Check which buttons are still pressed, if any
+			current_mouse_button = -1
 
-			match event.button_index:
-				BUTTON_LEFT:
+		match event.button_index:
+			BUTTON_LEFT:
+				if event.pressed:
 					# Check manipulator viewport raycast first
 					var manipulator_intersect
 					if manipulator_overlay.visible:
@@ -57,9 +61,10 @@ func _input(event):
 						else:
 							manipulator_overlay.hide()
 							transform_controls.toggle(false)
-		else:
-			# TODO: Check which buttons are still pressed, if any
-			current_mouse_button = -1
+			BUTTON_WHEEL_UP:
+				camera.zoom_in()
+			BUTTON_WHEEL_DOWN:
+				camera.zoom_out()
 	elif event is InputEventMouseMotion:
 		mouse_pos = event.position
 		mouse_vel = event.relative
