@@ -1,6 +1,7 @@
 extends Spatial
 
 onready var add_ship_dialog = get_node("Add Ship Dialog")
+onready var add_ship_options = get_node("Add Ship Dialog/Add Ship Grid/Ship Class Options")
 onready var camera = get_node("Editor Camera")
 onready var debug = get_node("Controls Container/Debug")
 onready var debug_cube = get_node("Debug")
@@ -30,10 +31,11 @@ func _ready():
 
 	save_file_dialog.connect("confirmed", self, "_on_save_file_dialog_confirmed")
 
-	var add_ship_options = get_node("Add Ship Dialog/Add Ship Grid/Ship Class Options")
+	var ship_index: int = 0
 	for ship_class in mission_data.ship_models.keys():
-		add_ship_options.add_item(ship_class)
+		add_ship_options.add_item(ship_class, ship_index)
 		ship_index_name_map.append(ship_class)
+		ship_index += 1
 
 	var edit_menu = get_node("Controls Container/PanelContainer/Toolbar/Edit Menu")
 	edit_menu.get_popup().connect("id_pressed", self, "_on_edit_menu_id_pressed")
