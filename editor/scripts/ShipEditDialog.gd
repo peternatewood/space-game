@@ -27,8 +27,25 @@ onready var player_ship_checkbox = get_node("Ship Edit Rows/Player Ship CheckBox
 onready var ship_class_options = get_node("Ship Edit Rows/Ship Edit Grid/Ship Class Options")
 onready var wing_lineedit = get_node("Ship Edit Rows/Ship Edit Grid/Wing LineEdit")
 
+var edit_ship = null
+var is_populating: bool = false
+
+
+func _ready():
+	hitpoints_spinbox.connect("value_changed", self, "_on_hitpoints_changed")
+
+
+func _on_hitpoints_changed(new_value: float):
+	if not is_populating:
+		edit_ship.hull_hitpoints = int(new_value)
+
+
+# PUBLIC
+
 
 func fill_ship_info(ship):
+	is_populating = true
+
 	if ship.hull_hitpoints == -1:
 		hitpoints_spinbox.set_value(ship.get_meta("hull_hitpoints"))
 	else:
@@ -66,6 +83,9 @@ func fill_ship_info(ship):
 			missile_weapon_labels[index].hide()
 
 	player_ship_checkbox.set_pressed(ship is Player)
+
+	edit_ship = ship
+	is_populating = false
 
 
 # According to the docs, Control.has_point does exist, but the engine disagrees
