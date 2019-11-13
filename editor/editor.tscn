@@ -92,21 +92,19 @@ anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-margin_left = -180.0
-margin_top = -80.0
-margin_bottom = 80.0
+margin_left = -261.0
+margin_top = -241.0
+margin_right = -21.0
+margin_bottom = 79.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 popup_exclusive = true
 window_title = "Edit"
-resizable = true
 script = ExtResource( 5 )
 
 [node name="Ship Edit Grid" type="GridContainer" parent="Ship Edit Dialog"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_right = 40.0
-margin_bottom = 88.0
+margin_right = 220.0
+margin_bottom = 248.0
 columns = 2
 
 [node name="Ship Class Label" type="Label" parent="Ship Edit Dialog/Ship Edit Grid"]
@@ -131,6 +129,8 @@ margin_left = 146.0
 margin_top = 24.0
 margin_right = 220.0
 margin_bottom = 48.0
+max_value = 0.0
+allow_greater = true
 
 [node name="Name Label" type="Label" parent="Ship Edit Dialog/Ship Edit Grid"]
 margin_top = 57.0
@@ -144,13 +144,13 @@ margin_top = 52.0
 margin_right = 220.0
 margin_bottom = 76.0
 
-[node name="Ship Wing Label" type="Label" parent="Ship Edit Dialog/Ship Edit Grid"]
+[node name="Wing Label" type="Label" parent="Ship Edit Dialog/Ship Edit Grid"]
 margin_top = 85.0
 margin_right = 142.0
 margin_bottom = 99.0
 text = "Wing Name"
 
-[node name="Ship Wing LineEdit" type="LineEdit" parent="Ship Edit Dialog/Ship Edit Grid"]
+[node name="Wing LineEdit" type="LineEdit" parent="Ship Edit Dialog/Ship Edit Grid"]
 margin_left = 146.0
 margin_top = 80.0
 margin_right = 220.0

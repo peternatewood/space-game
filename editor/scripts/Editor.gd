@@ -5,6 +5,7 @@ onready var debug = get_node("Controls Container/Debug")
 onready var debug_cube = get_node("Debug")
 onready var manipulator_overlay = get_node("Controls Container/Manipulator Overlay")
 onready var manipulator_viewport = get_node("Manipulator Viewport")
+onready var mission_data = get_node("/root/MissionData")
 onready var mission_node = get_node("Mission Scene")
 onready var open_file_dialog = get_node("Open File Dialog")
 onready var save_file_dialog = get_node("Save File Dialog")
@@ -29,6 +30,8 @@ func _ready():
 
 	# TODO: update manipulator viewport if window size changes
 	manipulator_viewport.set_size(get_viewport().size)
+
+	ship_edit_dialog.prepare_options(mission_data)
 
 
 func _input(event):
@@ -60,8 +63,9 @@ func _input(event):
 							transform_controls.transform.origin = selected_node.transform.origin
 							manipulator_overlay.show()
 
+							ship_edit_dialog.fill_ship_info(selected_node)
 							ship_edit_dialog.popup()
-						else:
+						elif not ship_edit_dialog.visible:
 							manipulator_overlay.hide()
 							transform_controls.toggle(false)
 
