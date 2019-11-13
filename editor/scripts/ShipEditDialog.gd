@@ -32,6 +32,7 @@ func fill_ship_info(ship):
 	hitpoints_spinbox.set_value(ship.hull_hitpoints)
 	name_lineedit.set_text(ship.name)
 	set_title("Edit " + ship.name)
+	wing_lineedit.set_text(ship.wing_name)
 
 	var energy_weapon_slot_count: int = 0
 	var missile_weapon_slot_count: int = 0
