@@ -10,7 +10,6 @@ onready var energy_weapon_options: Array = [
 	get_node("Ship Edit Rows/Ship Edit Grid/Energy Weapon Options 2"),
 	get_node("Ship Edit Rows/Ship Edit Grid/Energy Weapon Options 3")
 ]
-onready var grid = get_node("Ship Edit Rows/Ship Edit Grid")
 onready var hitpoints_spinbox = get_node("Ship Edit Rows/Ship Edit Grid/Hitpoints SpinBox")
 onready var missile_weapon_labels: Array = [
 	get_node("Ship Edit Rows/Ship Edit Grid/Missile Weapon Label 1"),
@@ -109,16 +108,22 @@ func has_point(point: Vector2):
 
 
 func prepare_options(mission_data):
+	var ship_index: int = 0
 	for name in mission_data.ship_models.keys():
-		ship_class_options.add_item(name)
+		ship_class_options.add_item(name, ship_index)
+		ship_index += 1
 
+	var energy_weapon_index: int = 0
 	for name in mission_data.energy_weapon_models.keys():
 		for option in energy_weapon_options:
-			option.add_item(name)
+			option.add_item(name, energy_weapon_index)
+		energy_weapon_index += 1
 
+	var missile_weapon_index: int = 0
 	for name in mission_data.missile_weapon_models.keys():
 		for option in missile_weapon_options:
-			option.add_item(name)
+			option.add_item(name, missile_weapon_index)
+		missile_weapon_index += 1
 
 
 const AttackShipBase = preload("res://scripts/AttackShipBase.gd")
