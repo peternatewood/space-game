@@ -24,6 +24,7 @@ onready var missile_weapon_options: Array = [
 ]
 onready var name_lineedit = get_node("Ship Edit Rows/Ship Edit Grid/Name LineEdit")
 onready var player_ship_checkbox = get_node("Ship Edit Rows/Player Ship CheckBox")
+onready var title = get_node("Ship Edit Rows/Title")
 onready var ship_class_options = get_node("Ship Edit Rows/Ship Edit Grid/Ship Class Options")
 onready var wing_lineedit = get_node("Ship Edit Rows/Ship Edit Grid/Wing LineEdit")
 
@@ -33,11 +34,18 @@ var is_populating: bool = false
 
 func _ready():
 	hitpoints_spinbox.connect("value_changed", self, "_on_hitpoints_changed")
+	name_lineedit.connect("text_changed", self, "_on_name_changed")
 
 
 func _on_hitpoints_changed(new_value: float):
 	if not is_populating:
 		edit_ship.hull_hitpoints = int(new_value)
+
+
+func _on_name_changed(new_text: String):
+	if not is_populating:
+		edit_ship.set_name(new_text)
+		title.set_text("Edit " + edit_ship.name)
 
 
 # PUBLIC
@@ -52,7 +60,7 @@ func fill_ship_info(ship):
 		hitpoints_spinbox.set_value(ship.hull_hitpoints)
 
 	name_lineedit.set_text(ship.name)
-	get_node("Ship Edit Rows/Title").set_text("Edit " + ship.name)
+	title.set_text("Edit " + ship.name)
 	wing_lineedit.set_text(ship.wing_name)
 
 	var energy_weapon_slot_count: int = 0
