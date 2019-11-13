@@ -15,7 +15,9 @@ onready var ship_edit_dialog = get_node("Ship Edit Dialog")
 onready var transform_controls = get_node("Manipulator Viewport/Transform Controls")
 
 var current_mouse_button: int = -1
+var energy_weapon_index_name_map: Array = []
 var manipulator_node = null
+var missile_weapon_index_name_map: Array = []
 var mouse_pos: Vector2
 var mouse_vel: Vector2
 var scene_file_regex = RegEx.new()
@@ -38,6 +40,12 @@ func _ready():
 		add_ship_options.add_item(ship_class, ship_index)
 		ship_index_name_map.append(ship_class)
 		ship_index += 1
+
+	for energy_weapon_name in mission_data.energy_weapon_models.keys():
+		energy_weapon_index_name_map.append(energy_weapon_name)
+
+	for missile_weapon_name in mission_data.missile_weapon_models.keys():
+		missile_weapon_index_name_map.append(missile_weapon_name)
 
 	add_ship_dialog.connect("confirmed", self, "_on_add_ship_confirmed")
 
