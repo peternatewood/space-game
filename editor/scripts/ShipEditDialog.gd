@@ -27,6 +27,39 @@ onready var ship_class_options = get_node("Ship Edit Grid/Ship Class Options")
 onready var wing_lineedit = get_node("Ship Edit Grid/Ship Wing LineEdit")
 
 
+func fill_ship_info(ship):
+	hitpoints_spinbox.set_value(ship.hull_hitpoints)
+	name_lineedit.set_text(ship.name)
+	set_title("Edit " + ship.name)
+
+	var energy_weapon_slot_count: int = 0
+	var missile_weapon_slot_count: int = 0
+	if ship is AttackShipBase:
+		for ship_option_index in range(ship_class_options.get_item_count()):
+			if ship_class_options.get_item_text(ship_option_index) == ship.ship_class:
+				ship_class_options.select(ship_option_index)
+				break
+
+		energy_weapon_slot_count = ship.energy_weapon_hardpoints.size()
+		missile_weapon_slot_count = ship.missile_weapon_hardpoints.size()
+
+	for index in range(energy_weapon_options.size()):
+		if index < energy_weapon_slot_count:
+			energy_weapon_options[index].show()
+			energy_weapon_labels[index].show()
+		else:
+			energy_weapon_options[index].hide()
+			energy_weapon_labels[index].hide()
+
+	for index in range(missile_weapon_options.size()):
+		if index < missile_weapon_slot_count:
+			missile_weapon_options[index].show()
+			missile_weapon_labels[index].show()
+		else:
+			missile_weapon_options[index].hide()
+			missile_weapon_labels[index].hide()
+
+
 # According to the docs, Control.has_point does exist, but the engine disagrees
 func has_point(point: Vector2):
 	return rect_position.x < point.x and point.x < rect_position.x + rect_size.x and rect_position.y < point.y and point.y < rect_position.y + rect_size.y
@@ -49,3 +82,6 @@ func prepare_options(mission_data):
 		for option in missile_weapon_options:
 			option.add_item(name, missile_model_index)
 		missile_model_index += 1
+
+
+const AttackShipBase = preload("res://scripts/AttackShipBase.gd")

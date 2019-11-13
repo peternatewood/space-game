@@ -96,6 +96,7 @@ margin_left = -261.0
 margin_top = -241.0
 margin_right = -21.0
 margin_bottom = 79.0
+rect_min_size = Vector2( 240, 320 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 popup_exclusive = true
