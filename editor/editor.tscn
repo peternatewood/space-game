@@ -44,6 +44,14 @@ anchor_bottom = 1.0
 texture = SubResource( 1 )
 expand = true
 
+[node name="Viewport Dummy Control" type="Control" parent="Controls Container"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
 [node name="PanelContainer" type="PanelContainer" parent="Controls Container"]
 anchor_right = 1.0
 margin_bottom = 4.0
@@ -66,6 +74,7 @@ margin_left = 44.0
 margin_right = 84.0
 margin_bottom = 22.0
 text = "Edit"
+items = [ "Add Ship", null, 0, false, false, 0, 0, null, "", false ]
 
 [node name="View Menu" type="MenuButton" parent="Controls Container/PanelContainer/Toolbar"]
 margin_left = 88.0
@@ -86,36 +95,45 @@ anchor_bottom = 1.0
 margin_top = -18.0
 text = "n/a"
 
-[node name="Ship Edit Dialog" type="WindowDialog" parent="."]
-visible = true
+[node name="Ship Edit Dialog" type="PanelContainer" parent="."]
+visible = false
 anchor_left = 1.0
-anchor_top = 0.5
 anchor_right = 1.0
-anchor_bottom = 0.5
-margin_left = -341.0
-margin_top = -234.0
-margin_right = -21.0
-margin_bottom = 86.0
-rect_min_size = Vector2( 320, 320 )
+margin_left = -254.0
+margin_top = 45.0
+margin_right = -20.0
+margin_bottom = 353.0
+grow_horizontal = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-popup_exclusive = true
-window_title = "Edit"
 script = ExtResource( 5 )
 
 [node name="Ship Edit Rows" type="VBoxContainer" parent="Ship Edit Dialog"]
-margin_right = 40.0
-margin_bottom = 40.0
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 227.0
+margin_bottom = 309.0
+
+[node name="Title" type="Label" parent="Ship Edit Dialog/Ship Edit Rows"]
+margin_right = 220.0
+margin_bottom = 14.0
+text = "Edit"
+
+[node name="HSeparator" type="HSeparator" parent="Ship Edit Dialog/Ship Edit Rows"]
+margin_top = 18.0
+margin_right = 220.0
+margin_bottom = 22.0
 
 [node name="Player Ship CheckBox" type="CheckBox" parent="Ship Edit Dialog/Ship Edit Rows"]
+margin_top = 26.0
 margin_right = 220.0
-margin_bottom = 24.0
+margin_bottom = 50.0
 text = "Player Ship"
 
 [node name="Ship Edit Grid" type="GridContainer" parent="Ship Edit Dialog/Ship Edit Rows"]
-margin_top = 28.0
+margin_top = 54.0
 margin_right = 220.0
-margin_bottom = 276.0
+margin_bottom = 302.0
 columns = 2
 
 [node name="Ship Class Label" type="Label" parent="Ship Edit Dialog/Ship Edit Rows/Ship Edit Grid"]
@@ -279,6 +297,31 @@ access = 1
 filters = PoolStringArray( "*.tscn" )
 current_dir = "user://"
 current_path = "user://"
+
+[node name="Add Ship Dialog" type="AcceptDialog" parent="."]
+visible = true
+margin_right = 48.0
+margin_bottom = 40.0
+window_title = "Add Ship"
+resizable = true
+
+[node name="Add Ship Grid" type="GridContainer" parent="Add Ship Dialog"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 117.0
+margin_bottom = 28.0
+columns = 2
+
+[node name="Ship Class Label" type="Label" parent="Add Ship Dialog/Add Ship Grid"]
+margin_top = 3.0
+margin_right = 64.0
+margin_bottom = 17.0
+text = "Ship Class"
+
+[node name="Ship Class Options" type="OptionButton" parent="Add Ship Dialog/Add Ship Grid"]
+margin_left = 68.0
+margin_right = 109.0
+margin_bottom = 20.0
 
 [node name="Manipulator Viewport" type="Viewport" parent="."]
 size = Vector2( 1920, 1080 )

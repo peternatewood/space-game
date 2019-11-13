@@ -33,6 +33,8 @@ func _ready():
 
 	ship_edit_dialog.prepare_options(mission_data)
 
+	get_node("Controls Container/Viewport Dummy Control").connect("gui_input", self, "_on_controls_gui_input")
+
 
 func _input(event):
 	if event is InputEventMouseButton:
@@ -41,10 +43,27 @@ func _input(event):
 		else:
 			# TODO: Check which buttons are still pressed, if any
 			current_mouse_button = -1
+	elif event is InputEventMouseMotion:
+		mouse_pos = event.position
+		mouse_vel = event.relative
 
+		match current_mouse_button:
+			BUTTON_MIDDLE:
+				if event.shift:
+					camera.move_position(event.relative)
+				else:
+					camera.orbit(event.relative)
+
+				if manipulator_overlay.visible:
+					manipulator_viewport.update_camera(camera)
+
+
+func _on_controls_gui_input(event):
+	if event is InputEventMouseButton:
 		match event.button_index:
 			BUTTON_LEFT:
-				if event.pressed and not ship_edit_dialog.has_point(event.position):
+				#if event.pressed and not ship_edit_dialog.has_point(event.position):
+				if event.pressed:
 					# Check manipulator viewport raycast first
 					var manipulator_intersect
 					if manipulator_overlay.visible:
@@ -64,7 +83,7 @@ func _input(event):
 							manipulator_overlay.show()
 
 							ship_edit_dialog.fill_ship_info(selected_node)
-							ship_edit_dialog.popup()
+							ship_edit_dialog.show()
 						else:
 							manipulator_overlay.hide()
 							transform_controls.toggle(false)
@@ -74,19 +93,6 @@ func _input(event):
 				camera.zoom_in()
 			BUTTON_WHEEL_DOWN:
 				camera.zoom_out()
-	elif event is InputEventMouseMotion:
-		mouse_pos = event.position
-		mouse_vel = event.relative
-
-		match current_mouse_button:
-			BUTTON_MIDDLE:
-				if event.shift:
-					camera.move_position(event.relative)
-				else:
-					camera.orbit(event.relative)
-
-				if manipulator_overlay.visible:
-					manipulator_viewport.update_camera(camera)
 
 
 func _on_file_menu_id_pressed(item_id: int):

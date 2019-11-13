@@ -1,4 +1,4 @@
-extends WindowDialog
+extends Control
 
 onready var energy_weapon_labels: Array = [
 	get_node("Ship Edit Rows/Ship Edit Grid/Energy Weapon Label 1"),
@@ -35,7 +35,7 @@ func fill_ship_info(ship):
 		hitpoints_spinbox.set_value(ship.hull_hitpoints)
 
 	name_lineedit.set_text(ship.name)
-	set_title("Edit " + ship.name)
+	get_node("Ship Edit Rows/Title").set_text("Edit " + ship.name)
 	wing_lineedit.set_text(ship.wing_name)
 
 	var energy_weapon_slot_count: int = 0
