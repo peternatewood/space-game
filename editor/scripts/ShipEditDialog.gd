@@ -25,7 +25,7 @@ onready var missile_weapon_options: Array = [
 onready var name_lineedit = get_node("Ship Edit Rows/Ship Edit Grid/Name LineEdit")
 onready var player_ship_checkbox = get_node("Ship Edit Rows/Player Ship CheckBox")
 onready var ship_class_options = get_node("Ship Edit Rows/Ship Edit Grid/Ship Class Options")
-onready var wing_lineedit = get_node("Ship Edit Rows/Ship Edit Grid/Ship Wing LineEdit")
+onready var wing_lineedit = get_node("Ship Edit Rows/Ship Edit Grid/Wing LineEdit")
 
 
 func fill_ship_info(ship):
@@ -59,6 +59,8 @@ func fill_ship_info(ship):
 		else:
 			missile_weapon_options[index].hide()
 			missile_weapon_labels[index].hide()
+
+	player_ship_checkbox.set_pressed(ship is Player)
 
 
 # According to the docs, Control.has_point does exist, but the engine disagrees

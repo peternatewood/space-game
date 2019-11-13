@@ -133,7 +133,7 @@ margin_bottom = 20.0
 margin_top = 29.0
 margin_right = 142.0
 margin_bottom = 43.0
-text = "Htipoints"
+text = "Hitpoints"
 
 [node name="Hitpoints SpinBox" type="SpinBox" parent="Ship Edit Dialog/Ship Edit Rows/Ship Edit Grid"]
 margin_left = 146.0
