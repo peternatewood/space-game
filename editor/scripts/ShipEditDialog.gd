@@ -29,7 +29,11 @@ onready var wing_lineedit = get_node("Ship Edit Rows/Ship Edit Grid/Wing LineEdi
 
 
 func fill_ship_info(ship):
-	hitpoints_spinbox.set_value(ship.hull_hitpoints)
+	if ship.hull_hitpoints == -1:
+		hitpoints_spinbox.set_value(ship.get_meta("hull_hitpoints"))
+	else:
+		hitpoints_spinbox.set_value(ship.hull_hitpoints)
+
 	name_lineedit.set_text(ship.name)
 	set_title("Edit " + ship.name)
 	wing_lineedit.set_text(ship.wing_name)
