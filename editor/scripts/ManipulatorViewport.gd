@@ -12,7 +12,7 @@ func get_node_at_position(pos: Vector2):
 	var intersection = world_state.intersect_ray(ray_origin, ray_origin + 100 * ray_normal, [], 0x7FFFFFFF, false, true)
 
 	if intersection.has("collider"):
-		return intersection.collider
+		return intersection
 
 	return null
 
