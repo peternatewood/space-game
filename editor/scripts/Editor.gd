@@ -65,7 +65,7 @@ func _input(event):
 
 							ship_edit_dialog.fill_ship_info(selected_node)
 							ship_edit_dialog.popup()
-						elif not ship_edit_dialog.visible:
+						else:
 							manipulator_overlay.hide()
 							transform_controls.toggle(false)
 
