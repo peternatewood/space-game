@@ -39,6 +39,8 @@ func _ready():
 		ship_index_name_map.append(ship_class)
 		ship_index += 1
 
+	add_ship_dialog.connect("confirmed", self, "_on_add_ship_confirmed")
+
 	var edit_menu = get_node("Controls Container/PanelContainer/Toolbar/Edit Menu")
 	edit_menu.get_popup().connect("id_pressed", self, "_on_edit_menu_id_pressed")
 
@@ -70,6 +72,13 @@ func _input(event):
 
 				if manipulator_overlay.visible:
 					manipulator_viewport.update_camera(camera)
+
+
+func _on_add_ship_confirmed():
+	var ship_class = ship_index_name_map[add_ship_options.get_selected_id()]
+	var ship_instance = mission_data.ship_models[ship_class].instance()
+	ship_instance.set_script(NPCShip)
+	mission_node.add_child(ship_instance)
 
 
 func _on_controls_gui_input(event):
@@ -169,6 +178,9 @@ func _process(delta):
 					selected_node.translate(translate_vel)
 					transform_controls.transform.origin = selected_node.transform.origin
 
+
+const NPCShip = preload("res://scripts/NPCShip.gd")
+const Player = preload("res://scripts/Player.gd")
 
 """
 // intersect3D_SegmentPlane(): intersect a segment and a plane
