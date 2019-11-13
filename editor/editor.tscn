@@ -92,40 +92,50 @@ anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-margin_left = -261.0
-margin_top = -241.0
+margin_left = -341.0
+margin_top = -234.0
 margin_right = -21.0
-margin_bottom = 79.0
-rect_min_size = Vector2( 240, 320 )
+margin_bottom = 86.0
+rect_min_size = Vector2( 320, 320 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 popup_exclusive = true
 window_title = "Edit"
 script = ExtResource( 5 )
 
-[node name="Ship Edit Grid" type="GridContainer" parent="Ship Edit Dialog"]
+[node name="Ship Edit Rows" type="VBoxContainer" parent="Ship Edit Dialog"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Player Ship CheckBox" type="CheckBox" parent="Ship Edit Dialog/Ship Edit Rows"]
 margin_right = 220.0
-margin_bottom = 248.0
+margin_bottom = 24.0
+text = "Player Ship"
+
+[node name="Ship Edit Grid" type="GridContainer" parent="Ship Edit Dialog/Ship Edit Rows"]
+margin_top = 28.0
+margin_right = 220.0
+margin_bottom = 276.0
 columns = 2
 
-[node name="Ship Class Label" type="Label" parent="Ship Edit Dialog/Ship Edit Grid"]
+[node name="Ship Class Label" type="Label" parent="Ship Edit Dialog/Ship Edit Rows/Ship Edit Grid"]
 margin_top = 3.0
 margin_right = 142.0
 margin_bottom = 17.0
 text = "Class"
 
-[node name="Ship Class Options" type="OptionButton" parent="Ship Edit Dialog/Ship Edit Grid"]
+[node name="Ship Class Options" type="OptionButton" parent="Ship Edit Dialog/Ship Edit Rows/Ship Edit Grid"]
 margin_left = 146.0
 margin_right = 220.0
 margin_bottom = 20.0
 
-[node name="Hitpoints Label" type="Label" parent="Ship Edit Dialog/Ship Edit Grid"]
+[node name="Hitpoints Label" type="Label" parent="Ship Edit Dialog/Ship Edit Rows/Ship Edit Grid"]
 margin_top = 29.0
 margin_right = 142.0
 margin_bottom = 43.0
 text = "Htipoints"
 
-[node name="Hitpoints SpinBox" type="SpinBox" parent="Ship Edit Dialog/Ship Edit Grid"]
+[node name="Hitpoints SpinBox" type="SpinBox" parent="Ship Edit Dialog/Ship Edit Rows/Ship Edit Grid"]
 margin_left = 146.0
 margin_top = 24.0
 margin_right = 220.0
@@ -133,101 +143,119 @@ margin_bottom = 48.0
 max_value = 0.0
 allow_greater = true
 
-[node name="Name Label" type="Label" parent="Ship Edit Dialog/Ship Edit Grid"]
+[node name="Name Label" type="Label" parent="Ship Edit Dialog/Ship Edit Rows/Ship Edit Grid"]
 margin_top = 57.0
 margin_right = 142.0
 margin_bottom = 71.0
 text = "Name"
 
-[node name="Name LineEdit" type="LineEdit" parent="Ship Edit Dialog/Ship Edit Grid"]
+[node name="Name LineEdit" type="LineEdit" parent="Ship Edit Dialog/Ship Edit Rows/Ship Edit Grid"]
 margin_left = 146.0
 margin_top = 52.0
 margin_right = 220.0
 margin_bottom = 76.0
 
-[node name="Wing Label" type="Label" parent="Ship Edit Dialog/Ship Edit Grid"]
+[node name="Wing Label" type="Label" parent="Ship Edit Dialog/Ship Edit Rows/Ship Edit Grid"]
 margin_top = 85.0
 margin_right = 142.0
 margin_bottom = 99.0
 text = "Wing Name"
 
-[node name="Wing LineEdit" type="LineEdit" parent="Ship Edit Dialog/Ship Edit Grid"]
+[node name="Wing LineEdit" type="LineEdit" parent="Ship Edit Dialog/Ship Edit Rows/Ship Edit Grid"]
 margin_left = 146.0
 margin_top = 80.0
 margin_right = 220.0
 margin_bottom = 104.0
 
-[node name="Energy Weapon Label 1" type="Label" parent="Ship Edit Dialog/Ship Edit Grid"]
+[node name="Energy Weapon Label 1" type="Label" parent="Ship Edit Dialog/Ship Edit Rows/Ship Edit Grid"]
 margin_top = 111.0
 margin_right = 142.0
 margin_bottom = 125.0
 text = "Energy Weapon Slot 1"
 
-[node name="Energy Weapon Options 1" type="OptionButton" parent="Ship Edit Dialog/Ship Edit Grid"]
+[node name="Energy Weapon Options 1" type="OptionButton" parent="Ship Edit Dialog/Ship Edit Rows/Ship Edit Grid"]
 margin_left = 146.0
 margin_top = 108.0
 margin_right = 220.0
 margin_bottom = 128.0
+text = "none"
+items = [ "none", null, false, 0, null ]
+selected = 0
 
-[node name="Energy Weapon Label 2" type="Label" parent="Ship Edit Dialog/Ship Edit Grid"]
+[node name="Energy Weapon Label 2" type="Label" parent="Ship Edit Dialog/Ship Edit Rows/Ship Edit Grid"]
 margin_top = 135.0
 margin_right = 142.0
 margin_bottom = 149.0
 text = "Energy Weapon Slot 2"
 
-[node name="Energy Weapon Options 2" type="OptionButton" parent="Ship Edit Dialog/Ship Edit Grid"]
+[node name="Energy Weapon Options 2" type="OptionButton" parent="Ship Edit Dialog/Ship Edit Rows/Ship Edit Grid"]
 margin_left = 146.0
 margin_top = 132.0
 margin_right = 220.0
 margin_bottom = 152.0
+text = "none"
+items = [ "none", null, false, 0, null ]
+selected = 0
 
-[node name="Energy Weapon Label 3" type="Label" parent="Ship Edit Dialog/Ship Edit Grid"]
+[node name="Energy Weapon Label 3" type="Label" parent="Ship Edit Dialog/Ship Edit Rows/Ship Edit Grid"]
 margin_top = 159.0
 margin_right = 142.0
 margin_bottom = 173.0
 text = "Energy Weapon Slot 3"
 
-[node name="Energy Weapon Options 3" type="OptionButton" parent="Ship Edit Dialog/Ship Edit Grid"]
+[node name="Energy Weapon Options 3" type="OptionButton" parent="Ship Edit Dialog/Ship Edit Rows/Ship Edit Grid"]
 margin_left = 146.0
 margin_top = 156.0
 margin_right = 220.0
 margin_bottom = 176.0
+text = "none"
+items = [ "none", null, false, 0, null ]
+selected = 0
 
-[node name="Missile Weapon Label 1" type="Label" parent="Ship Edit Dialog/Ship Edit Grid"]
+[node name="Missile Weapon Label 1" type="Label" parent="Ship Edit Dialog/Ship Edit Rows/Ship Edit Grid"]
 margin_top = 183.0
 margin_right = 142.0
 margin_bottom = 197.0
 text = "Missile Weapon Slot 1"
 
-[node name="Missile Weapon Options 1" type="OptionButton" parent="Ship Edit Dialog/Ship Edit Grid"]
+[node name="Missile Weapon Options 1" type="OptionButton" parent="Ship Edit Dialog/Ship Edit Rows/Ship Edit Grid"]
 margin_left = 146.0
 margin_top = 180.0
 margin_right = 220.0
 margin_bottom = 200.0
+text = "none"
+items = [ "none", null, false, 0, null ]
+selected = 0
 
-[node name="Missile Weapon Label 2" type="Label" parent="Ship Edit Dialog/Ship Edit Grid"]
+[node name="Missile Weapon Label 2" type="Label" parent="Ship Edit Dialog/Ship Edit Rows/Ship Edit Grid"]
 margin_top = 207.0
 margin_right = 142.0
 margin_bottom = 221.0
 text = "Missile Weapon Slot 2"
 
-[node name="Missile Weapon Options 2" type="OptionButton" parent="Ship Edit Dialog/Ship Edit Grid"]
+[node name="Missile Weapon Options 2" type="OptionButton" parent="Ship Edit Dialog/Ship Edit Rows/Ship Edit Grid"]
 margin_left = 146.0
 margin_top = 204.0
 margin_right = 220.0
 margin_bottom = 224.0
+text = "none"
+items = [ "none", null, false, 0, null ]
+selected = 0
 
-[node name="Missile Weapon Label 3" type="Label" parent="Ship Edit Dialog/Ship Edit Grid"]
+[node name="Missile Weapon Label 3" type="Label" parent="Ship Edit Dialog/Ship Edit Rows/Ship Edit Grid"]
 margin_top = 231.0
 margin_right = 142.0
 margin_bottom = 245.0
 text = "Missile Weapon Slot 3"
 
-[node name="Missile Weapon Options 3" type="OptionButton" parent="Ship Edit Dialog/Ship Edit Grid"]
+[node name="Missile Weapon Options 3" type="OptionButton" parent="Ship Edit Dialog/Ship Edit Rows/Ship Edit Grid"]
 margin_left = 146.0
 margin_top = 228.0
 margin_right = 220.0
 margin_bottom = 248.0
+text = "none"
+items = [ "none", null, false, 0, null ]
+selected = 0
 
 [node name="Open File Dialog" type="FileDialog" parent="."]
 margin_right = 400.0
