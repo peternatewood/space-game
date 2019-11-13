@@ -1,5 +1,6 @@
 extends Spatial
 
+onready var add_ship_dialog = get_node("Add Ship Dialog")
 onready var camera = get_node("Editor Camera")
 onready var debug = get_node("Controls Container/Debug")
 onready var debug_cube = get_node("Debug")
@@ -27,6 +28,9 @@ func _ready():
 	file_menu.get_popup().connect("id_pressed", self, "_on_file_menu_id_pressed")
 
 	save_file_dialog.connect("confirmed", self, "_on_save_file_dialog_confirmed")
+
+	var edit_menu = get_node("Controls Container/PanelContainer/Toolbar/Edit Menu")
+	edit_menu.get_popup().connect("id_pressed", self, "_on_edit_menu_id_pressed")
 
 	# TODO: update manipulator viewport if window size changes
 	manipulator_viewport.set_size(get_viewport().size)
@@ -95,8 +99,17 @@ func _on_controls_gui_input(event):
 				camera.zoom_out()
 
 
+func _on_edit_menu_id_pressed(item_id: int):
+	match item_id:
+		0:
+			add_ship_dialog.popup_centered()
+
+
 func _on_file_menu_id_pressed(item_id: int):
 	match item_id:
+		0:
+			# TODO: replace the current mission with the default mission
+			pass
 		1:
 			open_file_dialog.popup_centered()
 		2:

@@ -96,6 +96,7 @@ margin_top = -18.0
 text = "n/a"
 
 [node name="Ship Edit Dialog" type="PanelContainer" parent="."]
+editor/display_folded = true
 visible = false
 anchor_left = 1.0
 anchor_right = 1.0
@@ -299,7 +300,6 @@ current_dir = "user://"
 current_path = "user://"
 
 [node name="Add Ship Dialog" type="AcceptDialog" parent="."]
-visible = true
 margin_right = 48.0
 margin_bottom = 40.0
 window_title = "Add Ship"
