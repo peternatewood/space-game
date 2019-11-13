@@ -34,6 +34,7 @@ var is_populating: bool = false
 func _ready():
 	hitpoints_spinbox.connect("value_changed", self, "_on_hitpoints_changed")
 	name_lineedit.connect("text_changed", self, "_on_name_changed")
+	ship_class_options.connect("item_selected", self, "_on_ship_class_changed")
 	wing_lineedit.connect("text_changed", self, "_on_wing_changed")
 
 
@@ -46,6 +47,10 @@ func _on_name_changed(new_text: String):
 	if not is_populating:
 		edit_ship.set_name(new_text)
 		title.set_text("Edit " + edit_ship.name)
+
+
+func _on_ship_class_changed(item_index: int):
+	emit_signal("ship_class_changed", item_index)
 
 
 func _on_wing_changed(new_text: String):
@@ -125,6 +130,8 @@ func prepare_options(mission_data):
 			option.add_item(name, missile_weapon_index)
 		missile_weapon_index += 1
 
+
+signal ship_class_changed
 
 const AttackShipBase = preload("res://scripts/AttackShipBase.gd")
 const Player = preload("res://scripts/Player.gd")

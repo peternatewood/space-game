@@ -56,6 +56,7 @@ func _ready():
 	manipulator_viewport.set_size(get_viewport().size)
 
 	ship_edit_dialog.prepare_options(mission_data)
+	ship_edit_dialog.connect("ship_class_changed", self, "_on_ship_class_changed")
 
 	get_node("Controls Container/Viewport Dummy Control").connect("gui_input", self, "_on_controls_gui_input")
 
@@ -157,6 +158,28 @@ func _on_save_file_dialog_confirmed():
 				print("Error saving mission scene: " + str(resource_save_error))
 		else:
 			print("Error packing mission scene: " + str(scene_error))
+
+
+func _on_ship_class_changed(ship_index: int):
+	if ship_index < ship_index_name_map.size():
+		var ship_instance = mission_data.ship_models[ship_index_name_map[ship_index]].instance()
+		# Copy over all properties from existing ship
+		ship_instance.set_script(ship_edit_dialog.edit_ship.get_script())
+		ship_instance.hull_hitpoints = ship_edit_dialog.edit_ship.hull_hitpoints
+		ship_instance.name = ship_edit_dialog.edit_ship.name
+		ship_instance.wing_name = ship_edit_dialog.edit_ship.wing_name
+
+		# This method doesn't seem to work as expected
+		#ship_edit_dialog.edit_ship.replace_by(ship_instance)
+
+		mission_node.add_child(ship_instance)
+		ship_instance.transform = ship_edit_dialog.edit_ship.transform
+
+		ship_edit_dialog.edit_ship.free()
+		ship_edit_dialog.edit_ship = ship_instance
+		selected_node = ship_instance
+	else:
+		print("Invalid ship index selected: " + str(ship_index))
 
 
 func _process(delta):
