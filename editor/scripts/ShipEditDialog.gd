@@ -35,6 +35,7 @@ var is_populating: bool = false
 func _ready():
 	hitpoints_spinbox.connect("value_changed", self, "_on_hitpoints_changed")
 	name_lineedit.connect("text_changed", self, "_on_name_changed")
+	wing_lineedit.connect("text_changed", self, "_on_wing_changed")
 
 
 func _on_hitpoints_changed(new_value: float):
@@ -46,6 +47,12 @@ func _on_name_changed(new_text: String):
 	if not is_populating:
 		edit_ship.set_name(new_text)
 		title.set_text("Edit " + edit_ship.name)
+
+
+func _on_wing_changed(new_text: String):
+	if not is_populating:
+		# TODO: Ensure only valid characters are entered
+		edit_ship.wing_name = new_text
 
 
 # PUBLIC
