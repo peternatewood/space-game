@@ -24,6 +24,8 @@ var ship_index_name_map: Array = []
 
 
 func _ready():
+	get_tree().set_pause(true)
+
 	scene_file_regex.compile("^[\\w\\_\\-]+\\.tscn$")
 
 	var file_menu = get_node("Controls Container/PanelContainer/Toolbar/File Menu")
