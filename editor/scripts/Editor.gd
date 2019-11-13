@@ -19,6 +19,7 @@ var mouse_pos: Vector2
 var mouse_vel: Vector2
 var scene_file_regex = RegEx.new()
 var selected_node = null
+var ship_index_name_map: Array = []
 
 
 func _ready():
@@ -28,6 +29,11 @@ func _ready():
 	file_menu.get_popup().connect("id_pressed", self, "_on_file_menu_id_pressed")
 
 	save_file_dialog.connect("confirmed", self, "_on_save_file_dialog_confirmed")
+
+	var add_ship_options = get_node("Add Ship Dialog/Add Ship Grid/Ship Class Options")
+	for ship_class in mission_data.ship_models.keys():
+		add_ship_options.add_item(ship_class)
+		ship_index_name_map.append(ship_class)
 
 	var edit_menu = get_node("Controls Container/PanelContainer/Toolbar/Edit Menu")
 	edit_menu.get_popup().connect("id_pressed", self, "_on_edit_menu_id_pressed")
