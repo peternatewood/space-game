@@ -22,6 +22,7 @@ onready var missile_weapon_options: Array = [
 	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Missile Weapon Options 3")
 ]
 onready var name_lineedit = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Name LineEdit")
+onready var npc_settings = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows")
 onready var player_ship_checkbox = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Player Ship CheckBox")
 onready var title = get_node("Ship Edit Rows/Title")
 onready var ship_class_options = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Ship Class Options")
@@ -34,6 +35,7 @@ var is_populating: bool = false
 func _ready():
 	hitpoints_spinbox.connect("value_changed", self, "_on_hitpoints_changed")
 	name_lineedit.connect("text_changed", self, "_on_name_changed")
+	player_ship_checkbox.connect("toggled", self, "_on_player_ship_toggled")
 	ship_class_options.connect("item_selected", self, "_on_ship_class_changed")
 	wing_lineedit.connect("text_changed", self, "_on_wing_changed")
 
@@ -47,6 +49,15 @@ func _on_name_changed(new_text: String):
 	if not is_populating:
 		edit_ship.set_name(new_text)
 		title.set_text("Edit " + edit_ship.name)
+
+
+func _on_player_ship_toggled(button_pressed: bool):
+	if button_pressed:
+		npc_settings.hide()
+	else:
+		npc_settings.show()
+
+	emit_signal("player_ship_toggled", button_pressed)
 
 
 func _on_ship_class_changed(item_index: int):
@@ -101,7 +112,13 @@ func fill_ship_info(ship):
 			missile_weapon_options[index].hide()
 			missile_weapon_labels[index].hide()
 
-	player_ship_checkbox.set_pressed(ship is Player)
+	var is_player = ship is Player
+	player_ship_checkbox.set_pressed(is_player)
+
+	if is_player:
+		npc_settings.hide()
+	else:
+		npc_settings.show()
 
 	edit_ship = ship
 	is_populating = false
@@ -131,6 +148,7 @@ func prepare_options(mission_data):
 		missile_weapon_index += 1
 
 
+signal player_ship_toggled
 signal ship_class_changed
 
 const AttackShipBase = preload("res://scripts/AttackShipBase.gd")
