@@ -23,13 +23,17 @@ var mouse_pos: Vector2
 var mouse_vel: Vector2
 var scene_file_regex = RegEx.new()
 var selected_node = null
+var selected_node_index: int = -1
 var ship_index_name_map: Array = []
+var targets_container
 
 
 func _ready():
 	get_tree().set_pause(true)
 
 	scene_file_regex.compile("^[\\w\\_\\-]+\\.tscn$")
+
+	targets_container = mission_node.get_node("Targets Container")
 
 	var file_menu = get_node("Controls Container/PanelContainer/Toolbar/File Menu")
 	file_menu.get_popup().connect("id_pressed", self, "_on_file_menu_id_pressed")
@@ -61,6 +65,9 @@ func _ready():
 	ship_edit_dialog.connect("ship_class_changed", self, "_on_ship_class_changed")
 	ship_edit_dialog.connect("ship_position_changed", self, "_on_ship_position_changed")
 
+	ship_edit_dialog.previous_button.connect("pressed", self, "_on_edit_dialog_previous_pressed")
+	ship_edit_dialog.next_button.connect("pressed", self, "_on_edit_dialog_next_pressed")
+
 	get_node("Controls Container/Viewport Dummy Control").connect("gui_input", self, "_on_controls_gui_input")
 
 
@@ -68,7 +75,7 @@ func _on_add_ship_confirmed():
 	var ship_class = ship_index_name_map[add_ship_options.get_selected_id()]
 	var ship_instance = mission_data.ship_models[ship_class].instance()
 	ship_instance.set_script(NPCShip)
-	mission_node.add_child(ship_instance)
+	targets_container.add_child(ship_instance)
 
 
 func _on_controls_gui_input(event):
@@ -93,6 +100,7 @@ func _on_controls_gui_input(event):
 						manipulator_node = manipulator_intersect.collider
 					else:
 						selected_node = camera.get_node_at_position(event.position)
+						selected_node_index = selected_node.get_position_in_parent() if selected_node != null else -1
 						manipulator_node = null
 
 						if selected_node != null:
@@ -132,6 +140,24 @@ func _on_controls_gui_input(event):
 					manipulator_viewport.update_camera(camera)
 
 
+func _on_edit_dialog_previous_pressed():
+	var next_index = (selected_node_index - 1) % targets_container.get_child_count()
+
+	if next_index != selected_node_index:
+		selected_node_index = next_index
+		selected_node = targets_container.get_child(selected_node_index)
+		ship_edit_dialog.fill_ship_info(selected_node)
+
+
+func _on_edit_dialog_next_pressed():
+	var next_index = (selected_node_index + 1) % targets_container.get_child_count()
+
+	if next_index != selected_node_index:
+		selected_node_index = next_index
+		selected_node = targets_container.get_child(selected_node_index)
+		ship_edit_dialog.fill_ship_info(selected_node)
+
+
 func _on_edit_menu_id_pressed(item_id: int):
 	match item_id:
 		0:
@@ -152,7 +178,7 @@ func _on_file_menu_id_pressed(item_id: int):
 func _on_player_ship_toggled(is_player_ship: bool):
 	if is_player_ship:
 		# Ensure we only have one player ship by changing other players to npc ships
-		for child in mission_node.get_node("Targets Container").get_children():
+		for child in targets_container.get_children():
 			if child is Player:
 				var ship_data: Dictionary = {
 					"hull_hitpoints": child.hull_hitpoints,

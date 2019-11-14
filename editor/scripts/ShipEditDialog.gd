@@ -22,6 +22,7 @@ onready var missile_weapon_options: Array = [
 	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Missile Weapon Options 3")
 ]
 onready var name_lineedit = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Name LineEdit")
+onready var next_button = get_node("Ship Edit Rows/Title Container/Next Button")
 onready var npc_settings = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows")
 onready var player_ship_checkbox = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Player Ship CheckBox")
 onready var position_spinboxes: Dictionary = {
@@ -29,12 +30,13 @@ onready var position_spinboxes: Dictionary = {
 	"y": get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Transform Container/Position Y SpinBox"),
 	"z": get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Transform Container/Position Z SpinBox")
 }
+onready var previous_button = get_node("Ship Edit Rows/Title Container/Previous Button")
 onready var rotation_spinboxes: Dictionary = {
 	"x": get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Transform Container/Rotation X SpinBox"),
 	"y": get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Transform Container/Rotation Y SpinBox"),
 	"z": get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Transform Container/Rotation Z SpinBox")
 }
-onready var title = get_node("Ship Edit Rows/Title")
+onready var title = get_node("Ship Edit Rows/Title Container/Title")
 onready var ship_class_options = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Ship Class Options")
 onready var warped_in_checkbox = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Warped In CheckBox")
 onready var wing_lineedit = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Wing LineEdit")

@@ -114,18 +114,40 @@ margin_bottom = 527.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Title" type="Label" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows"]
+[node name="Title Container" type="HBoxContainer" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows"]
 margin_right = 454.0
-margin_bottom = 18.0
+margin_bottom = 22.0
+
+[node name="Previous Button" type="Button" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Title Container"]
+margin_right = 80.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 80, 0 )
+text = "Previous"
+
+[node name="Title" type="Label" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Title Container"]
+margin_left = 84.0
+margin_top = 2.0
+margin_right = 370.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
 text = "Edit"
+align = 1
+
+[node name="Next Button" type="Button" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Title Container"]
+margin_left = 374.0
+margin_right = 454.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 80, 0 )
+text = "Next"
 
 [node name="HSeparator" type="HSeparator" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows"]
-margin_top = 22.0
+margin_top = 26.0
 margin_right = 454.0
-margin_bottom = 26.0
+margin_bottom = 30.0
 
 [node name="Ship Edit Scroll" type="ScrollContainer" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows"]
-margin_top = 30.0
+editor/display_folded = true
+margin_top = 34.0
 margin_right = 454.0
 margin_bottom = 525.0
 size_flags_horizontal = 3
