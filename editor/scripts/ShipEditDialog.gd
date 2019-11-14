@@ -26,6 +26,7 @@ onready var npc_settings = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit S
 onready var player_ship_checkbox = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Player Ship CheckBox")
 onready var title = get_node("Ship Edit Rows/Title")
 onready var ship_class_options = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Ship Class Options")
+onready var warped_in_checkbox = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Warped In CheckBox")
 onready var wing_lineedit = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Wing LineEdit")
 
 var edit_ship = null
@@ -37,6 +38,7 @@ func _ready():
 	name_lineedit.connect("text_changed", self, "_on_name_changed")
 	player_ship_checkbox.connect("toggled", self, "_on_player_ship_toggled")
 	ship_class_options.connect("item_selected", self, "_on_ship_class_changed")
+	warped_in_checkbox.connect("toggled", self, "_on_warped_in_toggled")
 	wing_lineedit.connect("text_changed", self, "_on_wing_changed")
 
 
@@ -62,6 +64,10 @@ func _on_player_ship_toggled(button_pressed: bool):
 
 func _on_ship_class_changed(item_index: int):
 	emit_signal("ship_class_changed", item_index)
+
+
+func _on_warped_in_toggled(button_pressed: bool):
+	edit_ship.is_warped_in = button_pressed
 
 
 func _on_wing_changed(new_text: String):
@@ -117,7 +123,8 @@ func fill_ship_info(ship):
 
 	if is_player:
 		npc_settings.hide()
-	else:
+	elif ship is ShipBase:
+		warped_in_checkbox.set_pressed(ship.is_warped_in)
 		npc_settings.show()
 
 	edit_ship = ship
@@ -152,4 +159,6 @@ signal player_ship_toggled
 signal ship_class_changed
 
 const AttackShipBase = preload("res://scripts/AttackShipBase.gd")
+const NPCShip = preload("res://scripts/NPCShip.gd")
 const Player = preload("res://scripts/Player.gd")
+const ShipBase = preload("res://scripts/ShipBase.gd")
