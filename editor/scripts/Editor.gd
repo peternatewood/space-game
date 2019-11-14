@@ -1,7 +1,7 @@
 extends Spatial
 
-onready var add_ship_dialog = get_node("Add Ship Dialog")
-onready var add_ship_options = get_node("Add Ship Dialog/Add Ship Grid/Ship Class Options")
+onready var add_ship_dialog = get_node("Controls Container/Add Ship Dialog")
+onready var add_ship_options = get_node("Controls Container/Add Ship Dialog/Add Ship Grid/Ship Class Options")
 onready var camera = get_node("Editor Camera")
 onready var debug = get_node("Controls Container/Debug")
 onready var debug_cube = get_node("Debug")
@@ -9,9 +9,9 @@ onready var manipulator_overlay = get_node("Controls Container/Manipulator Overl
 onready var manipulator_viewport = get_node("Manipulator Viewport")
 onready var mission_data = get_node("/root/MissionData")
 onready var mission_node = get_node("Mission Scene")
-onready var open_file_dialog = get_node("Open File Dialog")
-onready var save_file_dialog = get_node("Save File Dialog")
-onready var ship_edit_dialog = get_node("Ship Edit Dialog")
+onready var open_file_dialog = get_node("Controls Container/Open File Dialog")
+onready var save_file_dialog = get_node("Controls Container/Save File Dialog")
+onready var ship_edit_dialog = get_node("Controls Container/Ship Edit Dialog")
 onready var transform_controls = get_node("Manipulator Viewport/Transform Controls")
 
 var current_mouse_button: int = -1
