@@ -1,31 +1,31 @@
 extends Control
 
 onready var energy_weapon_labels: Array = [
-	get_node("Ship Edit Rows/Ship Edit Grid/Energy Weapon Label 1"),
-	get_node("Ship Edit Rows/Ship Edit Grid/Energy Weapon Label 2"),
-	get_node("Ship Edit Rows/Ship Edit Grid/Energy Weapon Label 3")
+	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Energy Weapon Label 1"),
+	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Energy Weapon Label 2"),
+	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Energy Weapon Label 3")
 ]
 onready var energy_weapon_options: Array = [
-	get_node("Ship Edit Rows/Ship Edit Grid/Energy Weapon Options 1"),
-	get_node("Ship Edit Rows/Ship Edit Grid/Energy Weapon Options 2"),
-	get_node("Ship Edit Rows/Ship Edit Grid/Energy Weapon Options 3")
+	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Energy Weapon Options 1"),
+	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Energy Weapon Options 2"),
+	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Energy Weapon Options 3")
 ]
-onready var hitpoints_spinbox = get_node("Ship Edit Rows/Ship Edit Grid/Hitpoints SpinBox")
+onready var hitpoints_spinbox = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Hitpoints SpinBox")
 onready var missile_weapon_labels: Array = [
-	get_node("Ship Edit Rows/Ship Edit Grid/Missile Weapon Label 1"),
-	get_node("Ship Edit Rows/Ship Edit Grid/Missile Weapon Label 2"),
-	get_node("Ship Edit Rows/Ship Edit Grid/Missile Weapon Label 3")
+	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Missile Weapon Label 1"),
+	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Missile Weapon Label 2"),
+	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Missile Weapon Label 3")
 ]
 onready var missile_weapon_options: Array = [
-	get_node("Ship Edit Rows/Ship Edit Grid/Missile Weapon Options 1"),
-	get_node("Ship Edit Rows/Ship Edit Grid/Missile Weapon Options 2"),
-	get_node("Ship Edit Rows/Ship Edit Grid/Missile Weapon Options 3")
+	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Missile Weapon Options 1"),
+	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Missile Weapon Options 2"),
+	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Missile Weapon Options 3")
 ]
-onready var name_lineedit = get_node("Ship Edit Rows/Ship Edit Grid/Name LineEdit")
-onready var player_ship_checkbox = get_node("Ship Edit Rows/Player Ship CheckBox")
+onready var name_lineedit = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Name LineEdit")
+onready var player_ship_checkbox = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Player Ship CheckBox")
 onready var title = get_node("Ship Edit Rows/Title")
-onready var ship_class_options = get_node("Ship Edit Rows/Ship Edit Grid/Ship Class Options")
-onready var wing_lineedit = get_node("Ship Edit Rows/Ship Edit Grid/Wing LineEdit")
+onready var ship_class_options = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Ship Class Options")
+onready var wing_lineedit = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Wing LineEdit")
 
 var edit_ship = null
 var is_populating: bool = false
