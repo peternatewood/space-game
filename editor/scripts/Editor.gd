@@ -16,6 +16,7 @@ onready var transform_controls = get_node("Manipulator Viewport/Transform Contro
 
 var current_mouse_button: int = -1
 var energy_weapon_index_name_map: Array = []
+var has_player_ship: bool = true
 var manipulator_node = null
 var missile_weapon_index_name_map: Array = []
 var mouse_pos: Vector2
@@ -56,6 +57,7 @@ func _ready():
 	manipulator_viewport.set_size(get_viewport().size)
 
 	ship_edit_dialog.prepare_options(mission_data)
+	ship_edit_dialog.connect("player_ship_toggled", self, "_on_player_ship_toggled")
 	ship_edit_dialog.connect("ship_class_changed", self, "_on_ship_class_changed")
 
 	get_node("Controls Container/Viewport Dummy Control").connect("gui_input", self, "_on_controls_gui_input")
@@ -90,6 +92,7 @@ func _on_controls_gui_input(event):
 						manipulator_node = manipulator_intersect.collider
 					else:
 						selected_node = camera.get_node_at_position(event.position)
+						manipulator_node = null
 
 						if selected_node != null:
 							manipulator_viewport.update_camera(camera)
@@ -145,6 +148,33 @@ func _on_file_menu_id_pressed(item_id: int):
 			save_file_dialog.popup_centered()
 
 
+func _on_player_ship_toggled(is_player_ship: bool):
+	if is_player_ship:
+		# Ensure we only have one player ship by changing other players to npc ships
+		for child in mission_node.get_node("Targets Container").get_children():
+			if child is Player:
+				var ship_data: Dictionary = {
+					"hull_hitpoints": child.hull_hitpoints,
+					"faction": child.faction,
+					"is_warped_in": child.is_warped_in,
+					"ship_class": child.ship_class,
+					"wing_name": child.wing_name
+				}
+				child.set_script(NPCShip)
+
+				# Re-apply script properties that will have been lost
+				child.hull_hitpoints = ship_data.hull_hitpoints
+				child.faction = ship_data.faction
+				child.is_warped_in = ship_data.is_warped_in
+				child.ship_class = ship_data.ship_class
+				child.wing_name = ship_data.wing_name
+
+				# Run _ready again so we get all the onready vars loaded
+				child._ready()
+
+	has_player_ship = is_player_ship
+
+
 func _on_save_file_dialog_confirmed():
 	if save_file_dialog.current_file.length() == 0:
 		print("No file name provided")
@@ -170,7 +200,7 @@ func _on_ship_class_changed(ship_index: int):
 		ship_instance.name = ship_edit_dialog.edit_ship.name
 		ship_instance.wing_name = ship_edit_dialog.edit_ship.wing_name
 
-		# This method doesn't seem to work as expected
+		# This method doesn't seem to work as expected: the old model sticks around
 		#ship_edit_dialog.edit_ship.replace_by(ship_instance)
 
 		mission_node.add_child(ship_instance)

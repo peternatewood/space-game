@@ -323,7 +323,7 @@ text = "Order 1"
 margin_left = 60.0
 margin_right = 162.0
 margin_bottom = 28.0
-text = "Order Type"
+text = "none"
 items = [ "none", null, false, -1, null, "Passive", null, false, 0, null, "Attack", null, false, 1, null, "Defend", null, false, 2, null, "Ignore", null, false, 3, null, "Attack Any", null, false, 5, null, "Depart", null, false, 6, null, "Arrive", null, true, 7, null, "Patrol", null, false, 8, null ]
 selected = 0
 

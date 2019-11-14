@@ -28,7 +28,7 @@ border_width_bottom = 1
 border_color = Color( 0.466667, 0.466667, 0.466667, 1 )
 corner_detail = 2
 
-[sub_resource type="StyleBoxFlat" id=4]
+[sub_resource type="StyleBoxFlat" id=3]
 content_margin_left = 4.0
 content_margin_right = 4.0
 content_margin_top = 2.0
@@ -37,11 +37,11 @@ bg_color = Color( 0.184314, 0.184314, 0.247059, 1 )
 border_color = Color( 0.466667, 0.466667, 0.466667, 1 )
 corner_detail = 2
 
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="DynamicFont" id=4]
 font_data = ExtResource( 1 )
 
 [resource]
-default_font = SubResource( 3 )
+default_font = SubResource( 4 )
 Button/colors/font_color = Color( 1, 1, 1, 1 )
 Button/colors/font_color_disabled = Color( 0.9, 0.9, 0.9, 0.2 )
 Button/colors/font_color_hover = Color( 0.941176, 0.941176, 0.941176, 1 )
@@ -69,7 +69,7 @@ CheckBox/styles/disabled = null
 CheckBox/styles/focus = null
 CheckBox/styles/hover = null
 CheckBox/styles/hover_pressed = null
-CheckBox/styles/normal = SubResource( 4 )
+CheckBox/styles/normal = SubResource( 3 )
 CheckBox/styles/pressed = null
 ItemList/colors/font_color = Color( 0.8, 0.8, 0.8, 1 )
 ItemList/colors/font_color_selected = Color( 1, 1, 1, 1 )
