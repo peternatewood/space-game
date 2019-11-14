@@ -30,10 +30,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4 )
 current = true
 far = 1000.0
 
-[node name="RayCast" type="RayCast" parent="Editor Camera/Camera"]
-enabled = true
-cast_to = Vector3( 0, 0, -10 )
-
 [node name="Controls Container" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0

@@ -1,7 +1,6 @@
 extends Spatial
 
 onready var camera = get_node("Camera")
-onready var raycast = get_node("Camera/RayCast")
 
 var move_vel: Vector2
 
@@ -19,14 +18,18 @@ func _process(delta):
 
 
 func get_node_at_position(pos: Vector2):
-	var direction = 10 * camera.project_local_ray_normal(pos)
-	var position = camera.project_position(pos) - camera.global_transform.origin
+	# TODO: for some reason, we don't get intersections outside of a relatively small region near the center of the viewport
+	var ray_origin = camera.project_ray_origin(pos)
+	var ray_normal = camera.project_ray_normal(pos)
 
-	raycast.transform.origin = position
-	raycast.set_cast_to(direction)
-	raycast.force_raycast_update()
+	var world_state = get_viewport().find_world().get_direct_space_state()
 
-	return raycast.get_collider()
+	var intersection = world_state.intersect_ray(ray_origin, ray_origin + 1000 * ray_normal, [ self ], 0x7FFFFFFF, true, false)
+
+	if intersection.has("collider"):
+		return intersection.collider
+
+	return null
 
 
 func move_position(vel: Vector2):

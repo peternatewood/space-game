@@ -9,7 +9,7 @@ func get_node_at_position(pos: Vector2):
 
 	var world_state = find_world().get_direct_space_state()
 
-	var intersection = world_state.intersect_ray(ray_origin, ray_origin + 100 * ray_normal, [], 0x7FFFFFFF, false, true)
+	var intersection = world_state.intersect_ray(ray_origin, ray_origin + 1000 * ray_normal, [], 0x7FFFFFFF, false, true)
 
 	if intersection.has("collider"):
 		return intersection
