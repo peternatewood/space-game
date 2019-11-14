@@ -59,6 +59,7 @@ func _ready():
 	ship_edit_dialog.prepare_options(mission_data)
 	ship_edit_dialog.connect("player_ship_toggled", self, "_on_player_ship_toggled")
 	ship_edit_dialog.connect("ship_class_changed", self, "_on_ship_class_changed")
+	ship_edit_dialog.connect("ship_position_changed", self, "_on_ship_position_changed")
 
 	get_node("Controls Container/Viewport Dummy Control").connect("gui_input", self, "_on_controls_gui_input")
 
@@ -211,6 +212,10 @@ func _on_ship_class_changed(ship_index: int):
 		selected_node = ship_instance
 	else:
 		print("Invalid ship index selected: " + str(ship_index))
+
+
+func _on_ship_position_changed(position: Vector3):
+	transform_controls.transform.origin = position
 
 
 func _process(delta):

@@ -24,6 +24,16 @@ onready var missile_weapon_options: Array = [
 onready var name_lineedit = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Name LineEdit")
 onready var npc_settings = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows")
 onready var player_ship_checkbox = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Player Ship CheckBox")
+onready var position_spinboxes: Dictionary = {
+	"x": get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Transform Container/Position X SpinBox"),
+	"y": get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Transform Container/Position Y SpinBox"),
+	"z": get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Transform Container/Position Z SpinBox")
+}
+onready var rotation_spinboxes: Dictionary = {
+	"x": get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Transform Container/Rotation X SpinBox"),
+	"y": get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Transform Container/Rotation Y SpinBox"),
+	"z": get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Transform Container/Rotation Z SpinBox")
+}
 onready var title = get_node("Ship Edit Rows/Title")
 onready var ship_class_options = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Ship Class Options")
 onready var warped_in_checkbox = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Warped In CheckBox")
@@ -40,6 +50,14 @@ func _ready():
 	ship_class_options.connect("item_selected", self, "_on_ship_class_changed")
 	warped_in_checkbox.connect("toggled", self, "_on_warped_in_toggled")
 	wing_lineedit.connect("text_changed", self, "_on_wing_changed")
+
+	position_spinboxes.x.connect("value_changed", self, "_on_position_x_changed")
+	position_spinboxes.y.connect("value_changed", self, "_on_position_y_changed")
+	position_spinboxes.z.connect("value_changed", self, "_on_position_z_changed")
+
+	rotation_spinboxes.x.connect("value_changed", self, "_on_rotation_x_changed")
+	rotation_spinboxes.y.connect("value_changed", self, "_on_rotation_y_changed")
+	rotation_spinboxes.z.connect("value_changed", self, "_on_rotation_z_changed")
 
 
 func _on_hitpoints_changed(new_value: float):
@@ -60,6 +78,36 @@ func _on_player_ship_toggled(button_pressed: bool):
 		npc_settings.show()
 
 	emit_signal("player_ship_toggled", button_pressed)
+
+
+func _on_position_x_changed(new_value: float):
+	edit_ship.transform.origin.x = new_value
+	emit_signal("ship_position_changed", edit_ship.transform.origin)
+
+
+func _on_position_y_changed(new_value: float):
+	edit_ship.transform.origin.y = new_value
+	emit_signal("ship_position_changed", edit_ship.transform.origin)
+
+
+func _on_position_z_changed(new_value: float):
+	edit_ship.transform.origin.z = new_value
+	emit_signal("ship_position_changed", edit_ship.transform.origin)
+
+
+func _on_rotation_x_changed(new_value: float):
+	edit_ship.rotation_degrees.x = new_value
+	emit_signal("ship_rotation_changed", edit_ship.rotation_degrees)
+
+
+func _on_rotation_y_changed(new_value: float):
+	edit_ship.rotation_degrees.y = new_value
+	emit_signal("ship_rotation_changed", edit_ship.rotation_degrees)
+
+
+func _on_rotation_z_changed(new_value: float):
+	edit_ship.rotation_degrees.z = new_value
+	emit_signal("ship_rotation_changed", edit_ship.rotation_degrees)
 
 
 func _on_ship_class_changed(item_index: int):
@@ -90,6 +138,14 @@ func fill_ship_info(ship):
 	name_lineedit.set_text(ship.name)
 	title.set_text("Edit " + ship.name)
 	wing_lineedit.set_text(ship.wing_name)
+
+	position_spinboxes.x.set_value(ship.transform.origin.x)
+	position_spinboxes.y.set_value(ship.transform.origin.y)
+	position_spinboxes.z.set_value(ship.transform.origin.z)
+
+	rotation_spinboxes.x.set_value(ship.rotation_degrees.x)
+	rotation_spinboxes.y.set_value(ship.rotation_degrees.y)
+	rotation_spinboxes.z.set_value(ship.rotation_degrees.z)
 
 	var energy_weapon_slot_count: int = 0
 	var missile_weapon_slot_count: int = 0
@@ -157,6 +213,8 @@ func prepare_options(mission_data):
 
 signal player_ship_toggled
 signal ship_class_changed
+signal ship_position_changed
+signal ship_rotation_changed
 
 const AttackShipBase = preload("res://scripts/AttackShipBase.gd")
 const NPCShip = preload("res://scripts/NPCShip.gd")
