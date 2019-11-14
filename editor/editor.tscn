@@ -98,13 +98,12 @@ margin_top = -18.0
 text = "n/a"
 
 [node name="Ship Edit Dialog" type="PanelContainer" parent="Controls Container"]
-visible = false
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -332.0
+margin_left = -384.0
 margin_top = 45.0
 margin_right = -18.0
-margin_bottom = 353.0
+margin_bottom = 574.0
 grow_horizontal = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -113,42 +112,42 @@ script = ExtResource( 5 )
 [node name="Ship Edit Rows" type="VBoxContainer" parent="Controls Container/Ship Edit Dialog"]
 margin_left = 4.0
 margin_top = 2.0
-margin_right = 310.0
-margin_bottom = 306.0
+margin_right = 362.0
+margin_bottom = 527.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Title" type="Label" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows"]
-margin_right = 306.0
+margin_right = 358.0
 margin_bottom = 18.0
 text = "Edit"
 
 [node name="HSeparator" type="HSeparator" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows"]
 margin_top = 22.0
-margin_right = 306.0
+margin_right = 358.0
 margin_bottom = 26.0
 
 [node name="Ship Edit Scroll" type="ScrollContainer" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows"]
 margin_top = 30.0
-margin_right = 306.0
-margin_bottom = 304.0
+margin_right = 358.0
+margin_bottom = 525.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 scroll_horizontal_enabled = false
 
 [node name="Ship Edit Scroll Rows" type="VBoxContainer" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll"]
-margin_right = 114.0
-margin_bottom = 26.0
+margin_right = 346.0
+margin_bottom = 526.0
 
 [node name="Player Ship CheckBox" type="CheckBox" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows"]
-margin_right = 294.0
+margin_right = 346.0
 margin_bottom = 22.0
 text = "Player Ship"
 
 [node name="Ship Edit Grid" type="GridContainer" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows"]
 editor/display_folded = true
 margin_top = 26.0
-margin_right = 294.0
+margin_right = 346.0
 margin_bottom = 300.0
 columns = 2
 
@@ -290,6 +289,205 @@ margin_bottom = 274.0
 text = "none"
 items = [ "none", null, false, 0, null ]
 selected = 0
+
+[node name="HSeparator" type="HSeparator" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows"]
+margin_top = 304.0
+margin_right = 346.0
+margin_bottom = 308.0
+
+[node name="NPC Ship Rows" type="VBoxContainer" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows"]
+margin_top = 312.0
+margin_right = 346.0
+margin_bottom = 526.0
+
+[node name="Warped In CheckBox" type="CheckBox" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows"]
+margin_right = 346.0
+margin_bottom = 22.0
+pressed = true
+text = "Start Warped In"
+
+[node name="Orders Grid" type="GridContainer" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows"]
+margin_top = 26.0
+margin_right = 346.0
+margin_bottom = 214.0
+columns = 4
+
+[node name="Order Label 1" type="Label" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_top = 5.0
+margin_right = 56.0
+margin_bottom = 23.0
+text = "Order 1"
+
+[node name="Order Type Option 1" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 60.0
+margin_right = 162.0
+margin_bottom = 28.0
+text = "Order Type"
+items = [ "none", null, false, -1, null, "Passive", null, false, 0, null, "Attack", null, false, 1, null, "Defend", null, false, 2, null, "Ignore", null, false, 3, null, "Attack Any", null, false, 5, null, "Depart", null, false, 6, null, "Arrive", null, true, 7, null, "Patrol", null, false, 8, null ]
+selected = 0
+
+[node name="Order Target Option 1" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 166.0
+margin_right = 220.0
+margin_bottom = 28.0
+text = "none"
+items = [ "none", null, false, -1, null ]
+selected = 0
+
+[node name="Order Priority SpinBox 1" type="SpinBox" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 224.0
+margin_right = 346.0
+margin_bottom = 28.0
+
+[node name="Order Label 2" type="Label" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_top = 37.0
+margin_right = 56.0
+margin_bottom = 55.0
+text = "Order 2"
+
+[node name="Order Type Option 2" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 60.0
+margin_top = 32.0
+margin_right = 162.0
+margin_bottom = 60.0
+text = "none"
+items = [ "none", null, false, -1, null, "Passive", null, false, 0, null, "Attack", null, false, 1, null, "Defend", null, false, 2, null, "Ignore", null, false, 3, null, "Attack Any", null, false, 5, null, "Depart", null, false, 6, null, "Arrive", null, true, 7, null, "Patrol", null, false, 8, null ]
+selected = 0
+
+[node name="Order Target Option 2" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 166.0
+margin_top = 32.0
+margin_right = 220.0
+margin_bottom = 60.0
+text = "none"
+items = [ "none", null, false, -1, null ]
+selected = 0
+
+[node name="Order Priority SpinBox 2" type="SpinBox" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 224.0
+margin_top = 32.0
+margin_right = 346.0
+margin_bottom = 60.0
+
+[node name="Order Label 3" type="Label" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_top = 69.0
+margin_right = 56.0
+margin_bottom = 87.0
+text = "Order 3"
+
+[node name="Order Type Option 3" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 60.0
+margin_top = 64.0
+margin_right = 162.0
+margin_bottom = 92.0
+text = "none"
+items = [ "none", null, false, -1, null, "Passive", null, false, 0, null, "Attack", null, false, 1, null, "Defend", null, false, 2, null, "Ignore", null, false, 3, null, "Attack Any", null, false, 5, null, "Depart", null, false, 6, null, "Arrive", null, true, 7, null, "Patrol", null, false, 8, null ]
+selected = 0
+
+[node name="Order Target Option 3" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 166.0
+margin_top = 64.0
+margin_right = 220.0
+margin_bottom = 92.0
+text = "none"
+items = [ "none", null, false, -1, null ]
+selected = 0
+
+[node name="Order Priority SpinBox 3" type="SpinBox" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 224.0
+margin_top = 64.0
+margin_right = 346.0
+margin_bottom = 92.0
+
+[node name="Order Label 4" type="Label" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_top = 101.0
+margin_right = 56.0
+margin_bottom = 119.0
+text = "Order 4"
+
+[node name="Order Type Option 4" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 60.0
+margin_top = 96.0
+margin_right = 162.0
+margin_bottom = 124.0
+text = "none"
+items = [ "none", null, false, -1, null, "Passive", null, false, 0, null, "Attack", null, false, 1, null, "Defend", null, false, 2, null, "Ignore", null, false, 3, null, "Attack Any", null, false, 5, null, "Depart", null, false, 6, null, "Arrive", null, true, 7, null, "Patrol", null, false, 8, null ]
+selected = 0
+
+[node name="Order Target Option 4" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 166.0
+margin_top = 96.0
+margin_right = 220.0
+margin_bottom = 124.0
+text = "none"
+items = [ "none", null, false, -1, null ]
+selected = 0
+
+[node name="Order Priority SpinBox 4" type="SpinBox" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 224.0
+margin_top = 96.0
+margin_right = 346.0
+margin_bottom = 124.0
+
+[node name="Order Label 5" type="Label" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_top = 133.0
+margin_right = 56.0
+margin_bottom = 151.0
+text = "Order 5"
+
+[node name="Order Type Option 5" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 60.0
+margin_top = 128.0
+margin_right = 162.0
+margin_bottom = 156.0
+text = "none"
+items = [ "none", null, false, -1, null, "Passive", null, false, 0, null, "Attack", null, false, 1, null, "Defend", null, false, 2, null, "Ignore", null, false, 3, null, "Attack Any", null, false, 5, null, "Depart", null, false, 6, null, "Arrive", null, true, 7, null, "Patrol", null, false, 8, null ]
+selected = 0
+
+[node name="Order Target Option 5" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 166.0
+margin_top = 128.0
+margin_right = 220.0
+margin_bottom = 156.0
+text = "none"
+items = [ "none", null, false, -1, null ]
+selected = 0
+
+[node name="Order Priority SpinBox 5" type="SpinBox" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 224.0
+margin_top = 128.0
+margin_right = 346.0
+margin_bottom = 156.0
+
+[node name="Order Label 6" type="Label" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_top = 165.0
+margin_right = 56.0
+margin_bottom = 183.0
+text = "Order 6"
+
+[node name="Order Type Option 6" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 60.0
+margin_top = 160.0
+margin_right = 162.0
+margin_bottom = 188.0
+text = "none"
+items = [ "none", null, false, -1, null, "Passive", null, false, 0, null, "Attack", null, false, 1, null, "Defend", null, false, 2, null, "Ignore", null, false, 3, null, "Attack Any", null, false, 5, null, "Depart", null, false, 6, null, "Arrive", null, true, 7, null, "Patrol", null, false, 8, null ]
+selected = 0
+
+[node name="Order Target Option 6" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 166.0
+margin_top = 160.0
+margin_right = 220.0
+margin_bottom = 188.0
+text = "none"
+items = [ "none", null, false, -1, null ]
+selected = 0
+
+[node name="Order Priority SpinBox 6" type="SpinBox" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 224.0
+margin_top = 160.0
+margin_right = 346.0
+margin_bottom = 188.0
 
 [node name="Open File Dialog" type="FileDialog" parent="Controls Container"]
 margin_right = 400.0
