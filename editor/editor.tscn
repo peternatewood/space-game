@@ -5,7 +5,7 @@
 [ext_resource path="res://editor/scripts/Camera.gd" type="Script" id=3]
 [ext_resource path="res://themes/editor_theme.tres" type="Theme" id=4]
 [ext_resource path="res://editor/scripts/ShipEditDialog.gd" type="Script" id=5]
-[ext_resource path="res://editor/scripts/ObjectivesEditDialog.gd" type="Script" id=6]
+[ext_resource path="res://editor/scripts/ObjectivesWindow.gd" type="Script" id=6]
 [ext_resource path="res://editor/scripts/ManipulatorViewport.gd" type="Script" id=7]
 [ext_resource path="res://editor/scripts/TransformControls.gd" type="Script" id=8]
 [ext_resource path="res://editor/models/translate_arrow_x.dae" type="PackedScene" id=9]
@@ -613,7 +613,6 @@ margin_right = 298.0
 margin_bottom = 210.0
 
 [node name="Objectives Window" type="PanelContainer" parent="Controls Container"]
-editor/display_folded = true
 visible = false
 margin_left = 9.0
 margin_top = 44.0
@@ -622,129 +621,129 @@ margin_bottom = 444.0
 rect_min_size = Vector2( 200, 400 )
 script = ExtResource( 6 )
 
-[node name="Objectives Dialog Rows" type="VBoxContainer" parent="Controls Container/Objectives Window"]
+[node name="Objectives Window Rows" type="VBoxContainer" parent="Controls Container/Objectives Window"]
 margin_left = 4.0
 margin_top = 2.0
 margin_right = 196.0
 margin_bottom = 398.0
 
-[node name="Title" type="Label" parent="Controls Container/Objectives Window/Objectives Dialog Rows"]
+[node name="Title" type="Label" parent="Controls Container/Objectives Window/Objectives Window Rows"]
 margin_right = 192.0
 margin_bottom = 18.0
 text = "Objectives"
 
-[node name="HSeparator" type="HSeparator" parent="Controls Container/Objectives Window/Objectives Dialog Rows"]
+[node name="HSeparator" type="HSeparator" parent="Controls Container/Objectives Window/Objectives Window Rows"]
 margin_top = 22.0
 margin_right = 192.0
 margin_bottom = 26.0
 
-[node name="Primary Panel" type="PanelContainer" parent="Controls Container/Objectives Window/Objectives Dialog Rows"]
+[node name="Primary Panel" type="PanelContainer" parent="Controls Container/Objectives Window/Objectives Window Rows"]
 margin_top = 30.0
 margin_right = 192.0
 margin_bottom = 68.0
 
-[node name="Primary Rows" type="VBoxContainer" parent="Controls Container/Objectives Window/Objectives Dialog Rows/Primary Panel"]
+[node name="Primary Rows" type="VBoxContainer" parent="Controls Container/Objectives Window/Objectives Window Rows/Primary Panel"]
 margin_left = 4.0
 margin_top = 2.0
 margin_right = 188.0
 margin_bottom = 36.0
 
-[node name="Primary Label Container" type="HBoxContainer" parent="Controls Container/Objectives Window/Objectives Dialog Rows/Primary Panel/Primary Rows"]
+[node name="Primary Label Container" type="HBoxContainer" parent="Controls Container/Objectives Window/Objectives Window Rows/Primary Panel/Primary Rows"]
 margin_right = 184.0
 margin_bottom = 22.0
 
-[node name="Primary Label" type="Label" parent="Controls Container/Objectives Window/Objectives Dialog Rows/Primary Panel/Primary Rows/Primary Label Container"]
+[node name="Primary Label" type="Label" parent="Controls Container/Objectives Window/Objectives Window Rows/Primary Panel/Primary Rows/Primary Label Container"]
 margin_top = 2.0
 margin_right = 56.0
 margin_bottom = 20.0
 text = "Primary"
 
-[node name="Add Primary Button" type="Button" parent="Controls Container/Objectives Window/Objectives Dialog Rows/Primary Panel/Primary Rows/Primary Label Container"]
+[node name="Add Primary Button" type="Button" parent="Controls Container/Objectives Window/Objectives Window Rows/Primary Panel/Primary Rows/Primary Label Container"]
 margin_left = 60.0
 margin_right = 92.0
 margin_bottom = 22.0
 text = "Add"
 
-[node name="HSeparator2" type="HSeparator" parent="Controls Container/Objectives Window/Objectives Dialog Rows/Primary Panel/Primary Rows"]
+[node name="HSeparator2" type="HSeparator" parent="Controls Container/Objectives Window/Objectives Window Rows/Primary Panel/Primary Rows"]
 margin_top = 26.0
 margin_right = 184.0
 margin_bottom = 30.0
 
-[node name="Primary Objectives" type="VBoxContainer" parent="Controls Container/Objectives Window/Objectives Dialog Rows/Primary Panel/Primary Rows"]
+[node name="Primary Objectives" type="VBoxContainer" parent="Controls Container/Objectives Window/Objectives Window Rows/Primary Panel/Primary Rows"]
 margin_top = 34.0
 margin_right = 184.0
 margin_bottom = 34.0
 
-[node name="Secondary Panel" type="PanelContainer" parent="Controls Container/Objectives Window/Objectives Dialog Rows"]
+[node name="Secondary Panel" type="PanelContainer" parent="Controls Container/Objectives Window/Objectives Window Rows"]
 margin_top = 72.0
 margin_right = 192.0
 margin_bottom = 110.0
 
-[node name="Secondary Rows" type="VBoxContainer" parent="Controls Container/Objectives Window/Objectives Dialog Rows/Secondary Panel"]
+[node name="Secondary Rows" type="VBoxContainer" parent="Controls Container/Objectives Window/Objectives Window Rows/Secondary Panel"]
 margin_left = 4.0
 margin_top = 2.0
 margin_right = 188.0
 margin_bottom = 36.0
 
-[node name="Secondary Label Container" type="HBoxContainer" parent="Controls Container/Objectives Window/Objectives Dialog Rows/Secondary Panel/Secondary Rows"]
+[node name="Secondary Label Container" type="HBoxContainer" parent="Controls Container/Objectives Window/Objectives Window Rows/Secondary Panel/Secondary Rows"]
 margin_right = 184.0
 margin_bottom = 22.0
 
-[node name="Secondary Label" type="Label" parent="Controls Container/Objectives Window/Objectives Dialog Rows/Secondary Panel/Secondary Rows/Secondary Label Container"]
+[node name="Secondary Label" type="Label" parent="Controls Container/Objectives Window/Objectives Window Rows/Secondary Panel/Secondary Rows/Secondary Label Container"]
 margin_top = 2.0
 margin_right = 72.0
 margin_bottom = 20.0
 text = "Secondary"
 
-[node name="Add Secondary Button" type="Button" parent="Controls Container/Objectives Window/Objectives Dialog Rows/Secondary Panel/Secondary Rows/Secondary Label Container"]
+[node name="Add Secondary Button" type="Button" parent="Controls Container/Objectives Window/Objectives Window Rows/Secondary Panel/Secondary Rows/Secondary Label Container"]
 margin_left = 76.0
 margin_right = 108.0
 margin_bottom = 22.0
 text = "Add"
 
-[node name="HSeparator2" type="HSeparator" parent="Controls Container/Objectives Window/Objectives Dialog Rows/Secondary Panel/Secondary Rows"]
+[node name="HSeparator2" type="HSeparator" parent="Controls Container/Objectives Window/Objectives Window Rows/Secondary Panel/Secondary Rows"]
 margin_top = 26.0
 margin_right = 184.0
 margin_bottom = 30.0
 
-[node name="Secondary Objectives" type="VBoxContainer" parent="Controls Container/Objectives Window/Objectives Dialog Rows/Secondary Panel/Secondary Rows"]
+[node name="Secondary Objectives" type="VBoxContainer" parent="Controls Container/Objectives Window/Objectives Window Rows/Secondary Panel/Secondary Rows"]
 margin_top = 34.0
 margin_right = 184.0
 margin_bottom = 34.0
 
-[node name="Secret Panel" type="PanelContainer" parent="Controls Container/Objectives Window/Objectives Dialog Rows"]
+[node name="Secret Panel" type="PanelContainer" parent="Controls Container/Objectives Window/Objectives Window Rows"]
 margin_top = 114.0
 margin_right = 192.0
 margin_bottom = 152.0
 
-[node name="Secret Rows" type="VBoxContainer" parent="Controls Container/Objectives Window/Objectives Dialog Rows/Secret Panel"]
+[node name="Secret Rows" type="VBoxContainer" parent="Controls Container/Objectives Window/Objectives Window Rows/Secret Panel"]
 margin_left = 4.0
 margin_top = 2.0
 margin_right = 188.0
 margin_bottom = 36.0
 
-[node name="Secret Label Container" type="HBoxContainer" parent="Controls Container/Objectives Window/Objectives Dialog Rows/Secret Panel/Secret Rows"]
+[node name="Secret Label Container" type="HBoxContainer" parent="Controls Container/Objectives Window/Objectives Window Rows/Secret Panel/Secret Rows"]
 margin_right = 184.0
 margin_bottom = 22.0
 
-[node name="Secret Label" type="Label" parent="Controls Container/Objectives Window/Objectives Dialog Rows/Secret Panel/Secret Rows/Secret Label Container"]
+[node name="Secret Label" type="Label" parent="Controls Container/Objectives Window/Objectives Window Rows/Secret Panel/Secret Rows/Secret Label Container"]
 margin_top = 2.0
 margin_right = 48.0
 margin_bottom = 20.0
 text = "Secret"
 
-[node name="Add Secret Button" type="Button" parent="Controls Container/Objectives Window/Objectives Dialog Rows/Secret Panel/Secret Rows/Secret Label Container"]
+[node name="Add Secret Button" type="Button" parent="Controls Container/Objectives Window/Objectives Window Rows/Secret Panel/Secret Rows/Secret Label Container"]
 margin_left = 52.0
 margin_right = 84.0
 margin_bottom = 22.0
 text = "Add"
 
-[node name="HSeparator2" type="HSeparator" parent="Controls Container/Objectives Window/Objectives Dialog Rows/Secret Panel/Secret Rows"]
+[node name="HSeparator2" type="HSeparator" parent="Controls Container/Objectives Window/Objectives Window Rows/Secret Panel/Secret Rows"]
 margin_top = 26.0
 margin_right = 184.0
 margin_bottom = 30.0
 
-[node name="Secret Objectives" type="VBoxContainer" parent="Controls Container/Objectives Window/Objectives Dialog Rows/Secret Panel/Secret Rows"]
+[node name="Secret Objectives" type="VBoxContainer" parent="Controls Container/Objectives Window/Objectives Window Rows/Secret Panel/Secret Rows"]
 margin_top = 34.0
 margin_right = 184.0
 margin_bottom = 34.0
@@ -840,34 +839,107 @@ window_title = "Edit Objective"
 [node name="VBoxContainer" type="VBoxContainer" parent="Controls Container/Objective Edit Dialog"]
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 152.0
-margin_bottom = 62.0
+margin_right = 154.0
+margin_bottom = 218.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Controls Container/Objective Edit Dialog/VBoxContainer"]
-margin_right = 144.0
+[node name="Name Row" type="HBoxContainer" parent="Controls Container/Objective Edit Dialog/VBoxContainer"]
+margin_right = 146.0
 margin_bottom = 28.0
 
-[node name="Name Label" type="Label" parent="Controls Container/Objective Edit Dialog/VBoxContainer/HBoxContainer"]
+[node name="Name Label" type="Label" parent="Controls Container/Objective Edit Dialog/VBoxContainer/Name Row"]
 margin_top = 5.0
 margin_right = 32.0
 margin_bottom = 23.0
 text = "Name"
 
-[node name="Name LineEdit" type="LineEdit" parent="Controls Container/Objective Edit Dialog/VBoxContainer/HBoxContainer"]
+[node name="Name LineEdit" type="LineEdit" parent="Controls Container/Objective Edit Dialog/VBoxContainer/Name Row"]
 margin_left = 36.0
 margin_right = 142.0
 margin_bottom = 28.0
 
 [node name="Description Label" type="Label" parent="Controls Container/Objective Edit Dialog/VBoxContainer"]
 margin_top = 32.0
-margin_right = 144.0
+margin_right = 146.0
 margin_bottom = 50.0
 text = "Description"
 
 [node name="Description TextEdit" type="TextEdit" parent="Controls Container/Objective Edit Dialog/VBoxContainer"]
 margin_top = 54.0
-margin_right = 144.0
+margin_right = 146.0
 margin_bottom = 54.0
+
+[node name="Enabled CheckBox" type="CheckBox" parent="Controls Container/Objective Edit Dialog/VBoxContainer"]
+margin_top = 58.0
+margin_right = 146.0
+margin_bottom = 80.0
+text = "Enabled"
+
+[node name="Is Critical CheckBox" type="CheckBox" parent="Controls Container/Objective Edit Dialog/VBoxContainer"]
+margin_top = 84.0
+margin_right = 146.0
+margin_bottom = 106.0
+hint_tooltip = "If checked, failure of this objective will fail the mission (only applies to Primary Objectives)"
+text = "Critical"
+
+[node name="Success Rows" type="VBoxContainer" parent="Controls Container/Objective Edit Dialog/VBoxContainer"]
+margin_top = 110.0
+margin_right = 146.0
+margin_bottom = 210.0
+
+[node name="Requirement" type="VBoxContainer" parent="Controls Container/Objective Edit Dialog/VBoxContainer/Success Rows"]
+margin_right = 146.0
+margin_bottom = 100.0
+
+[node name="Requirement Grid" type="GridContainer" parent="Controls Container/Objective Edit Dialog/VBoxContainer/Success Rows/Requirement"]
+margin_right = 146.0
+margin_bottom = 48.0
+columns = 2
+
+[node name="Type Label" type="Label" parent="Controls Container/Objective Edit Dialog/VBoxContainer/Success Rows/Requirement/Requirement Grid"]
+margin_top = 2.0
+margin_right = 72.0
+margin_bottom = 20.0
+text = "Type"
+
+[node name="Type Options" type="OptionButton" parent="Controls Container/Objective Edit Dialog/VBoxContainer/Success Rows/Requirement/Requirement Grid"]
+margin_left = 76.0
+margin_right = 146.0
+margin_bottom = 22.0
+text = "Patrol"
+items = [ "Patrol", null, false, 0, null, "Destroy", null, false, 1, null, "Defend", null, false, 2, null, "Objective", null, false, 3, null, "Ships Arrive", null, false, 4, null, "Ships Leave", null, false, 5, null ]
+selected = 0
+
+[node name="Waypoints Label" type="Label" parent="Controls Container/Objective Edit Dialog/VBoxContainer/Success Rows/Requirement/Requirement Grid"]
+margin_top = 28.0
+margin_right = 72.0
+margin_bottom = 46.0
+text = "Waypoints"
+
+[node name="Waypoints Options" type="OptionButton" parent="Controls Container/Objective Edit Dialog/VBoxContainer/Success Rows/Requirement/Requirement Grid"]
+margin_left = 76.0
+margin_top = 26.0
+margin_right = 146.0
+margin_bottom = 48.0
+text = "none"
+items = [ "none", null, false, 0, null ]
+selected = 0
+
+[node name="Targets Label" type="Label" parent="Controls Container/Objective Edit Dialog/VBoxContainer/Success Rows/Requirement"]
+margin_top = 52.0
+margin_right = 146.0
+margin_bottom = 70.0
+text = "Targets"
+
+[node name="Targets Rows" type="VBoxContainer" parent="Controls Container/Objective Edit Dialog/VBoxContainer/Success Rows/Requirement"]
+margin_top = 74.0
+margin_right = 146.0
+margin_bottom = 74.0
+
+[node name="Add Target Button" type="Button" parent="Controls Container/Objective Edit Dialog/VBoxContainer/Success Rows/Requirement"]
+margin_top = 78.0
+margin_right = 146.0
+margin_bottom = 100.0
+text = "Add Target"
 
 [node name="Manipulator Viewport" type="Viewport" parent="."]
 size = Vector2( 1920, 1080 )

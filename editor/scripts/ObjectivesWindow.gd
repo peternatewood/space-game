@@ -1,9 +1,9 @@
 extends Control
 
 onready var objective_rows: Array = [
-	get_node("Objectives Dialog Rows/Primary Panel/Primary Rows/Primary Objectives"),
-	get_node("Objectives Dialog Rows/Secondary Panel/Secondary Rows/Secondary Objectives"),
-	get_node("Objectives Dialog Rows/Secret Panel/Secret Rows/Secret Objectives")
+	get_node("Objectives Window Rows/Primary Panel/Primary Rows/Primary Objectives"),
+	get_node("Objectives Window Rows/Secondary Panel/Secondary Rows/Secondary Objectives"),
+	get_node("Objectives Window Rows/Secret Panel/Secret Rows/Secret Objectives")
 ]
 
 
