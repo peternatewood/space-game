@@ -22,6 +22,7 @@ var manipulator_node = null
 var loadouts: Dictionary = {}
 var mouse_pos: Vector2
 var mouse_vel: Vector2
+var objectives = {}
 var scene_file_regex = RegEx.new()
 var selected_node = null
 var selected_node_index: int = -1
@@ -82,6 +83,12 @@ func _ready():
 	ship_edit_dialog.next_button.connect("pressed", self, "_on_edit_dialog_next_pressed")
 
 	get_node("Controls Container/Viewport Dummy Control").connect("gui_input", self, "_on_controls_gui_input")
+
+	if mission_node.has_meta("objectives"):
+		objectives = mission_node.get_meta("objectives")
+
+	var objectives_edit_dialog = get_node("Controls Container/Objectives Edit Dialog")
+	objectives_edit_dialog.prepare_objectives(objectives)
 
 
 func _on_add_ship_confirmed():
