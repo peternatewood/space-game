@@ -85,6 +85,7 @@ margin_left = 132.0
 margin_right = 172.0
 margin_bottom = 22.0
 text = "Help"
+items = [ "About", null, 0, false, false, 0, 0, null, "", false, "Manual", null, 0, false, false, 1, 0, null, "", false ]
 
 [node name="Debug" type="Label" parent="Controls Container"]
 anchor_top = 1.0
@@ -655,6 +656,22 @@ text = "Ship Class"
 margin_left = 68.0
 margin_right = 109.0
 margin_bottom = 20.0
+
+[node name="About Window" type="WindowDialog" parent="Controls Container"]
+margin_right = 136.0
+margin_bottom = 39.0
+rect_min_size = Vector2( 136, 39 )
+window_title = "About"
+
+[node name="Label" type="Label" parent="Controls Container/About Window"]
+margin_right = 136.0
+margin_bottom = 39.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Space Game Editor
+v0.1.0"
+align = 1
+valign = 1
 
 [node name="Manipulator Viewport" type="Viewport" parent="."]
 size = Vector2( 1920, 1080 )

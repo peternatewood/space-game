@@ -1,5 +1,6 @@
 extends Spatial
 
+onready var about_window = get_node("Controls Container/About Window")
 onready var add_ship_dialog = get_node("Controls Container/Add Ship Dialog")
 onready var add_ship_options = get_node("Controls Container/Add Ship Dialog/Add Ship Grid/Ship Class Options")
 onready var camera = get_node("Editor Camera")
@@ -45,6 +46,9 @@ func _ready():
 	file_menu.get_popup().connect("id_pressed", self, "_on_file_menu_id_pressed")
 
 	save_file_dialog.connect("confirmed", self, "_on_save_file_dialog_confirmed")
+
+	var help_menu = get_node("Controls Container/PanelContainer/Toolbar/Help Menu")
+	help_menu.get_popup().connect("id_pressed", self, "_on_help_menu_id_pressed")
 
 	var ship_index: int = 0
 	for ship_class in mission_data.ship_models.keys():
@@ -192,6 +196,15 @@ func _on_file_menu_id_pressed(item_id: int):
 			open_file_dialog.popup_centered()
 		2:
 			save_file_dialog.popup_centered()
+
+
+func _on_help_menu_id_pressed(item_id: int):
+	match item_id:
+		0:
+			about_window.popup_centered()
+		1:
+			# TODO: manual describing how to use the editor
+			pass
 
 
 func _on_player_ship_toggled(is_player_ship: bool):
