@@ -26,4 +26,4 @@ func prepare_objectives(objectives: Array):
 
 signal edit_button_pressed
 
-const OBJECTIVE = preload("res://editor/objective.tscn")
+const OBJECTIVE = preload("res://editor/prefabs/objective.tscn")
