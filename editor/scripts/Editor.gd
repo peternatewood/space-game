@@ -69,6 +69,8 @@ func _ready():
 	ship_edit_dialog.prepare_options(mission_data)
 	ship_edit_dialog.connect("player_ship_toggled", self, "_on_player_ship_toggled")
 	ship_edit_dialog.connect("ship_class_changed", self, "_on_ship_class_changed")
+	ship_edit_dialog.connect("ship_energy_weapon_changed", self, "_on_edit_ship_energy_weapon_changed")
+	ship_edit_dialog.connect("ship_missile_weapon_changed", self, "_on_edit_ship_missile_weapon_changed")
 	ship_edit_dialog.connect("ship_position_changed", self, "_on_ship_position_changed")
 
 	ship_edit_dialog.previous_button.connect("pressed", self, "_on_edit_dialog_previous_pressed")
@@ -169,6 +171,16 @@ func _on_edit_menu_id_pressed(item_id: int):
 	match item_id:
 		0:
 			add_ship_dialog.popup_centered()
+
+
+func _on_edit_ship_energy_weapon_changed(weapon_name: String, slot_index: int):
+	loadouts[ship_edit_dialog.edit_ship.name]["energy_weapons"][slot_index] = weapon_name
+	mission_node.set_meta("loadouts", loadouts)
+
+
+func _on_edit_ship_missile_weapon_changed(weapon_name: String, slot_index: int):
+	loadouts[ship_edit_dialog.edit_ship.name]["missile_weapons"][slot_index] = weapon_name
+	mission_node.set_meta("loadouts", loadouts)
 
 
 func _on_file_menu_id_pressed(item_id: int):

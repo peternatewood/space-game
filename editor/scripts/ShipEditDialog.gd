@@ -63,6 +63,16 @@ func _ready():
 	rotation_spinboxes.y.connect("value_changed", self, "_on_rotation_y_changed")
 	rotation_spinboxes.z.connect("value_changed", self, "_on_rotation_z_changed")
 
+	var energy_weapon_index: int = 0
+	for option in energy_weapon_options:
+		option.connect("item_selected", self, "_on_ship_energy_weapon_changed", [ energy_weapon_index ])
+		energy_weapon_index += 1
+
+	var missile_weapon_index: int = 0
+	for option in missile_weapon_options:
+		option.connect("item_selected", self, "_on_ship_missile_weapon_changed", [ missile_weapon_index ])
+		missile_weapon_index += 1
+
 
 func _on_hitpoints_changed(new_value: float):
 	if not is_populating:
@@ -116,6 +126,24 @@ func _on_rotation_z_changed(new_value: float):
 
 func _on_ship_class_changed(item_index: int):
 	emit_signal("ship_class_changed", item_index)
+
+
+func _on_ship_energy_weapon_changed(item_index: int, slot_index: int):
+	var weapon_name: String = "none"
+	if item_index != 0:
+		# The first item at [0] is "none", so we have to subtract one
+		weapon_name = energy_weapon_index_name_map[item_index - 1]
+
+	emit_signal("ship_energy_weapon_changed", weapon_name, slot_index)
+
+
+func _on_ship_missile_weapon_changed(item_index: int, slot_index: int):
+	var weapon_name: String
+	if item_index != 0:
+		# The first item at [0] is "none", so we have to subtract one
+		weapon_name = missile_weapon_index_name_map[item_index - 1]
+
+	emit_signal("ship_missile_weapon_changed", weapon_name, slot_index)
 
 
 func _on_warped_in_toggled(button_pressed: bool):
@@ -214,13 +242,15 @@ func prepare_options(mission_data):
 		ship_class_options.add_item(name, ship_index)
 		ship_index += 1
 
-	var energy_weapon_index: int = 0
+	# Start at one since the first option "none" is at index 0
+	var energy_weapon_index: int = 1
 	for name in mission_data.energy_weapon_models.keys():
 		for option in energy_weapon_options:
 			option.add_item(name, energy_weapon_index)
 		energy_weapon_index += 1
 
-	var missile_weapon_index: int = 0
+	# Start at one since the first option "none" is at index 0
+	var missile_weapon_index: int = 1
 	for name in mission_data.missile_weapon_models.keys():
 		for option in missile_weapon_options:
 			option.add_item(name, missile_weapon_index)
@@ -229,6 +259,8 @@ func prepare_options(mission_data):
 
 signal player_ship_toggled
 signal ship_class_changed
+signal ship_energy_weapon_changed
+signal ship_missile_weapon_changed
 signal ship_position_changed
 signal ship_rotation_changed
 
