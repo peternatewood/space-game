@@ -11,6 +11,7 @@ onready var manipulator_viewport = get_node("Manipulator Viewport")
 onready var manual_window = get_node("Controls Container/Manual Window")
 onready var mission_data = get_node("/root/MissionData")
 onready var mission_node = get_node("Mission Scene")
+onready var objectives_edit_dialog = get_node("Controls Container/Objective Edit Dialog")
 onready var open_file_dialog = get_node("Controls Container/Open File Dialog")
 onready var save_file_dialog = get_node("Controls Container/Save File Dialog")
 onready var ship_edit_dialog = get_node("Controls Container/Ship Edit Dialog")
@@ -87,8 +88,9 @@ func _ready():
 	if mission_node.has_meta("objectives"):
 		objectives = mission_node.get_meta("objectives")
 
-	var objectives_edit_dialog = get_node("Controls Container/Objectives Edit Dialog")
-	objectives_edit_dialog.prepare_objectives(objectives)
+	var objectives_window = get_node("Controls Container/Objectives Window")
+	objectives_window.prepare_objectives(objectives)
+	objectives_window.connect("edit_button_pressed", self, "_on_objectives_edit_button_pressed")
 
 
 func _on_add_ship_confirmed():
@@ -212,6 +214,10 @@ func _on_help_menu_id_pressed(item_id: int):
 			about_window.popup_centered()
 		1:
 			manual_window.popup_centered()
+
+
+func _on_objectives_edit_button_pressed(objective):
+	objectives_edit_dialog.popup_centered()
 
 
 func _on_player_ship_toggled(is_player_ship: bool):
