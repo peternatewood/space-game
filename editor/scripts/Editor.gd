@@ -12,6 +12,7 @@ onready var manual_window = get_node("Controls Container/Manual Window")
 onready var mission_data = get_node("/root/MissionData")
 onready var mission_node = get_node("Mission Scene")
 onready var objectives_edit_dialog = get_node("Controls Container/Objective Edit Dialog")
+onready var objectives_window = get_node("Controls Container/Objectives Window")
 onready var open_file_dialog = get_node("Controls Container/Open File Dialog")
 onready var save_file_dialog = get_node("Controls Container/Save File Dialog")
 onready var ship_edit_dialog = get_node("Controls Container/Ship Edit Dialog")
@@ -85,10 +86,12 @@ func _ready():
 
 	get_node("Controls Container/Viewport Dummy Control").connect("gui_input", self, "_on_controls_gui_input")
 
+	var view_menu = get_node("Controls Container/PanelContainer/Toolbar/View Menu")
+	view_menu.get_popup().connect("id_pressed", self, "_on_view_menu_id_pressed")
+
 	if mission_node.has_meta("objectives"):
 		objectives = mission_node.get_meta("objectives")
 
-	var objectives_window = get_node("Controls Container/Objectives Window")
 	objectives_window.prepare_objectives(objectives)
 	objectives_window.connect("edit_button_pressed", self, "_on_objectives_edit_button_pressed")
 
@@ -287,6 +290,12 @@ func _on_ship_class_changed(ship_index: int):
 
 func _on_ship_position_changed(position: Vector3):
 	transform_controls.transform.origin = position
+
+
+func _on_view_menu_id_pressed(item_id: int):
+	match item_id:
+		0:
+			objectives_window.show()
 
 
 func _process(delta):
