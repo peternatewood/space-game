@@ -4,6 +4,40 @@
 [ext_resource path="res://scripts/Player.gd" type="Script" id=2]
 
 [node name="Mission Controller" type="Spatial"]
+__meta__ = {
+"name": "Debug Mission",
+"briefing": [ "Test everything to do with individual missions." ],
+"armory": {
+"ships": [ "Spider Fighter", "Spider Interceptor", "Spider Bomber" ],
+"energy_weapons": [ "Energy Bolt", "Disintigrator" ],
+"missile_weapons": [ "Heat Seeker" ]
+},
+"loadouts": {
+"Alpha 1": {
+"energy_weapons": [ "Energy Bolt", "Disintigrator" ],
+"missile_weapons": [ "Heat Seeker", "Heat Seeker" ]
+},
+},
+"objectives": [ [ {
+"name": "Destroy All Enemies",
+"description": "Destroy every enemy wing to complete the mission.",
+"is_critical": true,
+"success_requirements": [ { "type": 1, "targets": [ "Buteo 1", "Buteo 2" ] } ]
+} ],
+[ {
+"name": "Protect Friendly Ships",
+"description": "Protect all ships in Alpha wing.",
+"success_requirements": [ { "type": 3, "objective_type": 0, "objective_index": 0 } ],
+"failure_requirements": [ { "type": 1, "targets": [ "Alpha 2", "Alpha 3" ] } ],
+"trigger_requirements": [ { "type": 4, "targets": [ "Alpha 2", "Alpha 3" ] } ]
+} ],
+[ {
+"name": "Don't Call In Reinforcements",
+"description": "Complete the mission without calling in Beta wing: your reinforcements.",
+"success_requirements": [ { "type": 3, "objective_type": 0, "objective_index": 0 } ],
+"failure_requirements": [ { "type": 4, "targets": [ "Beta 1" ] } ]
+} ] ]
+}
 
 [node name="Sun Light" type="DirectionalLight" parent="."]
 transform = Transform( 0.707107, -0.612372, 0.353554, 0, 0.5, 0.866025, -0.707107, -0.612372, 0.353554, 0, 0, 0 )
