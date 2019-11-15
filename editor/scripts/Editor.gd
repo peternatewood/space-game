@@ -8,6 +8,7 @@ onready var debug = get_node("Controls Container/Debug")
 onready var debug_cube = get_node("Debug")
 onready var manipulator_overlay = get_node("Controls Container/Manipulator Overlay")
 onready var manipulator_viewport = get_node("Manipulator Viewport")
+onready var manual_window = get_node("Controls Container/Manual Window")
 onready var mission_data = get_node("/root/MissionData")
 onready var mission_node = get_node("Mission Scene")
 onready var open_file_dialog = get_node("Controls Container/Open File Dialog")
@@ -203,8 +204,7 @@ func _on_help_menu_id_pressed(item_id: int):
 		0:
 			about_window.popup_centered()
 		1:
-			# TODO: manual describing how to use the editor
-			pass
+			manual_window.popup_centered()
 
 
 func _on_player_ship_toggled(is_player_ship: bool):

@@ -658,6 +658,7 @@ margin_right = 109.0
 margin_bottom = 20.0
 
 [node name="About Window" type="WindowDialog" parent="Controls Container"]
+editor/display_folded = true
 margin_right = 136.0
 margin_bottom = 39.0
 rect_min_size = Vector2( 136, 39 )
@@ -672,6 +673,22 @@ text = "Space Game Editor
 v0.1.0"
 align = 1
 valign = 1
+
+[node name="Manual Window" type="WindowDialog" parent="Controls Container"]
+margin_right = 48.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 400, 300 )
+window_title = "Manual"
+resizable = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Controls Container/Manual Window"]
+margin_right = 400.0
+margin_bottom = 300.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Welcome!
+
+This manual is currently a work in progress. In future updates, it will provide directions for using the mission editor, as well as several help topics"
 
 [node name="Manipulator Viewport" type="Viewport" parent="."]
 size = Vector2( 1920, 1080 )
