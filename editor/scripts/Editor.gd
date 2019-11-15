@@ -15,10 +15,9 @@ onready var ship_edit_dialog = get_node("Controls Container/Ship Edit Dialog")
 onready var transform_controls = get_node("Manipulator Viewport/Transform Controls")
 
 var current_mouse_button: int = -1
-var energy_weapon_index_name_map: Array = []
 var has_player_ship: bool = true
 var manipulator_node = null
-var missile_weapon_index_name_map: Array = []
+var loadouts: Dictionary = {}
 var mouse_pos: Vector2
 var mouse_vel: Vector2
 var scene_file_regex = RegEx.new()
@@ -34,6 +33,13 @@ func _ready():
 	scene_file_regex.compile("^[\\w\\_\\-]+\\.tscn$")
 
 	targets_container = mission_node.get_node("Targets Container")
+	if mission_node.has_meta("loadouts"):
+		loadouts = mission_node.get_meta("loadouts")
+
+	for node_name in loadouts.keys():
+		var node = targets_container.get_node_or_null(node_name)
+		if node == null:
+			print("Invalid node name for mission: " + node_name)
 
 	var file_menu = get_node("Controls Container/PanelContainer/Toolbar/File Menu")
 	file_menu.get_popup().connect("id_pressed", self, "_on_file_menu_id_pressed")
@@ -47,10 +53,10 @@ func _ready():
 		ship_index += 1
 
 	for energy_weapon_name in mission_data.energy_weapon_models.keys():
-		energy_weapon_index_name_map.append(energy_weapon_name)
+		ship_edit_dialog.energy_weapon_index_name_map.append(energy_weapon_name)
 
 	for missile_weapon_name in mission_data.missile_weapon_models.keys():
-		missile_weapon_index_name_map.append(missile_weapon_name)
+		ship_edit_dialog.missile_weapon_index_name_map.append(missile_weapon_name)
 
 	add_ship_dialog.connect("confirmed", self, "_on_add_ship_confirmed")
 
@@ -110,7 +116,8 @@ func _on_controls_gui_input(event):
 							transform_controls.transform.origin = selected_node.transform.origin
 							manipulator_overlay.show()
 
-							ship_edit_dialog.fill_ship_info(selected_node)
+							var ship_loadout = loadouts.get(selected_node.name, {})
+							ship_edit_dialog.fill_ship_info(selected_node, ship_loadout)
 							ship_edit_dialog.show()
 						else:
 							manipulator_overlay.hide()

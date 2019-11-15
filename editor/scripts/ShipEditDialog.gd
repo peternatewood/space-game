@@ -42,7 +42,9 @@ onready var warped_in_checkbox = get_node("Ship Edit Rows/Ship Edit Scroll/Ship 
 onready var wing_lineedit = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Wing LineEdit")
 
 var edit_ship = null
+var energy_weapon_index_name_map: Array = []
 var is_populating: bool = false
+var missile_weapon_index_name_map: Array = []
 
 
 func _ready():
@@ -129,7 +131,7 @@ func _on_wing_changed(new_text: String):
 # PUBLIC
 
 
-func fill_ship_info(ship):
+func fill_ship_info(ship, loadout: Dictionary = {}):
 	is_populating = true
 
 	if ship.hull_hitpoints == -1:
@@ -151,6 +153,10 @@ func fill_ship_info(ship):
 
 	var energy_weapon_slot_count: int = 0
 	var missile_weapon_slot_count: int = 0
+
+	var energy_weapons: Array = loadout.get("energy_weapons", [])
+	var missile_weapons: Array = loadout.get("missile_weapons", [])
+
 	if ship is AttackShipBase:
 		for ship_option_index in range(ship_class_options.get_item_count()):
 			if ship_class_options.get_item_text(ship_option_index) == ship.ship_class:
@@ -162,6 +168,10 @@ func fill_ship_info(ship):
 
 	for index in range(energy_weapon_options.size()):
 		if index < energy_weapon_slot_count:
+			var energy_weapon_options_index = energy_weapon_index_name_map.find(energy_weapons[index])
+			# Add one since the first item is "none" and the index will be "-1" if the item isn't found
+			energy_weapon_options[index].select(energy_weapon_options_index + 1)
+
 			energy_weapon_options[index].show()
 			energy_weapon_labels[index].show()
 		else:
@@ -170,6 +180,10 @@ func fill_ship_info(ship):
 
 	for index in range(missile_weapon_options.size()):
 		if index < missile_weapon_slot_count:
+			var missile_weapon_options_index = missile_weapon_index_name_map.find(missile_weapons[index])
+			# Add one since the first item is "none" and the index will be "-1" if the item isn't found
+			missile_weapon_options[index].select(missile_weapon_options_index + 1)
+
 			missile_weapon_options[index].show()
 			missile_weapon_labels[index].show()
 		else:
