@@ -18,43 +18,9 @@ __meta__ = {
 }
 },
 "name": "Debug Mission",
-"objectives": [ [ {
-"description": "Destroy every enemy wing to complete the mission.",
-"is_critical": true,
-"name": "Destroy All Enemies",
-"success_requirements": [ {
-"targets": [ "Buteo 1", "Buteo 2" ],
-"type": 1
-} ]
-} ], [ {
-"description": "Protect all ships in Alpha wing.",
-"failure_requirements": [ {
-"targets": [ "Alpha 2", "Alpha 3" ],
-"type": 1
-} ],
-"name": "Protect Friendly Ships",
-"success_requirements": [ {
-"objective_index": 0,
-"objective_type": 0,
-"type": 3
-} ],
-"trigger_requirements": [ {
-"targets": [ "Alpha 2", "Alpha 3" ],
-"type": 4
-} ]
-} ], [ {
-"description": "Complete the mission without calling in Beta wing: your reinforcements.",
-"failure_requirements": [ {
-"targets": [ "Beta 1" ],
-"type": 4
-} ],
-"name": "Don't Call In Reinforcements",
-"success_requirements": [ {
-"objective_index": 0,
-"objective_type": 0,
-"type": 3
-} ]
-} ] ]
+"objectives": [ [], [], [] ],
+"player_path": "Targets Container/Alpha 1",
+"reinforcement_wings": []
 }
 
 [node name="Sun Light" type="DirectionalLight" parent="."]
