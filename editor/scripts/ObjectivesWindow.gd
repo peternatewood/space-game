@@ -23,7 +23,11 @@ func _ready():
 
 
 func _on_add_objective_pressed(type: int):
-	emit_signal("add_objective", type)
+	emit_signal("objective_added", type)
+
+
+func _on_delete_button_pressed(objective, type, index):
+	emit_signal("delete_button_pressed", objective, type, index)
 
 
 func _on_edit_button_pressed(objective, type, index):
@@ -33,15 +37,14 @@ func _on_edit_button_pressed(objective, type, index):
 # PUBLIC
 
 
-func add_objective(objective_data: Dictionary, type: int, index: int = -1):
-	if index == -1:
-		index = objective_rows[type].get_child_count()
-
+func add_objective(objective_data: Dictionary, type: int):
 	var objective_item = OBJECTIVE.instance()
 	objective_rows[type].add_child(objective_item)
 
 	objective_item.set_objective(objective_data)
-	objective_item.connect("edit_button_pressed", self, "_on_edit_button_pressed", [ type, index ])
+	objective_item.type = type
+	objective_item.connect("delete_button_pressed", self, "_on_delete_button_pressed")
+	objective_item.connect("edit_button_pressed", self, "_on_edit_button_pressed")
 
 
 func prepare_objectives(objectives: Array):
@@ -49,7 +52,7 @@ func prepare_objectives(objectives: Array):
 		var index: int = 0
 
 		for objective_data in objectives[type]:
-			add_objective(objective_data, type, index)
+			add_objective(objective_data, type)
 
 			index += 1
 
@@ -58,7 +61,8 @@ func update_objective(type: int, index: int, objective):
 	objective_rows[type].get_child(index).update_objective(objective)
 
 
-signal add_objective
+signal delete_button_pressed
 signal edit_button_pressed
+signal objective_added
 
 const OBJECTIVE = preload("res://editor/prefabs/objective.tscn")

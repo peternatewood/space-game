@@ -83,7 +83,8 @@ func _ready():
 
 	get_node("Controls Container/Viewport Dummy Control").connect("gui_input", self, "_on_controls_gui_input")
 
-	objectives_window.connect("add_objective", self, "_on_objectives_window_add_objective")
+	objectives_window.connect("objective_added", self, "_on_objectives_window_objective_added")
+	objectives_window.connect("delete_button_pressed", self, "_on_objectives_delete_button_pressed")
 	objectives_window.connect("edit_button_pressed", self, "_on_objectives_edit_button_pressed")
 	objectives_edit_dialog.connect("confirmed", self, "_on_objectives_dialog_confirmed")
 
@@ -249,6 +250,10 @@ func _on_objectives_dialog_confirmed():
 	objectives_window.update_objective(objectives_edit_dialog.type, objectives_edit_dialog.index, objective)
 
 
+func _on_objectives_delete_button_pressed(objective, type, index):
+	objectives[type].remove(index)
+
+
 func _on_objectives_edit_button_pressed(objective, type, index):
 	objectives_edit_dialog.type = type
 	objectives_edit_dialog.index = index
@@ -256,7 +261,7 @@ func _on_objectives_edit_button_pressed(objective, type, index):
 	objectives_edit_dialog.popup_centered()
 
 
-func _on_objectives_window_add_objective(type: int):
+func _on_objectives_window_objective_added(type: int):
 	var objective_data = {
 		"name": "",
 		"description": "",
