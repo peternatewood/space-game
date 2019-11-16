@@ -1,5 +1,10 @@
 extends Control
 
+onready var add_objective_buttons: Array = [
+	get_node("Objectives Window Rows/Primary Panel/Primary Rows/Primary Label Container/Add Primary Button"),
+	get_node("Objectives Window Rows/Secondary Panel/Secondary Rows/Secondary Label Container/Add Secondary Button"),
+	get_node("Objectives Window Rows/Secret Panel/Secret Rows/Secret Label Container/Add Secret Button")
+]
 onready var objective_rows: Array = [
 	get_node("Objectives Window Rows/Primary Panel/Primary Rows/Primary Objectives"),
 	get_node("Objectives Window Rows/Secondary Panel/Secondary Rows/Secondary Objectives"),
@@ -11,6 +16,15 @@ func _ready():
 	var close_button = get_node("Objectives Window Rows/HBoxContainer/Close Button")
 	close_button.connect("pressed", self, "hide")
 
+	var type: int = 0
+	for button in add_objective_buttons:
+		button.connect("pressed", self, "_on_add_objective_pressed", [ type ])
+		type += 1
+
+
+func _on_add_objective_pressed(type: int):
+	emit_signal("add_objective", type)
+
 
 func _on_edit_button_pressed(objective, type, index):
 	emit_signal("edit_button_pressed", objective, type, index)
@@ -19,16 +33,23 @@ func _on_edit_button_pressed(objective, type, index):
 # PUBLIC
 
 
+func add_objective(objective_data: Dictionary, type: int, index: int = -1):
+	if index == -1:
+		index = objective_rows[type].get_child_count()
+
+	var objective_item = OBJECTIVE.instance()
+	objective_rows[type].add_child(objective_item)
+
+	objective_item.set_objective(objective_data)
+	objective_item.connect("edit_button_pressed", self, "_on_edit_button_pressed", [ type, index ])
+
+
 func prepare_objectives(objectives: Array):
 	for type in range(min(objective_rows.size(), objectives.size())):
 		var index: int = 0
 
 		for objective_data in objectives[type]:
-			var objective_item = OBJECTIVE.instance()
-			objective_rows[type].add_child(objective_item)
-
-			objective_item.set_objective(objective_data)
-			objective_item.connect("edit_button_pressed", self, "_on_edit_button_pressed", [ type, index ])
+			add_objective(objective_data, type, index)
 
 			index += 1
 
@@ -37,6 +58,7 @@ func update_objective(type: int, index: int, objective):
 	objective_rows[type].get_child(index).update_objective(objective)
 
 
+signal add_objective
 signal edit_button_pressed
 
 const OBJECTIVE = preload("res://editor/prefabs/objective.tscn")
