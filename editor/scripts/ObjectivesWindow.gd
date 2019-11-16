@@ -7,6 +7,11 @@ onready var objective_rows: Array = [
 ]
 
 
+func _ready():
+	var close_button = get_node("Objectives Window Rows/HBoxContainer/Close Button")
+	close_button.connect("pressed", self, "hide")
+
+
 func _on_edit_button_pressed(objective, type, index):
 	emit_signal("edit_button_pressed", objective, type, index)
 

@@ -53,7 +53,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="PanelContainer" type="PanelContainer" parent="Controls Container"]
-editor/display_folded = true
 anchor_right = 1.0
 margin_bottom = 4.0
 
@@ -75,23 +74,17 @@ margin_left = 44.0
 margin_right = 84.0
 margin_bottom = 22.0
 text = "Edit"
-items = [ "Add Ship", null, 0, false, false, 0, 0, null, "", false ]
-
-[node name="View Menu" type="MenuButton" parent="Controls Container/PanelContainer/Toolbar"]
-margin_left = 88.0
-margin_right = 128.0
-margin_bottom = 22.0
-text = "View"
-items = [ "Objectives", null, 0, false, false, 0, 0, null, "", false ]
+items = [ "Add Ship", null, 0, false, false, 0, 0, null, "", false, "Edit Ship", null, 0, false, false, 1, 0, null, "", false, "Objectives", null, 0, false, false, 2, 0, null, "", false ]
 
 [node name="Help Menu" type="MenuButton" parent="Controls Container/PanelContainer/Toolbar"]
-margin_left = 132.0
-margin_right = 172.0
+margin_left = 88.0
+margin_right = 128.0
 margin_bottom = 22.0
 text = "Help"
 items = [ "About", null, 0, false, false, 0, 0, null, "", false, "Manual", null, 0, false, false, 1, 0, null, "", false ]
 
 [node name="Debug" type="Label" parent="Controls Container"]
+visible = false
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -615,7 +608,6 @@ margin_right = 298.0
 margin_bottom = 210.0
 
 [node name="Objectives Window" type="PanelContainer" parent="Controls Container"]
-editor/display_folded = true
 visible = false
 margin_left = 9.0
 margin_top = 44.0
@@ -630,20 +622,32 @@ margin_top = 2.0
 margin_right = 196.0
 margin_bottom = 398.0
 
-[node name="Title" type="Label" parent="Controls Container/Objectives Window/Objectives Window Rows"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Controls Container/Objectives Window/Objectives Window Rows"]
 margin_right = 192.0
-margin_bottom = 18.0
+margin_bottom = 22.0
+
+[node name="Title" type="Label" parent="Controls Container/Objectives Window/Objectives Window Rows/HBoxContainer"]
+margin_top = 2.0
+margin_right = 172.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
 text = "Objectives"
 
-[node name="HSeparator" type="HSeparator" parent="Controls Container/Objectives Window/Objectives Window Rows"]
-margin_top = 22.0
+[node name="Close Button" type="Button" parent="Controls Container/Objectives Window/Objectives Window Rows/HBoxContainer"]
+margin_left = 176.0
 margin_right = 192.0
-margin_bottom = 26.0
+margin_bottom = 22.0
+text = "x"
+
+[node name="HSeparator" type="HSeparator" parent="Controls Container/Objectives Window/Objectives Window Rows"]
+margin_top = 26.0
+margin_right = 192.0
+margin_bottom = 30.0
 
 [node name="Primary Panel" type="PanelContainer" parent="Controls Container/Objectives Window/Objectives Window Rows"]
-margin_top = 30.0
+margin_top = 34.0
 margin_right = 192.0
-margin_bottom = 68.0
+margin_bottom = 72.0
 
 [node name="Primary Rows" type="VBoxContainer" parent="Controls Container/Objectives Window/Objectives Window Rows/Primary Panel"]
 margin_left = 4.0
@@ -678,9 +682,9 @@ margin_right = 184.0
 margin_bottom = 34.0
 
 [node name="Secondary Panel" type="PanelContainer" parent="Controls Container/Objectives Window/Objectives Window Rows"]
-margin_top = 72.0
+margin_top = 76.0
 margin_right = 192.0
-margin_bottom = 110.0
+margin_bottom = 114.0
 
 [node name="Secondary Rows" type="VBoxContainer" parent="Controls Container/Objectives Window/Objectives Window Rows/Secondary Panel"]
 margin_left = 4.0
@@ -715,9 +719,9 @@ margin_right = 184.0
 margin_bottom = 34.0
 
 [node name="Secret Panel" type="PanelContainer" parent="Controls Container/Objectives Window/Objectives Window Rows"]
-margin_top = 114.0
+margin_top = 118.0
 margin_right = 192.0
-margin_bottom = 152.0
+margin_bottom = 156.0
 
 [node name="Secret Rows" type="VBoxContainer" parent="Controls Container/Objectives Window/Objectives Window Rows/Secret Panel"]
 margin_left = 4.0
@@ -834,7 +838,6 @@ text = "Welcome!
 This manual is currently a work in progress. In future updates, it will provide directions for using the mission editor, as well as several help topics"
 
 [node name="Objective Edit Dialog" type="AcceptDialog" parent="Controls Container"]
-visible = true
 margin_right = 96.0
 margin_bottom = 64.0
 window_title = "Edit Objective"

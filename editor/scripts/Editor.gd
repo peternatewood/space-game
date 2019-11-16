@@ -86,9 +86,6 @@ func _ready():
 
 	get_node("Controls Container/Viewport Dummy Control").connect("gui_input", self, "_on_controls_gui_input")
 
-	var view_menu = get_node("Controls Container/PanelContainer/Toolbar/View Menu")
-	view_menu.get_popup().connect("id_pressed", self, "_on_view_menu_id_pressed")
-
 	if mission_node.has_meta("objectives"):
 		objectives = mission_node.get_meta("objectives")
 
@@ -191,6 +188,18 @@ func _on_edit_menu_id_pressed(item_id: int):
 	match item_id:
 		0:
 			add_ship_dialog.popup_centered()
+		1:
+			var targets_count = targets_container.get_child_count()
+			if targets_count > 0:
+				#selected_node_index = min(targets_count - 1, selected_node_index)
+				selected_node_index = clamp(selected_node_index, targets_count - 1, 0)
+				selected_node = targets_container.get_child(selected_node_index)
+
+				var ship_loadout = loadouts.get(selected_node.name, {})
+				ship_edit_dialog.fill_ship_info(selected_node, ship_loadout)
+				ship_edit_dialog.show()
+		2:
+			objectives_window.show()
 
 
 func _on_edit_ship_energy_weapon_changed(weapon_name: String, slot_index: int):
@@ -303,12 +312,6 @@ func _on_ship_class_changed(ship_index: int):
 
 func _on_ship_position_changed(position: Vector3):
 	transform_controls.transform.origin = position
-
-
-func _on_view_menu_id_pressed(item_id: int):
-	match item_id:
-		0:
-			objectives_window.show()
 
 
 func _process(delta):
