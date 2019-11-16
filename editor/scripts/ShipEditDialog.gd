@@ -81,8 +81,10 @@ func _on_hitpoints_changed(new_value: float):
 
 func _on_name_changed(new_text: String):
 	if not is_populating:
+		var old_name = edit_ship.name
 		edit_ship.set_name(new_text)
 		title.set_text("Edit " + edit_ship.name)
+		emit_signal("ship_name_changed", old_name, edit_ship.name)
 
 
 func _on_player_ship_toggled(button_pressed: bool):
@@ -261,6 +263,7 @@ signal player_ship_toggled
 signal ship_class_changed
 signal ship_energy_weapon_changed
 signal ship_missile_weapon_changed
+signal ship_name_changed
 signal ship_position_changed
 signal ship_rotation_changed
 
