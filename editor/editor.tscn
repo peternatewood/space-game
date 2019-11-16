@@ -662,13 +662,14 @@ margin_bottom = 22.0
 
 [node name="Primary Label" type="Label" parent="Controls Container/Objectives Window/Objectives Window Rows/Primary Panel/Primary Rows/Primary Label Container"]
 margin_top = 2.0
-margin_right = 56.0
+margin_right = 148.0
 margin_bottom = 20.0
+size_flags_horizontal = 3
 text = "Primary"
 
 [node name="Add Primary Button" type="Button" parent="Controls Container/Objectives Window/Objectives Window Rows/Primary Panel/Primary Rows/Primary Label Container"]
-margin_left = 60.0
-margin_right = 92.0
+margin_left = 152.0
+margin_right = 184.0
 margin_bottom = 22.0
 text = "Add"
 
@@ -699,13 +700,14 @@ margin_bottom = 22.0
 
 [node name="Secondary Label" type="Label" parent="Controls Container/Objectives Window/Objectives Window Rows/Secondary Panel/Secondary Rows/Secondary Label Container"]
 margin_top = 2.0
-margin_right = 72.0
+margin_right = 148.0
 margin_bottom = 20.0
+size_flags_horizontal = 3
 text = "Secondary"
 
 [node name="Add Secondary Button" type="Button" parent="Controls Container/Objectives Window/Objectives Window Rows/Secondary Panel/Secondary Rows/Secondary Label Container"]
-margin_left = 76.0
-margin_right = 108.0
+margin_left = 152.0
+margin_right = 184.0
 margin_bottom = 22.0
 text = "Add"
 
@@ -736,13 +738,14 @@ margin_bottom = 22.0
 
 [node name="Secret Label" type="Label" parent="Controls Container/Objectives Window/Objectives Window Rows/Secret Panel/Secret Rows/Secret Label Container"]
 margin_top = 2.0
-margin_right = 48.0
+margin_right = 148.0
 margin_bottom = 20.0
+size_flags_horizontal = 3
 text = "Secret"
 
 [node name="Add Secret Button" type="Button" parent="Controls Container/Objectives Window/Objectives Window Rows/Secret Panel/Secret Rows/Secret Label Container"]
-margin_left = 52.0
-margin_right = 84.0
+margin_left = 152.0
+margin_right = 184.0
 margin_bottom = 22.0
 text = "Add"
 

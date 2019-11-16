@@ -400,36 +400,3 @@ func load_mission_info():
 
 const NPCShip = preload("res://scripts/NPCShip.gd")
 const Player = preload("res://scripts/Player.gd")
-
-"""
-// intersect3D_SegmentPlane(): intersect a segment and a plane
-//    Input:  S = a segment, and Pn = a plane = {Point V0;  Vector n;}
-//    Output: *I0 = the intersect point (when it exists)
-//    Return: 0 = disjoint (no intersection)
-//            1 =  intersection in the unique point *I0
-//            2 = the  segment lies in the plane
-int
-intersect3D_SegmentPlane( Segment S, Plane Pn, Point* I )
-{
-		Vector    u = S.P1 - S.P0;
-		Vector    w = S.P0 - Pn.V0;
-
-		float     D = dot(Pn.n, u);
-		float     N = -dot(Pn.n, w);
-
-		if (fabs(D) < SMALL_NUM) {           // segment is parallel to plane
-				if (N == 0)                      // segment lies in plane
-						return 2;
-				else
-						return 0;                    // no intersection
-		}
-		// they are not parallel
-		// compute intersect param
-		float sI = N / D;
-		if (sI < 0 || sI > 1)
-				return 0;                        // no intersection
-
-		*I = S.P0 + sI * u;                  // compute segment intersect point
-		return 1;
-}
-"""
