@@ -1,7 +1,9 @@
 extends Control
 
 onready var description_edit = get_node("ScrollContainer/VBoxContainer/Description TextEdit")
+onready var enabled_checkbox = get_node("ScrollContainer/VBoxContainer/Enabled CheckBox")
 onready var failure_rows = get_node("ScrollContainer/VBoxContainer/Failure Rows")
+onready var is_critical_checkbox = get_node("ScrollContainer/VBoxContainer/Is Critical CheckBox")
 onready var success_rows = get_node("ScrollContainer/VBoxContainer/Success Rows")
 onready var title_lineedit = get_node("ScrollContainer/VBoxContainer/Name Row/Name LineEdit")
 onready var trigger_rows = get_node("ScrollContainer/VBoxContainer/Trigger Rows")
@@ -30,6 +32,8 @@ func add_requirement(type: String, requirement_data):
 func get_objective():
 	objective.description = description_edit.text
 	objective.name = title_lineedit.text
+	objective.enabled = enabled_checkbox.pressed
+	objective.is_critical = is_critical_checkbox.pressed
 
 	var failure_requirements: Array = []
 	for requirement in failure_rows.get_children():
@@ -56,6 +60,8 @@ func populate_fields(data):
 	objective = data
 	description_edit.set_text(data.description)
 	title_lineedit.set_text(data.name)
+	enabled_checkbox.set_pressed(data.enabled)
+	is_critical_checkbox.set_pressed(data.is_critical)
 
 	var failure_index: int = 0
 	var failure_count: int = failure_rows.get_child_count()

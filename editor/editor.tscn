@@ -53,6 +53,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="PanelContainer" type="PanelContainer" parent="Controls Container"]
+editor/display_folded = true
 anchor_right = 1.0
 margin_bottom = 4.0
 
@@ -614,6 +615,7 @@ margin_right = 298.0
 margin_bottom = 210.0
 
 [node name="Objectives Window" type="PanelContainer" parent="Controls Container"]
+editor/display_folded = true
 visible = false
 margin_left = 9.0
 margin_top = 44.0
