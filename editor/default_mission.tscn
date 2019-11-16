@@ -5,37 +5,55 @@
 
 [node name="Mission Controller" type="Spatial"]
 __meta__ = {
-"name": "Debug Mission",
-"briefing": [ "Test everything to do with individual missions." ],
 "armory": {
-"ships": [ "Spider Fighter", "Spider Interceptor", "Spider Bomber" ],
 "energy_weapons": [ "Energy Bolt", "Disintigrator" ],
-"missile_weapons": [ "Heat Seeker" ]
+"missile_weapons": [ "Heat Seeker" ],
+"ships": [ "Spider Fighter", "Spider Interceptor", "Spider Bomber" ]
 },
+"briefing": [ "Test everything to do with individual missions." ],
 "loadouts": {
 "Alpha 1": {
 "energy_weapons": [ "Energy Bolt", "Disintigrator" ],
 "missile_weapons": [ "Heat Seeker", "Heat Seeker" ]
+}
 },
-},
+"name": "Debug Mission",
 "objectives": [ [ {
-"name": "Destroy All Enemies",
 "description": "Destroy every enemy wing to complete the mission.",
 "is_critical": true,
-"success_requirements": [ { "type": 1, "targets": [ "Buteo 1", "Buteo 2" ] } ]
-} ],
-[ {
-"name": "Protect Friendly Ships",
+"name": "Destroy All Enemies",
+"success_requirements": [ {
+"targets": [ "Buteo 1", "Buteo 2" ],
+"type": 1
+} ]
+} ], [ {
 "description": "Protect all ships in Alpha wing.",
-"success_requirements": [ { "type": 3, "objective_type": 0, "objective_index": 0 } ],
-"failure_requirements": [ { "type": 1, "targets": [ "Alpha 2", "Alpha 3" ] } ],
-"trigger_requirements": [ { "type": 4, "targets": [ "Alpha 2", "Alpha 3" ] } ]
+"failure_requirements": [ {
+"targets": [ "Alpha 2", "Alpha 3" ],
+"type": 1
 } ],
-[ {
-"name": "Don't Call In Reinforcements",
+"name": "Protect Friendly Ships",
+"success_requirements": [ {
+"objective_index": 0,
+"objective_type": 0,
+"type": 3
+} ],
+"trigger_requirements": [ {
+"targets": [ "Alpha 2", "Alpha 3" ],
+"type": 4
+} ]
+} ], [ {
 "description": "Complete the mission without calling in Beta wing: your reinforcements.",
-"success_requirements": [ { "type": 3, "objective_type": 0, "objective_index": 0 } ],
-"failure_requirements": [ { "type": 4, "targets": [ "Beta 1" ] } ]
+"failure_requirements": [ {
+"targets": [ "Beta 1" ],
+"type": 4
+} ],
+"name": "Don't Call In Reinforcements",
+"success_requirements": [ {
+"objective_index": 0,
+"objective_type": 0,
+"type": 3
+} ]
 } ] ]
 }
 
@@ -48,3 +66,5 @@ transform = Transform( 0.707107, -0.612372, 0.353554, 0, 0.5, 0.866025, -0.70710
 script = ExtResource( 2 )
 faction = "Spider"
 wing_name = "Alpha"
+
+[node name="Waypoints Container" type="Node" parent="."]

@@ -224,7 +224,6 @@ func _on_help_menu_id_pressed(item_id: int):
 
 func _on_objectives_dialog_confirmed():
 	var objective = objectives_edit_dialog.get_objective()
-	# TODO: convert the objective back to a dictionary and update mission meta data
 	objectives[objectives_edit_dialog.type][objectives_edit_dialog.index] = objective.to_dictionary()
 	mission_node.set_meta("objectives", objectives)
 	objectives_window.update_objective(objectives_edit_dialog.type, objectives_edit_dialog.index, objective)
