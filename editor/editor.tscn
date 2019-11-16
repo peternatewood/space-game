@@ -33,6 +33,7 @@ current = true
 far = 1000.0
 
 [node name="Controls Container" type="Control" parent="."]
+pause_mode = 2
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme = ExtResource( 4 )
@@ -943,6 +944,7 @@ margin_right = 240.0
 margin_bottom = 200.0
 
 [node name="Manipulator Viewport" type="Viewport" parent="."]
+pause_mode = 2
 size = Vector2( 1920, 1080 )
 own_world = true
 transparent_bg = true

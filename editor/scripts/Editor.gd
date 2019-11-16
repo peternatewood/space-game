@@ -37,14 +37,7 @@ func _ready():
 
 	scene_file_regex.compile("^[\\w\\_\\-]+\\.tscn$")
 
-	targets_container = mission_node.get_node("Targets Container")
-	if mission_node.has_meta("loadouts"):
-		loadouts = mission_node.get_meta("loadouts")
-
-	for node_name in loadouts.keys():
-		var node = targets_container.get_node_or_null(node_name)
-		if node == null:
-			print("Invalid node name for mission: " + node_name)
+	load_mission_info()
 
 	var file_menu = get_node("Controls Container/PanelContainer/Toolbar/File Menu")
 	file_menu.get_popup().connect("id_pressed", self, "_on_file_menu_id_pressed")
@@ -54,6 +47,9 @@ func _ready():
 	var help_menu = get_node("Controls Container/PanelContainer/Toolbar/Help Menu")
 	help_menu.get_popup().connect("id_pressed", self, "_on_help_menu_id_pressed")
 
+	open_file_dialog.connect("confirmed", self, "_on_open_file_confirmed")
+
+	# Get model data from mission_data
 	var ship_index: int = 0
 	for ship_class in mission_data.ship_models.keys():
 		add_ship_options.add_item(ship_class, ship_index)
@@ -87,14 +83,8 @@ func _ready():
 
 	get_node("Controls Container/Viewport Dummy Control").connect("gui_input", self, "_on_controls_gui_input")
 
-	if mission_node.has_meta("objectives"):
-		objectives = mission_node.get_meta("objectives")
-
-	objectives_window.prepare_objectives(objectives)
 	objectives_window.connect("edit_button_pressed", self, "_on_objectives_edit_button_pressed")
-
 	objectives_edit_dialog.connect("confirmed", self, "_on_objectives_dialog_confirmed")
-	objectives_edit_dialog.update_ship_names(targets_container.get_children())
 
 
 func _on_add_ship_confirmed():
@@ -265,6 +255,20 @@ func _on_objectives_edit_button_pressed(objective, type, index):
 	objectives_edit_dialog.popup_centered()
 
 
+func _on_open_file_confirmed():
+	if open_file_dialog.current_path.ends_with(".tscn"):
+		var scene = load(open_file_dialog.current_path)
+
+		var mission_node_name = mission_node.name
+		mission_node.free()
+
+		mission_node = scene.instance()
+		add_child(mission_node)
+		mission_node.set_name(mission_node_name)
+
+		load_mission_info()
+
+
 func _on_player_ship_toggled(is_player_ship: bool):
 	if is_player_ship:
 		# Ensure we only have one player ship by changing other players to npc ships
@@ -360,6 +364,26 @@ func _process(delta):
 
 					selected_node.translate(translate_vel)
 					transform_controls.transform.origin = selected_node.transform.origin
+
+
+# PUBLIC
+
+
+func load_mission_info():
+	targets_container = mission_node.get_node("Targets Container")
+	if mission_node.has_meta("loadouts"):
+		loadouts = mission_node.get_meta("loadouts")
+
+	for node_name in loadouts.keys():
+		var node = targets_container.get_node_or_null(node_name)
+		if node == null:
+			print("Invalid node name for mission: " + node_name)
+
+	if mission_node.has_meta("objectives"):
+		objectives = mission_node.get_meta("objectives")
+
+	objectives_window.prepare_objectives(objectives)
+	objectives_edit_dialog.update_ship_names(targets_container.get_children())
 
 
 const NPCShip = preload("res://scripts/NPCShip.gd")
