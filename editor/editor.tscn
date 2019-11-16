@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://editor/scripts/Editor.gd" type="Script" id=1]
 [ext_resource path="res://editor/default_mission.tscn" type="PackedScene" id=2]
@@ -6,11 +6,12 @@
 [ext_resource path="res://themes/editor_theme.tres" type="Theme" id=4]
 [ext_resource path="res://editor/scripts/ShipEditDialog.gd" type="Script" id=5]
 [ext_resource path="res://editor/scripts/ObjectivesWindow.gd" type="Script" id=6]
-[ext_resource path="res://editor/scripts/ManipulatorViewport.gd" type="Script" id=7]
-[ext_resource path="res://editor/scripts/TransformControls.gd" type="Script" id=8]
-[ext_resource path="res://editor/models/translate_arrow_x.dae" type="PackedScene" id=9]
-[ext_resource path="res://editor/models/translate_arrow_y.dae" type="PackedScene" id=10]
-[ext_resource path="res://editor/models/translate_arrow_z.dae" type="PackedScene" id=11]
+[ext_resource path="res://editor/scripts/ObjectivesDialog.gd" type="Script" id=7]
+[ext_resource path="res://editor/scripts/ManipulatorViewport.gd" type="Script" id=8]
+[ext_resource path="res://editor/scripts/TransformControls.gd" type="Script" id=9]
+[ext_resource path="res://editor/models/translate_arrow_x.dae" type="PackedScene" id=10]
+[ext_resource path="res://editor/models/translate_arrow_y.dae" type="PackedScene" id=11]
+[ext_resource path="res://editor/models/translate_arrow_z.dae" type="PackedScene" id=12]
 
 [sub_resource type="ViewportTexture" id=1]
 viewport_path = NodePath("Manipulator Viewport")
@@ -835,133 +836,128 @@ visible = true
 margin_right = 96.0
 margin_bottom = 64.0
 window_title = "Edit Objective"
+script = ExtResource( 7 )
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Controls Container/Objective Edit Dialog"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Controls Container/Objective Edit Dialog"]
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 154.0
-margin_bottom = 218.0
+margin_right = 248.0
+margin_bottom = 328.0
+rect_min_size = Vector2( 240, 320 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+scroll_horizontal_enabled = false
 
-[node name="Name Row" type="HBoxContainer" parent="Controls Container/Objective Edit Dialog/VBoxContainer"]
-margin_right = 146.0
+[node name="VBoxContainer" type="VBoxContainer" parent="Controls Container/Objective Edit Dialog/ScrollContainer"]
+margin_right = 240.0
+margin_bottom = 320.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Name Row" type="HBoxContainer" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
+margin_right = 240.0
 margin_bottom = 28.0
 
-[node name="Name Label" type="Label" parent="Controls Container/Objective Edit Dialog/VBoxContainer/Name Row"]
+[node name="Name Label" type="Label" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer/Name Row"]
 margin_top = 5.0
 margin_right = 32.0
 margin_bottom = 23.0
 text = "Name"
 
-[node name="Name LineEdit" type="LineEdit" parent="Controls Container/Objective Edit Dialog/VBoxContainer/Name Row"]
+[node name="Name LineEdit" type="LineEdit" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer/Name Row"]
 margin_left = 36.0
-margin_right = 142.0
+margin_right = 240.0
 margin_bottom = 28.0
+size_flags_horizontal = 3
 
-[node name="Description Label" type="Label" parent="Controls Container/Objective Edit Dialog/VBoxContainer"]
+[node name="Description Label" type="Label" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
 margin_top = 32.0
-margin_right = 146.0
+margin_right = 240.0
 margin_bottom = 50.0
 text = "Description"
 
-[node name="Description TextEdit" type="TextEdit" parent="Controls Container/Objective Edit Dialog/VBoxContainer"]
+[node name="Description TextEdit" type="TextEdit" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
 margin_top = 54.0
-margin_right = 146.0
+margin_right = 240.0
 margin_bottom = 54.0
 
-[node name="Enabled CheckBox" type="CheckBox" parent="Controls Container/Objective Edit Dialog/VBoxContainer"]
+[node name="Enabled CheckBox" type="CheckBox" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
 margin_top = 58.0
-margin_right = 146.0
+margin_right = 240.0
 margin_bottom = 80.0
 text = "Enabled"
 
-[node name="Is Critical CheckBox" type="CheckBox" parent="Controls Container/Objective Edit Dialog/VBoxContainer"]
+[node name="Is Critical CheckBox" type="CheckBox" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
 margin_top = 84.0
-margin_right = 146.0
+margin_right = 240.0
 margin_bottom = 106.0
 hint_tooltip = "If checked, failure of this objective will fail the mission (only applies to Primary Objectives)"
 text = "Critical"
 
-[node name="Success Rows" type="VBoxContainer" parent="Controls Container/Objective Edit Dialog/VBoxContainer"]
+[node name="Success Label" type="Label" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
 margin_top = 110.0
-margin_right = 146.0
-margin_bottom = 210.0
+margin_right = 240.0
+margin_bottom = 128.0
+text = "Success Requirements"
 
-[node name="Requirement" type="VBoxContainer" parent="Controls Container/Objective Edit Dialog/VBoxContainer/Success Rows"]
-margin_right = 146.0
-margin_bottom = 100.0
+[node name="Success Rows" type="VBoxContainer" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
+margin_top = 132.0
+margin_right = 240.0
+margin_bottom = 132.0
 
-[node name="Requirement Grid" type="GridContainer" parent="Controls Container/Objective Edit Dialog/VBoxContainer/Success Rows/Requirement"]
-margin_right = 146.0
-margin_bottom = 48.0
-columns = 2
+[node name="HSeparator" type="HSeparator" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
+margin_top = 136.0
+margin_right = 240.0
+margin_bottom = 140.0
 
-[node name="Type Label" type="Label" parent="Controls Container/Objective Edit Dialog/VBoxContainer/Success Rows/Requirement/Requirement Grid"]
-margin_top = 2.0
-margin_right = 72.0
-margin_bottom = 20.0
-text = "Type"
+[node name="Failure Label" type="Label" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
+margin_top = 144.0
+margin_right = 240.0
+margin_bottom = 162.0
+text = "Failure Requirements"
 
-[node name="Type Options" type="OptionButton" parent="Controls Container/Objective Edit Dialog/VBoxContainer/Success Rows/Requirement/Requirement Grid"]
-margin_left = 76.0
-margin_right = 146.0
-margin_bottom = 22.0
-text = "Patrol"
-items = [ "Patrol", null, false, 0, null, "Destroy", null, false, 1, null, "Defend", null, false, 2, null, "Objective", null, false, 3, null, "Ships Arrive", null, false, 4, null, "Ships Leave", null, false, 5, null ]
-selected = 0
+[node name="Failure Rows" type="VBoxContainer" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
+margin_top = 166.0
+margin_right = 240.0
+margin_bottom = 166.0
 
-[node name="Waypoints Label" type="Label" parent="Controls Container/Objective Edit Dialog/VBoxContainer/Success Rows/Requirement/Requirement Grid"]
-margin_top = 28.0
-margin_right = 72.0
-margin_bottom = 46.0
-text = "Waypoints"
+[node name="HSeparator2" type="HSeparator" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
+margin_top = 170.0
+margin_right = 240.0
+margin_bottom = 174.0
 
-[node name="Waypoints Options" type="OptionButton" parent="Controls Container/Objective Edit Dialog/VBoxContainer/Success Rows/Requirement/Requirement Grid"]
-margin_left = 76.0
-margin_top = 26.0
-margin_right = 146.0
-margin_bottom = 48.0
-text = "none"
-items = [ "none", null, false, 0, null ]
-selected = 0
+[node name="Trigger Label" type="Label" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
+margin_top = 178.0
+margin_right = 240.0
+margin_bottom = 196.0
+text = "Trigger Requirements"
 
-[node name="Targets Label" type="Label" parent="Controls Container/Objective Edit Dialog/VBoxContainer/Success Rows/Requirement"]
-margin_top = 52.0
-margin_right = 146.0
-margin_bottom = 70.0
-text = "Targets"
-
-[node name="Targets Rows" type="VBoxContainer" parent="Controls Container/Objective Edit Dialog/VBoxContainer/Success Rows/Requirement"]
-margin_top = 74.0
-margin_right = 146.0
-margin_bottom = 74.0
-
-[node name="Add Target Button" type="Button" parent="Controls Container/Objective Edit Dialog/VBoxContainer/Success Rows/Requirement"]
-margin_top = 78.0
-margin_right = 146.0
-margin_bottom = 100.0
-text = "Add Target"
+[node name="Trigger Rows" type="VBoxContainer" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
+margin_top = 200.0
+margin_right = 240.0
+margin_bottom = 200.0
 
 [node name="Manipulator Viewport" type="Viewport" parent="."]
 size = Vector2( 1920, 1080 )
 own_world = true
 transparent_bg = true
 render_target_v_flip = true
-script = ExtResource( 7 )
-
-[node name="Transform Controls" type="Spatial" parent="Manipulator Viewport"]
 script = ExtResource( 8 )
 
-[node name="Arrow X" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 9 )]
-transform = Transform( -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0 )
+[node name="Transform Controls" type="Spatial" parent="Manipulator Viewport"]
+script = ExtResource( 9 )
+
+[node name="Arrow X" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 10 )]
+transform = Transform( -4.37114e-008, 1, 0, -1, -4.37114e-008, 0, 0, 0, 1, 0, 0, 0 )
 monitoring = false
 monitorable = false
 
-[node name="Arrow Y" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 10 )]
+[node name="Arrow Y" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 11 )]
 monitoring = false
 monitorable = false
 
-[node name="Arrow Z" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 11 )]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0 )
+[node name="Arrow Z" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 12 )]
+transform = Transform( 1, 0, 0, 0, -4.37114e-008, 1, 0, -1, -4.37114e-008, 0, 0, 0 )
 monitoring = false
 monitorable = false
 
