@@ -19,12 +19,19 @@ func _on_edit_button_pressed():
 
 func set_objective(source_dictionary: Dictionary):
 	objective = Objective.new(source_dictionary)
-	name_label.set_text(objective.name)
+	set_objective_name(objective.name)
+
+
+func set_objective_name(objective_name: String):
+	if objective_name == "":
+		objective_name = "--"
+
+	name_label.set_text(objective_name)
 
 
 func update_objective(new_objective: Objective):
 	objective = new_objective
-	name_label.set_text(objective.name)
+	set_objective_name(objective.name)
 
 
 signal edit_button_pressed
