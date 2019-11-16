@@ -5,6 +5,7 @@ onready var target_rows = get_node("Targets Rows")
 onready var type_options = get_node("Requirement Grid/Type Options")
 onready var waypoint_options = get_node("Requirement Grid/Waypoints Options")
 
+var requirement
 var ship_names: Array = []
 
 
@@ -26,8 +27,22 @@ func add_target(name: String = ""):
 	target.select_name(name)
 
 
+func get_requirement():
+	requirement.type = type_options.get_selected_id()
+
+	var target_names: Array = []
+	for target in target_rows.get_children():
+		target_names.append(target.get_name())
+
+	requirement.target_names = target_names
+
+	return requirement
+
+
 func populate_fields(data):
+	requirement = data
 	type_options.select(data.type)
+
 	var target_index: int = 0
 	var target_count = target_rows.get_child_count()
 	for name in data.target_names:

@@ -11,7 +11,6 @@ onready var manipulator_viewport = get_node("Manipulator Viewport")
 onready var manual_window = get_node("Controls Container/Manual Window")
 onready var mission_data = get_node("/root/MissionData")
 onready var mission_node = get_node("Mission Scene")
-onready var objectives_dialog = get_node("Controls Container/Objective Edit Dialog")
 onready var objectives_edit_dialog = get_node("Controls Container/Objective Edit Dialog")
 onready var objectives_window = get_node("Controls Container/Objectives Window")
 onready var open_file_dialog = get_node("Controls Container/Open File Dialog")
@@ -25,7 +24,7 @@ var manipulator_node = null
 var loadouts: Dictionary = {}
 var mouse_pos: Vector2
 var mouse_vel: Vector2
-var objectives = {}
+var objectives: Array = []
 var scene_file_regex = RegEx.new()
 var selected_node = null
 var selected_node_index: int = -1
@@ -96,7 +95,8 @@ func _ready():
 	objectives_window.prepare_objectives(objectives)
 	objectives_window.connect("edit_button_pressed", self, "_on_objectives_edit_button_pressed")
 
-	objectives_dialog.update_ship_names(targets_container.get_children())
+	objectives_edit_dialog.connect("confirmed", self, "_on_objectives_dialog_confirmed")
+	objectives_edit_dialog.update_ship_names(targets_container.get_children())
 
 
 func _on_add_ship_confirmed():
@@ -222,7 +222,17 @@ func _on_help_menu_id_pressed(item_id: int):
 			manual_window.popup_centered()
 
 
-func _on_objectives_edit_button_pressed(objective):
+func _on_objectives_dialog_confirmed():
+	var objective = objectives_edit_dialog.get_objective()
+	# TODO: convert the objective back to a dictionary and update mission meta data
+	objectives[objectives_edit_dialog.type][objectives_edit_dialog.index] = objective.to_dictionary()
+	mission_node.set_meta("objectives", objectives)
+	objectives_window.update_objective(objectives_edit_dialog.type, objectives_edit_dialog.index, objective)
+
+
+func _on_objectives_edit_button_pressed(objective, type, index):
+	objectives_edit_dialog.type = type
+	objectives_edit_dialog.index = index
 	objectives_edit_dialog.populate_fields(objective)
 	objectives_edit_dialog.popup_centered()
 

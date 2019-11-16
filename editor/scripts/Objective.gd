@@ -2,7 +2,7 @@ extends Control
 
 onready var name_label = get_node("Name Label")
 
-var objective setget set_objective
+var objective
 
 
 func _ready():
@@ -19,6 +19,11 @@ func _on_edit_button_pressed():
 
 func set_objective(source_dictionary: Dictionary):
 	objective = Objective.new(source_dictionary)
+	name_label.set_text(objective.name)
+
+
+func update_objective(new_objective: Objective):
+	objective = new_objective
 	name_label.set_text(objective.name)
 
 

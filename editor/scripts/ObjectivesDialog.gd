@@ -6,12 +6,14 @@ onready var success_rows = get_node("ScrollContainer/VBoxContainer/Success Rows"
 onready var title_lineedit = get_node("ScrollContainer/VBoxContainer/Name Row/Name LineEdit")
 onready var trigger_rows = get_node("ScrollContainer/VBoxContainer/Trigger Rows")
 
+var index: int = 0
+var objective
 var ship_names: Array = []
+var type: int = 0
 
 
 func add_requirement(type: String, requirement_data):
 	var requirement = REQUIREMENT.instance()
-	print(type)
 
 	match type:
 		"failure":
@@ -25,7 +27,33 @@ func add_requirement(type: String, requirement_data):
 	requirement.populate_fields(requirement_data)
 
 
+func get_objective():
+	objective.description = description_edit.text
+	objective.name = title_lineedit.text
+
+	var failure_requirements: Array = []
+	for requirement in failure_rows.get_children():
+		failure_requirements.append(requirement.get_requirement())
+
+	objective.failure_requirements = failure_requirements
+
+	var success_requirements: Array = []
+	for requirement in success_rows.get_children():
+		success_requirements.append(requirement.get_requirement())
+
+	objective.success_requirements = success_requirements
+
+	var trigger_requirements: Array = []
+	for requirement in trigger_rows.get_children():
+		trigger_requirements.append(requirement.get_requirement())
+
+	objective.trigger_requirements = trigger_requirements
+
+	return objective
+
+
 func populate_fields(data):
+	objective = data
 	description_edit.set_text(data.description)
 	title_lineedit.set_text(data.name)
 

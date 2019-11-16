@@ -20,6 +20,10 @@ func _on_options_item_selected(item_index: int):
 # PUBLIC
 
 
+func get_name():
+	return options.get_item_text(options.get_selected_id())
+
+
 func populate_options(ship_names: Array):
 	var ship_index: int = 0
 	var ship_count: int = options.get_item_count()
