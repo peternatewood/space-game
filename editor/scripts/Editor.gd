@@ -101,6 +101,16 @@ func _on_add_ship_confirmed():
 	var ship_instance = mission_data.ship_models[ship_class].instance()
 	ship_instance.set_script(NPCShip)
 	targets_container.add_child(ship_instance)
+	loadouts[ship_instance.name] = {
+		"energy_weapons": [],
+		"missile_weapons": []
+	}
+
+	for index in range(ship_instance.energy_weapon_hardpoints.size()):
+		loadouts[ship_instance.name].energy_weapons.append("")
+
+	for index in range(ship_instance.missile_weapon_hardpoints.size()):
+		loadouts[ship_instance.name].missile_weapons.append("")
 
 
 func _on_controls_gui_input(event):
@@ -172,7 +182,8 @@ func _on_edit_dialog_previous_pressed():
 	if next_index != selected_node_index:
 		selected_node_index = next_index
 		selected_node = targets_container.get_child(selected_node_index)
-		ship_edit_dialog.fill_ship_info(selected_node)
+		var ship_loadout = loadouts.get(selected_node.name, {})
+		ship_edit_dialog.fill_ship_info(selected_node, ship_loadout)
 
 
 func _on_edit_dialog_next_pressed():
@@ -181,7 +192,8 @@ func _on_edit_dialog_next_pressed():
 	if next_index != selected_node_index:
 		selected_node_index = next_index
 		selected_node = targets_container.get_child(selected_node_index)
-		ship_edit_dialog.fill_ship_info(selected_node)
+		var ship_loadout = loadouts.get(selected_node.name, {})
+		ship_edit_dialog.fill_ship_info(selected_node, ship_loadout)
 
 
 func _on_edit_menu_id_pressed(item_id: int):
