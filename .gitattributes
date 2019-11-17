@@ -7,5 +7,7 @@
 *.jpg binary
 *.material binary
 *.ogg binary
+*.ogv binary
 *.res binary
 *.ttf binary
+*.wav binary
