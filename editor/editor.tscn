@@ -842,7 +842,6 @@ text = "Welcome!
 This manual is currently a work in progress. In future updates, it will provide directions for using the mission editor, as well as several help topics"
 
 [node name="Objective Edit Dialog" type="AcceptDialog" parent="Controls Container"]
-visible = true
 margin_right = 96.0
 margin_bottom = 64.0
 window_title = "Edit Objective"

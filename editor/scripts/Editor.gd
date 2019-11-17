@@ -42,7 +42,7 @@ func _ready():
 	var file_menu = get_node("Controls Container/PanelContainer/Toolbar/File Menu")
 	file_menu.get_popup().connect("id_pressed", self, "_on_file_menu_id_pressed")
 
-	save_file_dialog.connect("confirmed", self, "_on_save_file_dialog_confirmed")
+	save_file_dialog.connect("file_selected", self, "_on_save_dialog_file_selected")
 
 	var help_menu = get_node("Controls Container/PanelContainer/Toolbar/Help Menu")
 	help_menu.get_popup().connect("id_pressed", self, "_on_help_menu_id_pressed")
@@ -313,20 +313,13 @@ func _on_player_ship_toggled(is_player_ship: bool):
 	has_player_ship = is_player_ship
 
 
-func _on_save_file_dialog_confirmed():
+func _on_save_dialog_file_selected(path: String):
 	if save_file_dialog.current_file.length() == 0:
 		print("No file name provided")
 	elif scene_file_regex.search(save_file_dialog.current_file) == null:
 		print("Invalid file name: " + save_file_dialog.current_file)
 	else:
-		var mission_scene = PackedScene.new()
-		var scene_error = mission_scene.pack(mission_node)
-		if scene_error == OK:
-			var resource_save_error = ResourceSaver.save(save_file_dialog.current_path, mission_scene)
-			if resource_save_error != OK:
-				print("Error saving mission scene: " + str(resource_save_error))
-		else:
-			print("Error packing mission scene: " + str(scene_error))
+		save_mission_to_file(path)
 
 
 func _on_ship_class_changed(ship_index: int):
@@ -401,6 +394,21 @@ func load_mission_info():
 
 	objectives_window.prepare_objectives(objectives)
 	objectives_edit_dialog.update_ship_names(targets_container.get_children())
+
+
+func save_mission_to_file(path: String):
+	var mission_scene = PackedScene.new()
+	var scene_error = mission_scene.pack(mission_node)
+
+	if scene_error == OK:
+		var resource_save_error = ResourceSaver.save(path, mission_scene)
+		if resource_save_error == OK:
+			open_file_dialog.invalidate()
+			save_file_dialog.invalidate()
+		else:
+			print("Error saving mission scene: " + str(resource_save_error))
+	else:
+		print("Error packing mission scene: " + str(scene_error))
 
 
 const NPCShip = preload("res://scripts/NPCShip.gd")
