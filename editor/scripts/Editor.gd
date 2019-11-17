@@ -227,8 +227,14 @@ func _on_edit_ship_name_changed(old_name: String, new_name: String):
 func _on_file_menu_id_pressed(item_id: int):
 	match item_id:
 		0:
-			# TODO: replace the current mission with the default mission
-			pass
+			var mission_node_name = mission_node.name
+			mission_node.free()
+
+			mission_node = DEFAULT_MISSION.instance()
+			add_child(mission_node)
+			mission_node.set_name(mission_node_name)
+
+			load_mission_info()
 		1:
 			open_file_dialog.popup_centered()
 		2:
@@ -397,6 +403,12 @@ func load_mission_info():
 	objectives_window.prepare_objectives(objectives)
 	objectives_edit_dialog.update_ship_names(targets_container.get_children())
 
+	# Reset all other stuff
+	ship_edit_dialog.edit_ship = null
+	ship_edit_dialog.hide()
+	objectives_edit_dialog.hide()
+	objectives_window.hide()
+
 
 func save_mission_to_file(path: String):
 	var mission_scene = PackedScene.new()
@@ -415,3 +427,5 @@ func save_mission_to_file(path: String):
 
 const NPCShip = preload("res://scripts/NPCShip.gd")
 const Player = preload("res://scripts/Player.gd")
+
+const DEFAULT_MISSION = preload("res://editor/default_mission.tscn")
