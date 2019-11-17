@@ -88,46 +88,54 @@ func _on_name_changed(new_text: String):
 
 
 func _on_player_ship_toggled(button_pressed: bool):
-	if button_pressed:
-		npc_settings.hide()
-	else:
-		npc_settings.show()
+	if not is_populating:
+		if button_pressed:
+			npc_settings.hide()
+		else:
+			npc_settings.show()
 
-	emit_signal("player_ship_toggled", button_pressed)
+		emit_signal("player_ship_toggled", button_pressed)
 
 
 func _on_position_x_changed(new_value: float):
-	edit_ship.transform.origin.x = new_value
-	emit_signal("ship_position_changed", edit_ship.transform.origin)
+	if not is_populating:
+		edit_ship.transform.origin.x = new_value
+		emit_signal("ship_position_changed", edit_ship.transform.origin)
 
 
 func _on_position_y_changed(new_value: float):
-	edit_ship.transform.origin.y = new_value
-	emit_signal("ship_position_changed", edit_ship.transform.origin)
+	if not is_populating:
+		edit_ship.transform.origin.y = new_value
+		emit_signal("ship_position_changed", edit_ship.transform.origin)
 
 
 func _on_position_z_changed(new_value: float):
-	edit_ship.transform.origin.z = new_value
-	emit_signal("ship_position_changed", edit_ship.transform.origin)
+	if not is_populating:
+		edit_ship.transform.origin.z = new_value
+		emit_signal("ship_position_changed", edit_ship.transform.origin)
 
 
 func _on_rotation_x_changed(new_value: float):
-	edit_ship.rotation_degrees.x = new_value
-	emit_signal("ship_rotation_changed", edit_ship.rotation_degrees)
+	if not is_populating:
+		edit_ship.rotation_degrees.x = new_value
+		emit_signal("ship_rotation_changed", edit_ship.rotation_degrees)
 
 
 func _on_rotation_y_changed(new_value: float):
-	edit_ship.rotation_degrees.y = new_value
-	emit_signal("ship_rotation_changed", edit_ship.rotation_degrees)
+	if not is_populating:
+		edit_ship.rotation_degrees.y = new_value
+		emit_signal("ship_rotation_changed", edit_ship.rotation_degrees)
 
 
 func _on_rotation_z_changed(new_value: float):
-	edit_ship.rotation_degrees.z = new_value
-	emit_signal("ship_rotation_changed", edit_ship.rotation_degrees)
+	if not is_populating:
+		edit_ship.rotation_degrees.z = new_value
+		emit_signal("ship_rotation_changed", edit_ship.rotation_degrees)
 
 
 func _on_ship_class_changed(item_index: int):
-	emit_signal("ship_class_changed", item_index)
+	if not is_populating:
+		emit_signal("ship_class_changed", item_index)
 
 
 func _on_ship_energy_weapon_changed(item_index: int, slot_index: int):
@@ -171,7 +179,6 @@ func fill_ship_info(ship, loadout: Dictionary = {}):
 
 	name_lineedit.set_text(ship.name)
 	title.set_text("Edit " + ship.name)
-	wing_lineedit.set_text(ship.wing_name)
 
 	position_spinboxes.x.set_value(ship.transform.origin.x)
 	position_spinboxes.y.set_value(ship.transform.origin.y)
@@ -188,6 +195,8 @@ func fill_ship_info(ship, loadout: Dictionary = {}):
 	var missile_weapons: Array = loadout.get("missile_weapons", [])
 
 	if ship is AttackShipBase:
+		wing_lineedit.set_text(ship.wing_name)
+
 		for ship_option_index in range(ship_class_options.get_item_count()):
 			if ship_class_options.get_item_text(ship_option_index) == ship.ship_class:
 				ship_class_options.select(ship_option_index)

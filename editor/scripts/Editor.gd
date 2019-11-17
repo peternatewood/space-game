@@ -48,7 +48,7 @@ func _ready():
 	var help_menu = get_node("Controls Container/PanelContainer/Toolbar/Help Menu")
 	help_menu.get_popup().connect("id_pressed", self, "_on_help_menu_id_pressed")
 
-	open_file_dialog.connect("confirmed", self, "_on_open_file_confirmed")
+	open_file_dialog.connect("file_selected", self, "_on_open_file_selected")
 
 	# Get model data from mission_data
 	var ship_index: int = 0
@@ -291,9 +291,9 @@ func _on_objectives_window_objective_added(type: int):
 	objectives_window.add_objective(objective_data, type)
 
 
-func _on_open_file_confirmed():
-	if open_file_dialog.current_path.ends_with(".tscn"):
-		var scene = load(open_file_dialog.current_path)
+func _on_open_file_selected(path: String):
+	if path.ends_with(".tscn"):
+		var scene = load(path)
 
 		var mission_node_name = mission_node.name
 		mission_node.free()
@@ -419,6 +419,15 @@ func load_mission_info():
 	ship_edit_dialog.hide()
 	objectives_edit_dialog.hide()
 	objectives_window.hide()
+
+	# Hide elements in the mission scene that shouldn't display in the editor
+	var hud = mission_node.get_node_or_null("HUD")
+	if hud != null:
+		hud.hide()
+
+	var start_overlay = mission_node.get_node_or_null("Mission Start Overlay")
+	if start_overlay != null:
+		start_overlay.hide()
 
 
 func save_mission_to_file(path: String):
