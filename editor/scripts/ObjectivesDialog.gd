@@ -14,7 +14,33 @@ var ship_names: Array = []
 var type: int = 0
 
 
-func add_requirement(type: String, requirement_data):
+func _ready():
+	var add_failure_button = get_node("ScrollContainer/VBoxContainer/Add Failure Button")
+	add_failure_button.connect("pressed", self, "_on_add_requirement_pressed", [ "failure" ])
+
+	var add_success_button = get_node("ScrollContainer/VBoxContainer/Add Success Button")
+	add_success_button.connect("pressed", self, "_on_add_requirement_pressed", [ "success" ])
+
+	var add_trigger_button = get_node("ScrollContainer/VBoxContainer/Add Trigger Button")
+	add_trigger_button.connect("pressed", self, "_on_add_requirement_pressed", [ "trigger" ])
+
+
+func _on_add_requirement_pressed(type: String):
+	objective.add_requirement(type)
+
+	match type:
+		"failure":
+			add_requirement(type, objective.failure_requirements[objective.failure_requirements.size() - 1])
+		"success":
+			add_requirement(type, objective.success_requirements[objective.success_requirements.size() - 1])
+		"trigger":
+			add_requirement(type, objective.trigger_requirements[objective.trigger_requirements.size() - 1])
+
+
+# PUBLIC
+
+
+func add_requirement(type: String, requirement_object):
 	var requirement = REQUIREMENT.instance()
 
 	match type:
@@ -26,7 +52,7 @@ func add_requirement(type: String, requirement_data):
 			trigger_rows.add_child(requirement)
 
 	requirement.ship_names = ship_names
-	requirement.populate_fields(requirement_data)
+	requirement.populate_fields(requirement_object)
 
 
 func get_objective():
@@ -56,16 +82,16 @@ func get_objective():
 	return objective
 
 
-func populate_fields(data):
-	objective = data
-	description_edit.set_text(data.description)
-	title_lineedit.set_text(data.name)
-	enabled_checkbox.set_pressed(data.enabled)
-	is_critical_checkbox.set_pressed(data.is_critical)
+func populate_fields(objective_object):
+	objective = objective_object
+	description_edit.set_text(objective_object.description)
+	title_lineedit.set_text(objective_object.name)
+	enabled_checkbox.set_pressed(objective_object.enabled)
+	is_critical_checkbox.set_pressed(objective_object.is_critical)
 
 	var failure_index: int = 0
 	var failure_count: int = failure_rows.get_child_count()
-	for requirement in data.failure_requirements:
+	for requirement in objective_object.failure_requirements:
 		if failure_index < failure_count:
 			var failure_requirement = failure_rows.get_child(failure_index)
 			failure_requirement.populate_fields(requirement)
@@ -74,12 +100,12 @@ func populate_fields(data):
 
 		failure_index += 1
 	# Clean up extra requirement nodes
-	for index in range(data.failure_requirements.size(), failure_count):
+	for index in range(objective_object.failure_requirements.size(), failure_count):
 		failure_rows.get_child(index).queue_free()
 
 	var success_index: int = 0
 	var success_count: int = success_rows.get_child_count()
-	for requirement in data.success_requirements:
+	for requirement in objective_object.success_requirements:
 		if success_index < success_count:
 			var success_requirement = success_rows.get_child(success_index)
 			success_requirement.populate_fields(requirement)
@@ -88,12 +114,12 @@ func populate_fields(data):
 
 		success_index += 1
 	# Clean up extra requirement nodes
-	for index in range(data.success_requirements.size(), success_count):
+	for index in range(objective_object.success_requirements.size(), success_count):
 		success_rows.get_child(index).queue_free()
 
 	var trigger_index: int = 0
 	var trigger_count: int = trigger_rows.get_child_count()
-	for requirement in data.trigger_requirements:
+	for requirement in objective_object.trigger_requirements:
 		if trigger_index < trigger_count:
 			var trigger_requirement = trigger_rows.get_child(trigger_index)
 			trigger_requirement.populate_fields(requirement)
@@ -102,7 +128,7 @@ func populate_fields(data):
 
 		trigger_index += 1
 	# Clean up extra requirement nodes
-	for index in range(data.trigger_requirements.size(), trigger_count):
+	for index in range(objective_object.trigger_requirements.size(), trigger_count):
 		trigger_rows.get_child(index).queue_free()
 
 
@@ -120,5 +146,7 @@ func update_ship_names(ships: Array):
 	for requirement in trigger_rows.get_children():
 		requirement.update_ships(ship_names)
 
+
+const Objective = preload("res://scripts/Objective.gd")
 
 const REQUIREMENT = preload("res://editor/prefabs/requirement.tscn")

@@ -842,6 +842,7 @@ text = "Welcome!
 This manual is currently a work in progress. In future updates, it will provide directions for using the mission editor, as well as several help topics"
 
 [node name="Objective Edit Dialog" type="AcceptDialog" parent="Controls Container"]
+visible = true
 margin_right = 96.0
 margin_bottom = 64.0
 window_title = "Edit Objective"
@@ -914,37 +915,55 @@ margin_top = 132.0
 margin_right = 240.0
 margin_bottom = 132.0
 
-[node name="HSeparator" type="HSeparator" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
+[node name="Add Success Button" type="Button" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
 margin_top = 136.0
 margin_right = 240.0
-margin_bottom = 140.0
+margin_bottom = 158.0
+text = "Add Requirement"
 
-[node name="Failure Label" type="Label" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
-margin_top = 144.0
-margin_right = 240.0
-margin_bottom = 162.0
-text = "Failure Requirements"
-
-[node name="Failure Rows" type="VBoxContainer" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
-margin_top = 166.0
+[node name="HSeparator" type="HSeparator" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
+margin_top = 162.0
 margin_right = 240.0
 margin_bottom = 166.0
 
-[node name="HSeparator2" type="HSeparator" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
+[node name="Failure Label" type="Label" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
 margin_top = 170.0
 margin_right = 240.0
-margin_bottom = 174.0
+margin_bottom = 188.0
+text = "Failure Requirements"
+
+[node name="Failure Rows" type="VBoxContainer" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
+margin_top = 192.0
+margin_right = 240.0
+margin_bottom = 192.0
+
+[node name="Add Failure Button" type="Button" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
+margin_top = 196.0
+margin_right = 240.0
+margin_bottom = 218.0
+text = "Add Requirement"
+
+[node name="HSeparator2" type="HSeparator" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
+margin_top = 222.0
+margin_right = 240.0
+margin_bottom = 226.0
 
 [node name="Trigger Label" type="Label" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
-margin_top = 178.0
+margin_top = 230.0
 margin_right = 240.0
-margin_bottom = 196.0
+margin_bottom = 248.0
 text = "Trigger Requirements"
 
 [node name="Trigger Rows" type="VBoxContainer" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
-margin_top = 200.0
+margin_top = 252.0
 margin_right = 240.0
-margin_bottom = 200.0
+margin_bottom = 252.0
+
+[node name="Add Trigger Button" type="Button" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
+margin_top = 256.0
+margin_right = 240.0
+margin_bottom = 278.0
+text = "Add Requirement"
 
 [node name="Manipulator Viewport" type="Viewport" parent="."]
 pause_mode = 2

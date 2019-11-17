@@ -39,13 +39,13 @@ func get_requirement():
 	return requirement
 
 
-func populate_fields(data):
-	requirement = data
-	type_options.select(data.type)
+func populate_fields(requirement_object):
+	requirement = requirement_object
+	type_options.select(requirement_object.type)
 
 	var target_index: int = 0
 	var target_count = target_rows.get_child_count()
-	for name in data.target_names:
+	for name in requirement_object.target_names:
 		if target_index < target_count:
 			var target = target_rows.get_child(target_index)
 			target.select_name(name)
