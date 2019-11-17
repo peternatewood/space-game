@@ -1,11 +1,15 @@
 extends Control
 
+onready var loader = get_node("/root/SceneLoader")
 onready var mission_data = get_node("/root/MissionData")
 onready var mission_name = get_node("Rows/Title Container/Mission Name Label")
 
 
 func _ready():
 	mission_name.set_text(mission_data.mission_name)
+
+	var next_button = get_node("Next Button")
+	next_button.connect("pressed", self, "_on_next_pressed")
 
 	# Populate objective containers
 	var objective_containers: Array = [
@@ -27,6 +31,10 @@ func _ready():
 
 			if hide_container:
 				objective_containers[index].hide()
+
+
+func _on_next_pressed():
+	loader.change_scene("res://title.tscn")
 
 
 const DEBRIEF_OBJECTIVE = preload("res://icons/debrief_objective.tscn")
