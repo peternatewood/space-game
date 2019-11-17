@@ -89,6 +89,18 @@ func _on_trigger_requirement_completed():
 # PUBLIC
 
 
+func add_requirement(type: String, data: Dictionary = {}):
+	var requirement = Requirement.new(data)
+
+	match type:
+		"failure":
+			failure_requirements.append(requirement)
+		"success":
+			success_requirements.append(requirement)
+		"trigger":
+			trigger_requirements.append(requirement)
+
+
 func connect_targets_to_requirements(targets_container):
 	# Connect success requirements
 	for requirement in success_requirements:
