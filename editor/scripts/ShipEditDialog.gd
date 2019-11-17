@@ -188,9 +188,11 @@ func fill_ship_info(ship, loadout: Dictionary = {}):
 	rotation_spinboxes.y.set_value(ship.rotation_degrees.y)
 	rotation_spinboxes.z.set_value(ship.rotation_degrees.z)
 
+	var beam_weapon_slot_count: int = 0
 	var energy_weapon_slot_count: int = 0
 	var missile_weapon_slot_count: int = 0
 
+	var beam_weapons: Array = loadout.get("beam_weapons", [])
 	var energy_weapons: Array = loadout.get("energy_weapons", [])
 	var missile_weapons: Array = loadout.get("missile_weapons", [])
 
@@ -204,6 +206,10 @@ func fill_ship_info(ship, loadout: Dictionary = {}):
 
 		energy_weapon_slot_count = ship.energy_weapon_hardpoints.size()
 		missile_weapon_slot_count = ship.missile_weapon_hardpoints.size()
+	elif ship is CapitalShipBase:
+		beam_weapon_slot_count = ship.beam_weapon_turrets.size()
+		energy_weapon_slot_count = ship.energy_weapon_turrets.size()
+		missile_weapon_slot_count = ship.missile_weapon_turrets.size()
 
 	for index in range(energy_weapon_options.size()):
 		if index < energy_weapon_slot_count:
@@ -277,6 +283,7 @@ signal ship_position_changed
 signal ship_rotation_changed
 
 const AttackShipBase = preload("res://scripts/AttackShipBase.gd")
+const CapitalShipBase = preload("res://scripts/CapitalShipBase.gd")
 const NPCShip = preload("res://scripts/NPCShip.gd")
 const Player = preload("res://scripts/Player.gd")
 const ShipBase = preload("res://scripts/ShipBase.gd")
