@@ -92,3 +92,15 @@ text = "Secret Objectives"
 margin_top = 22.0
 margin_right = 944.0
 margin_bottom = 26.0
+
+[node name="Next Button" type="Button" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -48.0
+margin_top = -26.0
+hint_tooltip = "For the moment,
+just returns to the
+main menu"
+text = "Next"
