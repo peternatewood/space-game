@@ -2,12 +2,11 @@ extends Node
 
 enum { NEUTRAL, FRIENDLY, HOSTILE }
 
-export (NodePath) var player_path
-export (Array, String) var reinforcement_wings = []
-
 onready var loader = get_node("/root/SceneLoader")
 onready var mission_data = get_node("/root/MissionData")
 onready var pause_menu = get_node("Pause Menu")
+onready var player_path: String = get_meta("player_path")
+onready var reinforcement_wings: Array = get_meta("reinforcement_wings")
 
 var factions = {
 	"frog": { "hawk": FRIENDLY, "spider": NEUTRAL },

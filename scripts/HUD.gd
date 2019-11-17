@@ -10,7 +10,7 @@ onready var energy_weapon_rows = get_node("Weapons Container/Weapons Rows/Energy
 onready var hud_bars = get_node("HUD Bars")
 onready var in_range_icon = get_node("Target Reticule/In Range Indicator")
 onready var missile_weapon_rows = get_node("Weapons Container/Weapons Rows/Missile Weapons").get_children()
-onready var mission_controller = get_tree().get_root().get_node("Mission Controller")
+onready var mission_controller = get_node("/root/Mission Controller")
 onready var mission_timer = get_node("Mission Timer")
 onready var objectives_rows = get_node("Objectives Container/Objective Rows")
 onready var player_overhead = get_node("Player Overhead")
@@ -62,7 +62,9 @@ func _ready():
 
 	settings.connect("units_changed", self, "_on_units_changed")
 
-	mission_controller.connect("mission_ready", self, "_on_mission_ready")
+	if mission_controller != null:
+		mission_controller.connect("mission_ready", self, "_on_mission_ready")
+
 	set_process(false)
 
 

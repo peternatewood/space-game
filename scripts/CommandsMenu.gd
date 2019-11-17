@@ -3,7 +3,7 @@ extends PanelContainer
 enum { NONE, ALL_SHIPS, WING, SHIP }
 
 onready var menus_container = get_node("Menus Container")
-onready var mission_controller = get_tree().get_root().get_node("Mission Controller")
+onready var mission_controller = get_node_or_null("/root/Mission Controller")
 onready var root_menu = get_node("Root Commands")
 
 var command_type: int = NONE
@@ -22,7 +22,8 @@ func _ready():
 	reinforcements_list = menus_container.get_node("Reinforcements List")
 	wings_menu = menus_container.get_node("Wings List")
 
-	mission_controller.connect("mission_ready", self, "_on_mission_ready")
+	if mission_controller != null:
+		mission_controller.connect("mission_ready", self, "_on_mission_ready")
 
 
 func _on_commanding_ship_destroyed():
