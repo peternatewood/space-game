@@ -6,6 +6,7 @@ onready var add_ship_options = get_node("Controls Container/Add Ship Dialog/Add 
 onready var camera = get_node("Editor Camera")
 onready var debug = get_node("Controls Container/Debug")
 onready var debug_cube = get_node("Debug")
+onready var details_dialog = get_node("Controls Container/Details Dialog")
 onready var manipulator_overlay = get_node("Controls Container/Manipulator Overlay")
 onready var manipulator_viewport = get_node("Manipulator Viewport")
 onready var manual_window = get_node("Controls Container/Manual Window")
@@ -88,6 +89,8 @@ func _ready():
 	objectives_window.connect("edit_button_pressed", self, "_on_objectives_edit_button_pressed")
 	objectives_edit_dialog.connect("confirmed", self, "_on_objectives_dialog_confirmed")
 
+	details_dialog.connect("confirmed", self, "_on_details_dialog_confirmed")
+
 
 func _on_add_ship_confirmed():
 	var ship_class = ship_index_name_map[add_ship_options.get_selected_id()]
@@ -169,6 +172,11 @@ func _on_controls_gui_input(event):
 					manipulator_viewport.update_camera(camera)
 
 
+func _on_details_dialog_confirmed():
+	mission_node.set_meta("name", details_dialog.name_lineedit.text)
+	mission_node.set_meta("briefing", [ details_dialog.briefing_textedit.text ])
+
+
 func _on_edit_dialog_previous_pressed():
 	var next_index = (selected_node_index - 1) % targets_container.get_child_count()
 
@@ -205,6 +213,9 @@ func _on_edit_menu_id_pressed(item_id: int):
 				ship_edit_dialog.show()
 		2:
 			objectives_window.show()
+		3:
+			details_dialog.populate_fields(mission_node.get_meta("name"), mission_node.get_meta("briefing"))
+			details_dialog.popup_centered()
 
 
 func _on_edit_ship_energy_weapon_changed(weapon_name: String, slot_index: int):
