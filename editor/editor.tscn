@@ -1,0 +1,1040 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://editor/scripts/Editor.gd" type="Script" id=1]
+[ext_resource path="res://editor/default_mission.tscn" type="PackedScene" id=2]
+[ext_resource path="res://editor/scripts/Camera.gd" type="Script" id=3]
+[ext_resource path="res://themes/editor_theme.tres" type="Theme" id=4]
+[ext_resource path="res://editor/scripts/ShipEditDialog.gd" type="Script" id=5]
+[ext_resource path="res://editor/scripts/ObjectivesWindow.gd" type="Script" id=6]
+[ext_resource path="res://editor/scripts/ObjectivesDialog.gd" type="Script" id=7]
+[ext_resource path="res://editor/scripts/DetailsDialog.gd" type="Script" id=8]
+[ext_resource path="res://editor/scripts/ManipulatorViewport.gd" type="Script" id=9]
+[ext_resource path="res://editor/scripts/TransformControls.gd" type="Script" id=10]
+[ext_resource path="res://editor/models/translate_arrow_x.dae" type="PackedScene" id=11]
+[ext_resource path="res://editor/models/translate_arrow_y.dae" type="PackedScene" id=12]
+[ext_resource path="res://editor/models/translate_arrow_z.dae" type="PackedScene" id=13]
+
+[sub_resource type="ViewportTexture" id=1]
+viewport_path = NodePath("Manipulator Viewport")
+
+[node name="Editor" type="Spatial"]
+pause_mode = 2
+script = ExtResource( 1 )
+
+[node name="Mission Scene" parent="." instance=ExtResource( 2 )]
+pause_mode = 1
+
+[node name="Editor Camera" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0 )
+script = ExtResource( 3 )
+
+[node name="Camera" type="Camera" parent="Editor Camera"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4 )
+current = true
+far = 1000.0
+
+[node name="Controls Container" type="Control" parent="."]
+pause_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 4 )
+
+[node name="Manipulator Overlay" type="TextureRect" parent="Controls Container"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = SubResource( 1 )
+expand = true
+
+[node name="Viewport Dummy Control" type="Control" parent="Controls Container"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="PanelContainer" type="PanelContainer" parent="Controls Container"]
+anchor_right = 1.0
+margin_bottom = 4.0
+
+[node name="Toolbar" type="HBoxContainer" parent="Controls Container/PanelContainer"]
+margin_left = 4.0
+margin_top = 2.0
+margin_right = 1020.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+
+[node name="File Menu" type="MenuButton" parent="Controls Container/PanelContainer/Toolbar"]
+margin_right = 40.0
+margin_bottom = 22.0
+text = "File"
+items = [ "New", null, 0, false, false, 0, 0, null, "", false, "Open", null, 0, false, false, 1, 0, null, "", false, "Save", null, 0, false, false, 2, 0, null, "", false, "Quit", null, 0, false, false, 3, 0, null, "", false ]
+
+[node name="Edit Menu" type="MenuButton" parent="Controls Container/PanelContainer/Toolbar"]
+margin_left = 44.0
+margin_right = 84.0
+margin_bottom = 22.0
+text = "Edit"
+items = [ "Add Ship", null, 0, false, false, 0, 0, null, "", false, "Edit Ship", null, 0, false, false, 1, 0, null, "", false, "Objectives", null, 0, false, false, 2, 0, null, "", false, "Details", null, 0, false, false, 3, 0, null, "", false ]
+
+[node name="Help Menu" type="MenuButton" parent="Controls Container/PanelContainer/Toolbar"]
+margin_left = 88.0
+margin_right = 128.0
+margin_bottom = 22.0
+text = "Help"
+items = [ "About", null, 0, false, false, 0, 0, null, "", false, "Manual", null, 0, false, false, 1, 0, null, "", false ]
+
+[node name="Debug" type="Label" parent="Controls Container"]
+visible = false
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -18.0
+text = "n/a"
+
+[node name="Ship Edit Dialog" type="PanelContainer" parent="Controls Container"]
+editor/display_folded = true
+visible = false
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -384.0
+margin_top = 45.0
+margin_right = -18.0
+margin_bottom = 574.0
+grow_horizontal = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 5 )
+
+[node name="Ship Edit Rows" type="VBoxContainer" parent="Controls Container/Ship Edit Dialog"]
+margin_left = 4.0
+margin_top = 2.0
+margin_right = 458.0
+margin_bottom = 527.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Title Container" type="HBoxContainer" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows"]
+margin_right = 454.0
+margin_bottom = 22.0
+
+[node name="Previous Button" type="Button" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Title Container"]
+margin_right = 80.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 80, 0 )
+text = "Previous"
+
+[node name="Title" type="Label" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Title Container"]
+margin_left = 84.0
+margin_top = 2.0
+margin_right = 370.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Edit"
+align = 1
+
+[node name="Next Button" type="Button" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Title Container"]
+margin_left = 374.0
+margin_right = 454.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 80, 0 )
+text = "Next"
+
+[node name="HSeparator" type="HSeparator" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows"]
+margin_top = 26.0
+margin_right = 454.0
+margin_bottom = 30.0
+
+[node name="Ship Edit Scroll" type="ScrollContainer" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows"]
+margin_top = 34.0
+margin_right = 454.0
+margin_bottom = 525.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+scroll_horizontal_enabled = false
+
+[node name="Ship Edit Scroll Rows" type="VBoxContainer" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll"]
+margin_right = 148.0
+margin_bottom = 68.0
+
+[node name="Transform Container" type="GridContainer" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows"]
+margin_right = 442.0
+margin_bottom = 60.0
+columns = 4
+
+[node name="Position Label" type="Label" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Transform Container"]
+margin_top = 5.0
+margin_right = 64.0
+margin_bottom = 23.0
+text = "Position"
+
+[node name="Position X SpinBox" type="SpinBox" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Transform Container"]
+margin_left = 68.0
+margin_right = 190.0
+margin_bottom = 28.0
+max_value = 0.0
+step = 0.01
+allow_greater = true
+allow_lesser = true
+
+[node name="Position Y SpinBox" type="SpinBox" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Transform Container"]
+margin_left = 194.0
+margin_right = 316.0
+margin_bottom = 28.0
+max_value = 0.0
+step = 0.01
+allow_greater = true
+allow_lesser = true
+
+[node name="Position Z SpinBox" type="SpinBox" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Transform Container"]
+margin_left = 320.0
+margin_right = 442.0
+margin_bottom = 28.0
+max_value = 0.0
+step = 0.01
+allow_greater = true
+allow_lesser = true
+
+[node name="Rotation Label" type="Label" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Transform Container"]
+margin_top = 37.0
+margin_right = 64.0
+margin_bottom = 55.0
+text = "Rotation"
+
+[node name="Rotation X SpinBox" type="SpinBox" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Transform Container"]
+margin_left = 68.0
+margin_top = 32.0
+margin_right = 190.0
+margin_bottom = 60.0
+max_value = 0.0
+allow_greater = true
+allow_lesser = true
+
+[node name="Rotation Y SpinBox" type="SpinBox" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Transform Container"]
+margin_left = 194.0
+margin_top = 32.0
+margin_right = 316.0
+margin_bottom = 60.0
+max_value = 0.0
+allow_greater = true
+allow_lesser = true
+
+[node name="Rotation Z SpinBox" type="SpinBox" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Transform Container"]
+margin_left = 320.0
+margin_top = 32.0
+margin_right = 442.0
+margin_bottom = 60.0
+max_value = 0.0
+allow_greater = true
+allow_lesser = true
+
+[node name="Player Ship CheckBox" type="CheckBox" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows"]
+margin_top = 64.0
+margin_right = 442.0
+margin_bottom = 86.0
+text = "Player Ship"
+
+[node name="Ship Edit Grid" type="GridContainer" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows"]
+editor/display_folded = true
+margin_top = 90.0
+margin_right = 442.0
+margin_bottom = 364.0
+columns = 2
+
+[node name="Ship Class Label" type="Label" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid"]
+margin_top = 2.0
+margin_right = 168.0
+margin_bottom = 20.0
+text = "Class"
+
+[node name="Ship Class Options" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid"]
+margin_left = 172.0
+margin_right = 294.0
+margin_bottom = 22.0
+
+[node name="Hitpoints Label" type="Label" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid"]
+margin_top = 31.0
+margin_right = 168.0
+margin_bottom = 49.0
+text = "Hitpoints"
+
+[node name="Hitpoints SpinBox" type="SpinBox" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid"]
+margin_left = 172.0
+margin_top = 26.0
+margin_right = 294.0
+margin_bottom = 54.0
+max_value = 0.0
+allow_greater = true
+
+[node name="Name Label" type="Label" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid"]
+margin_top = 63.0
+margin_right = 168.0
+margin_bottom = 81.0
+text = "Name"
+
+[node name="Name LineEdit" type="LineEdit" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid"]
+margin_left = 172.0
+margin_top = 58.0
+margin_right = 294.0
+margin_bottom = 86.0
+
+[node name="Wing Label" type="Label" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid"]
+margin_top = 95.0
+margin_right = 168.0
+margin_bottom = 113.0
+text = "Wing Name"
+
+[node name="Wing LineEdit" type="LineEdit" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid"]
+margin_left = 172.0
+margin_top = 90.0
+margin_right = 294.0
+margin_bottom = 118.0
+
+[node name="Energy Weapon Label 1" type="Label" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid"]
+margin_top = 124.0
+margin_right = 168.0
+margin_bottom = 142.0
+text = "Energy Weapon Slot 1"
+
+[node name="Energy Weapon Options 1" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid"]
+margin_left = 172.0
+margin_top = 122.0
+margin_right = 294.0
+margin_bottom = 144.0
+text = "none"
+items = [ "none", null, false, 0, null ]
+selected = 0
+
+[node name="Energy Weapon Label 2" type="Label" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid"]
+margin_top = 150.0
+margin_right = 168.0
+margin_bottom = 168.0
+text = "Energy Weapon Slot 2"
+
+[node name="Energy Weapon Options 2" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid"]
+margin_left = 172.0
+margin_top = 148.0
+margin_right = 294.0
+margin_bottom = 170.0
+text = "none"
+items = [ "none", null, false, 0, null ]
+selected = 0
+
+[node name="Energy Weapon Label 3" type="Label" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid"]
+margin_top = 176.0
+margin_right = 168.0
+margin_bottom = 194.0
+text = "Energy Weapon Slot 3"
+
+[node name="Energy Weapon Options 3" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid"]
+margin_left = 172.0
+margin_top = 174.0
+margin_right = 294.0
+margin_bottom = 196.0
+text = "none"
+items = [ "none", null, false, 0, null ]
+selected = 0
+
+[node name="Missile Weapon Label 1" type="Label" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid"]
+margin_top = 202.0
+margin_right = 168.0
+margin_bottom = 220.0
+text = "Missile Weapon Slot 1"
+
+[node name="Missile Weapon Options 1" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid"]
+margin_left = 172.0
+margin_top = 200.0
+margin_right = 294.0
+margin_bottom = 222.0
+text = "none"
+items = [ "none", null, false, 0, null ]
+selected = 0
+
+[node name="Missile Weapon Label 2" type="Label" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid"]
+margin_top = 228.0
+margin_right = 168.0
+margin_bottom = 246.0
+text = "Missile Weapon Slot 2"
+
+[node name="Missile Weapon Options 2" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid"]
+margin_left = 172.0
+margin_top = 226.0
+margin_right = 294.0
+margin_bottom = 248.0
+text = "none"
+items = [ "none", null, false, 0, null ]
+selected = 0
+
+[node name="Missile Weapon Label 3" type="Label" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid"]
+margin_top = 254.0
+margin_right = 168.0
+margin_bottom = 272.0
+text = "Missile Weapon Slot 3"
+
+[node name="Missile Weapon Options 3" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid"]
+margin_left = 172.0
+margin_top = 252.0
+margin_right = 294.0
+margin_bottom = 274.0
+text = "none"
+items = [ "none", null, false, 0, null ]
+selected = 0
+
+[node name="NPC Ship Rows" type="VBoxContainer" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows"]
+editor/display_folded = true
+margin_top = 368.0
+margin_right = 442.0
+margin_bottom = 612.0
+
+[node name="HSeparator" type="HSeparator" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows"]
+margin_right = 442.0
+margin_bottom = 4.0
+
+[node name="Warped In CheckBox" type="CheckBox" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows"]
+margin_top = 8.0
+margin_right = 442.0
+margin_bottom = 30.0
+pressed = true
+text = "Start Warped In"
+
+[node name="Orders Grid" type="GridContainer" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows"]
+margin_top = 34.0
+margin_right = 442.0
+margin_bottom = 244.0
+columns = 4
+
+[node name="Order # Header" type="Label" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_right = 56.0
+margin_bottom = 18.0
+text = "#"
+align = 2
+
+[node name="Order Type Header" type="Label" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 60.0
+margin_right = 114.0
+margin_bottom = 18.0
+text = "Type"
+
+[node name="Order Target Header" type="Label" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 118.0
+margin_right = 172.0
+margin_bottom = 18.0
+text = "Target"
+
+[node name="Order Priority Header" type="Label" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 176.0
+margin_right = 298.0
+margin_bottom = 18.0
+text = "Priority"
+
+[node name="Order Label 1" type="Label" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_top = 27.0
+margin_right = 56.0
+margin_bottom = 45.0
+text = "Order 1"
+
+[node name="Order Type Option 1" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 60.0
+margin_top = 22.0
+margin_right = 114.0
+margin_bottom = 50.0
+text = "none"
+items = [ "none", null, false, -1, null, "Passive", null, false, 0, null, "Attack", null, false, 1, null, "Defend", null, false, 2, null, "Ignore", null, false, 3, null, "Attack Any", null, false, 5, null, "Depart", null, false, 6, null, "Arrive", null, true, 7, null, "Patrol", null, false, 8, null ]
+selected = 0
+
+[node name="Order Target Option 1" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 118.0
+margin_top = 22.0
+margin_right = 172.0
+margin_bottom = 50.0
+text = "none"
+items = [ "none", null, false, -1, null ]
+selected = 0
+
+[node name="Order Priority SpinBox 1" type="SpinBox" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 176.0
+margin_top = 22.0
+margin_right = 298.0
+margin_bottom = 50.0
+
+[node name="Order Label 2" type="Label" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_top = 59.0
+margin_right = 56.0
+margin_bottom = 77.0
+text = "Order 2"
+
+[node name="Order Type Option 2" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 60.0
+margin_top = 54.0
+margin_right = 114.0
+margin_bottom = 82.0
+text = "none"
+items = [ "none", null, false, -1, null, "Passive", null, false, 0, null, "Attack", null, false, 1, null, "Defend", null, false, 2, null, "Ignore", null, false, 3, null, "Attack Any", null, false, 5, null, "Depart", null, false, 6, null, "Arrive", null, true, 7, null, "Patrol", null, false, 8, null ]
+selected = 0
+
+[node name="Order Target Option 2" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 118.0
+margin_top = 54.0
+margin_right = 172.0
+margin_bottom = 82.0
+text = "none"
+items = [ "none", null, false, -1, null ]
+selected = 0
+
+[node name="Order Priority SpinBox 2" type="SpinBox" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 176.0
+margin_top = 54.0
+margin_right = 298.0
+margin_bottom = 82.0
+
+[node name="Order Label 3" type="Label" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_top = 91.0
+margin_right = 56.0
+margin_bottom = 109.0
+text = "Order 3"
+
+[node name="Order Type Option 3" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 60.0
+margin_top = 86.0
+margin_right = 114.0
+margin_bottom = 114.0
+text = "none"
+items = [ "none", null, false, -1, null, "Passive", null, false, 0, null, "Attack", null, false, 1, null, "Defend", null, false, 2, null, "Ignore", null, false, 3, null, "Attack Any", null, false, 5, null, "Depart", null, false, 6, null, "Arrive", null, true, 7, null, "Patrol", null, false, 8, null ]
+selected = 0
+
+[node name="Order Target Option 3" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 118.0
+margin_top = 86.0
+margin_right = 172.0
+margin_bottom = 114.0
+text = "none"
+items = [ "none", null, false, -1, null ]
+selected = 0
+
+[node name="Order Priority SpinBox 3" type="SpinBox" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 176.0
+margin_top = 86.0
+margin_right = 298.0
+margin_bottom = 114.0
+
+[node name="Order Label 4" type="Label" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_top = 123.0
+margin_right = 56.0
+margin_bottom = 141.0
+text = "Order 4"
+
+[node name="Order Type Option 4" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 60.0
+margin_top = 118.0
+margin_right = 114.0
+margin_bottom = 146.0
+text = "none"
+items = [ "none", null, false, -1, null, "Passive", null, false, 0, null, "Attack", null, false, 1, null, "Defend", null, false, 2, null, "Ignore", null, false, 3, null, "Attack Any", null, false, 5, null, "Depart", null, false, 6, null, "Arrive", null, true, 7, null, "Patrol", null, false, 8, null ]
+selected = 0
+
+[node name="Order Target Option 4" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 118.0
+margin_top = 118.0
+margin_right = 172.0
+margin_bottom = 146.0
+text = "none"
+items = [ "none", null, false, -1, null ]
+selected = 0
+
+[node name="Order Priority SpinBox 4" type="SpinBox" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 176.0
+margin_top = 118.0
+margin_right = 298.0
+margin_bottom = 146.0
+
+[node name="Order Label 5" type="Label" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_top = 155.0
+margin_right = 56.0
+margin_bottom = 173.0
+text = "Order 5"
+
+[node name="Order Type Option 5" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 60.0
+margin_top = 150.0
+margin_right = 114.0
+margin_bottom = 178.0
+text = "none"
+items = [ "none", null, false, -1, null, "Passive", null, false, 0, null, "Attack", null, false, 1, null, "Defend", null, false, 2, null, "Ignore", null, false, 3, null, "Attack Any", null, false, 5, null, "Depart", null, false, 6, null, "Arrive", null, true, 7, null, "Patrol", null, false, 8, null ]
+selected = 0
+
+[node name="Order Target Option 5" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 118.0
+margin_top = 150.0
+margin_right = 172.0
+margin_bottom = 178.0
+text = "none"
+items = [ "none", null, false, -1, null ]
+selected = 0
+
+[node name="Order Priority SpinBox 5" type="SpinBox" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 176.0
+margin_top = 150.0
+margin_right = 298.0
+margin_bottom = 178.0
+
+[node name="Order Label 6" type="Label" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_top = 187.0
+margin_right = 56.0
+margin_bottom = 205.0
+text = "Order 6"
+
+[node name="Order Type Option 6" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 60.0
+margin_top = 182.0
+margin_right = 114.0
+margin_bottom = 210.0
+text = "none"
+items = [ "none", null, false, -1, null, "Passive", null, false, 0, null, "Attack", null, false, 1, null, "Defend", null, false, 2, null, "Ignore", null, false, 3, null, "Attack Any", null, false, 5, null, "Depart", null, false, 6, null, "Arrive", null, true, 7, null, "Patrol", null, false, 8, null ]
+selected = 0
+
+[node name="Order Target Option 6" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 118.0
+margin_top = 182.0
+margin_right = 172.0
+margin_bottom = 210.0
+text = "none"
+items = [ "none", null, false, -1, null ]
+selected = 0
+
+[node name="Order Priority SpinBox 6" type="SpinBox" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
+margin_left = 176.0
+margin_top = 182.0
+margin_right = 298.0
+margin_bottom = 210.0
+
+[node name="Objectives Window" type="PanelContainer" parent="Controls Container"]
+editor/display_folded = true
+visible = false
+margin_left = 9.0
+margin_top = 44.0
+margin_right = 209.0
+margin_bottom = 444.0
+rect_min_size = Vector2( 200, 400 )
+script = ExtResource( 6 )
+
+[node name="Objectives Window Rows" type="VBoxContainer" parent="Controls Container/Objectives Window"]
+margin_left = 4.0
+margin_top = 2.0
+margin_right = 196.0
+margin_bottom = 398.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Controls Container/Objectives Window/Objectives Window Rows"]
+margin_right = 192.0
+margin_bottom = 22.0
+
+[node name="Title" type="Label" parent="Controls Container/Objectives Window/Objectives Window Rows/HBoxContainer"]
+margin_top = 2.0
+margin_right = 172.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Objectives"
+
+[node name="Close Button" type="Button" parent="Controls Container/Objectives Window/Objectives Window Rows/HBoxContainer"]
+margin_left = 176.0
+margin_right = 192.0
+margin_bottom = 22.0
+text = "x"
+
+[node name="HSeparator" type="HSeparator" parent="Controls Container/Objectives Window/Objectives Window Rows"]
+margin_top = 26.0
+margin_right = 192.0
+margin_bottom = 30.0
+
+[node name="Primary Panel" type="PanelContainer" parent="Controls Container/Objectives Window/Objectives Window Rows"]
+margin_top = 34.0
+margin_right = 192.0
+margin_bottom = 72.0
+
+[node name="Primary Rows" type="VBoxContainer" parent="Controls Container/Objectives Window/Objectives Window Rows/Primary Panel"]
+margin_left = 4.0
+margin_top = 2.0
+margin_right = 188.0
+margin_bottom = 36.0
+
+[node name="Primary Label Container" type="HBoxContainer" parent="Controls Container/Objectives Window/Objectives Window Rows/Primary Panel/Primary Rows"]
+margin_right = 184.0
+margin_bottom = 22.0
+
+[node name="Primary Label" type="Label" parent="Controls Container/Objectives Window/Objectives Window Rows/Primary Panel/Primary Rows/Primary Label Container"]
+margin_top = 2.0
+margin_right = 148.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Primary"
+
+[node name="Add Primary Button" type="Button" parent="Controls Container/Objectives Window/Objectives Window Rows/Primary Panel/Primary Rows/Primary Label Container"]
+margin_left = 152.0
+margin_right = 184.0
+margin_bottom = 22.0
+text = "Add"
+
+[node name="HSeparator2" type="HSeparator" parent="Controls Container/Objectives Window/Objectives Window Rows/Primary Panel/Primary Rows"]
+margin_top = 26.0
+margin_right = 184.0
+margin_bottom = 30.0
+
+[node name="Primary Objectives" type="VBoxContainer" parent="Controls Container/Objectives Window/Objectives Window Rows/Primary Panel/Primary Rows"]
+margin_top = 34.0
+margin_right = 184.0
+margin_bottom = 34.0
+
+[node name="Secondary Panel" type="PanelContainer" parent="Controls Container/Objectives Window/Objectives Window Rows"]
+margin_top = 76.0
+margin_right = 192.0
+margin_bottom = 114.0
+
+[node name="Secondary Rows" type="VBoxContainer" parent="Controls Container/Objectives Window/Objectives Window Rows/Secondary Panel"]
+margin_left = 4.0
+margin_top = 2.0
+margin_right = 188.0
+margin_bottom = 36.0
+
+[node name="Secondary Label Container" type="HBoxContainer" parent="Controls Container/Objectives Window/Objectives Window Rows/Secondary Panel/Secondary Rows"]
+margin_right = 184.0
+margin_bottom = 22.0
+
+[node name="Secondary Label" type="Label" parent="Controls Container/Objectives Window/Objectives Window Rows/Secondary Panel/Secondary Rows/Secondary Label Container"]
+margin_top = 2.0
+margin_right = 148.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Secondary"
+
+[node name="Add Secondary Button" type="Button" parent="Controls Container/Objectives Window/Objectives Window Rows/Secondary Panel/Secondary Rows/Secondary Label Container"]
+margin_left = 152.0
+margin_right = 184.0
+margin_bottom = 22.0
+text = "Add"
+
+[node name="HSeparator2" type="HSeparator" parent="Controls Container/Objectives Window/Objectives Window Rows/Secondary Panel/Secondary Rows"]
+margin_top = 26.0
+margin_right = 184.0
+margin_bottom = 30.0
+
+[node name="Secondary Objectives" type="VBoxContainer" parent="Controls Container/Objectives Window/Objectives Window Rows/Secondary Panel/Secondary Rows"]
+margin_top = 34.0
+margin_right = 184.0
+margin_bottom = 34.0
+
+[node name="Secret Panel" type="PanelContainer" parent="Controls Container/Objectives Window/Objectives Window Rows"]
+margin_top = 118.0
+margin_right = 192.0
+margin_bottom = 156.0
+
+[node name="Secret Rows" type="VBoxContainer" parent="Controls Container/Objectives Window/Objectives Window Rows/Secret Panel"]
+margin_left = 4.0
+margin_top = 2.0
+margin_right = 188.0
+margin_bottom = 36.0
+
+[node name="Secret Label Container" type="HBoxContainer" parent="Controls Container/Objectives Window/Objectives Window Rows/Secret Panel/Secret Rows"]
+margin_right = 184.0
+margin_bottom = 22.0
+
+[node name="Secret Label" type="Label" parent="Controls Container/Objectives Window/Objectives Window Rows/Secret Panel/Secret Rows/Secret Label Container"]
+margin_top = 2.0
+margin_right = 148.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Secret"
+
+[node name="Add Secret Button" type="Button" parent="Controls Container/Objectives Window/Objectives Window Rows/Secret Panel/Secret Rows/Secret Label Container"]
+margin_left = 152.0
+margin_right = 184.0
+margin_bottom = 22.0
+text = "Add"
+
+[node name="HSeparator2" type="HSeparator" parent="Controls Container/Objectives Window/Objectives Window Rows/Secret Panel/Secret Rows"]
+margin_top = 26.0
+margin_right = 184.0
+margin_bottom = 30.0
+
+[node name="Secret Objectives" type="VBoxContainer" parent="Controls Container/Objectives Window/Objectives Window Rows/Secret Panel/Secret Rows"]
+margin_top = 34.0
+margin_right = 184.0
+margin_bottom = 34.0
+
+[node name="Open File Dialog" type="FileDialog" parent="Controls Container"]
+margin_right = 400.0
+margin_bottom = 300.0
+rect_min_size = Vector2( 400, 300 )
+window_title = "Open a File"
+resizable = true
+mode = 0
+access = 1
+filters = PoolStringArray( "*.tscn" )
+current_dir = "user://"
+current_path = "user://"
+
+[node name="Save File Dialog" type="FileDialog" parent="Controls Container"]
+margin_right = 400.0
+margin_bottom = 300.0
+rect_min_size = Vector2( 400, 300 )
+window_title = "Save Mission"
+resizable = true
+access = 1
+filters = PoolStringArray( "*.tscn" )
+current_dir = "user://"
+current_path = "user://"
+
+[node name="Add Ship Dialog" type="AcceptDialog" parent="Controls Container"]
+editor/display_folded = true
+margin_right = 112.0
+margin_bottom = 64.0
+window_title = "Add Ship"
+resizable = true
+
+[node name="Add Ship Grid" type="GridContainer" parent="Controls Container/Add Ship Dialog"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 104.0
+margin_bottom = 26.0
+columns = 2
+
+[node name="Ship Class Label" type="Label" parent="Controls Container/Add Ship Dialog/Add Ship Grid"]
+margin_top = 3.0
+margin_right = 64.0
+margin_bottom = 17.0
+text = "Ship Class"
+
+[node name="Ship Class Options" type="OptionButton" parent="Controls Container/Add Ship Dialog/Add Ship Grid"]
+margin_left = 68.0
+margin_right = 109.0
+margin_bottom = 20.0
+
+[node name="About Window" type="WindowDialog" parent="Controls Container"]
+editor/display_folded = true
+margin_right = 136.0
+margin_bottom = 39.0
+rect_min_size = Vector2( 136, 39 )
+window_title = "About"
+
+[node name="Label" type="Label" parent="Controls Container/About Window"]
+margin_right = 136.0
+margin_bottom = 39.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Space Game Editor
+v0.1.0"
+align = 1
+valign = 1
+
+[node name="Manual Window" type="WindowDialog" parent="Controls Container"]
+editor/display_folded = true
+margin_right = 48.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 400, 300 )
+window_title = "Manual"
+resizable = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Controls Container/Manual Window"]
+margin_right = 400.0
+margin_bottom = 300.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Welcome!
+
+This manual is currently a work in progress. In future updates, it will provide directions for using the mission editor, as well as several help topics"
+
+[node name="Objective Edit Dialog" type="AcceptDialog" parent="Controls Container"]
+editor/display_folded = true
+margin_right = 96.0
+margin_bottom = 64.0
+window_title = "Edit Objective"
+script = ExtResource( 7 )
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Controls Container/Objective Edit Dialog"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 248.0
+margin_bottom = 328.0
+rect_min_size = Vector2( 240, 320 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+scroll_horizontal_enabled = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Controls Container/Objective Edit Dialog/ScrollContainer"]
+margin_right = 240.0
+margin_bottom = 320.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Name Row" type="HBoxContainer" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
+margin_right = 240.0
+margin_bottom = 28.0
+
+[node name="Name Label" type="Label" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer/Name Row"]
+margin_top = 5.0
+margin_right = 32.0
+margin_bottom = 23.0
+text = "Name"
+
+[node name="Name LineEdit" type="LineEdit" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer/Name Row"]
+margin_left = 36.0
+margin_right = 240.0
+margin_bottom = 28.0
+size_flags_horizontal = 3
+
+[node name="Description Label" type="Label" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
+margin_top = 32.0
+margin_right = 240.0
+margin_bottom = 50.0
+text = "Description"
+
+[node name="Description TextEdit" type="TextEdit" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
+margin_top = 54.0
+margin_right = 240.0
+margin_bottom = 54.0
+
+[node name="Enabled CheckBox" type="CheckBox" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
+margin_top = 58.0
+margin_right = 240.0
+margin_bottom = 80.0
+text = "Enabled"
+
+[node name="Is Critical CheckBox" type="CheckBox" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
+margin_top = 84.0
+margin_right = 240.0
+margin_bottom = 106.0
+hint_tooltip = "If checked, failure of this objective will fail the mission (only applies to Primary Objectives)"
+text = "Critical"
+
+[node name="Success Label" type="Label" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
+margin_top = 110.0
+margin_right = 240.0
+margin_bottom = 128.0
+text = "Success Requirements"
+
+[node name="Success Rows" type="VBoxContainer" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
+margin_top = 132.0
+margin_right = 240.0
+margin_bottom = 132.0
+
+[node name="Add Success Button" type="Button" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
+margin_top = 136.0
+margin_right = 240.0
+margin_bottom = 158.0
+text = "Add Requirement"
+
+[node name="HSeparator" type="HSeparator" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
+margin_top = 162.0
+margin_right = 240.0
+margin_bottom = 166.0
+
+[node name="Failure Label" type="Label" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
+margin_top = 170.0
+margin_right = 240.0
+margin_bottom = 188.0
+text = "Failure Requirements"
+
+[node name="Failure Rows" type="VBoxContainer" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
+margin_top = 192.0
+margin_right = 240.0
+margin_bottom = 192.0
+
+[node name="Add Failure Button" type="Button" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
+margin_top = 196.0
+margin_right = 240.0
+margin_bottom = 218.0
+text = "Add Requirement"
+
+[node name="HSeparator2" type="HSeparator" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
+margin_top = 222.0
+margin_right = 240.0
+margin_bottom = 226.0
+
+[node name="Trigger Label" type="Label" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
+margin_top = 230.0
+margin_right = 240.0
+margin_bottom = 248.0
+text = "Trigger Requirements"
+
+[node name="Trigger Rows" type="VBoxContainer" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
+margin_top = 252.0
+margin_right = 240.0
+margin_bottom = 252.0
+
+[node name="Add Trigger Button" type="Button" parent="Controls Container/Objective Edit Dialog/ScrollContainer/VBoxContainer"]
+margin_top = 256.0
+margin_right = 240.0
+margin_bottom = 278.0
+text = "Add Requirement"
+
+[node name="Details Dialog" type="AcceptDialog" parent="Controls Container"]
+editor/display_folded = true
+margin_right = 96.0
+margin_bottom = 64.0
+window_title = "Mission Details"
+resizable = true
+script = ExtResource( 8 )
+
+[node name="Details Rows" type="VBoxContainer" parent="Controls Container/Details Dialog"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 160.0
+margin_bottom = 122.0
+
+[node name="Details Name Container" type="HBoxContainer" parent="Controls Container/Details Dialog/Details Rows"]
+margin_right = 142.0
+margin_bottom = 28.0
+
+[node name="Name Label" type="Label" parent="Controls Container/Details Dialog/Details Rows/Details Name Container"]
+margin_top = 5.0
+margin_right = 32.0
+margin_bottom = 23.0
+text = "Name"
+
+[node name="Name LineEdit" type="LineEdit" parent="Controls Container/Details Dialog/Details Rows/Details Name Container"]
+margin_left = 36.0
+margin_right = 142.0
+margin_bottom = 28.0
+size_flags_horizontal = 3
+
+[node name="Briefing Label" type="Label" parent="Controls Container/Details Dialog/Details Rows"]
+margin_top = 32.0
+margin_right = 142.0
+margin_bottom = 50.0
+text = "Briefing"
+
+[node name="Briefing TextEdit" type="TextEdit" parent="Controls Container/Details Dialog/Details Rows"]
+margin_top = 54.0
+margin_right = 142.0
+margin_bottom = 114.0
+rect_min_size = Vector2( 0, 60 )
+size_flags_vertical = 3
+
+[node name="Manipulator Viewport" type="Viewport" parent="."]
+pause_mode = 2
+size = Vector2( 1920, 1080 )
+own_world = true
+transparent_bg = true
+render_target_v_flip = true
+script = ExtResource( 9 )
+
+[node name="Transform Controls" type="Spatial" parent="Manipulator Viewport"]
+script = ExtResource( 10 )
+
+[node name="Arrow X" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 11 )]
+transform = Transform( -4.37114e-008, 1, 0, -1, -4.37114e-008, 0, 0, 0, 1, 0, 0, 0 )
+monitoring = false
+monitorable = false
+
+[node name="Arrow Y" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 12 )]
+monitoring = false
+monitorable = false
+
+[node name="Arrow Z" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 13 )]
+transform = Transform( 1, 0, 0, 0, -4.37114e-008, 1, 0, -1, -4.37114e-008, 0, 0, 0 )
+monitoring = false
+monitorable = false
+
+[node name="Camera" type="Camera" parent="Manipulator Viewport"]
+transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 4, 4 )
+current = true
+far = 1000.0

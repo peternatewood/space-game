@@ -17,8 +17,10 @@
 
 [node name="Mission Controller" type="Spatial"]
 script = ExtResource( 1 )
-player_path = NodePath("Targets Container/Alpha 1")
-reinforcement_wings = [ "Beta" ]
+__meta__ = {
+"player_path": "Targets Container/Alpha 1",
+"reinforcement_wings": [ "Beta" ]
+}
 
 [node name="Sun Light" type="DirectionalLight" parent="."]
 transform = Transform( 0.866025, 0.482963, -0.12941, 0, 0.258819, 0.965926, 0.5, -0.836516, 0.224144, 0, 8, 2 )

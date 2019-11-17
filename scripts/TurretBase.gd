@@ -6,7 +6,7 @@ onready var bounding_box_extents = get_meta("bounding_box_extents")
 onready var cam_distance: float = get_meta("cam_distance")
 onready var capital_ship = get_parent().get_parent()
 onready var max_hull_hitpoints: int = get_meta("hull_hitpoints")
-onready var mission_controller = get_tree().get_root().get_node("Mission Controller")
+onready var mission_controller = get_node_or_null("/root/Mission Controller")
 onready var settings = get_node("/root/GlobalSettings")
 
 var current_target
@@ -22,7 +22,9 @@ var weapon
 
 func _ready():
 	self.connect("body_entered", self, "_on_body_entered")
-	mission_controller.connect("mission_ready", self, "_on_mission_ready")
+
+	if mission_controller != null:
+		mission_controller.connect("mission_ready", self, "_on_mission_ready")
 
 	set_process(false)
 

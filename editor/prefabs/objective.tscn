@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://editor/scripts/Objective.gd" type="Script" id=1]
+
+[node name="Objective" type="HBoxContainer"]
+margin_right = 192.0
+margin_bottom = 22.0
+script = ExtResource( 1 )
+
+[node name="Name Label" type="Label" parent="."]
+margin_top = 4.0
+margin_right = 93.0
+margin_bottom = 18.0
+size_flags_horizontal = 3
+text = "name"
+
+[node name="Edit Button" type="Button" parent="."]
+margin_left = 97.0
+margin_right = 133.0
+margin_bottom = 22.0
+text = "Edit"
+
+[node name="Delete Button" type="Button" parent="."]
+margin_left = 137.0
+margin_right = 192.0
+margin_bottom = 22.0
+text = "Delete"

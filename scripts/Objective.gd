@@ -89,6 +89,18 @@ func _on_trigger_requirement_completed():
 # PUBLIC
 
 
+func add_requirement(type: String, data: Dictionary = {}):
+	var requirement = Requirement.new(data)
+
+	match type:
+		"failure":
+			failure_requirements.append(requirement)
+		"success":
+			success_requirements.append(requirement)
+		"trigger":
+			trigger_requirements.append(requirement)
+
+
 func connect_targets_to_requirements(targets_container):
 	# Connect success requirements
 	for requirement in success_requirements:
@@ -119,6 +131,29 @@ func connect_targets_to_requirements(targets_container):
 				target_node.connect("destroyed", requirement, "_on_target_destroyed")
 				target_node.connect("warping_in", requirement, "_on_target_warping_in")
 				target_node.connect("warped_out", requirement, "_on_target_warped_out")
+
+
+func to_dictionary():
+	var data: Dictionary = {
+		"description": description,
+		"enabled": enabled,
+		"failure_requirements": [],
+		"is_critical": is_critical,
+		"name": name,
+		"success_requirements": [],
+		"trigger_requirements": []
+	}
+
+	for requirement in failure_requirements:
+		data.failure_requirements.append(requirement.to_dictionary())
+
+	for requirement in success_requirements:
+		data.success_requirements.append(requirement.to_dictionary())
+
+	for requirement in trigger_requirements:
+		data.trigger_requirements.append(requirement.to_dictionary())
+
+	return data
 
 
 signal completed
@@ -185,6 +220,22 @@ class Requirement extends Object:
 			if target_counter >= targets.size():
 				state = COMPLETED
 				emit_signal("completed")
+
+
+	# PUBLIC
+
+
+	func to_dictionary():
+		var data: Dictionary = {
+			"objective_index": objective_index,
+			"objective_type": objective_type,
+			"type": type,
+			"target_names": target_names,
+			"time_limit": time_limit,
+			"waypoints_name": waypoints_name
+		}
+
+		return data
 
 
 	signal completed

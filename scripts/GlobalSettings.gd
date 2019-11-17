@@ -2,6 +2,8 @@ extends Node
 
 enum { MASTER, SOUND_EFFECTS, MUSIC, UI_SOUNDS, AUDIO_BUS_COUNT }
 
+# TODO: change to using .cfg format and manipulating ProjectSettings directly
+
 var keybinds: Dictionary = {}
 # Default settings
 var settings: Dictionary = {
