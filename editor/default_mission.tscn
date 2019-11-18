@@ -15,16 +15,18 @@ __meta__ = {
 "ships": [ "Spider Fighter", "Spider Interceptor", "Spider Bomber" ]
 },
 "briefing": [ "Test everything to do with individual missions." ],
-"loadouts": {
-"Alpha 1": {
+"default_loadouts": [ [ {
 "energy_weapons": [ "Energy Bolt", "Disintigrator" ],
-"missile_weapons": [ "Heat Seeker", "Heat Seeker" ]
-}
-},
+"missile_weapons": [ "Heat Seeker", "Heat Seeker" ],
+"name": "Alpha 1"
+} ] ],
 "name": "Debug Mission",
+"non_player_loadouts": {
+
+},
 "objectives": [ [  ], [  ], [  ] ],
 "player_path": "Targets Container/Alpha 1",
-"reinforcement_wings": [  ]
+"reinforcement_wings": [  ],
 "wing_names": [ "Alpha", "", "", "", "", "" ]
 }
 

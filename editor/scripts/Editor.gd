@@ -23,15 +23,17 @@ onready var wings_dialog = get_node("Controls Container/Wings Dialog")
 var current_mouse_button: int = -1
 var has_player_ship: bool = true
 var manipulator_node = null
-var loadouts: Dictionary = {}
+var default_loadouts: Array = []
 var mouse_pos: Vector2
 var mouse_vel: Vector2
 var objectives: Array = []
+var non_player_loadouts: Dictionary
 var scene_file_regex = RegEx.new()
 var selected_node = null
 var selected_node_index: int = -1
 var ship_index_name_map: Array = []
 var targets_container
+var wing_names: Array = []
 
 
 func _ready():
@@ -85,10 +87,7 @@ func _ready():
 
 	get_node("Controls Container/Viewport Dummy Control").connect("gui_input", self, "_on_controls_gui_input")
 
-	if mission_node.has_meta("wing_names"):
-		var wing_names = mission_node.get_meta("wing_names")
-		wings_dialog.populate_wing_names(wing_names)
-
+	wings_dialog.populate_wing_names(wing_names)
 	wings_dialog.connect("confirmed", self, "_on_wings_dialog_confirmed")
 
 	objectives_window.connect("objective_added", self, "_on_objectives_window_objective_added")
@@ -104,16 +103,16 @@ func _on_add_ship_confirmed():
 	var ship_instance = mission_data.ship_models[ship_class].instance()
 	ship_instance.set_script(NPCShip)
 	targets_container.add_child(ship_instance)
-	loadouts[ship_instance.name] = {
+	non_player_loadouts[ship_instance.name] = {
 		"energy_weapons": [],
 		"missile_weapons": []
 	}
 
 	for index in range(ship_instance.energy_weapon_hardpoints.size()):
-		loadouts[ship_instance.name].energy_weapons.append("")
+		non_player_loadouts[ship_instance.name].energy_weapons.append("")
 
 	for index in range(ship_instance.missile_weapon_hardpoints.size()):
-		loadouts[ship_instance.name].missile_weapons.append("")
+		non_player_loadouts[ship_instance.name].missile_weapons.append("")
 
 
 func _on_controls_gui_input(event):
@@ -126,7 +125,6 @@ func _on_controls_gui_input(event):
 
 		match event.button_index:
 			BUTTON_LEFT:
-				#if event.pressed and not ship_edit_dialog.has_point(event.position):
 				if event.pressed:
 					# Check manipulator viewport raycast first
 					var manipulator_intersect
@@ -148,7 +146,8 @@ func _on_controls_gui_input(event):
 							transform_controls.transform.origin = selected_node.transform.origin
 							manipulator_overlay.show()
 
-							var ship_loadout = loadouts.get(selected_node.name, {})
+							var ship_loadout = get_ship_loadout(selected_node)
+
 							ship_edit_dialog.fill_ship_info(selected_node, ship_loadout)
 							ship_edit_dialog.show()
 						else:
@@ -190,8 +189,7 @@ func _on_edit_dialog_previous_pressed():
 	if next_index != selected_node_index:
 		selected_node_index = next_index
 		selected_node = targets_container.get_child(selected_node_index)
-		var ship_loadout = loadouts.get(selected_node.name, {})
-		ship_edit_dialog.fill_ship_info(selected_node, ship_loadout)
+		ship_edit_dialog.fill_ship_info(selected_node, get_ship_loadout(selected_node))
 
 
 func _on_edit_dialog_next_pressed():
@@ -200,8 +198,7 @@ func _on_edit_dialog_next_pressed():
 	if next_index != selected_node_index:
 		selected_node_index = next_index
 		selected_node = targets_container.get_child(selected_node_index)
-		var ship_loadout = loadouts.get(selected_node.name, {})
-		ship_edit_dialog.fill_ship_info(selected_node, ship_loadout)
+		ship_edit_dialog.fill_ship_info(selected_node, get_ship_loadout(selected_node))
 
 
 func _on_edit_menu_id_pressed(item_id: int):
@@ -215,8 +212,7 @@ func _on_edit_menu_id_pressed(item_id: int):
 				selected_node_index = clamp(selected_node_index, targets_count - 1, 0)
 				selected_node = targets_container.get_child(selected_node_index)
 
-				var ship_loadout = loadouts.get(selected_node.name, {})
-				ship_edit_dialog.fill_ship_info(selected_node, ship_loadout)
+				ship_edit_dialog.fill_ship_info(selected_node, get_ship_loadout(selected_node))
 				ship_edit_dialog.show()
 		2:
 			wings_dialog.popup_centered()
@@ -228,20 +224,35 @@ func _on_edit_menu_id_pressed(item_id: int):
 
 
 func _on_edit_ship_energy_weapon_changed(weapon_name: String, slot_index: int):
-	loadouts[ship_edit_dialog.edit_ship.name]["energy_weapons"][slot_index] = weapon_name
-	mission_node.set_meta("loadouts", loadouts)
+	var loadout = get_ship_loadout(ship_edit_dialog.edit_ship)
+	loadout["energy_weapons"][slot_index] = weapon_name
+	set_ship_loadout(ship_edit_dialog.edit_ship, loadout)
+
+	mission_node.set_meta("default_loadouts", default_loadouts)
+	mission_node.set_meta("non_player_loadouts", non_player_loadouts)
 
 
 func _on_edit_ship_missile_weapon_changed(weapon_name: String, slot_index: int):
-	loadouts[ship_edit_dialog.edit_ship.name]["missile_weapons"][slot_index] = weapon_name
-	mission_node.set_meta("loadouts", loadouts)
+	var loadout = get_ship_loadout(ship_edit_dialog.edit_ship)
+	loadout["missile_weapons"][slot_index] = weapon_name
+	set_ship_loadout(ship_edit_dialog.edit_ship, loadout)
+
+	mission_node.set_meta("default_loadouts", default_loadouts)
+	mission_node.set_meta("non_player_loadouts", non_player_loadouts)
 
 
 func _on_edit_ship_name_changed(old_name: String, new_name: String):
-	var ship_loadout = loadouts.get(old_name)
-	loadouts[new_name] = ship_loadout
-	loadouts.erase(old_name)
-	mission_node.set_meta("loadouts", loadouts)
+	# We only need to change the loadouts if this is a non-player ship
+	var wing_name_index: int = -1
+	if ship_edit_dialog.edit_ship is AttackShipBase and ship_edit_dialog.edit_ship.wing_name != "":
+		wing_name_index = wing_names.find(ship_edit_dialog.edit_ship.wing_name)
+
+	if wing_name_index == -1:
+		var ship_loadout = non_player_loadouts.get(old_name, {})
+		non_player_loadouts[new_name] = ship_loadout
+		non_player_loadouts.erase(old_name)
+
+		mission_node.set_meta("non_player_loadouts", non_player_loadouts)
 
 
 func _on_file_menu_id_pressed(item_id: int):
@@ -377,7 +388,7 @@ func _on_ship_position_changed(position: Vector3):
 
 
 func _on_wings_dialog_confirmed():
-	var wing_names = wings_dialog.get_wing_names()
+	wing_names = wings_dialog.get_wing_names()
 	mission_node.set_meta("wing_names", wing_names)
 
 
@@ -412,18 +423,35 @@ func _process(delta):
 # PUBLIC
 
 
+func get_ship_loadout(ship):
+	var ship_loadout = {}
+
+	var wing_name_index: int = -1
+	if ship is AttackShipBase and ship.wing_name != "":
+		wing_name_index = wing_names.find(ship.wing_name)
+
+	if wing_name_index != -1:
+		for loadout in default_loadouts[wing_name_index]:
+			if loadout.name == ship.name:
+				return loadout
+	else:
+		return non_player_loadouts.get(ship.name, {})
+
+
 func load_mission_info():
 	targets_container = mission_node.get_node("Targets Container")
-	if mission_node.has_meta("loadouts"):
-		loadouts = mission_node.get_meta("loadouts")
 
-	for node_name in loadouts.keys():
-		var node = targets_container.get_node_or_null(node_name)
-		if node == null:
-			print("Invalid node name for mission: " + node_name)
+	if mission_node.has_meta("default_loadouts"):
+		default_loadouts = mission_node.get_meta("default_loadouts")
+
+	if mission_node.has_meta("non_player_loadouts"):
+		non_player_loadouts = mission_node.get_meta("non_player_loadouts")
 
 	if mission_node.has_meta("objectives"):
 		objectives = mission_node.get_meta("objectives")
+
+	if mission_node.has_meta("wing_names"):
+		wing_names = mission_node.get_meta("wing_names")
 
 	objectives_window.prepare_objectives(objectives)
 	objectives_edit_dialog.update_ship_names(targets_container.get_children())
@@ -459,6 +487,26 @@ func save_mission_to_file(path: String):
 		print("Error packing mission scene: " + str(scene_error))
 
 
+func set_ship_loadout(ship, new_loadout: Dictionary):
+	var ship_loadout = {}
+
+	var wing_name_index: int = -1
+	if ship is AttackShipBase and ship.wing_name != "":
+		wing_name_index = wing_names.find(ship.wing_name)
+
+	if wing_name_index != -1:
+		for loadout in default_loadouts[wing_name_index]:
+			if loadout.name == ship.name:
+				loadout = new_loadout
+				return true
+	elif non_player_loadouts.has(ship.name):
+		non_player_loadouts[ship.name] = new_loadout
+		return true
+
+	return false
+
+
+const AttackShipBase = preload("res://scripts/AttackShipBase.gd")
 const NPCShip = preload("res://scripts/NPCShip.gd")
 const Player = preload("res://scripts/Player.gd")
 
