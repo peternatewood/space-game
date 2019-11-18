@@ -106,6 +106,7 @@ func _on_add_ship_confirmed():
 	ship_instance.set_script(NPCShip)
 	targets_container.add_child(ship_instance)
 	non_player_loadouts[ship_instance.name] = {
+		"name": ship_instance.name,
 		"energy_weapons": [],
 		"missile_weapons": []
 	}
@@ -404,6 +405,8 @@ func _on_ship_wing_changed(wing_index: int):
 
 		ship_edit_dialog.edit_ship.wing_name = ""
 	else:
+		print(ship_edit_dialog.edit_ship.wing_name)
+
 		if ship_edit_dialog.edit_ship.wing_name == "":
 			# Change loadout from non_player to default
 			default_loadouts[wing_index].append(loadout)

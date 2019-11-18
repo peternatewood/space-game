@@ -163,7 +163,7 @@ func _on_warped_in_toggled(button_pressed: bool):
 func _on_wing_changed(item_selected: int):
 	if not is_populating:
 		# Subtract one, since the first element is "none"
-		emit_signal("wing_changed", item_selected - 1)
+		emit_signal("ship_wing_changed", item_selected - 1)
 
 
 # PUBLIC
@@ -196,6 +196,7 @@ func fill_ship_info(ship, loadout: Dictionary = {}):
 	var energy_weapons: Array = loadout.get("energy_weapons", [])
 	var missile_weapons: Array = loadout.get("missile_weapons", [])
 
+	wing_options.select(0)
 	if ship is AttackShipBase:
 		for index in range(wing_options.get_item_count()):
 			if wing_options.get_item_text(index) == ship.wing_name:
@@ -290,6 +291,7 @@ signal ship_missile_weapon_changed
 signal ship_name_changed
 signal ship_position_changed
 signal ship_rotation_changed
+signal ship_wing_changed
 
 const AttackShipBase = preload("res://scripts/AttackShipBase.gd")
 const CapitalShipBase = preload("res://scripts/CapitalShipBase.gd")
