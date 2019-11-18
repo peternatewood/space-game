@@ -367,18 +367,45 @@ func _on_ship_class_changed(ship_index: int):
 		# Copy over all properties from existing ship
 		ship_instance.set_script(ship_edit_dialog.edit_ship.get_script())
 		ship_instance.hull_hitpoints = ship_edit_dialog.edit_ship.hull_hitpoints
-		ship_instance.name = ship_edit_dialog.edit_ship.name
+		ship_instance.set_name(ship_edit_dialog.edit_ship.name)
 		ship_instance.wing_name = ship_edit_dialog.edit_ship.wing_name
+
+		var ship_transform = ship_edit_dialog.edit_ship.transform
 
 		# This method doesn't seem to work as expected: the old model sticks around
 		#ship_edit_dialog.edit_ship.replace_by(ship_instance)
 
-		mission_node.add_child(ship_instance)
-		ship_instance.transform = ship_edit_dialog.edit_ship.transform
-
 		ship_edit_dialog.edit_ship.free()
+
+		targets_container.add_child(ship_instance)
+		ship_instance.transform = ship_transform
+
 		ship_edit_dialog.edit_ship = ship_instance
 		selected_node = ship_instance
+
+		# Update loadout for new ship class
+		var loadout = get_ship_loadout(ship_instance)
+
+		var energy_weapon_count = ship_instance.energy_weapon_hardpoints.size()
+		if energy_weapon_count < loadout.energy_weapons.size():
+			for index in range(energy_weapon_count, loadout.energy_weapons.size()):
+				loadout.energy_weapons.remove(energy_weapon_count)
+		elif energy_weapon_count > loadout.energy_weapons.size():
+			for index in range(loadout.energy_weapons.size(), energy_weapon_count):
+				loadout.energy_weapons.append("")
+
+		var missile_weapon_count = ship_instance.missile_weapon_hardpoints.size()
+		if missile_weapon_count < loadout.missile_weapons.size():
+			for index in range(missile_weapon_count, loadout.missile_weapons.size()):
+				loadout.missile_weapons.remove(missile_weapon_count)
+		elif missile_weapon_count > loadout.missile_weapons.size():
+			for index in range(loadout.missile_weapons.size(), missile_weapon_count):
+				loadout.missile_weapons.append("")
+
+		set_ship_loadout(ship_instance, loadout)
+
+		mission_node.set_meta("default_loadouts", default_loadouts)
+		mission_node.set_meta("non_player_loadouts", non_player_loadouts)
 	else:
 		print("Invalid ship index selected: " + str(ship_index))
 
@@ -389,26 +416,26 @@ func _on_ship_position_changed(position: Vector3):
 
 func _on_ship_wing_changed(wing_index: int):
 	var loadout = get_ship_loadout(ship_edit_dialog.edit_ship)
-
 	if wing_index == -1:
 		# Change loadout from default to non_player
-		non_player_loadouts[ship_edit_dialog.edit_ship.name] = loadout
-
-		# Remove old loadout
 		var ship_index: int = 0
 		var old_wing_index: int = get_wing_index(ship_edit_dialog.edit_ship)
+
+		# Remove old loadout
 		for loadout in default_loadouts[old_wing_index]:
 			if loadout.name == ship_edit_dialog.edit_ship.name:
 				default_loadouts[old_wing_index].remove(ship_index)
 				break
 			ship_index += 1
 
+		loadout.erase("name")
+		non_player_loadouts[ship_edit_dialog.edit_ship.name] = loadout
+
 		ship_edit_dialog.edit_ship.wing_name = ""
 	else:
-		print(ship_edit_dialog.edit_ship.wing_name)
-
 		if ship_edit_dialog.edit_ship.wing_name == "":
 			# Change loadout from non_player to default
+			loadout["name"] = ship_edit_dialog.edit_ship.name
 			default_loadouts[wing_index].append(loadout)
 			non_player_loadouts.erase(ship_edit_dialog.edit_ship.name)
 
