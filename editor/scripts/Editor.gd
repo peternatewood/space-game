@@ -11,7 +11,7 @@ onready var manipulator_overlay = get_node("Controls Container/Manipulator Overl
 onready var manipulator_viewport = get_node("Manipulator Viewport")
 onready var manual_window = get_node("Controls Container/Manual Window")
 onready var mission_data = get_node("/root/MissionData")
-onready var mission_node = get_node("Mission Scene")
+onready var mission_node = get_node("Mission Controller")
 onready var objectives_edit_dialog = get_node("Controls Container/Objective Edit Dialog")
 onready var objectives_window = get_node("Controls Container/Objectives Window")
 onready var open_file_dialog = get_node("Controls Container/Open File Dialog")
@@ -521,6 +521,15 @@ func load_mission_info():
 
 
 func save_mission_to_file(path: String):
+	# Show elements in the mission scene that we hid for the editor
+	var hud = mission_node.get_node_or_null("HUD")
+	if hud != null:
+		hud.show()
+
+	var start_overlay = mission_node.get_node_or_null("Mission Start Overlay")
+	if start_overlay != null:
+		start_overlay.show()
+
 	var mission_scene = PackedScene.new()
 	var scene_error = mission_scene.pack(mission_node)
 
@@ -533,6 +542,13 @@ func save_mission_to_file(path: String):
 			print("Error saving mission scene: " + str(resource_save_error))
 	else:
 		print("Error packing mission scene: " + str(scene_error))
+
+	# ...and hide them again
+	if hud != null:
+		hud.hide()
+
+	if start_overlay != null:
+		start_overlay.hide()
 
 
 func set_ship_loadout(ship, new_loadout: Dictionary):
