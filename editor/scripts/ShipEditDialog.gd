@@ -39,7 +39,7 @@ onready var rotation_spinboxes: Dictionary = {
 onready var title = get_node("Ship Edit Rows/Title Container/Title")
 onready var ship_class_options = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Ship Class Options")
 onready var warped_in_checkbox = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Warped In CheckBox")
-onready var wing_lineedit = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Wing LineEdit")
+onready var wing_options = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Wing Options")
 
 var edit_ship = null
 var energy_weapon_index_name_map: Array = []
@@ -53,7 +53,7 @@ func _ready():
 	player_ship_checkbox.connect("toggled", self, "_on_player_ship_toggled")
 	ship_class_options.connect("item_selected", self, "_on_ship_class_changed")
 	warped_in_checkbox.connect("toggled", self, "_on_warped_in_toggled")
-	wing_lineedit.connect("text_changed", self, "_on_wing_changed")
+	wing_options.connect("item_selected", self, "_on_wing_changed")
 
 	position_spinboxes.x.connect("value_changed", self, "_on_position_x_changed")
 	position_spinboxes.y.connect("value_changed", self, "_on_position_y_changed")
@@ -160,10 +160,10 @@ func _on_warped_in_toggled(button_pressed: bool):
 	edit_ship.is_warped_in = button_pressed
 
 
-func _on_wing_changed(new_text: String):
+func _on_wing_changed(item_selected: int):
 	if not is_populating:
-		# TODO: Ensure only valid characters are entered
-		edit_ship.wing_name = new_text
+		# Subtract one, since the first element is "none"
+		emit_signal("wing_changed", item_selected - 1)
 
 
 # PUBLIC
@@ -197,7 +197,10 @@ func fill_ship_info(ship, loadout: Dictionary = {}):
 	var missile_weapons: Array = loadout.get("missile_weapons", [])
 
 	if ship is AttackShipBase:
-		wing_lineedit.set_text(ship.wing_name)
+		for index in range(wing_options.get_item_count()):
+			if wing_options.get_item_text(index) == ship.wing_name:
+				wing_options.select(index)
+				break
 
 		for ship_option_index in range(ship_class_options.get_item_count()):
 			if ship_class_options.get_item_text(ship_option_index) == ship.ship_class:
@@ -251,6 +254,12 @@ func fill_ship_info(ship, loadout: Dictionary = {}):
 # According to the docs, Control.has_point does exist, but the engine disagrees
 func has_point(point: Vector2):
 	return rect_position.x < point.x and point.x < rect_position.x + rect_size.x and rect_position.y < point.y and point.y < rect_position.y + rect_size.y
+
+
+func populate_wing_options(wing_names: Array):
+	for index in range(wing_names.size()):
+		var wing_name = "n/a" if wing_names[index] == "" else wing_names[index]
+		wing_options.set_item_text(index + 1, wing_name)
 
 
 func prepare_options(mission_data):

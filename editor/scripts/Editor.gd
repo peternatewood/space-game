@@ -75,12 +75,14 @@ func _ready():
 	manipulator_viewport.set_size(get_viewport().size)
 
 	ship_edit_dialog.prepare_options(mission_data)
+	ship_edit_dialog.populate_wing_options(wing_names)
 	ship_edit_dialog.connect("player_ship_toggled", self, "_on_player_ship_toggled")
 	ship_edit_dialog.connect("ship_class_changed", self, "_on_ship_class_changed")
 	ship_edit_dialog.connect("ship_energy_weapon_changed", self, "_on_edit_ship_energy_weapon_changed")
 	ship_edit_dialog.connect("ship_missile_weapon_changed", self, "_on_edit_ship_missile_weapon_changed")
 	ship_edit_dialog.connect("ship_name_changed", self, "_on_edit_ship_name_changed")
 	ship_edit_dialog.connect("ship_position_changed", self, "_on_ship_position_changed")
+	ship_edit_dialog.connect("ship_wing_changed", self, "_on_ship_wing_changed")
 
 	ship_edit_dialog.previous_button.connect("pressed", self, "_on_edit_dialog_previous_pressed")
 	ship_edit_dialog.next_button.connect("pressed", self, "_on_edit_dialog_next_pressed")
@@ -208,7 +210,6 @@ func _on_edit_menu_id_pressed(item_id: int):
 		1:
 			var targets_count = targets_container.get_child_count()
 			if targets_count > 0:
-				#selected_node_index = min(targets_count - 1, selected_node_index)
 				selected_node_index = clamp(selected_node_index, targets_count - 1, 0)
 				selected_node = targets_container.get_child(selected_node_index)
 
@@ -243,11 +244,9 @@ func _on_edit_ship_missile_weapon_changed(weapon_name: String, slot_index: int):
 
 func _on_edit_ship_name_changed(old_name: String, new_name: String):
 	# We only need to change the loadouts if this is a non-player ship
-	var wing_name_index: int = -1
-	if ship_edit_dialog.edit_ship is AttackShipBase and ship_edit_dialog.edit_ship.wing_name != "":
-		wing_name_index = wing_names.find(ship_edit_dialog.edit_ship.wing_name)
+	var wing_index: int = get_wing_index(ship_edit_dialog.edit_ship)
 
-	if wing_name_index == -1:
+	if wing_index == -1:
 		var ship_loadout = non_player_loadouts.get(old_name, {})
 		non_player_loadouts[new_name] = ship_loadout
 		non_player_loadouts.erase(old_name)
@@ -387,8 +386,53 @@ func _on_ship_position_changed(position: Vector3):
 	transform_controls.transform.origin = position
 
 
+func _on_ship_wing_changed(wing_index: int):
+	var loadout = get_ship_loadout(ship_edit_dialog.edit_ship)
+
+	if wing_index == -1:
+		# Change loadout from default to non_player
+		non_player_loadouts[ship_edit_dialog.edit_ship.name] = loadout
+
+		# Remove old loadout
+		var ship_index: int = 0
+		var old_wing_index: int = get_wing_index(ship_edit_dialog.edit_ship)
+		for loadout in default_loadouts[old_wing_index]:
+			if loadout.name == ship_edit_dialog.edit_ship.name:
+				default_loadouts[old_wing_index].remove(ship_index)
+				break
+			ship_index += 1
+
+		ship_edit_dialog.edit_ship.wing_name = ""
+	else:
+		if ship_edit_dialog.edit_ship.wing_name == "":
+			# Change loadout from non_player to default
+			default_loadouts[wing_index].append(loadout)
+			non_player_loadouts.erase(ship_edit_dialog.edit_ship.name)
+
+			ship_edit_dialog.edit_ship.wing_name = wing_names[wing_index]
+		else:
+			# Move loadout to new wing
+			default_loadouts[wing_index].append(loadout)
+
+			# Remove old loadout
+			var ship_index: int = 0
+			var old_wing_index: int = get_wing_index(ship_edit_dialog.edit_ship)
+			for loadout in default_loadouts[old_wing_index]:
+				if loadout.name == ship_edit_dialog.edit_ship.name:
+					default_loadouts[old_wing_index].remove(ship_index)
+					break
+				ship_index += 1
+
+			ship_edit_dialog.edit_ship.wing_name = wing_names[wing_index]
+
+	mission_node.set_meta("default_loadouts", default_loadouts)
+	mission_node.set_meta("non_player_loadouts", non_player_loadouts)
+
+
 func _on_wings_dialog_confirmed():
 	wing_names = wings_dialog.get_wing_names()
+	ship_edit_dialog.populate_wing_options(wing_names)
+
 	mission_node.set_meta("wing_names", wing_names)
 
 
@@ -425,17 +469,21 @@ func _process(delta):
 
 func get_ship_loadout(ship):
 	var ship_loadout = {}
+	var wing_index: int = get_wing_index(ship)
 
-	var wing_name_index: int = -1
-	if ship is AttackShipBase and ship.wing_name != "":
-		wing_name_index = wing_names.find(ship.wing_name)
-
-	if wing_name_index != -1:
-		for loadout in default_loadouts[wing_name_index]:
+	if wing_index != -1:
+		for loadout in default_loadouts[wing_index]:
 			if loadout.name == ship.name:
 				return loadout
 	else:
 		return non_player_loadouts.get(ship.name, {})
+
+
+func get_wing_index(ship):
+	if ship is AttackShipBase and ship.wing_name != "":
+		return wing_names.find(ship.wing_name)
+
+	return -1
 
 
 func load_mission_info():
@@ -489,13 +537,10 @@ func save_mission_to_file(path: String):
 
 func set_ship_loadout(ship, new_loadout: Dictionary):
 	var ship_loadout = {}
+	var wing_index: int = get_wing_index(ship)
 
-	var wing_name_index: int = -1
-	if ship is AttackShipBase and ship.wing_name != "":
-		wing_name_index = wing_names.find(ship.wing_name)
-
-	if wing_name_index != -1:
-		for loadout in default_loadouts[wing_name_index]:
+	if wing_index != -1:
+		for loadout in default_loadouts[wing_index]:
 			if loadout.name == ship.name:
 				loadout = new_loadout
 				return true
