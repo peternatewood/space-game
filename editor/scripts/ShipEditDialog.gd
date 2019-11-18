@@ -259,8 +259,14 @@ func has_point(point: Vector2):
 
 func populate_wing_options(wing_names: Array):
 	for index in range(wing_names.size()):
-		var wing_name = "n/a" if wing_names[index] == "" else wing_names[index]
-		wing_options.set_item_text(index + 1, wing_name)
+		var is_empty: bool = wing_names[index] == ""
+
+		if is_empty:
+			wing_options.set_item_text(index + 1, "none")
+		else:
+			wing_options.set_item_text(index + 1, wing_names[index])
+
+		wing_options.set_item_disabled(index + 1, is_empty)
 
 
 func prepare_options(mission_data):

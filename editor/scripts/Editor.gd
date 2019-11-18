@@ -468,9 +468,6 @@ func _on_ship_wing_changed(wing_index: int):
 
 			ship_edit_dialog.edit_ship.wing_name = wing_names[wing_index]
 
-	print(default_loadouts)
-	print(non_player_loadouts)
-
 	mission_node.set_meta("default_loadouts", default_loadouts)
 	mission_node.set_meta("non_player_loadouts", non_player_loadouts)
 
