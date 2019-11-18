@@ -25,6 +25,7 @@ __meta__ = {
 "objectives": [ [  ], [  ], [  ] ],
 "player_path": "Targets Container/Alpha 1",
 "reinforcement_wings": [  ]
+"wing_names": [ "Alpha", "", "", "", "", "" ]
 }
 
 [node name="Sun Light" type="DirectionalLight" parent="."]

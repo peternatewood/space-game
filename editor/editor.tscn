@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://editor/scripts/Editor.gd" type="Script" id=1]
 [ext_resource path="res://editor/default_mission.tscn" type="PackedScene" id=2]
@@ -6,13 +6,14 @@
 [ext_resource path="res://themes/editor_theme.tres" type="Theme" id=4]
 [ext_resource path="res://editor/scripts/ShipEditDialog.gd" type="Script" id=5]
 [ext_resource path="res://editor/scripts/ObjectivesWindow.gd" type="Script" id=6]
-[ext_resource path="res://editor/scripts/ObjectivesDialog.gd" type="Script" id=7]
-[ext_resource path="res://editor/scripts/DetailsDialog.gd" type="Script" id=8]
-[ext_resource path="res://editor/scripts/ManipulatorViewport.gd" type="Script" id=9]
-[ext_resource path="res://editor/scripts/TransformControls.gd" type="Script" id=10]
-[ext_resource path="res://editor/models/translate_arrow_x.dae" type="PackedScene" id=11]
-[ext_resource path="res://editor/models/translate_arrow_y.dae" type="PackedScene" id=12]
-[ext_resource path="res://editor/models/translate_arrow_z.dae" type="PackedScene" id=13]
+[ext_resource path="res://editor/scripts/WingsDialog.gd" type="Script" id=7]
+[ext_resource path="res://editor/scripts/ObjectivesDialog.gd" type="Script" id=8]
+[ext_resource path="res://editor/scripts/DetailsDialog.gd" type="Script" id=9]
+[ext_resource path="res://editor/scripts/ManipulatorViewport.gd" type="Script" id=10]
+[ext_resource path="res://editor/scripts/TransformControls.gd" type="Script" id=11]
+[ext_resource path="res://editor/models/translate_arrow_x.dae" type="PackedScene" id=12]
+[ext_resource path="res://editor/models/translate_arrow_y.dae" type="PackedScene" id=13]
+[ext_resource path="res://editor/models/translate_arrow_z.dae" type="PackedScene" id=14]
 
 [sub_resource type="ViewportTexture" id=1]
 viewport_path = NodePath("Manipulator Viewport")
@@ -76,7 +77,7 @@ margin_left = 44.0
 margin_right = 84.0
 margin_bottom = 22.0
 text = "Edit"
-items = [ "Add Ship", null, 0, false, false, 0, 0, null, "", false, "Edit Ship", null, 0, false, false, 1, 0, null, "", false, "Objectives", null, 0, false, false, 2, 0, null, "", false, "Details", null, 0, false, false, 3, 0, null, "", false ]
+items = [ "Add Ship", null, 0, false, false, 0, 0, null, "", false, "Edit Ship", null, 0, false, false, 1, 0, null, "", false, "Loadout Wings", null, 0, false, false, 2, 0, null, "", false, "Objectives", null, 0, false, false, 3, 0, null, "", false, "Details", null, 0, false, false, 4, 0, null, "", false ]
 
 [node name="Help Menu" type="MenuButton" parent="Controls Container/PanelContainer/Toolbar"]
 margin_left = 88.0
@@ -842,12 +843,73 @@ text = "Welcome!
 
 This manual is currently a work in progress. In future updates, it will provide directions for using the mission editor, as well as several help topics"
 
+[node name="Wings Dialog" type="AcceptDialog" parent="Controls Container"]
+margin_right = 96.0
+margin_bottom = 64.0
+window_title = "Loadout Wings"
+script = ExtResource( 7 )
+
+[node name="Wings Dialog Rows" type="VBoxContainer" parent="Controls Container/Wings Dialog"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 208.0
+margin_bottom = 248.0
+rect_min_size = Vector2( 0, 240 )
+
+[node name="Wing Description Label" type="Label" parent="Controls Container/Wings Dialog/Wings Dialog Rows"]
+margin_right = 200.0
+margin_bottom = 60.0
+text = "Include all wings by name
+that the player can equip
+in the loadout menu."
+
+[node name="Wings ScrollContainer" type="ScrollContainer" parent="Controls Container/Wings Dialog/Wings Dialog Rows"]
+margin_top = 64.0
+margin_right = 200.0
+margin_bottom = 240.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Wing Rows" type="VBoxContainer" parent="Controls Container/Wings Dialog/Wings Dialog Rows/Wings ScrollContainer"]
+margin_right = 200.0
+margin_bottom = 188.0
+size_flags_horizontal = 3
+
+[node name="Wing LineEdit 1" type="LineEdit" parent="Controls Container/Wings Dialog/Wings Dialog Rows/Wings ScrollContainer/Wing Rows"]
+margin_right = 188.0
+margin_bottom = 28.0
+
+[node name="Wing LineEdit 2" type="LineEdit" parent="Controls Container/Wings Dialog/Wings Dialog Rows/Wings ScrollContainer/Wing Rows"]
+margin_top = 32.0
+margin_right = 188.0
+margin_bottom = 60.0
+
+[node name="Wing LineEdit 3" type="LineEdit" parent="Controls Container/Wings Dialog/Wings Dialog Rows/Wings ScrollContainer/Wing Rows"]
+margin_top = 64.0
+margin_right = 188.0
+margin_bottom = 92.0
+
+[node name="Wing LineEdit 4" type="LineEdit" parent="Controls Container/Wings Dialog/Wings Dialog Rows/Wings ScrollContainer/Wing Rows"]
+margin_top = 96.0
+margin_right = 188.0
+margin_bottom = 124.0
+
+[node name="Wing LineEdit 5" type="LineEdit" parent="Controls Container/Wings Dialog/Wings Dialog Rows/Wings ScrollContainer/Wing Rows"]
+margin_top = 128.0
+margin_right = 188.0
+margin_bottom = 156.0
+
+[node name="Wing LineEdit 6" type="LineEdit" parent="Controls Container/Wings Dialog/Wings Dialog Rows/Wings ScrollContainer/Wing Rows"]
+margin_top = 160.0
+margin_right = 188.0
+margin_bottom = 188.0
+
 [node name="Objective Edit Dialog" type="AcceptDialog" parent="Controls Container"]
 editor/display_folded = true
 margin_right = 96.0
 margin_bottom = 64.0
 window_title = "Edit Objective"
-script = ExtResource( 7 )
+script = ExtResource( 8 )
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Controls Container/Objective Edit Dialog"]
 margin_left = 8.0
@@ -972,7 +1034,7 @@ margin_right = 96.0
 margin_bottom = 64.0
 window_title = "Mission Details"
 resizable = true
-script = ExtResource( 8 )
+script = ExtResource( 9 )
 
 [node name="Details Rows" type="VBoxContainer" parent="Controls Container/Details Dialog"]
 margin_left = 8.0
@@ -1015,22 +1077,22 @@ size = Vector2( 1920, 1080 )
 own_world = true
 transparent_bg = true
 render_target_v_flip = true
-script = ExtResource( 9 )
-
-[node name="Transform Controls" type="Spatial" parent="Manipulator Viewport"]
 script = ExtResource( 10 )
 
-[node name="Arrow X" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 11 )]
-transform = Transform( -4.37114e-008, 1, 0, -1, -4.37114e-008, 0, 0, 0, 1, 0, 0, 0 )
+[node name="Transform Controls" type="Spatial" parent="Manipulator Viewport"]
+script = ExtResource( 11 )
+
+[node name="Arrow X" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 12 )]
+transform = Transform( -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0 )
 monitoring = false
 monitorable = false
 
-[node name="Arrow Y" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 12 )]
+[node name="Arrow Y" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 13 )]
 monitoring = false
 monitorable = false
 
-[node name="Arrow Z" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 13 )]
-transform = Transform( 1, 0, 0, 0, -4.37114e-008, 1, 0, -1, -4.37114e-008, 0, 0, 0 )
+[node name="Arrow Z" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 14 )]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0 )
 monitoring = false
 monitorable = false
 

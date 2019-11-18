@@ -18,6 +18,7 @@ onready var open_file_dialog = get_node("Controls Container/Open File Dialog")
 onready var save_file_dialog = get_node("Controls Container/Save File Dialog")
 onready var ship_edit_dialog = get_node("Controls Container/Ship Edit Dialog")
 onready var transform_controls = get_node("Manipulator Viewport/Transform Controls")
+onready var wings_dialog = get_node("Controls Container/Wings Dialog")
 
 var current_mouse_button: int = -1
 var has_player_ship: bool = true
@@ -83,6 +84,12 @@ func _ready():
 	ship_edit_dialog.next_button.connect("pressed", self, "_on_edit_dialog_next_pressed")
 
 	get_node("Controls Container/Viewport Dummy Control").connect("gui_input", self, "_on_controls_gui_input")
+
+	if mission_node.has_meta("wing_names"):
+		var wing_names = mission_node.get_meta("wing_names")
+		wings_dialog.populate_wing_names(wing_names)
+
+	wings_dialog.connect("confirmed", self, "_on_wings_dialog_confirmed")
 
 	objectives_window.connect("objective_added", self, "_on_objectives_window_objective_added")
 	objectives_window.connect("delete_button_pressed", self, "_on_objectives_delete_button_pressed")
@@ -212,8 +219,10 @@ func _on_edit_menu_id_pressed(item_id: int):
 				ship_edit_dialog.fill_ship_info(selected_node, ship_loadout)
 				ship_edit_dialog.show()
 		2:
-			objectives_window.show()
+			wings_dialog.popup_centered()
 		3:
+			objectives_window.show()
+		4:
 			details_dialog.populate_fields(mission_node.get_meta("name"), mission_node.get_meta("briefing"))
 			details_dialog.popup_centered()
 
@@ -365,6 +374,11 @@ func _on_ship_class_changed(ship_index: int):
 
 func _on_ship_position_changed(position: Vector3):
 	transform_controls.transform.origin = position
+
+
+func _on_wings_dialog_confirmed():
+	var wing_names = wings_dialog.get_wing_names()
+	mission_node.set_meta("wing_names", wing_names)
 
 
 func _process(delta):
