@@ -48,6 +48,12 @@ func _ready():
 
 	save_file_dialog.connect("file_selected", self, "_on_save_dialog_file_selected")
 
+	var edit_menu = get_node("Controls Container/PanelContainer/Toolbar/Edit Menu")
+	edit_menu.get_popup().connect("id_pressed", self, "_on_edit_menu_id_pressed")
+
+	var mission_menu = get_node("Controls Container/PanelContainer/Toolbar/Mission Menu")
+	mission_menu.get_popup().connect("id_pressed", self, "_on_mission_menu_id_pressed")
+
 	var help_menu = get_node("Controls Container/PanelContainer/Toolbar/Help Menu")
 	help_menu.get_popup().connect("id_pressed", self, "_on_help_menu_id_pressed")
 
@@ -67,9 +73,6 @@ func _ready():
 		ship_edit_dialog.missile_weapon_index_name_map.append(missile_weapon_name)
 
 	add_ship_dialog.connect("confirmed", self, "_on_add_ship_confirmed")
-
-	var edit_menu = get_node("Controls Container/PanelContainer/Toolbar/Edit Menu")
-	edit_menu.get_popup().connect("id_pressed", self, "_on_edit_menu_id_pressed")
 
 	# TODO: update manipulator viewport if window size changes
 	manipulator_viewport.set_size(get_viewport().size)
@@ -216,13 +219,17 @@ func _on_edit_menu_id_pressed(item_id: int):
 
 				ship_edit_dialog.fill_ship_info(selected_node, get_ship_loadout(selected_node))
 				ship_edit_dialog.show()
-		2:
-			wings_dialog.popup_centered()
-		3:
-			objectives_window.show()
-		4:
+
+
+func _on_mission_menu_id_pressed(item_id: int):
+	match item_id:
+		0:
 			details_dialog.populate_fields(mission_node.get_meta("name"), mission_node.get_meta("briefing"))
 			details_dialog.popup_centered()
+		1:
+			wings_dialog.popup_centered()
+		2:
+			objectives_window.show()
 
 
 func _on_edit_ship_energy_weapon_changed(weapon_name: String, slot_index: int):
