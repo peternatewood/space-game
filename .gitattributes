@@ -4,10 +4,12 @@
 # Denote all files that are truly binary and should not be modified.
 *.exr binary
 *.png binary
+*.ico binary
 *.jpg binary
 *.material binary
 *.ogg binary
 *.ogv binary
+*.otf binary
 *.res binary
 *.ttf binary
 *.wav binary
