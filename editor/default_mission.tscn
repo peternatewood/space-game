@@ -1,13 +1,15 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://scripts/PlayerCamera.gd" type="Script" id=1]
-[ext_resource path="res://models/ships/spider_fighter/model.dae" type="PackedScene" id=2]
-[ext_resource path="res://scripts/Player.gd" type="Script" id=3]
-[ext_resource path="res://hud.tscn" type="PackedScene" id=4]
-[ext_resource path="res://mission_start_overlay.tscn" type="PackedScene" id=5]
-[ext_resource path="res://pause_menu.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scripts/MissionController.gd" type="Script" id=1]
+[ext_resource path="res://scripts/PlayerCamera.gd" type="Script" id=2]
+[ext_resource path="res://models/ships/spider_fighter/model.dae" type="PackedScene" id=3]
+[ext_resource path="res://scripts/Player.gd" type="Script" id=4]
+[ext_resource path="res://hud.tscn" type="PackedScene" id=5]
+[ext_resource path="res://mission_start_overlay.tscn" type="PackedScene" id=6]
+[ext_resource path="res://pause_menu.tscn" type="PackedScene" id=7]
 
 [node name="Mission Controller" type="Spatial"]
+script = ExtResource( 1 )
 __meta__ = {
 "armory": {
 "energy_weapons": [ "Energy Bolt", "Disintigrator" ],
@@ -34,20 +36,20 @@ __meta__ = {
 transform = Transform( 0.707107, -0.612372, 0.353554, 0, 0.5, 0.866025, -0.707107, -0.612372, 0.353554, 0, 0, 0 )
 
 [node name="Camera" type="Camera" parent="."]
-script = ExtResource( 1 )
+script = ExtResource( 2 )
 
 [node name="Targets Container" type="Node" parent="."]
 
-[node name="Alpha 1" parent="Targets Container" instance=ExtResource( 2 )]
-script = ExtResource( 3 )
+[node name="Alpha 1" parent="Targets Container" instance=ExtResource( 3 )]
+script = ExtResource( 4 )
 faction = "Spider"
 wing_name = "Alpha"
 
 [node name="Waypoints Container" type="Node" parent="."]
 
-[node name="HUD" parent="." instance=ExtResource( 4 )]
+[node name="HUD" parent="." instance=ExtResource( 5 )]
 
-[node name="Mission Start Overlay" parent="." instance=ExtResource( 5 )]
+[node name="Mission Start Overlay" parent="." instance=ExtResource( 6 )]
 
-[node name="Pause Menu" parent="." instance=ExtResource( 6 )]
+[node name="Pause Menu" parent="." instance=ExtResource( 7 )]
 visible = false
