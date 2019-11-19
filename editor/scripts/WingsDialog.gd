@@ -1,14 +1,33 @@
 extends AcceptDialog
 
+var reinforcement_checkboxes: Array = []
 var wing_lineedits: Array = []
 
 
 func _ready():
-	var rows = get_node("Wings Dialog Rows/Wings ScrollContainer/Wing Rows")
-	wing_lineedits = rows.get_children()
+	var grid = get_node("Wings Dialog Rows/Wings ScrollContainer/Wing Grid")
+
+	for child in grid.get_children():
+		if child is LineEdit:
+			wing_lineedits.append(child)
+		elif child is CheckBox:
+			reinforcement_checkboxes.append(child)
 
 
 # PUBLIC
+
+
+func get_reinforcement_wings():
+	var wings: Array = []
+
+	var index: int = 0
+	for checkbox in reinforcement_checkboxes:
+		if checkbox.pressed:
+			wings.append(wing_lineedits[index].text)
+
+		index += 1
+
+	return wings
 
 
 func get_wing_names():

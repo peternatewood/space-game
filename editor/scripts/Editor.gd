@@ -536,6 +536,7 @@ func _on_wings_dialog_confirmed():
 	wing_names = wings_dialog.get_wing_names()
 	ship_edit_dialog.populate_wing_options(wing_names)
 
+	mission_node.set_meta("reinforcement_wings", wings_dialog.get_reinforcement_wings())
 	mission_node.set_meta("wing_names", wing_names)
 
 
@@ -592,20 +593,20 @@ func get_wing_index(ship):
 func load_mission_info():
 	targets_container = mission_node.get_node("Targets Container")
 
-	if mission_node.has_meta("default_loadouts"):
-		default_loadouts = mission_node.get_meta("default_loadouts")
+	for meta_name in REQUIRED_META_DATA:
+		if not mission_node.has_meta(meta_name):
+			print("Missing required data: " + meta_name)
+			return
 
-	if mission_node.has_meta("non_player_loadouts"):
-		non_player_loadouts = mission_node.get_meta("non_player_loadouts")
-
-	if mission_node.has_meta("objectives"):
-		objectives = mission_node.get_meta("objectives")
-
-	if mission_node.has_meta("wing_names"):
-		wing_names = mission_node.get_meta("wing_names")
+	default_loadouts = mission_node.get_meta("default_loadouts")
+	non_player_loadouts = mission_node.get_meta("non_player_loadouts")
+	objectives = mission_node.get_meta("objectives")
+	wing_names = mission_node.get_meta("wing_names")
 
 	objectives_window.prepare_objectives(objectives)
 	objectives_edit_dialog.update_ship_names(targets_container.get_children())
+	ship_edit_dialog.populate_wing_options(wing_names)
+	wings_dialog.populate_wing_names(wing_names)
 
 	# Reset all other stuff
 	ship_edit_dialog.edit_ship = null
@@ -659,3 +660,9 @@ const NPCShip = preload("res://scripts/NPCShip.gd")
 const Player = preload("res://scripts/Player.gd")
 
 const DEFAULT_MISSION = preload("res://editor/default_mission.tscn")
+const REQUIRED_META_DATA: Array = [
+	"default_loadouts",
+	"non_player_loadouts",
+	"objectives",
+	"wing_names"
+]

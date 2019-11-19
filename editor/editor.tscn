@@ -102,6 +102,7 @@ margin_top = -18.0
 text = "n/a"
 
 [node name="Ship Edit Dialog" type="PanelContainer" parent="Controls Container"]
+editor/display_folded = true
 visible = false
 anchor_left = 1.0
 anchor_right = 1.0
@@ -155,6 +156,7 @@ margin_right = 454.0
 margin_bottom = 30.0
 
 [node name="Ship Edit Scroll" type="ScrollContainer" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows"]
+editor/display_folded = true
 margin_top = 34.0
 margin_right = 454.0
 margin_bottom = 499.0
@@ -888,7 +890,7 @@ margin_bottom = 248.0
 rect_min_size = Vector2( 0, 240 )
 
 [node name="Wing Description Label" type="Label" parent="Controls Container/Wings Dialog/Wings Dialog Rows"]
-margin_right = 200.0
+margin_right = 262.0
 margin_bottom = 60.0
 text = "Include all wings by name
 that the player can equip
@@ -896,44 +898,86 @@ in the loadout menu."
 
 [node name="Wings ScrollContainer" type="ScrollContainer" parent="Controls Container/Wings Dialog/Wings Dialog Rows"]
 margin_top = 64.0
-margin_right = 200.0
+margin_right = 262.0
 margin_bottom = 240.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+scroll_horizontal_enabled = false
 
-[node name="Wing Rows" type="VBoxContainer" parent="Controls Container/Wings Dialog/Wings Dialog Rows/Wings ScrollContainer"]
-margin_right = 200.0
-margin_bottom = 188.0
+[node name="Wing Grid" type="GridContainer" parent="Controls Container/Wings Dialog/Wings Dialog Rows/Wings ScrollContainer"]
+margin_right = 262.0
 size_flags_horizontal = 3
+columns = 2
 
-[node name="Wing LineEdit 1" type="LineEdit" parent="Controls Container/Wings Dialog/Wings Dialog Rows/Wings ScrollContainer/Wing Rows"]
-margin_right = 188.0
+[node name="Wing LineEdit 1" type="LineEdit" parent="Controls Container/Wings Dialog/Wings Dialog Rows/Wings ScrollContainer/Wing Grid"]
+margin_right = 106.0
 margin_bottom = 28.0
 
-[node name="Wing LineEdit 2" type="LineEdit" parent="Controls Container/Wings Dialog/Wings Dialog Rows/Wings ScrollContainer/Wing Rows"]
+[node name="Wing CheckBox 1" type="CheckBox" parent="Controls Container/Wings Dialog/Wings Dialog Rows/Wings ScrollContainer/Wing Grid"]
+margin_left = 110.0
+margin_right = 250.0
+margin_bottom = 28.0
+text = "Reinforcements"
+
+[node name="Wing LineEdit 2" type="LineEdit" parent="Controls Container/Wings Dialog/Wings Dialog Rows/Wings ScrollContainer/Wing Grid"]
 margin_top = 32.0
-margin_right = 188.0
+margin_right = 106.0
 margin_bottom = 60.0
 
-[node name="Wing LineEdit 3" type="LineEdit" parent="Controls Container/Wings Dialog/Wings Dialog Rows/Wings ScrollContainer/Wing Rows"]
+[node name="Wing CheckBox 2" type="CheckBox" parent="Controls Container/Wings Dialog/Wings Dialog Rows/Wings ScrollContainer/Wing Grid"]
+margin_left = 110.0
+margin_top = 32.0
+margin_right = 250.0
+margin_bottom = 60.0
+text = "Reinforcements"
+
+[node name="Wing LineEdit 3" type="LineEdit" parent="Controls Container/Wings Dialog/Wings Dialog Rows/Wings ScrollContainer/Wing Grid"]
 margin_top = 64.0
-margin_right = 188.0
+margin_right = 106.0
 margin_bottom = 92.0
 
-[node name="Wing LineEdit 4" type="LineEdit" parent="Controls Container/Wings Dialog/Wings Dialog Rows/Wings ScrollContainer/Wing Rows"]
+[node name="Wing CheckBox 3" type="CheckBox" parent="Controls Container/Wings Dialog/Wings Dialog Rows/Wings ScrollContainer/Wing Grid"]
+margin_left = 110.0
+margin_top = 64.0
+margin_right = 250.0
+margin_bottom = 92.0
+text = "Reinforcements"
+
+[node name="Wing LineEdit 4" type="LineEdit" parent="Controls Container/Wings Dialog/Wings Dialog Rows/Wings ScrollContainer/Wing Grid"]
 margin_top = 96.0
-margin_right = 188.0
+margin_right = 106.0
 margin_bottom = 124.0
 
-[node name="Wing LineEdit 5" type="LineEdit" parent="Controls Container/Wings Dialog/Wings Dialog Rows/Wings ScrollContainer/Wing Rows"]
+[node name="Wing CheckBox 4" type="CheckBox" parent="Controls Container/Wings Dialog/Wings Dialog Rows/Wings ScrollContainer/Wing Grid"]
+margin_left = 110.0
+margin_top = 96.0
+margin_right = 250.0
+margin_bottom = 124.0
+text = "Reinforcements"
+
+[node name="Wing LineEdit 5" type="LineEdit" parent="Controls Container/Wings Dialog/Wings Dialog Rows/Wings ScrollContainer/Wing Grid"]
 margin_top = 128.0
-margin_right = 188.0
+margin_right = 106.0
 margin_bottom = 156.0
 
-[node name="Wing LineEdit 6" type="LineEdit" parent="Controls Container/Wings Dialog/Wings Dialog Rows/Wings ScrollContainer/Wing Rows"]
+[node name="Wing CheckBox 5" type="CheckBox" parent="Controls Container/Wings Dialog/Wings Dialog Rows/Wings ScrollContainer/Wing Grid"]
+margin_left = 110.0
+margin_top = 128.0
+margin_right = 250.0
+margin_bottom = 156.0
+text = "Reinforcements"
+
+[node name="Wing LineEdit 6" type="LineEdit" parent="Controls Container/Wings Dialog/Wings Dialog Rows/Wings ScrollContainer/Wing Grid"]
 margin_top = 160.0
-margin_right = 188.0
+margin_right = 106.0
 margin_bottom = 188.0
+
+[node name="Wing CheckBox 6" type="CheckBox" parent="Controls Container/Wings Dialog/Wings Dialog Rows/Wings ScrollContainer/Wing Grid"]
+margin_left = 110.0
+margin_top = 160.0
+margin_right = 250.0
+margin_bottom = 188.0
+text = "Reinforcements"
 
 [node name="Objective Edit Dialog" type="AcceptDialog" parent="Controls Container"]
 editor/display_folded = true
