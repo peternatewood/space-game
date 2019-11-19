@@ -492,7 +492,7 @@ func _on_objectives_delete_button_pressed(objective, type, index):
 func _on_objectives_edit_button_pressed(objective, type, index):
 	objectives_edit_dialog.type = type
 	objectives_edit_dialog.index = index
-	objectives_edit_dialog.populate_fields(objective)
+	objectives_edit_dialog.populate_fields(objective, targets_container.get_children(), objectives)
 	objectives_edit_dialog.popup_centered()
 
 

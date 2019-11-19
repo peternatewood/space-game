@@ -9,19 +9,19 @@ size_flags_horizontal = 3
 script = ExtResource( 1 )
 
 [node name="Requirement Grid" type="GridContainer" parent="."]
-margin_right = 149.0
-margin_bottom = 44.0
+margin_right = 178.0
+margin_bottom = 92.0
 columns = 2
 
 [node name="Type Label" type="Label" parent="Requirement Grid"]
 margin_top = 3.0
-margin_right = 67.0
+margin_right = 96.0
 margin_bottom = 17.0
 text = "Type"
 
 [node name="Type Options" type="OptionButton" parent="Requirement Grid"]
-margin_left = 71.0
-margin_right = 149.0
+margin_left = 100.0
+margin_right = 178.0
 margin_bottom = 20.0
 text = "Patrol"
 items = [ "Patrol", null, false, 0, null, "Destroy", null, false, 1, null, "Defend", null, false, 2, null, "Objective", null, false, 3, null, "Ships Arrive", null, false, 4, null, "Ships Leave", null, false, 5, null ]
@@ -29,32 +29,62 @@ selected = 0
 
 [node name="Waypoints Label" type="Label" parent="Requirement Grid"]
 margin_top = 27.0
-margin_right = 67.0
+margin_right = 96.0
 margin_bottom = 41.0
 text = "Waypoints"
 
 [node name="Waypoints Options" type="OptionButton" parent="Requirement Grid"]
-margin_left = 71.0
+margin_left = 100.0
 margin_top = 24.0
-margin_right = 149.0
+margin_right = 178.0
 margin_bottom = 44.0
 text = "none"
 items = [ "none", null, false, 0, null ]
 selected = 0
 
-[node name="Targets Label" type="Label" parent="."]
+[node name="Objective Type Label" type="Label" parent="Requirement Grid"]
+margin_top = 51.0
+margin_right = 96.0
+margin_bottom = 65.0
+text = "Objective Type"
+
+[node name="Objective Type Options" type="OptionButton" parent="Requirement Grid"]
+margin_left = 100.0
 margin_top = 48.0
-margin_right = 149.0
-margin_bottom = 62.0
+margin_right = 178.0
+margin_bottom = 68.0
+text = "none"
+items = [ "none", null, false, 0, null, "Primary", null, false, 1, null, "Secondary", null, false, 2, null, "Secret", null, false, 3, null ]
+selected = 0
+
+[node name="Objective Label" type="Label" parent="Requirement Grid"]
+margin_top = 75.0
+margin_right = 96.0
+margin_bottom = 89.0
+text = "Objective"
+
+[node name="Objective Options" type="OptionButton" parent="Requirement Grid"]
+margin_left = 100.0
+margin_top = 72.0
+margin_right = 178.0
+margin_bottom = 92.0
+text = "none"
+items = [ "none", null, false, 0, null ]
+selected = 0
+
+[node name="Targets Label" type="Label" parent="."]
+margin_top = 96.0
+margin_right = 178.0
+margin_bottom = 110.0
 text = "Targets"
 
 [node name="Targets Rows" type="VBoxContainer" parent="."]
-margin_top = 66.0
-margin_right = 149.0
-margin_bottom = 66.0
+margin_top = 114.0
+margin_right = 178.0
+margin_bottom = 114.0
 
 [node name="Add Target Button" type="Button" parent="."]
-margin_top = 70.0
-margin_right = 149.0
-margin_bottom = 90.0
+margin_top = 118.0
+margin_right = 178.0
+margin_bottom = 138.0
 text = "Add Target"
