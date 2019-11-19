@@ -106,6 +106,7 @@ func _on_add_ship_confirmed():
 	var ship_name = ship_instance.name + str(targets_container.get_child_count())
 	ship_instance.set_name(ship_name)
 	targets_container.add_child(ship_instance)
+	ship_instance.set_owner(mission_node)
 
 	non_player_loadouts[ship_instance.name] = {
 		"energy_weapons": [],
@@ -117,6 +118,8 @@ func _on_add_ship_confirmed():
 
 	for index in range(ship_instance.missile_weapon_hardpoints.size()):
 		non_player_loadouts[ship_instance.name].missile_weapons.append("")
+
+	mission_node.set_meta("non_player_loadouts", non_player_loadouts)
 
 
 func _on_controls_gui_input(event):
@@ -441,12 +444,10 @@ func _on_mission_menu_id_pressed(item_id: int):
 func _on_file_menu_id_pressed(item_id: int):
 	match item_id:
 		0:
-			var mission_node_name = mission_node.name
 			mission_node.free()
 
 			mission_node = DEFAULT_MISSION.instance()
 			add_child(mission_node)
-			mission_node.set_name(mission_node_name)
 
 			load_mission_info()
 		1:
@@ -498,12 +499,10 @@ func _on_open_file_selected(path: String):
 	if path.ends_with(".tscn"):
 		var scene = load(path)
 
-		var mission_node_name = mission_node.name
 		mission_node.free()
 
 		mission_node = scene.instance()
 		add_child(mission_node)
-		mission_node.set_name(mission_node_name)
 
 		load_mission_info()
 
