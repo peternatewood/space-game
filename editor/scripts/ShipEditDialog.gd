@@ -236,6 +236,7 @@ func get_energy_weapon_selections():
 func get_faction_name():
 	return faction_options.get_item_text(faction_options.get_selected_id())
 
+
 func get_missile_weapon_selections():
 	var missile_weapon_names: Array = []
 

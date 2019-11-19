@@ -252,6 +252,7 @@ func _on_edit_dialog_update_pressed():
 		ship_loadout = non_player_loadouts.get(old_name)
 		if ship_loadout == null:
 			print("No such loadout for name: " + old_name)
+			print(non_player_loadouts)
 			return
 	else:
 		# Change the loadout's name if it changed
@@ -425,7 +426,7 @@ func _on_edit_dialog_update_pressed():
 					loadout.name = new_name
 
 				loadout = ship_loadout
-	else:
+	elif old_name != new_name:
 		non_player_loadouts[new_name] = ship_loadout
 
 		if non_player_loadouts.has(old_name):
