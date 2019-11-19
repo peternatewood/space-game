@@ -420,6 +420,9 @@ func _on_edit_dialog_update_pressed():
 	else:
 		non_player_loadouts[new_name] = ship_loadout
 
+		if non_player_loadouts.has(old_name):
+			non_player_loadouts.erase(old_name)
+
 	mission_node.set_meta("non_player_loadouts", non_player_loadouts)
 	mission_node.set_meta("default_loadouts", default_loadouts)
 
