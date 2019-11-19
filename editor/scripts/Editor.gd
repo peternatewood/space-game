@@ -191,7 +191,9 @@ func _on_details_dialog_confirmed():
 
 
 func _on_edit_dialog_previous_pressed():
-	var next_index = (selected_node_index - 1) % targets_container.get_child_count()
+	var next_index = selected_node_index - 1
+	if next_index < 0:
+		next_index += targets_container.get_child_count()
 
 	if next_index != selected_node_index:
 		selected_node_index = next_index
