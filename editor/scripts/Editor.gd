@@ -240,6 +240,8 @@ func _on_edit_dialog_update_pressed():
 	ship_edit_dialog.edit_ship.set_name(new_name)
 	ship_edit_dialog.edit_ship.wing_name = wing_names[new_wing_index]
 	ship_edit_dialog.edit_ship.hull_hitpoints = ship_edit_dialog.hitpoints_spinbox.value
+	ship_edit_dialog.edit_ship.faction = ship_edit_dialog.get_faction_name()
+
 	if ship_edit_dialog.edit_ship is NPCShip:
 		ship_edit_dialog.edit_ship.is_warped_in = ship_edit_dialog.warped_in_checkbox.pressed
 

@@ -144,6 +144,12 @@ func fill_ship_info(ship, loadout: Dictionary = {}):
 	rotation_spinboxes.y.set_value(ship.rotation_degrees.y)
 	rotation_spinboxes.z.set_value(ship.rotation_degrees.z)
 
+	faction_options.select(0)
+	for index in range(faction_options.get_item_count()):
+		if faction_options.get_item_text(index) == ship.faction:
+			faction_options.select(index)
+			break
+
 	var beam_weapon_slot_count: int = 0
 	var energy_weapon_slot_count: int = 0
 	var missile_weapon_slot_count: int = 0
@@ -226,6 +232,9 @@ func get_energy_weapon_selections():
 
 	return energy_weapon_names
 
+
+func get_faction_name():
+	return faction_options.get_item_text(faction_options.get_selected_id())
 
 func get_missile_weapon_selections():
 	var missile_weapon_names: Array = []

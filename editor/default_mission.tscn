@@ -42,7 +42,7 @@ script = ExtResource( 2 )
 
 [node name="Alpha 1" parent="Targets Container" instance=ExtResource( 3 )]
 script = ExtResource( 4 )
-faction = "Spider"
+faction = "spider"
 wing_name = "Alpha"
 
 [node name="Waypoints Container" type="Node" parent="."]

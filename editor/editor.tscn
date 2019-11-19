@@ -272,7 +272,7 @@ margin_left = 172.0
 margin_top = 26.0
 margin_right = 294.0
 margin_bottom = 48.0
-text = "Item 0"
+text = "none"
 items = [ "none", null, false, 0, null ]
 selected = 0
 
