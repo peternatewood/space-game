@@ -1,8 +1,5 @@
 extends Control
 
-export (NodePath) var camera_path
-export (NodePath) var player_path
-
 onready var debug = get_node("Debug")
 onready var distance_units_label = get_node("Target View Container/Target View Rows/Target Distance Container/Distance Units")
 onready var edge_target_icon = get_node("Edge Target Icon")
@@ -79,8 +76,8 @@ func _disconnect_target_signals(target):
 
 
 func _on_mission_ready():
-	camera = get_node(camera_path)
-	player = get_node(player_path)
+	camera = get_viewport().get_camera()
+	player = mission_controller.player
 
 	var overhead_icon = player.get_overhead_icon()
 	if overhead_icon != null:
