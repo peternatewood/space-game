@@ -343,6 +343,7 @@ func _on_edit_dialog_update_pressed():
 		ship_edit_dialog.edit_ship.free()
 
 		targets_container.add_child(ship_instance)
+		ship_instance.set_owner(mission_node)
 		ship_instance.transform = ship_transform
 
 		ship_edit_dialog.edit_ship = ship_instance
@@ -428,8 +429,10 @@ func _on_edit_dialog_update_pressed():
 		if non_player_loadouts.has(old_name):
 			non_player_loadouts.erase(old_name)
 
+	# Update node meta data, under the assumption it has changed
 	mission_node.set_meta("non_player_loadouts", non_player_loadouts)
 	mission_node.set_meta("default_loadouts", default_loadouts)
+	mission_node.set_meta("player_path", "Targets Container/" + ship_edit_dialog.edit_ship.name)
 
 
 func _on_mission_menu_id_pressed(item_id: int):
