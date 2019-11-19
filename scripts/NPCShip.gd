@@ -1,8 +1,15 @@
 extends "res://scripts/AttackShipBase.gd"
 
-enum ORDER_TYPE { PASSIVE, ATTACK, DEFEND, IGNORE, COVER_ME, ATTACK_ANY, DEPART, ARRIVE, PATROL }
+enum ORDER_TYPE { PASSIVE, ATTACK, DEFEND, IGNORE, ATTACK_ANY, DEPART, ARRIVE, PATROL, COVER_ME }
 
-export (Array, ORDER_TYPE) var initial_orders = [ORDER_TYPE.PASSIVE]
+export (Array, ORDER_TYPE) var initial_orders = [
+	ORDER_TYPE.PASSIVE,
+	ORDER_TYPE.PASSIVE,
+	ORDER_TYPE.PASSIVE,
+	ORDER_TYPE.PASSIVE,
+	ORDER_TYPE.PASSIVE,
+	ORDER_TYPE.PASSIVE
+]
 
 var defend_target
 var is_flying_at_target: bool = true

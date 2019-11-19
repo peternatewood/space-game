@@ -9,6 +9,15 @@ onready var root_menu = get_node("Root Commands")
 var allow_input: bool = false
 var command_type: int = NONE
 var commanding_ship
+var number_command_map: Array = [
+	0, # null
+	1, # Attack
+	2, # Defend
+	3, # Ignore
+	8, # Cover Me
+	4, # Attack Any
+	5  # Depart
+]
 var reinforcements_list
 var ship_commands
 var ships_menu
@@ -104,15 +113,21 @@ func _handle_number_press(number: int):
 			# Not a valid number, so we do nothing
 			return
 	elif ship_commands.visible:
+		if number >= number_command_map.size():
+			# Invalid command number
+			return
+
+		var command_index: int = number_command_map[number]
+
 		match command_type:
 			ALL_SHIPS:
 				for ship in mission_controller.get_commandable_ships():
-					ship.set_command(number, mission_controller.player)
+					ship.set_command(command_index, mission_controller.player)
 			WING:
 				for ship in wing.wing_ships:
-					ship.set_command(number, mission_controller.player)
+					ship.set_command(command_index, mission_controller.player)
 			SHIP:
-				commanding_ship.set_command(number, mission_controller.player)
+				commanding_ship.set_command(command_index, mission_controller.player)
 				commanding_ship = null
 			_:
 				# Not a valid number, so we do nothing
