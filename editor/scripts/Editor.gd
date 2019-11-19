@@ -77,7 +77,7 @@ func _ready():
 	# TODO: update manipulator viewport if window size changes
 	manipulator_viewport.set_size(get_viewport().size)
 
-	ship_edit_dialog.prepare_options(mission_data)
+	ship_edit_dialog.prepare_options(mission_data, mission_node)
 	ship_edit_dialog.populate_wing_options(wing_names)
 
 	ship_edit_dialog.connect("update_pressed", self, "_on_edit_dialog_update_pressed")

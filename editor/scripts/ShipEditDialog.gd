@@ -10,6 +10,7 @@ onready var energy_weapon_options: Array = [
 	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Energy Weapon Options 2"),
 	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Energy Weapon Options 3")
 ]
+onready var faction_options = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Faction Options")
 onready var hitpoints_spinbox = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Hitpoints SpinBox")
 onready var missile_weapon_labels: Array = [
 	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Missile Weapon Label 1"),
@@ -269,7 +270,7 @@ func populate_wing_options(wing_names: Array):
 		wing_options.set_item_disabled(index + 1, is_empty)
 
 
-func prepare_options(mission_data):
+func prepare_options(mission_data, mission_node):
 	var ship_index: int = 0
 	for name in mission_data.ship_models.keys():
 		ship_class_options.add_item(name, ship_index)
@@ -288,6 +289,11 @@ func prepare_options(mission_data):
 		for option in missile_weapon_options:
 			option.add_item(name, missile_weapon_index)
 		missile_weapon_index += 1
+
+	var faction_index: int = 1
+	for faction_name in mission_node.factions.keys():
+		faction_options.add_item(faction_name, faction_index)
+		faction_index += 1
 
 
 signal ship_position_changed
