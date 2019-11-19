@@ -429,6 +429,9 @@ func _on_edit_dialog_update_pressed():
 		if non_player_loadouts.has(old_name):
 			non_player_loadouts.erase(old_name)
 
+	if ship_edit_dialog.edit_ship is NPCShip:
+		ship_edit_dialog.edit_ship.initial_orders = ship_edit_dialog.get_orders()
+
 	# Update node meta data, under the assumption it has changed
 	mission_node.set_meta("non_player_loadouts", non_player_loadouts)
 	mission_node.set_meta("default_loadouts", default_loadouts)

@@ -24,6 +24,14 @@ onready var missile_weapon_options: Array = [
 onready var name_lineedit = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Name LineEdit")
 onready var next_button = get_node("Ship Edit Rows/Title Container/Next Button")
 onready var npc_settings = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows")
+onready var order_options: Array = [
+	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid/Order Type Option 1"),
+	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid/Order Type Option 2"),
+	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid/Order Type Option 3"),
+	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid/Order Type Option 4"),
+	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid/Order Type Option 5"),
+	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid/Order Type Option 6")
+]
 onready var player_ship_checkbox = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Player Ship CheckBox")
 onready var position_spinboxes: Dictionary = {
 	"x": get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Transform Container/Position X SpinBox"),
@@ -193,6 +201,12 @@ func fill_ship_info(ship, loadout: Dictionary = {}):
 		npc_settings.hide()
 	elif ship is ShipBase:
 		warped_in_checkbox.set_pressed(ship.is_warped_in)
+		for index in range(order_options.size()):
+			if index < ship.orders.size():
+				order_options[index].select(ship.orders)
+			else:
+				order_options[index].select(0)
+
 		npc_settings.show()
 
 	edit_ship = ship
@@ -223,6 +237,15 @@ func get_missile_weapon_selections():
 			missile_weapon_names.append(missile_weapon_index_name_map[selected_id - 1])
 
 	return missile_weapon_names
+
+
+func get_orders():
+	var orders_list: Array = []
+
+	for option in order_options:
+		orders_list.append(option.get_selected_id())
+
+	return orders_list
 
 
 func get_wing_index():
