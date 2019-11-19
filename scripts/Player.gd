@@ -2,8 +2,6 @@ extends "res://scripts/AttackShipBase.gd"
 
 enum { COCKPIT, CHASE }
 
-export (NodePath) var camera_path
-
 var allow_input: bool = false
 var cam_dist: float
 var cam_mode: int
@@ -18,6 +16,8 @@ func _ready():
 
 	if has_warp_ramp_up:
 		self.connect("warping_ramped_up", warp_ramp_up_player, "stop")
+
+	._ready()
 
 
 func _start_destruction():
@@ -178,7 +178,7 @@ func _on_fov_changed(value: int):
 
 
 func _on_mission_ready():
-	camera = get_node(camera_path)
+	camera = get_viewport().get_camera()
 	camera.set_fov(settings.get_fov())
 	settings.connect("fov_changed", self, "_on_fov_changed")
 	_set_cam_mode(COCKPIT)
