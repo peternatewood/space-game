@@ -208,11 +208,9 @@ func fill_ship_info(ship, loadout: Dictionary = {}):
 		npc_settings.hide()
 	elif ship is ShipBase:
 		warped_in_checkbox.set_pressed(ship.is_warped_in)
+
 		for index in range(order_options.size()):
-			if index < ship.orders.size():
-				order_options[index].select(ship.orders)
-			else:
-				order_options[index].select(0)
+			order_options[index].select(ship.initial_orders[index])
 
 		npc_settings.show()
 

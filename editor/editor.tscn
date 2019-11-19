@@ -408,7 +408,6 @@ items = [ "none", null, false, 0, null ]
 selected = 0
 
 [node name="NPC Ship Rows" type="VBoxContainer" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows"]
-editor/display_folded = true
 margin_top = 388.0
 margin_right = 442.0
 margin_bottom = 632.0
@@ -466,7 +465,7 @@ margin_top = 22.0
 margin_right = 138.0
 margin_bottom = 50.0
 text = "Passive"
-items = [ "Passive", null, false, 0, null, "Attack", null, false, 1, null, "Defend", null, false, 2, null, "Ignore", null, false, 3, null, "Attack Any", null, false, 5, null, "Depart", null, false, 6, null, "Arrive", null, true, 7, null, "Patrol", null, false, 8, null ]
+items = [ "Passive", null, false, 0, null, "Attack", null, false, 1, null, "Defend", null, false, 2, null, "Ignore", null, false, 3, null, "Attack Any", null, false, 4, null, "Depart", null, false, 5, null, "Arrive", null, true, 6, null, "Patrol", null, false, 7, null ]
 selected = 0
 
 [node name="Order Target Option 1" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
@@ -492,11 +491,11 @@ text = "Order 2"
 
 [node name="Order Type Option 2" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
 margin_left = 60.0
-margin_top = 54.0
+margin_top = 22.0
 margin_right = 138.0
-margin_bottom = 82.0
+margin_bottom = 50.0
 text = "Passive"
-items = [ "Passive", null, false, 0, null, "Attack", null, false, 1, null, "Defend", null, false, 2, null, "Ignore", null, false, 3, null, "Attack Any", null, false, 5, null, "Depart", null, false, 6, null, "Arrive", null, true, 7, null, "Patrol", null, false, 8, null ]
+items = [ "Passive", null, false, 0, null, "Attack", null, false, 1, null, "Defend", null, false, 2, null, "Ignore", null, false, 3, null, "Attack Any", null, false, 4, null, "Depart", null, false, 5, null, "Arrive", null, true, 6, null, "Patrol", null, false, 7, null ]
 selected = 0
 
 [node name="Order Target Option 2" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
@@ -522,11 +521,11 @@ text = "Order 3"
 
 [node name="Order Type Option 3" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
 margin_left = 60.0
-margin_top = 86.0
+margin_top = 22.0
 margin_right = 138.0
-margin_bottom = 114.0
+margin_bottom = 50.0
 text = "Passive"
-items = [ "Passive", null, false, 0, null, "Attack", null, false, 1, null, "Defend", null, false, 2, null, "Ignore", null, false, 3, null, "Attack Any", null, false, 5, null, "Depart", null, false, 6, null, "Arrive", null, true, 7, null, "Patrol", null, false, 8, null ]
+items = [ "Passive", null, false, 0, null, "Attack", null, false, 1, null, "Defend", null, false, 2, null, "Ignore", null, false, 3, null, "Attack Any", null, false, 4, null, "Depart", null, false, 5, null, "Arrive", null, true, 6, null, "Patrol", null, false, 7, null ]
 selected = 0
 
 [node name="Order Target Option 3" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
@@ -552,11 +551,11 @@ text = "Order 4"
 
 [node name="Order Type Option 4" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
 margin_left = 60.0
-margin_top = 118.0
+margin_top = 22.0
 margin_right = 138.0
-margin_bottom = 146.0
+margin_bottom = 50.0
 text = "Passive"
-items = [ "Passive", null, false, 0, null, "Attack", null, false, 1, null, "Defend", null, false, 2, null, "Ignore", null, false, 3, null, "Attack Any", null, false, 5, null, "Depart", null, false, 6, null, "Arrive", null, true, 7, null, "Patrol", null, false, 8, null ]
+items = [ "Passive", null, false, 0, null, "Attack", null, false, 1, null, "Defend", null, false, 2, null, "Ignore", null, false, 3, null, "Attack Any", null, false, 4, null, "Depart", null, false, 5, null, "Arrive", null, true, 6, null, "Patrol", null, false, 7, null ]
 selected = 0
 
 [node name="Order Target Option 4" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
@@ -582,11 +581,11 @@ text = "Order 5"
 
 [node name="Order Type Option 5" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
 margin_left = 60.0
-margin_top = 150.0
+margin_top = 22.0
 margin_right = 138.0
-margin_bottom = 178.0
+margin_bottom = 50.0
 text = "Passive"
-items = [ "Passive", null, false, 0, null, "Attack", null, false, 1, null, "Defend", null, false, 2, null, "Ignore", null, false, 3, null, "Attack Any", null, false, 5, null, "Depart", null, false, 6, null, "Arrive", null, true, 7, null, "Patrol", null, false, 8, null ]
+items = [ "Passive", null, false, 0, null, "Attack", null, false, 1, null, "Defend", null, false, 2, null, "Ignore", null, false, 3, null, "Attack Any", null, false, 4, null, "Depart", null, false, 5, null, "Arrive", null, true, 6, null, "Patrol", null, false, 7, null ]
 selected = 0
 
 [node name="Order Target Option 5" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
@@ -612,11 +611,11 @@ text = "Order 6"
 
 [node name="Order Type Option 6" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
 margin_left = 60.0
-margin_top = 182.0
+margin_top = 22.0
 margin_right = 138.0
-margin_bottom = 210.0
+margin_bottom = 50.0
 text = "Passive"
-items = [ "Passive", null, false, 0, null, "Attack", null, false, 1, null, "Defend", null, false, 2, null, "Ignore", null, false, 3, null, "Attack Any", null, false, 5, null, "Depart", null, false, 6, null, "Arrive", null, true, 7, null, "Patrol", null, false, 8, null ]
+items = [ "Passive", null, false, 0, null, "Attack", null, false, 1, null, "Defend", null, false, 2, null, "Ignore", null, false, 3, null, "Attack Any", null, false, 4, null, "Depart", null, false, 5, null, "Arrive", null, true, 6, null, "Patrol", null, false, 7, null ]
 selected = 0
 
 [node name="Order Target Option 6" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
