@@ -36,8 +36,8 @@ onready var rotation_spinboxes: Dictionary = {
 	"y": get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Transform Container/Rotation Y SpinBox"),
 	"z": get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Transform Container/Rotation Z SpinBox")
 }
-onready var title = get_node("Ship Edit Rows/Title Container/Title")
 onready var ship_class_options = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Ship Class Options")
+onready var title = get_node("Ship Edit Rows/Title Container/Title")
 onready var warped_in_checkbox = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Warped In CheckBox")
 onready var wing_options = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Wing Options")
 
@@ -48,12 +48,7 @@ var missile_weapon_index_name_map: Array = []
 
 
 func _ready():
-	hitpoints_spinbox.connect("value_changed", self, "_on_hitpoints_changed")
-	name_lineedit.connect("text_changed", self, "_on_name_changed")
 	player_ship_checkbox.connect("toggled", self, "_on_player_ship_toggled")
-	ship_class_options.connect("item_selected", self, "_on_ship_class_changed")
-	warped_in_checkbox.connect("toggled", self, "_on_warped_in_toggled")
-	wing_options.connect("item_selected", self, "_on_wing_changed")
 
 	position_spinboxes.x.connect("value_changed", self, "_on_position_x_changed")
 	position_spinboxes.y.connect("value_changed", self, "_on_position_y_changed")
@@ -63,28 +58,8 @@ func _ready():
 	rotation_spinboxes.y.connect("value_changed", self, "_on_rotation_y_changed")
 	rotation_spinboxes.z.connect("value_changed", self, "_on_rotation_z_changed")
 
-	var energy_weapon_index: int = 0
-	for option in energy_weapon_options:
-		option.connect("item_selected", self, "_on_ship_energy_weapon_changed", [ energy_weapon_index ])
-		energy_weapon_index += 1
-
-	var missile_weapon_index: int = 0
-	for option in missile_weapon_options:
-		option.connect("item_selected", self, "_on_ship_missile_weapon_changed", [ missile_weapon_index ])
-		missile_weapon_index += 1
-
-
-func _on_hitpoints_changed(new_value: float):
-	if not is_populating:
-		edit_ship.hull_hitpoints = int(new_value)
-
-
-func _on_name_changed(new_text: String):
-	if not is_populating:
-		var old_name = edit_ship.name
-		edit_ship.set_name(new_text)
-		title.set_text("Edit " + edit_ship.name)
-		emit_signal("ship_name_changed", old_name, edit_ship.name)
+	var update_button = get_node("Ship Edit Rows/Update Button")
+	update_button.connect("pressed", self, "_on_update_pressed")
 
 
 func _on_player_ship_toggled(button_pressed: bool):
@@ -94,7 +69,7 @@ func _on_player_ship_toggled(button_pressed: bool):
 		else:
 			npc_settings.show()
 
-		emit_signal("player_ship_toggled", button_pressed)
+#		emit_signal("player_ship_toggled", button_pressed)
 
 
 func _on_position_x_changed(new_value: float):
@@ -133,37 +108,9 @@ func _on_rotation_z_changed(new_value: float):
 		emit_signal("ship_rotation_changed", edit_ship.rotation_degrees)
 
 
-func _on_ship_class_changed(item_index: int):
-	if not is_populating:
-		emit_signal("ship_class_changed", item_index)
-
-
-func _on_ship_energy_weapon_changed(item_index: int, slot_index: int):
-	var weapon_name: String = "none"
-	if item_index != 0:
-		# The first item at [0] is "none", so we have to subtract one
-		weapon_name = energy_weapon_index_name_map[item_index - 1]
-
-	emit_signal("ship_energy_weapon_changed", weapon_name, slot_index)
-
-
-func _on_ship_missile_weapon_changed(item_index: int, slot_index: int):
-	var weapon_name: String
-	if item_index != 0:
-		# The first item at [0] is "none", so we have to subtract one
-		weapon_name = missile_weapon_index_name_map[item_index - 1]
-
-	emit_signal("ship_missile_weapon_changed", weapon_name, slot_index)
-
-
-func _on_warped_in_toggled(button_pressed: bool):
-	edit_ship.is_warped_in = button_pressed
-
-
-func _on_wing_changed(item_selected: int):
-	if not is_populating:
-		# Subtract one, since the first element is "none"
-		emit_signal("ship_wing_changed", item_selected - 1)
+func _on_update_pressed():
+	title.set_text("Edit " + name_lineedit.text)
+	emit_signal("update_pressed")
 
 
 # PUBLIC
@@ -252,6 +199,36 @@ func fill_ship_info(ship, loadout: Dictionary = {}):
 	is_populating = false
 
 
+func get_energy_weapon_selections():
+	var energy_weapon_names: Array = []
+
+	for option in energy_weapon_options:
+		var selected_id = option.get_selected_id()
+		if selected_id == 0:
+			energy_weapon_names.append("none")
+		else:
+			energy_weapon_names.append(energy_weapon_index_name_map[selected_id - 1])
+
+	return energy_weapon_names
+
+
+func get_missile_weapon_selections():
+	var missile_weapon_names: Array = []
+
+	for option in missile_weapon_options:
+		var selected_id = option.get_selected_id()
+		if selected_id == 0:
+			missile_weapon_names.append("none")
+		else:
+			missile_weapon_names.append(missile_weapon_index_name_map[selected_id - 1])
+
+	return missile_weapon_names
+
+
+func get_wing_index():
+	return wing_options.get_selected_id() - 1
+
+
 # According to the docs, Control.has_point does exist, but the engine disagrees
 func has_point(point: Vector2):
 	return rect_position.x < point.x and point.x < rect_position.x + rect_size.x and rect_position.y < point.y and point.y < rect_position.y + rect_size.y
@@ -290,14 +267,9 @@ func prepare_options(mission_data):
 		missile_weapon_index += 1
 
 
-signal player_ship_toggled
-signal ship_class_changed
-signal ship_energy_weapon_changed
-signal ship_missile_weapon_changed
-signal ship_name_changed
 signal ship_position_changed
 signal ship_rotation_changed
-signal ship_wing_changed
+signal update_pressed
 
 const AttackShipBase = preload("res://scripts/AttackShipBase.gd")
 const CapitalShipBase = preload("res://scripts/CapitalShipBase.gd")
