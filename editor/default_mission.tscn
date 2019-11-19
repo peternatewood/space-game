@@ -21,7 +21,7 @@ __meta__ = {
 "energy_weapons": [ "Energy Bolt", "Disintigrator" ],
 "missile_weapons": [ "Heat Seeker", "Heat Seeker" ],
 "name": "Alpha 1"
-} ] ],
+} ], [], [], [], [], [] ],
 "name": "Debug Mission",
 "non_player_loadouts": {
 
