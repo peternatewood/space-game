@@ -21,7 +21,7 @@ __meta__ = {
 "energy_weapons": [ "Energy Bolt", "Disintigrator" ],
 "missile_weapons": [ "Heat Seeker", "Heat Seeker" ],
 "name": "Alpha 1"
-} ], [], [], [], [], [] ],
+} ], [  ], [  ], [  ], [  ], [  ] ],
 "name": "Debug Mission",
 "non_player_loadouts": {
 
@@ -48,8 +48,10 @@ wing_name = "Alpha"
 [node name="Waypoints Container" type="Node" parent="."]
 
 [node name="HUD" parent="." instance=ExtResource( 5 )]
+visible = false
 
 [node name="Mission Start Overlay" parent="." instance=ExtResource( 6 )]
+visible = false
 
 [node name="Pause Menu" parent="." instance=ExtResource( 7 )]
 visible = false
