@@ -7,10 +7,11 @@ var energy_weapon_models: Dictionary
 var missile_weapon_models: Dictionary
 var mission_name: String
 var mission_scene_path: String
-var non_player_loadout: Dictionary
+var non_player_loadouts: Dictionary
 var objectives: Array
 var ship_models: Dictionary
-var wing_loadouts: Dictionary
+var wing_loadouts: Array = []
+var wing_names: Array = []
 
 
 func _ready():
@@ -107,164 +108,153 @@ func _ready():
 # PUBLIC
 
 
-func get_weapon_models(type: String, wing_name: String, ship_index: int):
+func get_weapon_models(type: String, wing_index: int, ship_index: int):
 	var models: Array = []
-	for weapon_data in wing_loadouts[wing_name][ship_index][type]:
+	for weapon_data in wing_loadouts[wing_index][ship_index][type]:
 		models.append(weapon_data.model)
 
 	return models
 
 
-func load_mission_data(folder_name: String):
-	var directory = "res://missions/" + folder_name + "/data.json"
-	var data_file = File.new()
+# Loads mission data from file; returns true if successful, false if not
+func load_mission_data(path: String):
+	var file = File.new()
 
-	if data_file.file_exists(directory):
-		var file_error = data_file.open(directory, File.READ)
-		if file_error == OK:
-			var parse_result = JSON.parse(data_file.get_as_text())
-			if parse_result.error == OK:
-				# Get general mission info
-				mission_name = parse_result.result.get("name", "mission_name")
-				briefing = []
-				for brief_copy in parse_result.result.get("briefing"):
-					if typeof(brief_copy) == TYPE_STRING:
-						briefing.append(brief_copy)
+	if file.file_exists(path):
+		var mission_scene = load(path)
+		var mission_instance = mission_scene.instance()
 
-				# Get armory (the available ships and weapons)
-				armory = {
-					"ships": [],
-					"energy_weapons": [],
-					"missile_weapons": []
+		# Check for required meta data
+		var missing_meta: bool = false
+		for meta_name in REQUIRED_MISSION_META:
+			if not mission_instance.has_meta(meta_name):
+				print("Missing meta data: " + meta_name)
+				missing_meta = true
+
+		if missing_meta:
+			return false
+
+		mission_name = mission_instance.get_meta("name")
+		briefing = mission_instance.get_meta("briefing")
+		armory = mission_instance.get_meta("armory")
+		wing_names = mission_instance.get_meta("wing_names")
+
+		# Get loadout for each ship by wing
+		var default_loadouts = mission_instance.get_meta("default_loadouts")
+		var wing_index: int = 0
+		for loadout in default_loadouts:
+			wing_loadouts.append([])
+
+			for index in range(min(MAX_SHIPS_PER_WING, loadout.size())):
+				var ship = mission_instance.get_node("Targets Container/" + loadout[index].name)
+				var ship_class = ship.get_meta("ship_class")
+
+				var ship_loadout: Dictionary = {
+					"ship_class": ship_class,
+					"model": ship_models[ship_class],
+					"energy_weapons": [
+						{ "name": "none", "model": null },
+						{ "name": "none", "model": null },
+						{ "name": "none", "model": null }
+					],
+					"missile_weapons": [
+						{ "name": "none", "model": null },
+						{ "name": "none", "model": null },
+						{ "name": "none", "model": null },
+						{ "name": "none", "model": null }
+					]
 				}
 
-				var parsed_armory = parse_result.result.get("armory", {})
-				for ship in parsed_armory.get("ships", []):
-					armory["ships"].append(ship)
+				var energy_weapon_index: int = 0
+				for energy_weapon_name in loadout[index].get("energy_weapons", []):
+					if energy_weapon_name != "none" and energy_weapon_models.has(energy_weapon_name) and armory.energy_weapons.has(energy_weapon_name):
+						ship_loadout["energy_weapons"][energy_weapon_index] = { "name": energy_weapon_name, "model": energy_weapon_models[energy_weapon_name] }
 
-				for energy_weapon in parsed_armory.get("energy_weapons", []):
-					armory["energy_weapons"].append(energy_weapon)
+					energy_weapon_index += 1
+					if energy_weapon_index >= ship_loadout["energy_weapons"].size():
+						break
 
-				for missile_weapon in parsed_armory.get("missile_weapons", []):
-					armory["missile_weapons"].append(missile_weapon)
+				var missile_weapon_index: int = 0
+				for missile_weapon_name in loadout[index].get("missile_weapons", []):
+					if missile_weapon_name != "none" and missile_weapon_models.has(missile_weapon_name) and armory.missile_weapons.has(missile_weapon_name):
+						ship_loadout["missile_weapons"][missile_weapon_index] = { "name": missile_weapon_name, "model": missile_weapon_models[missile_weapon_name] }
 
-				# Get loadout for each ship by wing
-				var default_loadout = parse_result.result.get("default_loadout", {})
-				for wing_name in VALID_WINGS:
-					# Only load data for valid wing names, and type-check the data file
-					if default_loadout.has(wing_name) and default_loadout[wing_name] is Array:
-						wing_loadouts[wing_name] = []
-						# More type checking
-						var invalid_wing: bool = false
-						for loadout in default_loadout[wing_name]:
-							if not loadout is Dictionary:
-								invalid_wing = true
-								break
+					missile_weapon_index += 1
+					if missile_weapon_index >= ship_loadout["missile_weapons"].size():
+						break
 
-						if invalid_wing:
-							continue
+				wing_loadouts[wing_index].append(ship_loadout)
 
-						for index in range(min(MAX_SHIPS_PER_WING, default_loadout[wing_name].size())):
-							var ship_loadout: Dictionary = {
-								"ship_class": "Frog Fighter",
-								"model": ship_models["Frog Fighter"],
-								"energy_weapons": [
-									{ "name": "none", "model": null },
-									{ "name": "none", "model": null },
-									{ "name": "none", "model": null }
-								],
-								"missile_weapons": [
-									{ "name": "none", "model": null },
-									{ "name": "none", "model": null },
-									{ "name": "none", "model": null },
-									{ "name": "none", "model": null }
-								]
-							}
+			wing_index += 1
 
-							var ship_class = default_loadout[wing_name][index].get("ship_class", "")
-							if ship_models.has(ship_class):
-								ship_loadout["ship_class"] = ship_class
-								ship_loadout["model"] = ship_models[ship_class]
+		# Get the loadouts for all non-player-accessible ships
+		var meta_loadouts = mission_instance.get_meta("non_player_loadouts")
+		non_player_loadouts = {}
+		for ship_name in meta_loadouts.keys():
+			non_player_loadouts[ship_name] = {
+				"beam_weapons": [],
+				"energy_weapons": [],
+				"missile_weapons": []
+			}
 
-							var energy_weapon_index: int = 0
-							for energy_weapon_name in default_loadout[wing_name][index].get("energy_weapons", []):
-								if energy_weapon_name != "none" and energy_weapon_models.has(energy_weapon_name) and armory.energy_weapons.has(energy_weapon_name):
-									ship_loadout["energy_weapons"][energy_weapon_index] = { "name": energy_weapon_name, "model": energy_weapon_models[energy_weapon_name] }
+			for beam_weapon_name in meta_loadouts[ship_name].get("beam_weapons", []):
+				if beam_weapon_models.has(beam_weapon_name):
+					non_player_loadouts[ship_name].beam_weapons.append(beam_weapon_models[beam_weapon_name])
 
-								energy_weapon_index += 1
-								if energy_weapon_index >= ship_loadout["energy_weapons"].size():
-									break
+			for energy_weapon_name in meta_loadouts[ship_name].get("energy_weapons", []):
+				if energy_weapon_models.has(energy_weapon_name):
+					non_player_loadouts[ship_name].energy_weapons.append(energy_weapon_models[energy_weapon_name])
 
-							var missile_weapon_index: int = 0
-							for missile_weapon_name in default_loadout[wing_name][index].get("missile_weapons", []):
-								if missile_weapon_name != "none" and missile_weapon_models.has(missile_weapon_name) and armory.missile_weapons.has(missile_weapon_name):
-									ship_loadout["missile_weapons"][missile_weapon_index] = { "name": missile_weapon_name, "model": missile_weapon_models[missile_weapon_name] }
+			for missile_weapon_name in meta_loadouts[ship_name].get("missile_weapons", []):
+				if missile_weapon_models.has(missile_weapon_name):
+					non_player_loadouts[ship_name].missile_weapons.append(missile_weapon_models[missile_weapon_name])
 
-								missile_weapon_index += 1
-								if missile_weapon_index >= ship_loadout["missile_weapons"].size():
-									break
+		# Get mission objectives
+		objectives = [ [], [], [] ]
+		var objective_data = mission_instance.get_meta("objectives")
+		for index in range(min(3, objectives.size())):
+			for objective in objective_data[index]:
+				objectives[index].append(Objective.new(objective))
 
-							wing_loadouts[wing_name].append(ship_loadout)
+		# Take a second pass to connect any objectives that require another objective to succeed/fail
+		for index in range(min(3, objectives.size())):
+			for objective in objectives[index]:
+				for success in objective.success_requirements:
+					match success.type:
+						Objective.OBJECTIVE:
+							if success.objective_index != -1 and success.objective_type != -1:
+								objectives[success.objective_type][success.objective_index].connect("completed", success, "_on_objective_completed")
+								objectives[success.objective_type][success.objective_index].connect("failed", success, "_on_objective_failed")
 
-				# Get the loadouts for all non-player-accessible ships
-				var result_loadout = parse_result.result.get("non_player_loadout", {})
-				non_player_loadout = {}
-				for ship_name in result_loadout.keys():
-					non_player_loadout[ship_name] = {
-						"beam_weapons": [],
-						"energy_weapons": [],
-						"missile_weapons": []
-					}
+				# And for failure requirements
+				for failure in objective.failure_requirements:
+					match failure.type:
+						Objective.OBJECTIVE:
+							if failure.objective_index != -1 and failure.objective_type != -1:
+								objectives[failure.objective_type][failure.objective_index].connect("completed", failure, "_on_objective_completed")
+								objectives[failure.objective_type][failure.objective_index].connect("failed", failure, "_on_objective_failed")
 
-					for beam_weapon_name in result_loadout[ship_name].get("beam_weapons", []):
-						if beam_weapon_models.has(beam_weapon_name):
-							non_player_loadout[ship_name].beam_weapons.append(beam_weapon_models[beam_weapon_name])
+		mission_scene_path = path
 
-					for energy_weapon_name in result_loadout[ship_name].get("energy_weapons", []):
-						if energy_weapon_models.has(energy_weapon_name):
-							non_player_loadout[ship_name].energy_weapons.append(energy_weapon_models[energy_weapon_name])
-
-					for missile_weapon_name in result_loadout[ship_name].get("missile_weapons", []):
-						if missile_weapon_models.has(missile_weapon_name):
-							non_player_loadout[ship_name].missile_weapons.append(missile_weapon_models[missile_weapon_name])
-
-				# Get mission objectives
-				objectives = [ [], [], [] ]
-				var objective_data = parse_result.result.get("objectives", [])
-				for index in range(min(3, objectives.size())):
-					for objective in objective_data[index]:
-						objectives[index].append(Objective.new(objective))
-
-				# Take a second pass to connect any objectives that require another objective to succeed/fail
-				for index in range(min(3, objectives.size())):
-					for objective in objectives[index]:
-						for success in objective.success_requirements:
-							match success.type:
-								Objective.OBJECTIVE:
-									if success.objective_index != -1 and success.objective_type != -1:
-										objectives[success.objective_type][success.objective_index].connect("completed", success, "_on_objective_completed")
-										objectives[success.objective_type][success.objective_index].connect("failed", success, "_on_objective_failed")
-
-						# And for failure requirements
-						for failure in objective.failure_requirements:
-							match failure.type:
-								Objective.OBJECTIVE:
-									if failure.objective_index != -1 and failure.objective_type != -1:
-										objectives[failure.objective_type][failure.objective_index].connect("completed", failure, "_on_objective_completed")
-										objectives[failure.objective_type][failure.objective_index].connect("failed", failure, "_on_objective_failed")
-
-				mission_scene_path = "res://missions/" + folder_name + "/scene.tscn"
-			else:
-				print("Error parsing " + directory + ": " + parse_result.error_string)
-		else:
-			print("Error opening " + directory + ": " + str(file_error))
-
-		data_file.close()
 	else:
-		print("Unable to open mission data file: no such file at " + directory)
+		print("Invalid path: " + path)
+		return false
+
+	return true
 
 
 const Objective = preload("Objective.gd")
 
 const MAX_SHIPS_PER_WING: int = 4
+const REQUIRED_MISSION_META: Array = [
+	"armory",
+	"briefing",
+	"default_loadouts",
+	"name",
+	"non_player_loadouts",
+	"objectives",
+	"player_path",
+	"reinforcement_wings",
+	"wing_names"
+]
 const VALID_WINGS: Array = [ "Alpha", "Beta", "Gamma", "Delta", "Epsilon" ]

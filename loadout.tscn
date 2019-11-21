@@ -38,6 +38,8 @@ margin_bottom = 200.0
 texture = ExtResource( 2 )
 
 [node name="Ship Preview Container" type="HBoxContainer" parent="."]
+editor/display_folded = true
+visible = false
 anchor_left = 1.0
 anchor_right = 1.0
 margin_left = -231.0
@@ -162,6 +164,7 @@ margin_bottom = 150.0
 texture = SubResource( 1 )
 
 [node name="Weapon Preview Container" type="HBoxContainer" parent="."]
+editor/display_folded = true
 visible = false
 anchor_left = 1.0
 anchor_top = 0.5
@@ -274,7 +277,6 @@ stream = ExtResource( 4 )
 autoplay = true
 
 [node name="Left Rows" type="VBoxContainer" parent="."]
-editor/display_folded = true
 margin_right = 51.0
 margin_bottom = 40.0
 
@@ -331,36 +333,64 @@ margin_right = 102.0
 margin_bottom = 7.0
 size_flags_horizontal = 3
 
-[node name="Wings Panel" type="PanelContainer" parent="Left Rows"]
+[node name="Wings Label" type="Label" parent="Left Rows"]
 margin_top = 108.0
 margin_right = 109.0
-margin_bottom = 192.0
+margin_bottom = 122.0
+text = "Wings"
+
+[node name="Wings Panel" type="PanelContainer" parent="Left Rows"]
+margin_top = 126.0
+margin_right = 109.0
+margin_bottom = 304.0
 
 [node name="Wing Selection Container" type="VBoxContainer" parent="Left Rows/Wings Panel"]
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 102.0
-margin_bottom = 77.0
-
-[node name="Wings Label" type="Label" parent="Left Rows/Wings Panel/Wing Selection Container"]
-margin_right = 95.0
-margin_bottom = 14.0
-text = "Wings"
+margin_bottom = 171.0
 
 [node name="Alpha CheckBox" type="CheckBox" parent="Left Rows/Wings Panel/Wing Selection Container"]
-margin_top = 18.0
 margin_right = 95.0
-margin_bottom = 42.0
+margin_bottom = 24.0
 pressed = true
 group = ExtResource( 5 )
 text = "Alpha"
 
 [node name="Beta CheckBox" type="CheckBox" parent="Left Rows/Wings Panel/Wing Selection Container"]
-margin_top = 46.0
+margin_top = 28.0
 margin_right = 95.0
-margin_bottom = 70.0
+margin_bottom = 52.0
 group = ExtResource( 5 )
 text = "Beta"
+
+[node name="Gamma CheckBox" type="CheckBox" parent="Left Rows/Wings Panel/Wing Selection Container"]
+margin_top = 56.0
+margin_right = 95.0
+margin_bottom = 80.0
+group = ExtResource( 5 )
+text = "Gamma"
+
+[node name="Delta CheckBox" type="CheckBox" parent="Left Rows/Wings Panel/Wing Selection Container"]
+margin_top = 84.0
+margin_right = 95.0
+margin_bottom = 108.0
+group = ExtResource( 5 )
+text = "Delta"
+
+[node name="Epsilon CheckBox" type="CheckBox" parent="Left Rows/Wings Panel/Wing Selection Container"]
+margin_top = 112.0
+margin_right = 95.0
+margin_bottom = 136.0
+group = ExtResource( 5 )
+text = "Epsilon"
+
+[node name="Zeta CheckBox" type="CheckBox" parent="Left Rows/Wings Panel/Wing Selection Container"]
+margin_top = 140.0
+margin_right = 95.0
+margin_bottom = 164.0
+group = ExtResource( 5 )
+text = "Zeta"
 
 [node name="Weapon Slots Rows" type="VBoxContainer" parent="."]
 editor/display_folded = true
@@ -439,7 +469,6 @@ margin_right = 86.0
 margin_bottom = 104.0
 
 [node name="Wing Ships Container" type="Control" parent="."]
-editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -451,26 +480,27 @@ margin_bottom = 270.0
 rect_min_size = Vector2( 120, 180 )
 
 [node name="Alpha Wing Container" type="Control" parent="Wing Ships Container"]
+editor/display_folded = true
 margin_right = 120.0
 margin_bottom = 180.0
 rect_min_size = Vector2( 140, 180 )
 script = ExtResource( 7 )
 
-[node name="Alpha Icon 1" parent="Wing Ships Container/Alpha Wing Container" instance=ExtResource( 8 )]
+[node name="Icon 1" parent="Wing Ships Container/Alpha Wing Container" instance=ExtResource( 8 )]
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -19.0
 margin_right = 19.0
 margin_bottom = 63.0
 
-[node name="Alpha Icon 2" parent="Wing Ships Container/Alpha Wing Container" instance=ExtResource( 8 )]
+[node name="Icon 2" parent="Wing Ships Container/Alpha Wing Container" instance=ExtResource( 8 )]
 anchor_top = 0.5
 anchor_bottom = 0.5
 margin_top = -31.5
 margin_right = 38.0
 margin_bottom = 31.5
 
-[node name="Alpha Icon 3" parent="Wing Ships Container/Alpha Wing Container" instance=ExtResource( 8 )]
+[node name="Icon 3" parent="Wing Ships Container/Alpha Wing Container" instance=ExtResource( 8 )]
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
@@ -479,7 +509,7 @@ margin_left = -38.0
 margin_top = -31.5
 margin_bottom = 31.5
 
-[node name="Alpha Icon 4" parent="Wing Ships Container/Alpha Wing Container" instance=ExtResource( 8 )]
+[node name="Icon 4" parent="Wing Ships Container/Alpha Wing Container" instance=ExtResource( 8 )]
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -489,27 +519,28 @@ margin_top = -63.0
 margin_right = 19.0
 
 [node name="Beta Wing Container" type="Control" parent="Wing Ships Container"]
+editor/display_folded = true
 visible = false
-margin_right = 140.0
+margin_right = 120.0
 margin_bottom = 180.0
 rect_min_size = Vector2( 140, 180 )
 script = ExtResource( 7 )
 
-[node name="Beta Icon 1" parent="Wing Ships Container/Beta Wing Container" instance=ExtResource( 8 )]
+[node name="Icon 1" parent="Wing Ships Container/Beta Wing Container" instance=ExtResource( 8 )]
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -19.0
 margin_right = 19.0
 margin_bottom = 63.0
 
-[node name="Beta Icon 2" parent="Wing Ships Container/Beta Wing Container" instance=ExtResource( 8 )]
+[node name="Icon 2" parent="Wing Ships Container/Beta Wing Container" instance=ExtResource( 8 )]
 anchor_top = 0.5
 anchor_bottom = 0.5
 margin_top = -31.5
 margin_right = 38.0
 margin_bottom = 31.5
 
-[node name="Beta Icon 3" parent="Wing Ships Container/Beta Wing Container" instance=ExtResource( 8 )]
+[node name="Icon 3" parent="Wing Ships Container/Beta Wing Container" instance=ExtResource( 8 )]
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
@@ -518,7 +549,167 @@ margin_left = -38.0
 margin_top = -31.5
 margin_bottom = 31.5
 
-[node name="Beta Icon 4" parent="Wing Ships Container/Beta Wing Container" instance=ExtResource( 8 )]
+[node name="Icon 4" parent="Wing Ships Container/Beta Wing Container" instance=ExtResource( 8 )]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -19.0
+margin_top = -63.0
+margin_right = 19.0
+
+[node name="Gamma Wing Container" type="Control" parent="Wing Ships Container"]
+editor/display_folded = true
+visible = false
+margin_right = 120.0
+margin_bottom = 180.0
+rect_min_size = Vector2( 140, 180 )
+script = ExtResource( 7 )
+
+[node name="Icon 1" parent="Wing Ships Container/Gamma Wing Container" instance=ExtResource( 8 )]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -19.0
+margin_right = 19.0
+margin_bottom = 63.0
+
+[node name="Icon 2" parent="Wing Ships Container/Gamma Wing Container" instance=ExtResource( 8 )]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_top = -31.5
+margin_right = 38.0
+margin_bottom = 31.5
+
+[node name="Icon 3" parent="Wing Ships Container/Gamma Wing Container" instance=ExtResource( 8 )]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -38.0
+margin_top = -31.5
+margin_bottom = 31.5
+
+[node name="Icon 4" parent="Wing Ships Container/Gamma Wing Container" instance=ExtResource( 8 )]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -19.0
+margin_top = -63.0
+margin_right = 19.0
+
+[node name="Delta Wing Container" type="Control" parent="Wing Ships Container"]
+editor/display_folded = true
+visible = false
+margin_right = 120.0
+margin_bottom = 180.0
+rect_min_size = Vector2( 140, 180 )
+script = ExtResource( 7 )
+
+[node name="Icon 1" parent="Wing Ships Container/Delta Wing Container" instance=ExtResource( 8 )]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -19.0
+margin_right = 19.0
+margin_bottom = 63.0
+
+[node name="Icon 2" parent="Wing Ships Container/Delta Wing Container" instance=ExtResource( 8 )]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_top = -31.5
+margin_right = 38.0
+margin_bottom = 31.5
+
+[node name="Icon 3" parent="Wing Ships Container/Delta Wing Container" instance=ExtResource( 8 )]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -38.0
+margin_top = -31.5
+margin_bottom = 31.5
+
+[node name="Icon 4" parent="Wing Ships Container/Delta Wing Container" instance=ExtResource( 8 )]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -19.0
+margin_top = -63.0
+margin_right = 19.0
+
+[node name="Epsilon Wing Container" type="Control" parent="Wing Ships Container"]
+editor/display_folded = true
+visible = false
+margin_right = 120.0
+margin_bottom = 180.0
+rect_min_size = Vector2( 140, 180 )
+script = ExtResource( 7 )
+
+[node name="Icon 1" parent="Wing Ships Container/Epsilon Wing Container" instance=ExtResource( 8 )]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -19.0
+margin_right = 19.0
+margin_bottom = 63.0
+
+[node name="Icon 2" parent="Wing Ships Container/Epsilon Wing Container" instance=ExtResource( 8 )]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_top = -31.5
+margin_right = 38.0
+margin_bottom = 31.5
+
+[node name="Icon 3" parent="Wing Ships Container/Epsilon Wing Container" instance=ExtResource( 8 )]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -38.0
+margin_top = -31.5
+margin_bottom = 31.5
+
+[node name="Icon 4" parent="Wing Ships Container/Epsilon Wing Container" instance=ExtResource( 8 )]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -19.0
+margin_top = -63.0
+margin_right = 19.0
+
+[node name="Zeta Wing Container" type="Control" parent="Wing Ships Container"]
+editor/display_folded = true
+visible = false
+margin_right = 120.0
+margin_bottom = 180.0
+rect_min_size = Vector2( 140, 180 )
+script = ExtResource( 7 )
+
+[node name="Icon 1" parent="Wing Ships Container/Zeta Wing Container" instance=ExtResource( 8 )]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -19.0
+margin_right = 19.0
+margin_bottom = 63.0
+
+[node name="Icon 2" parent="Wing Ships Container/Zeta Wing Container" instance=ExtResource( 8 )]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_top = -31.5
+margin_right = 38.0
+margin_bottom = 31.5
+
+[node name="Icon 3" parent="Wing Ships Container/Zeta Wing Container" instance=ExtResource( 8 )]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -38.0
+margin_top = -31.5
+margin_bottom = 31.5
+
+[node name="Icon 4" parent="Wing Ships Container/Zeta Wing Container" instance=ExtResource( 8 )]
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
