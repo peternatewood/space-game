@@ -692,6 +692,7 @@ func load_mission_info():
 	ship_edit_dialog.hide()
 	objectives_edit_dialog.hide()
 	objectives_window.hide()
+	camera.reset()
 
 	# Add icons
 	for child in targets_container.get_children():
