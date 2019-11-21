@@ -39,7 +39,7 @@ func set_color(new_color: Color):
 
 func set_node(new_node):
 	node = new_node
-	node.connect("exit_tree", self, "queue_free")
+	node.connect("tree_exiting", self, "queue_free")
 
 
 signal pressed
