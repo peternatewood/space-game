@@ -276,6 +276,8 @@ func load_mission_data(path: String):
 
 const Objective = preload("Objective.gd")
 
+const ALIGNMENT_COLORS: Array = [ Color(1.0, 1.0, 0.0, 1.0), Color(0.25, 1.0, 0.25, 1.0), Color(1.0, 0.25, 0.25, 1.0) ]
+const ALIGNMENT_COLORS_FADED: Array = [ Color(1.0, 1.0, 0.0, 0.5), Color(0.25, 1.0, 0.25, 0.5), Color(1.0, 0.25, 0.25, 0.5) ]
 const MAX_SHIPS_PER_WING: int = 4
 const REQUIRED_MISSION_META: Array = [
 	"armory",

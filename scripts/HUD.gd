@@ -114,7 +114,7 @@ func _on_mission_ready():
 			# Set icon color based on alignment
 			var alignment = mission_controller.get_alignment(player.faction, node.faction)
 			if alignment != -1:
-				icon.set_modulate(ALIGNMENT_COLORS_FADED[alignment])
+				icon.set_modulate(mission_controller.mission_data.ALIGNMENT_COLORS_FADED[alignment])
 			else:
 				icon.set_modulate(Color.white)
 
@@ -227,7 +227,7 @@ func _on_player_target_changed(last_target):
 		_disconnect_target_signals(last_target)
 
 		for icon in radar_icons:
-			icon.set_modulate(ALIGNMENT_COLORS_FADED[mission_controller.get_alignment(player.faction, icon.target.faction)])
+			icon.set_modulate(mission_controller.mission_data.ALIGNMENT_COLORS_FADED[mission_controller.get_alignment(player.faction, icon.target.faction)])
 
 	if player.has_target:
 		target_viewport.remove_child(target_view_model)
@@ -259,14 +259,14 @@ func _on_player_target_changed(last_target):
 		var alignment = mission_controller.get_alignment(player.faction, player.current_target.faction)
 		for icon in radar_icons:
 			if icon.target == player.current_target:
-				icon.set_modulate(Color.white if alignment == -1 else ALIGNMENT_COLORS[alignment])
+				icon.set_modulate(Color.white if alignment == -1 else mission_controller.mission_data.ALIGNMENT_COLORS[alignment])
 				break
 
 		if alignment != -1:
-			target_name.set_modulate(ALIGNMENT_COLORS[alignment])
-			target_class.set_modulate(ALIGNMENT_COLORS[alignment])
-			edge_target_icon.set_modulate(ALIGNMENT_COLORS[alignment])
-			target_icon.set_modulate(ALIGNMENT_COLORS[alignment])
+			target_name.set_modulate(mission_controller.mission_data.ALIGNMENT_COLORS[alignment])
+			target_class.set_modulate(mission_controller.mission_data.ALIGNMENT_COLORS[alignment])
+			edge_target_icon.set_modulate(mission_controller.mission_data.ALIGNMENT_COLORS[alignment])
+			target_icon.set_modulate(mission_controller.mission_data.ALIGNMENT_COLORS[alignment])
 		else:
 			target_name.set_modulate(Color.white)
 			target_class.set_modulate(Color.white)
@@ -497,8 +497,6 @@ const EdgeTargetIcon = preload("EdgeTargetIcon.gd")
 const MathHelper = preload("MathHelper.gd")
 const ShipIcon = preload("ShipIcon.gd")
 
-const ALIGNMENT_COLORS: Array = [ Color(1.0, 1.0, 0.0, 1.0), Color(0.25, 1.0, 0.25, 1.0), Color(1.0, 0.25, 0.25, 1.0) ]
-const ALIGNMENT_COLORS_FADED: Array = [ Color(1.0, 1.0, 0.0, 0.5), Color(0.25, 1.0, 0.25, 0.5), Color(1.0, 0.25, 0.25, 0.5) ]
 const OBJECTIVE_LABEL = preload("res://icons/objective_label.tscn")
 const RADAR_ICON = preload("res://icons/radar_icon.tscn")
 const RADAR_RANGE_SQ: float = 300.0 * 300.0
