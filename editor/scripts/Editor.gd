@@ -2,7 +2,6 @@ extends Spatial
 
 onready var about_window = get_node("Controls Container/About Window")
 onready var add_ship_dialog = get_node("Controls Container/Add Ship Dialog")
-onready var add_ship_options = get_node("Controls Container/Add Ship Dialog/Add Ship Grid/Ship Class Options")
 onready var camera = get_node("Editor Camera")
 onready var debug = get_node("Controls Container/Debug")
 onready var debug_cube = get_node("Debug")
@@ -20,6 +19,7 @@ onready var ship_edit_dialog = get_node("Controls Container/Ship Edit Dialog")
 onready var transform_controls = get_node("Manipulator Viewport/Transform Controls")
 onready var wings_dialog = get_node("Controls Container/Wings Dialog")
 
+var capital_ship_index_name_map: Array = []
 var current_mouse_button: int = -1
 var has_player_ship: bool = true
 var manipulator_node = null
@@ -60,19 +60,20 @@ func _ready():
 	open_file_dialog.connect("file_selected", self, "_on_open_file_selected")
 
 	# Get model data from mission_data
-	var ship_index: int = 0
 	for ship_class in mission_data.ship_models.keys():
-		add_ship_options.add_item(ship_class, ship_index)
 		ship_index_name_map.append(ship_class)
-		ship_index += 1
+
+	for ship_class in mission_data.capital_ship_models.keys():
+		capital_ship_index_name_map.append(ship_class)
+
+	add_ship_dialog.populate_ship_options(ship_index_name_map, capital_ship_index_name_map)
+	add_ship_dialog.connect("confirmed", self, "_on_add_ship_confirmed")
 
 	for energy_weapon_name in mission_data.energy_weapon_models.keys():
 		ship_edit_dialog.energy_weapon_index_name_map.append(energy_weapon_name)
 
 	for missile_weapon_name in mission_data.missile_weapon_models.keys():
 		ship_edit_dialog.missile_weapon_index_name_map.append(missile_weapon_name)
-
-	add_ship_dialog.connect("confirmed", self, "_on_add_ship_confirmed")
 
 	# TODO: update manipulator viewport if window size changes
 	manipulator_viewport.set_size(get_viewport().size)
@@ -98,25 +99,63 @@ func _ready():
 
 
 func _on_add_ship_confirmed():
-	var ship_class = ship_index_name_map[add_ship_options.get_selected_id()]
-	var ship_instance = mission_data.ship_models[ship_class].instance()
+	# Run validations first
+	var ship_name = add_ship_dialog.name_lineedit.text
+	if ship_name == "":
+		add_ship_dialog.set_warning_text("Please provide a ship name")
+		add_ship_dialog.popup_centered()
+		return
+	elif targets_container.has_node(ship_name):
+		add_ship_dialog.set_warning_text("Ship " + ship_name + " already exists. Please provide a unique ship name")
+		add_ship_dialog.popup_centered()
+		return
+	else:
+		add_ship_dialog.set_warning_text("", false)
 
-	ship_instance.set_script(NPCShip)
-	# TODO: improve this so we always have a unique name
-	var ship_name = ship_instance.name + str(targets_container.get_child_count())
+	var ship_class: String
+	var ship_category: int = add_ship_dialog.ship_category_options.get_selected_id()
+	var ship_instance
+
+	match ship_category:
+		0:
+			ship_class = ship_index_name_map[add_ship_dialog.attack_ship_options.get_selected_id()]
+			ship_instance = mission_data.ship_models[ship_class].instance()
+			ship_instance.set_script(NPCShip)
+		1:
+			ship_class = capital_ship_index_name_map[add_ship_dialog.capital_ship_options.get_selected_id()]
+			ship_instance = mission_data.capital_ship_models[ship_class].instance()
+			ship_instance.set_script(CapitalShipBase)
+
 	ship_instance.set_name(ship_name)
 	targets_container.add_child(ship_instance)
 	ship_instance.set_owner(mission_node)
 
+	var beam_weapon_count: int = 0
+	var energy_weapon_count: int = 0
+	var missile_weapon_count: int = 0
+
+	match ship_category:
+		0:
+			energy_weapon_count = ship_instance.energy_weapon_hardpoints.size()
+			missile_weapon_count = ship_instance.missile_weapon_hardpoints.size()
+		1:
+			beam_weapon_count = ship_instance.beam_weapon_turrets.size()
+			energy_weapon_count = ship_instance.energy_weapon_turrets.size()
+			missile_weapon_count = ship_instance.missile_weapon_turrets.size()
+
 	non_player_loadouts[ship_instance.name] = {
+		"beam_weapons": [],
 		"energy_weapons": [],
 		"missile_weapons": []
 	}
 
-	for index in range(ship_instance.energy_weapon_hardpoints.size()):
+	for index in range(beam_weapon_count):
+		non_player_loadouts[ship_instance.name].beam_weapons.append("")
+
+	for index in range(energy_weapon_count):
 		non_player_loadouts[ship_instance.name].energy_weapons.append("")
 
-	for index in range(ship_instance.missile_weapon_hardpoints.size()):
+	for index in range(missile_weapon_count):
 		non_player_loadouts[ship_instance.name].missile_weapons.append("")
 
 	mission_node.set_meta("non_player_loadouts", non_player_loadouts)
@@ -656,6 +695,7 @@ func save_mission_to_file(path: String):
 
 
 const AttackShipBase = preload("res://scripts/AttackShipBase.gd")
+const CapitalShipBase = preload("res://scripts/CapitalShipBase.gd")
 const NPCShip = preload("res://scripts/NPCShip.gd")
 const Player = preload("res://scripts/Player.gd")
 
