@@ -1,28 +1,8 @@
 extends Control
 
 onready var capital_ship_options = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Capital Ship Options")
-onready var energy_weapon_labels: Array = [
-	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Energy Weapon Label 1"),
-	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Energy Weapon Label 2"),
-	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Energy Weapon Label 3")
-]
-onready var energy_weapon_options: Array = [
-	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Energy Weapon Options 1"),
-	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Energy Weapon Options 2"),
-	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Energy Weapon Options 3")
-]
 onready var faction_options = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Faction Options")
 onready var hitpoints_spinbox = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Hitpoints SpinBox")
-onready var missile_weapon_labels: Array = [
-	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Missile Weapon Label 1"),
-	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Missile Weapon Label 2"),
-	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Missile Weapon Label 3")
-]
-onready var missile_weapon_options: Array = [
-	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Missile Weapon Options 1"),
-	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Missile Weapon Options 2"),
-	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Missile Weapon Options 3")
-]
 onready var name_lineedit = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Name LineEdit")
 onready var next_button = get_node("Ship Edit Rows/Title Container/Next Button")
 onready var npc_settings = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows")
@@ -52,13 +32,32 @@ onready var warped_in_checkbox = get_node("Ship Edit Rows/Ship Edit Scroll/Ship 
 onready var wing_label = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Wing Label")
 onready var wing_options = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Wing Options")
 
+var beam_weapon_index_name_map: Array = []
 var edit_ship = null
 var energy_weapon_index_name_map: Array = []
 var is_populating: bool = false
 var missile_weapon_index_name_map: Array = []
+var beam_weapon_labels: Array = []
+var beam_weapon_options: Array = []
+var energy_weapon_labels: Array = []
+var energy_weapon_options: Array = []
+var missile_weapon_labels: Array = []
+var missile_weapon_options: Array = []
 
 
 func _ready():
+	# Grab weapon labels and slots
+	var ship_edit_grid = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid")
+	for index in range(6):
+		var number_str: String = str(index + 1)
+
+		beam_weapon_labels.append(ship_edit_grid.get_node("Beam Weapon Label " + number_str))
+		beam_weapon_options.append(ship_edit_grid.get_node("Beam Weapon Options " + number_str))
+		energy_weapon_labels.append(ship_edit_grid.get_node("Energy Weapon Label " + number_str))
+		energy_weapon_options.append(ship_edit_grid.get_node("Energy Weapon Options " + number_str))
+		missile_weapon_labels.append(ship_edit_grid.get_node("Missile Weapon Label " + number_str))
+		missile_weapon_options.append(ship_edit_grid.get_node("Missile Weapon Options " + number_str))
+
 	player_ship_checkbox.connect("toggled", self, "_on_player_ship_toggled")
 
 	position_spinboxes.x.connect("value_changed", self, "_on_position_x_changed")
@@ -189,6 +188,18 @@ func fill_ship_info(ship, loadout: Dictionary = {}):
 		beam_weapon_slot_count = ship.beam_weapon_turrets.size()
 		energy_weapon_slot_count = ship.energy_weapon_turrets.size()
 		missile_weapon_slot_count = ship.missile_weapon_turrets.size()
+
+	for index in range(beam_weapon_options.size()):
+		if index < beam_weapon_slot_count:
+			var beam_weapon_options_index = beam_weapon_index_name_map.find(beam_weapons[index])
+			# Add one since the first item is "none" and the index will be "-1" if the item isn't found
+			beam_weapon_options[index].select(beam_weapon_options_index + 1)
+
+			beam_weapon_options[index].show()
+			beam_weapon_labels[index].show()
+		else:
+			beam_weapon_options[index].hide()
+			beam_weapon_labels[index].hide()
 
 	for index in range(energy_weapon_options.size()):
 		if index < energy_weapon_slot_count:
