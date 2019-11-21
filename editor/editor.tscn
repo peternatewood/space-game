@@ -1043,8 +1043,8 @@ script = ExtResource( 7 )
 [node name="Add Ship Rows" type="VBoxContainer" parent="Controls Container/Add Ship Dialog"]
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 198.0
-margin_bottom = 88.0
+margin_right = 118.0
+margin_bottom = 34.0
 
 [node name="Warnings Label" type="Label" parent="Controls Container/Add Ship Dialog/Add Ship Rows"]
 visible = false

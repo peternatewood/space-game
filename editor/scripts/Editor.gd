@@ -273,13 +273,18 @@ func _on_edit_dialog_update_pressed():
 	var new_name: String = ship_edit_dialog.name_lineedit.text
 	var new_wing_index: int = ship_edit_dialog.get_wing_index()
 	var new_player_status: bool = ship_edit_dialog.player_ship_checkbox.pressed
-	var new_ship_class: String = ship_index_name_map[ship_edit_dialog.ship_class_options.get_selected_id()]
+	var new_ship_class: String
 
 	# Update ship properties
 	ship_edit_dialog.edit_ship.set_name(new_name)
-	ship_edit_dialog.edit_ship.wing_name = wing_names[new_wing_index]
 	ship_edit_dialog.edit_ship.hull_hitpoints = ship_edit_dialog.hitpoints_spinbox.value
 	ship_edit_dialog.edit_ship.faction = ship_edit_dialog.get_faction_name()
+
+	if ship_edit_dialog.edit_ship is AttackShipBase:
+		new_ship_class = ship_index_name_map[ship_edit_dialog.ship_class_options.get_selected_id()]
+		ship_edit_dialog.edit_ship.wing_name = wing_names[new_wing_index]
+	elif ship_edit_dialog.edit_ship is CapitalShipBase:
+		new_ship_class = capital_ship_index_name_map[ship_edit_dialog.capital_ship_options.get_selected_id()]
 
 	if ship_edit_dialog.edit_ship is NPCShip:
 		ship_edit_dialog.edit_ship.is_warped_in = ship_edit_dialog.warped_in_checkbox.pressed
@@ -375,7 +380,6 @@ func _on_edit_dialog_update_pressed():
 		ship_instance.set_script(ship_edit_dialog.edit_ship.get_script())
 		ship_instance.hull_hitpoints = ship_edit_dialog.edit_ship.hull_hitpoints
 		ship_instance.set_name(ship_edit_dialog.edit_ship.name)
-		ship_instance.wing_name = ship_edit_dialog.edit_ship.wing_name
 
 		var ship_transform = ship_edit_dialog.edit_ship.transform
 
@@ -391,8 +395,28 @@ func _on_edit_dialog_update_pressed():
 		ship_edit_dialog.edit_ship = ship_instance
 		selected_node = ship_instance
 
+		var beam_weapon_count: int = 0
+		var energy_weapon_count: int = 0
+		var missile_weapon_count: int = 0
+
+		if ship_edit_dialog.edit_ship is AttackShipBase:
+			ship_instance.wing_name = ship_edit_dialog.edit_ship.wing_name
+
+			energy_weapon_count = ship_instance.energy_weapon_hardpoints.size()
+			missile_weapon_count = ship_instance.missile_weapon_hardpoints.size()
+		elif ship_edit_dialog.edit_ship is CapitalShipBase:
+			beam_weapon_count = ship_instance.beam_weapon_turrets.size()
+			energy_weapon_count = ship_instance.energy_weapon_turrets.size()
+			missile_weapon_count = ship_instance.missile_weapon_turrets.size()
+
 		# Update loadout for new ship class
-		var energy_weapon_count = ship_instance.energy_weapon_hardpoints.size()
+		if beam_weapon_count < ship_loadout.beam_weapons.size():
+			for index in range(beam_weapon_count, ship_loadout.beam_weapons.size()):
+				ship_loadout.beam_weapons.remove(beam_weapon_count)
+		elif beam_weapon_count > ship_loadout.beam_weapons.size():
+			for index in range(ship_loadout.beam_weapons.size(), beam_weapon_count):
+				ship_loadout.beam_weapons.append("")
+
 		if energy_weapon_count < ship_loadout.energy_weapons.size():
 			for index in range(energy_weapon_count, ship_loadout.energy_weapons.size()):
 				ship_loadout.energy_weapons.remove(energy_weapon_count)
@@ -400,7 +424,6 @@ func _on_edit_dialog_update_pressed():
 			for index in range(ship_loadout.energy_weapons.size(), energy_weapon_count):
 				ship_loadout.energy_weapons.append("")
 
-		var missile_weapon_count = ship_instance.missile_weapon_hardpoints.size()
 		if missile_weapon_count < ship_loadout.missile_weapons.size():
 			for index in range(missile_weapon_count, ship_loadout.missile_weapons.size()):
 				ship_loadout.missile_weapons.remove(missile_weapon_count)
