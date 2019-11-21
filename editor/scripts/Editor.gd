@@ -76,7 +76,7 @@ func _ready():
 		ship_edit_dialog.missile_weapon_index_name_map.append(missile_weapon_name)
 
 	# TODO: update manipulator viewport if window size changes
-	manipulator_viewport.set_size(get_viewport().size)
+	#manipulator_viewport.set_size(get_viewport().size)
 
 	ship_edit_dialog.prepare_options(mission_data, mission_node)
 	ship_edit_dialog.populate_wing_options(wing_names)
@@ -168,15 +168,15 @@ func _on_controls_gui_input(event):
 		else:
 			# TODO: Check which buttons are still pressed, if any
 			current_mouse_button = -1
-
+# TODO: figure out how to get intersects correctly: this doesn't work after moving objects in the scene
 		match event.button_index:
 			BUTTON_LEFT:
 				if event.pressed:
 					# Check manipulator viewport raycast first
 					var manipulator_intersect
-					if manipulator_overlay.visible:
-						manipulator_viewport.update_camera(camera)
-						manipulator_intersect = manipulator_viewport.get_node_at_position(event.position)
+					#if manipulator_overlay.visible:
+					#	manipulator_viewport.update_camera(camera)
+					#	manipulator_intersect = manipulator_viewport.get_node_at_position(event.position)
 
 					if manipulator_intersect != null:
 						manipulator_node = manipulator_intersect.collider
@@ -186,29 +186,29 @@ func _on_controls_gui_input(event):
 						manipulator_node = null
 
 						if selected_node != null:
-							manipulator_viewport.update_camera(camera)
-							transform_controls.toggle(true)
-							transform_controls.scale = selected_node.get_meta("cam_distance") * Vector3.ONE
-							transform_controls.transform.origin = selected_node.transform.origin
-							manipulator_overlay.show()
+							#manipulator_viewport.update_camera(camera)
+							#transform_controls.toggle(true)
+							#transform_controls.scale = selected_node.get_meta("cam_distance") * Vector3.ONE
+							#transform_controls.transform.origin = selected_node.transform.origin
+							#manipulator_overlay.show()
 
 							var ship_loadout = get_ship_loadout(selected_node)
 
 							ship_edit_dialog.fill_ship_info(selected_node, ship_loadout)
 							ship_edit_dialog.show()
-						else:
-							manipulator_overlay.hide()
-							transform_controls.toggle(false)
+						#else:
+						#	manipulator_overlay.hide()
+						#	transform_controls.toggle(false)
 
 							ship_edit_dialog.hide()
 			BUTTON_WHEEL_UP:
 				camera.zoom_in()
-				if manipulator_overlay.visible:
-					manipulator_viewport.update_camera(camera)
+				#if manipulator_overlay.visible:
+				#	manipulator_viewport.update_camera(camera)
 			BUTTON_WHEEL_DOWN:
 				camera.zoom_out()
-				if manipulator_overlay.visible:
-					manipulator_viewport.update_camera(camera)
+				#if manipulator_overlay.visible:
+				#	manipulator_viewport.update_camera(camera)
 	elif event is InputEventMouseMotion:
 		mouse_pos = event.position
 		mouse_vel = event.relative
@@ -220,8 +220,8 @@ func _on_controls_gui_input(event):
 				else:
 					camera.orbit(event.relative)
 
-				if manipulator_overlay.visible:
-					manipulator_viewport.update_camera(camera)
+				#if manipulator_overlay.visible:
+				#	manipulator_viewport.update_camera(camera)
 
 
 func _on_details_dialog_confirmed():
