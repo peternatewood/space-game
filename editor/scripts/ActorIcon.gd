@@ -18,6 +18,10 @@ func _on_button_pressed():
 	emit_signal("pressed", node)
 
 
+func _on_node_name_changed():
+	label.set_text(node.name)
+
+
 func _process(delta):
 	if camera.is_position_behind(node.transform.origin):
 		if visible:
@@ -39,6 +43,9 @@ func set_color(new_color: Color):
 
 func set_node(new_node):
 	node = new_node
+	label.set_text(node.name)
+
+	node.connect("renamed", self, "_on_node_name_changed")
 	node.connect("tree_exiting", self, "queue_free")
 
 
