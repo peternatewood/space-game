@@ -6,6 +6,7 @@ onready var camera = get_node("Editor Camera")
 onready var debug = get_node("Controls Container/Debug")
 onready var debug_cube = get_node("Debug")
 onready var details_dialog = get_node("Controls Container/Details Dialog")
+onready var icons_container = get_node("Controls Container/Icons Container")
 onready var manipulator_overlay = get_node("Controls Container/Manipulator Overlay")
 onready var manipulator_viewport = get_node("Manipulator Viewport")
 onready var manual_window = get_node("Controls Container/Manual Window")
@@ -85,7 +86,7 @@ func _ready():
 	ship_edit_dialog.previous_button.connect("pressed", self, "_on_edit_dialog_previous_pressed")
 	ship_edit_dialog.next_button.connect("pressed", self, "_on_edit_dialog_next_pressed")
 
-	get_node("Controls Container/Viewport Dummy Control").connect("gui_input", self, "_on_controls_gui_input")
+	icons_container.connect("gui_input", self, "_on_controls_gui_input")
 
 	wings_dialog.populate_wing_names(wing_names)
 	wings_dialog.connect("confirmed", self, "_on_wings_dialog_confirmed")
@@ -675,6 +676,10 @@ func load_mission_info():
 	ship_edit_dialog.hide()
 	objectives_edit_dialog.hide()
 	objectives_window.hide()
+
+	# Add icons
+	for child in targets_container.get_children():
+		icons_container.add_icon(child)
 
 	# Hide elements in the mission scene that shouldn't display in the editor
 	var hud = mission_node.get_node_or_null("HUD")
