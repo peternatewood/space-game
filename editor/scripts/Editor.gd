@@ -162,6 +162,14 @@ func _on_add_ship_confirmed():
 
 	mission_node.set_meta("non_player_loadouts", non_player_loadouts)
 
+	# Update edit dialog
+	if ship_edit_dialog.visible:
+		selected_node = ship_instance
+		selected_node_index = ship_instance.get_position_in_parent()
+
+		var ship_loadout = get_ship_loadout(selected_node)
+		ship_edit_dialog.fill_ship_info(selected_node, ship_loadout)
+
 
 func _on_controls_gui_input(event):
 	if event is InputEventMouseButton:
