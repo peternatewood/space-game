@@ -110,7 +110,6 @@ margin_top = -18.0
 text = "n/a"
 
 [node name="Ship Edit Dialog" type="PanelContainer" parent="Controls Container"]
-editor/display_folded = true
 visible = false
 anchor_left = 1.0
 anchor_right = 1.0
@@ -164,7 +163,6 @@ margin_right = 454.0
 margin_bottom = 30.0
 
 [node name="Ship Edit Scroll" type="ScrollContainer" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows"]
-editor/display_folded = true
 margin_top = 34.0
 margin_right = 454.0
 margin_bottom = 499.0
@@ -266,7 +264,13 @@ margin_right = 168.0
 margin_bottom = 20.0
 text = "Class"
 
-[node name="Ship Class Options" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid"]
+[node name="Attack Ship Options" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid"]
+margin_left = 172.0
+margin_right = 294.0
+margin_bottom = 22.0
+
+[node name="Capital Ship Options" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid"]
+visible = false
 margin_left = 172.0
 margin_right = 294.0
 margin_bottom = 22.0
@@ -501,9 +505,9 @@ text = "Order 2"
 
 [node name="Order Type Option 2" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
 margin_left = 60.0
-margin_top = 22.0
+margin_top = 54.0
 margin_right = 138.0
-margin_bottom = 50.0
+margin_bottom = 82.0
 text = "Passive"
 items = [ "Passive", null, false, 0, null, "Attack", null, false, 1, null, "Defend", null, false, 2, null, "Ignore", null, false, 3, null, "Attack Any", null, false, 4, null, "Depart", null, false, 5, null, "Arrive", null, true, 6, null, "Patrol", null, false, 7, null ]
 selected = 0
@@ -531,9 +535,9 @@ text = "Order 3"
 
 [node name="Order Type Option 3" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
 margin_left = 60.0
-margin_top = 22.0
+margin_top = 86.0
 margin_right = 138.0
-margin_bottom = 50.0
+margin_bottom = 114.0
 text = "Passive"
 items = [ "Passive", null, false, 0, null, "Attack", null, false, 1, null, "Defend", null, false, 2, null, "Ignore", null, false, 3, null, "Attack Any", null, false, 4, null, "Depart", null, false, 5, null, "Arrive", null, true, 6, null, "Patrol", null, false, 7, null ]
 selected = 0
@@ -561,9 +565,9 @@ text = "Order 4"
 
 [node name="Order Type Option 4" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
 margin_left = 60.0
-margin_top = 22.0
+margin_top = 118.0
 margin_right = 138.0
-margin_bottom = 50.0
+margin_bottom = 146.0
 text = "Passive"
 items = [ "Passive", null, false, 0, null, "Attack", null, false, 1, null, "Defend", null, false, 2, null, "Ignore", null, false, 3, null, "Attack Any", null, false, 4, null, "Depart", null, false, 5, null, "Arrive", null, true, 6, null, "Patrol", null, false, 7, null ]
 selected = 0
@@ -591,9 +595,9 @@ text = "Order 5"
 
 [node name="Order Type Option 5" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
 margin_left = 60.0
-margin_top = 22.0
+margin_top = 150.0
 margin_right = 138.0
-margin_bottom = 50.0
+margin_bottom = 178.0
 text = "Passive"
 items = [ "Passive", null, false, 0, null, "Attack", null, false, 1, null, "Defend", null, false, 2, null, "Ignore", null, false, 3, null, "Attack Any", null, false, 4, null, "Depart", null, false, 5, null, "Arrive", null, true, 6, null, "Patrol", null, false, 7, null ]
 selected = 0
@@ -621,9 +625,9 @@ text = "Order 6"
 
 [node name="Order Type Option 6" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid"]
 margin_left = 60.0
-margin_top = 22.0
+margin_top = 182.0
 margin_right = 138.0
-margin_bottom = 50.0
+margin_bottom = 210.0
 text = "Passive"
 items = [ "Passive", null, false, 0, null, "Attack", null, false, 1, null, "Defend", null, false, 2, null, "Ignore", null, false, 3, null, "Attack Any", null, false, 4, null, "Depart", null, false, 5, null, "Arrive", null, true, 6, null, "Patrol", null, false, 7, null ]
 selected = 0
@@ -825,7 +829,7 @@ current_dir = "user://"
 current_path = "user://"
 
 [node name="Add Ship Dialog" type="AcceptDialog" parent="Controls Container"]
-visible = true
+editor/display_folded = true
 margin_right = 112.0
 margin_bottom = 64.0
 window_title = "Add Ship"

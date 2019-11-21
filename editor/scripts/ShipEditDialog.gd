@@ -1,5 +1,6 @@
 extends Control
 
+onready var capital_ship_options = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Capital Ship Options")
 onready var energy_weapon_labels: Array = [
 	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Energy Weapon Label 1"),
 	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Energy Weapon Label 2"),
@@ -45,9 +46,10 @@ onready var rotation_spinboxes: Dictionary = {
 	"y": get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Transform Container/Rotation Y SpinBox"),
 	"z": get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Transform Container/Rotation Z SpinBox")
 }
-onready var ship_class_options = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Ship Class Options")
+onready var ship_class_options = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Attack Ship Options")
 onready var title = get_node("Ship Edit Rows/Title Container/Title")
 onready var warped_in_checkbox = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Warped In CheckBox")
+onready var wing_label = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Wing Label")
 onready var wing_options = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Wing Options")
 
 var edit_ship = null
@@ -160,11 +162,16 @@ func fill_ship_info(ship, loadout: Dictionary = {}):
 
 	wing_options.select(0)
 	if ship is AttackShipBase:
+		ship_class_options.show()
+		capital_ship_options.hide()
+		player_ship_checkbox.show()
+		wing_label.show()
+		wing_options.show()
+
 		for index in range(wing_options.get_item_count()):
 			if wing_options.get_item_text(index) == ship.wing_name:
 				wing_options.select(index)
 				break
-
 		for ship_option_index in range(ship_class_options.get_item_count()):
 			if ship_class_options.get_item_text(ship_option_index) == ship.ship_class:
 				ship_class_options.select(ship_option_index)
@@ -173,6 +180,12 @@ func fill_ship_info(ship, loadout: Dictionary = {}):
 		energy_weapon_slot_count = ship.energy_weapon_hardpoints.size()
 		missile_weapon_slot_count = ship.missile_weapon_hardpoints.size()
 	elif ship is CapitalShipBase:
+		ship_class_options.hide()
+		capital_ship_options.show()
+		player_ship_checkbox.hide()
+		wing_label.hide()
+		wing_options.hide()
+
 		beam_weapon_slot_count = ship.beam_weapon_turrets.size()
 		energy_weapon_slot_count = ship.energy_weapon_turrets.size()
 		missile_weapon_slot_count = ship.missile_weapon_turrets.size()
@@ -282,6 +295,11 @@ func prepare_options(mission_data, mission_node):
 	var ship_index: int = 0
 	for name in mission_data.ship_models.keys():
 		ship_class_options.add_item(name, ship_index)
+		ship_index += 1
+
+	ship_index = 0
+	for name in mission_data.capital_ship_models.keys():
+		capital_ship_options.add_item(name, ship_index)
 		ship_index += 1
 
 	# Start at one since the first option "none" is at index 0
