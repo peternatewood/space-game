@@ -87,6 +87,7 @@ func _ready():
 	ship_edit_dialog.next_button.connect("pressed", self, "_on_edit_dialog_next_pressed")
 
 	icons_container.connect("gui_input", self, "_on_controls_gui_input")
+	icons_container.connect("icon_clicked", self, "_on_icon_clicked")
 
 	wings_dialog.populate_wing_names(wing_names)
 	wings_dialog.connect("confirmed", self, "_on_wings_dialog_confirmed")
@@ -503,6 +504,21 @@ func _on_edit_dialog_update_pressed():
 	# Update node meta data, under the assumption it has changed
 	mission_node.set_meta("non_player_loadouts", non_player_loadouts)
 	mission_node.set_meta("default_loadouts", default_loadouts)
+
+
+func _on_icon_clicked(node):
+	if node == null:
+		print("No such node attached!")
+		return
+
+	selected_node = node
+	selected_node_index = selected_node.get_position_in_parent()
+	manipulator_node = null
+
+	var ship_loadout = get_ship_loadout(selected_node)
+
+	ship_edit_dialog.fill_ship_info(selected_node, ship_loadout)
+	ship_edit_dialog.show()
 
 
 func _on_mission_menu_id_pressed(item_id: int):
