@@ -1,5 +1,7 @@
 extends "res://scripts/ShipBase.gd"
 
+export (Array, int) var initial_orders = [ 0, 0, 0, 0, 0, 0 ]
+
 var beam_weapon_turrets: Array = []
 var energy_weapon_turrets: Array = []
 var missile_weapon_turrets: Array = []
