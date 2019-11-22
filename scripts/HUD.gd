@@ -57,6 +57,8 @@ func _ready():
 	distance_units_label.set_text(GlobalSettings.DISTANCE_UNITS[units])
 	speed_units_label.set_text(GlobalSettings.SPEED_UNITS[units])
 
+	toggle_dyslexia(settings.get_dyslexia())
+	settings.connect("dyslexia_toggled", self, "toggle_dyslexia")
 	settings.connect("units_changed", self, "_on_units_changed")
 
 	if mission_controller != null:
@@ -489,6 +491,16 @@ func _update_speed_indicator():
 		speed_indicator.set_text(str(round(MathHelper.units_to_speed(speed, settings.get_units()))))
 		var indicator_pos = Vector2(speed_indicator.rect_position.x, throttle_bar.rect_size.y - (speed_indicator.rect_size.y / 2) - (throttle_bar.value / throttle_bar.max_value) * throttle_bar.rect_size.y)
 		speed_indicator.set_position(indicator_pos)
+
+
+# PUBLIC
+
+
+func toggle_dyslexia(toggled_on: bool):
+	if toggled_on:
+		set_theme(settings.OPEN_DYSLEXIC_THEME)
+	else:
+		set_theme(settings.INCONSOLATA_THEME)
 
 
 const AttackShipBase = preload("AttackShipBase.gd")
