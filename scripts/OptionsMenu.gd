@@ -1,6 +1,7 @@
 extends Control
 
 onready var clear_binding_checkbox = get_node("Options Rows/TabContainer/Controls/Binding Options/Clear Binding")
+onready var color_picker_dialog = get_node("ColorPicker Popup")
 onready var color_pickers: Array = [
 	get_node("Options Rows/TabContainer/Accessibility/Accessibility Grid/Neutral Color Picker"),
 	get_node("Options Rows/TabContainer/Accessibility/Accessibility Grid/Friendly Color Picker"),
@@ -11,6 +12,7 @@ onready var controls_tabs = get_node("Options Rows/TabContainer/Controls/Control
 onready var edit_binding_checkbox = get_node("Options Rows/TabContainer/Controls/Binding Options/Edit Checkbox")
 onready var go_to_conflict_checkbox = get_node("Options Rows/TabContainer/Controls/Binding Options/Go to Conflict")
 onready var hud_color_options = get_node("Options Rows/TabContainer/HUD/Color Options Row/HUD Color Options")
+onready var hud_colorpicker = get_node("ColorPicker Popup/HUD ColorPicker")
 onready var interactive_hud = get_node("Options Rows/TabContainer/HUD/HUD Panel/Interactive HUD")
 onready var keybind_popup = get_node("Keybind Popup")
 onready var keybind_accept_button = get_node("Keybind Popup/Popup Rows/Popup Buttons/Accept Button")
@@ -207,6 +209,8 @@ func _ready():
 	hud_color_options.select(settings.get_hud_palette_index())
 	hud_color_options.connect("item_selected", self, "_on_hud_color_options_selected")
 
+	interactive_hud.connect("colorable_node_clicked", self, "_on_interactive_hud_colorable_node_clicked")
+
 func _handle_keybind_popup_input(event):
 	var is_valid_input: bool = false
 
@@ -282,6 +286,24 @@ func _on_hdr_checkbox_toggled(button_pressed: bool):
 func _on_hud_color_options_selected(item_index: int):
 	settings.set_hud_palette(item_index)
 	interactive_hud.set_palette(settings.get_hud_palette())
+
+
+func _on_interactive_hud_colorable_node_clicked(node, is_self_modulated):
+	var viewport_size = get_viewport().get_visible_rect().size
+
+	var popup_size: Vector2 = color_picker_dialog.get_size()
+	var popup_left: float
+
+	if node.get_global_position().x < viewport_size.x / 2:
+		popup_left = viewport_size.x - popup_size.x
+	else:
+		popup_left = 0
+
+	var popup_position = Rect2(popup_left, viewport_size.y / 2 - popup_size.y / 2, popup_size.x, popup_size.y)
+
+	hud_colorpicker.set_pick_color(node.modulate)
+	color_picker_dialog.set_text(node.name)
+	color_picker_dialog.popup(popup_position)
 
 
 func _on_keybind_button_pressed(keybind, event, input_type, button):
