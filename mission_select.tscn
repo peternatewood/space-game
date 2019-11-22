@@ -1,0 +1,57 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://themes/interface_blue.tres" type="Theme" id=1]
+[ext_resource path="res://scripts/MissionSelect.gd" type="Script" id=2]
+[ext_resource path="res://images/background_blue.png" type="Texture" id=3]
+
+[node name="Mission Select" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
+
+[node name="Background" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 3 )
+expand = true
+stretch_mode = 7
+
+[node name="Mission Select Rows" type="VBoxContainer" parent="."]
+margin_left = 8.0
+margin_top = 4.0
+margin_right = 1016.0
+margin_bottom = 596.0
+
+[node name="Missions Label" type="Label" parent="Mission Select Rows"]
+margin_right = 1008.0
+margin_bottom = 14.0
+text = "Missions"
+
+[node name="Missions Panel" type="PanelContainer" parent="Mission Select Rows"]
+margin_top = 18.0
+margin_right = 1008.0
+margin_bottom = 26.0
+
+[node name="Missions" type="VBoxContainer" parent="Mission Select Rows/Missions Panel"]
+margin_left = 8.0
+margin_top = 4.0
+margin_right = 1000.0
+margin_bottom = 4.0
+
+[node name="User Missions Label" type="Label" parent="Mission Select Rows"]
+margin_top = 30.0
+margin_right = 1008.0
+margin_bottom = 44.0
+text = "User Missions"
+
+[node name="User Missions Panel" type="PanelContainer" parent="Mission Select Rows"]
+margin_top = 48.0
+margin_right = 1008.0
+margin_bottom = 56.0
+
+[node name="User Missions" type="VBoxContainer" parent="Mission Select Rows/User Missions Panel"]
+margin_left = 8.0
+margin_top = 4.0
+margin_right = 1000.0
+margin_bottom = 4.0
