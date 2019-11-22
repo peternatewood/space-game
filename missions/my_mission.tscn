@@ -30,7 +30,7 @@ __meta__ = {
 "missile_weapons": [ "Heat Seeker" ],
 "ships": [ "Spider Fighter", "Spider Interceptor", "Spider Bomber" ]
 },
-"briefing": [ "Test everything to do with individual missions." ],
+"briefing": [ "Example mission made with the editor." ],
 "default_loadouts": [ [ {
 "energy_weapons": [ "Energy Bolt", "Disintigrator", "none" ],
 "missile_weapons": [ "Heat Seeker", "Heat Seeker", "none" ],
@@ -52,7 +52,7 @@ __meta__ = {
 "missile_weapons": [ "Heat Seeker", "Heat Seeker", "Heat Seeker" ],
 "name": "Gamma 1"
 } ], [  ], [  ], [  ] ],
-"name": "Debug Mission",
+"name": "My Mission",
 "non_player_loadouts": {
 "Buteo 1": {
 "energy_weapons": [ "Energy Bolt", "Energy Bolt", "none" ],
