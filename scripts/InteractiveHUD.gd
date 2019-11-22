@@ -10,6 +10,15 @@ onready var target_name = get_node("Target View Container/Target View Rows/Targe
 func _ready():
 	set_palette(settings.get_hud_palette())
 
+	# Listen for colorable nodes getting clicked on
+	for path in COLORABLE_NODE_PATHS:
+		var node = get_node_or_null(path)
+
+		if node == null:
+			print("Invalid node path! " + path)
+		else:
+			node.connect("gui_input", self, "_on_colorable_node_gui_input", [ node ])
+
 	# Show normally hidden nodes
 	get_node("Communications Menu").show()
 	get_node("Target Overhead").show()
@@ -19,8 +28,19 @@ func _ready():
 	edge_target_icon.show()
 	target_icon.show()
 
+	# Hide a few nodes that are covering other nodes we need to click on
+	get_node("Radar/Radar Icons Container").hide()
+
 	settings.connect("ui_colors_changed", self, "update_colored_icons")
 	update_colored_icons()
+
+
+func _on_colorable_node_gui_input(event, node):
+	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.pressed:
+		emit_signal("colorable_node_clicked", node)
+
+
+# PUBLIC
 
 
 func set_palette(palette: Dictionary):
@@ -52,6 +72,8 @@ func update_colored_icons():
 	target_name.set_modulate(target_color)
 
 
+signal colorable_node_clicked
+
 const COLORABLE_NODE_PATHS: Array = [
 	"HUD Bars",
 	"Mission Timer",
@@ -67,7 +89,7 @@ const COLORABLE_NODE_PATHS: Array = [
 	"Target Reticule Outer",
 	"Target Reticule",
 	"Target Details Minimal",
-	"Radar/TextureRect",
+	"Radar/Radar Background",
 	"Target View Container/Target View Rows/Target Distance Container",
 	"Target View Container/Target View Rows/Target View Panel Container/Target Hull Container"
 ]

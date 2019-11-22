@@ -668,7 +668,7 @@ margin_right = 66.0
 margin_bottom = -32.0
 rect_min_size = Vector2( 132, 66 )
 
-[node name="TextureRect" type="TextureRect" parent="Radar"]
+[node name="Radar Background" type="TextureRect" parent="Radar"]
 modulate = Color( 0.501961, 0.752941, 1, 1 )
 anchor_left = 0.5
 anchor_top = 0.5
