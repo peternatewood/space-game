@@ -59,6 +59,7 @@ func _ready():
 
 	toggle_dyslexia(settings.get_dyslexia())
 	settings.connect("dyslexia_toggled", self, "toggle_dyslexia")
+	settings.connect("ui_colors_changed", self, "_on_ui_colors_changed")
 	settings.connect("units_changed", self, "_on_units_changed")
 
 	if mission_controller != null:
@@ -116,7 +117,7 @@ func _on_mission_ready():
 			# Set icon color based on alignment
 			var alignment = mission_controller.get_alignment(player.faction, node.faction)
 			if alignment != -1:
-				icon.set_modulate(mission_controller.mission_data.ALIGNMENT_COLORS_FADED[alignment])
+				icon.set_modulate(settings.get_interface_color(alignment))
 			else:
 				icon.set_modulate(Color.white)
 
@@ -229,7 +230,7 @@ func _on_player_target_changed(last_target):
 		_disconnect_target_signals(last_target)
 
 		for icon in radar_icons:
-			icon.set_modulate(mission_controller.mission_data.ALIGNMENT_COLORS_FADED[mission_controller.get_alignment(player.faction, icon.target.faction)])
+			icon.set_modulate(settings.get_interface_color(mission_controller.get_alignment(player.faction, icon.target.faction), true))
 
 	if player.has_target:
 		target_viewport.remove_child(target_view_model)
@@ -261,14 +262,14 @@ func _on_player_target_changed(last_target):
 		var alignment = mission_controller.get_alignment(player.faction, player.current_target.faction)
 		for icon in radar_icons:
 			if icon.target == player.current_target:
-				icon.set_modulate(Color.white if alignment == -1 else mission_controller.mission_data.ALIGNMENT_COLORS[alignment])
+				icon.set_modulate(Color.white if alignment == -1 else settings.get_interface_color(alignment))
 				break
 
 		if alignment != -1:
-			target_name.set_modulate(mission_controller.mission_data.ALIGNMENT_COLORS[alignment])
-			target_class.set_modulate(mission_controller.mission_data.ALIGNMENT_COLORS[alignment])
-			edge_target_icon.set_modulate(mission_controller.mission_data.ALIGNMENT_COLORS[alignment])
-			target_icon.set_modulate(mission_controller.mission_data.ALIGNMENT_COLORS[alignment])
+			target_name.set_modulate(settings.get_interface_color(alignment))
+			target_class.set_modulate(settings.get_interface_color(alignment))
+			edge_target_icon.set_modulate(settings.get_interface_color(alignment))
+			target_icon.set_modulate(settings.get_interface_color(alignment))
 		else:
 			target_name.set_modulate(Color.white)
 			target_class.set_modulate(Color.white)
@@ -329,6 +330,31 @@ func _on_target_destroyed(target):
 func _on_target_shield_changed(percent: float, quadrant: int):
 	target_details_minimal.set_shield_alpha(quadrant, percent)
 	target_overhead.set_shield_alpha(quadrant, percent)
+
+
+func _on_ui_colors_changed():
+	var radar_icons = radar_icons_container.get_children()
+	for icon in radar_icons:
+		var alignment = mission_controller.get_alignment(player.faction, icon.target.faction)
+
+		if icon.target == player.current_target:
+			icon.set_modulate(Color.white if alignment == -1 else settings.get_interface_color(alignment))
+		else:
+			icon.set_modulate(Color.white if alignment == -1 else settings.get_interface_color(alignment, true))
+
+	if player.has_target:
+		var target_alignment = mission_controller.get_alignment(player.faction, player.current_target.faction)
+
+		if target_alignment != -1:
+			target_name.set_modulate(settings.get_interface_color(target_alignment))
+			target_class.set_modulate(settings.get_interface_color(target_alignment))
+			edge_target_icon.set_modulate(settings.get_interface_color(target_alignment))
+			target_icon.set_modulate(settings.get_interface_color(target_alignment))
+		else:
+			target_name.set_modulate(Color.white)
+			target_class.set_modulate(Color.white)
+			edge_target_icon.set_modulate(Color.white)
+			target_icon.set_modulate(Color.white)
 
 
 func _on_units_changed(units: int):
