@@ -19,6 +19,14 @@ func _ready():
 		else:
 			node.connect("gui_input", self, "_on_colorable_node_gui_input", [ node ])
 
+	for path in SELF_COLORABLE_NODE_PATHS:
+		var node = get_node_or_null(path)
+
+		if node == null:
+			print("Invalid node path! " + path)
+		else:
+			node.connect("gui_input", self, "_on_colorable_node_gui_input", [ node, true ])
+
 	# Show normally hidden nodes
 	get_node("Communications Menu").show()
 	get_node("Target Overhead").show()
@@ -35,9 +43,9 @@ func _ready():
 	update_colored_icons()
 
 
-func _on_colorable_node_gui_input(event, node):
+func _on_colorable_node_gui_input(event, node, is_self_modulated: bool = false):
 	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.pressed:
-		emit_signal("colorable_node_clicked", node)
+		emit_signal("colorable_node_clicked", node, is_self_modulated)
 
 
 # PUBLIC
