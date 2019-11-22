@@ -54,4 +54,5 @@ visible = false
 visible = false
 
 [node name="Pause Menu" parent="." instance=ExtResource( 7 )]
+pause_mode = 2
 visible = false
