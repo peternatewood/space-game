@@ -3,6 +3,7 @@ extends Control
 onready var loader = get_node("/root/SceneLoader")
 onready var mission_data = get_node("/root/MissionData")
 onready var mission_name = get_node("Rows/Title Container/Mission Name Label")
+onready var settings = get_node("root/GlobalSettings")
 
 
 func _ready():
@@ -32,9 +33,21 @@ func _ready():
 			if hide_container:
 				objective_containers[index].hide()
 
+	toggle_dyslexia(settings.get_dyslexia())
+
 
 func _on_next_pressed():
 	loader.change_scene("res://title.tscn")
+
+
+# PUBLIC
+
+
+func toggle_dyslexia(toggle_on: bool):
+	if toggle_on:
+		set_theme(settings.OPEN_DYSLEXIC_INTERFACE_THEME)
+	else:
+		set_theme(settings.INCONSOLATA_INTERFACE_THEME)
 
 
 const DEBRIEF_OBJECTIVE = preload("res://icons/debrief_objective.tscn")

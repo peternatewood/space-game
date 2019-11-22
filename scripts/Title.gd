@@ -17,18 +17,13 @@ func _ready():
 	new_game_button.grab_focus()
 
 	options_menu.connect("back_button_pressed", self, "_on_back_button_pressed")
-	settings.connect("dyslexia_toggled", self, "_on_dyslexia_toggled")
+
+	toggle_dyslexia(settings.get_dyslexia())
+	settings.connect("dyslexia_toggled", self, "toggle_dyslexia")
 
 
 func _on_back_button_pressed():
 	options_menu.hide()
-
-
-func _on_dyslexia_toggled(toggled_on: bool):
-	if toggled_on:
-		set_theme(settings.OPEN_DYSLEXIC_THEME)
-	else:
-		set_theme(settings.INCONSOLATA_THEME)
 
 
 func _on_exit_pressed():
@@ -41,3 +36,13 @@ func _on_new_game_pressed():
 
 func _on_options_pressed():
 	options_menu.show()
+
+
+# PUBLIC
+
+
+func toggle_dyslexia(toggled_on: bool):
+	if toggled_on:
+		set_theme(settings.OPEN_DYSLEXIC_THEME)
+	else:
+		set_theme(settings.INCONSOLATA_THEME)

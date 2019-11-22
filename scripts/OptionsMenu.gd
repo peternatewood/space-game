@@ -181,6 +181,9 @@ func _ready():
 	var dyslexia_checkbox = get_node("Options Rows/TabContainer/Accessibility/Dyslexia Checkbox")
 	dyslexia_checkbox.connect("toggled", self, "_on_dyslexia_checkbox_toggled")
 
+	toggle_dyslexia(settings.get_dyslexia())
+	settings.connect("dyslexia_toggled", self, "toggle_dyslexia")
+
 
 func _handle_keybind_popup_input(event):
 	var is_valid_input: bool = false
@@ -393,6 +396,13 @@ func hide_popup_backdrop():
 
 func show_popup_backdrop():
 	popup_backdrop.show()
+
+
+func toggle_dyslexia(toggle_on: bool):
+	if toggle_on:
+		set_theme(settings.OPEN_DYSLEXIC_INTERFACE_THEME)
+	else:
+		set_theme(settings.INCONSOLATA_INTERFACE_THEME)
 
 
 signal back_button_pressed

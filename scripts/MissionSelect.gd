@@ -3,6 +3,7 @@ extends Control
 onready var loader = get_node("/root/SceneLoader")
 onready var mission_data = get_node("/root/MissionData")
 onready var mission_rows = get_node("Mission Select Rows/Missions Panel/Missions")
+onready var settings = get_node("/root/GlobalSettings")
 onready var user_mission_rows = get_node("Mission Select Rows/User Missions Panel/User Missions")
 
 
@@ -53,7 +54,19 @@ func _ready():
 
 			file_name = dir.get_next()
 
+	toggle_dyslexia(settings.get_dyslexia())
+
 
 func _on_mission_button_pressed(mission_path: String):
 	mission_data.load_mission_data(mission_path)
 	loader.change_scene("res://briefing.tscn")
+
+
+# PUBLIC
+
+
+func toggle_dyslexia(toggle_on: bool):
+	if toggle_on:
+		set_theme(settings.OPEN_DYSLEXIC_INTERFACE_THEME)
+	else:
+		set_theme(settings.INCONSOLATA_INTERFACE_THEME)

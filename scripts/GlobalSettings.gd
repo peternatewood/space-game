@@ -351,7 +351,9 @@ const DISTANCE_UNITS: Array = [
 	"ft"
 ]
 const INCONSOLATA_THEME = preload("res://themes/default_inconsolata.tres")
+const INCONSOLATA_INTERFACE_THEME = preload("res://themes/interface_blue.tres")
 const KEYBINDS_PATH: String = "user://keybinds.json"
+const OPEN_DYSLEXIC_INTERFACE_THEME = preload("res://themes/interface_blue_dyslexia.tres")
 const OPEN_DYSLEXIC_THEME = preload("res://themes/default_dyslexic.tres")
 const RESOLUTIONS: Array = [
 	# 4:3
