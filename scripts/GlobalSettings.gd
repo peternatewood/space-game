@@ -1,6 +1,7 @@
 extends Node
 
 enum { MASTER, SOUND_EFFECTS, MUSIC, UI_SOUNDS, AUDIO_BUS_COUNT }
+enum { FULL, DEUTERANOPIA, TRITANOPIA, PROTANOPIA, MONOCHROMACY }
 
 # TODO: change to using .cfg format and manipulating ProjectSettings directly
 
@@ -17,6 +18,7 @@ var settings: Dictionary = {
 	"audio_ui_sounds_percent": Setting.new("audio_ui_sounds_percent", 100),
 	"audio_ui_sounds_mute": Setting.new("audio_ui_sounds_mute", false),
 	"borderless": Setting.new("borderless", false),
+	"colorblindness": Setting.new("colorblindness", FULL),
 	"dyslexia": Setting.new("dyslexia", false),
 	"fov": Setting.new("fov", 70),
 	"fullscreen": Setting.new("fullscreen", false),
@@ -188,6 +190,10 @@ func get_borderless_window():
 	return settings.borderless_window.get_value()
 
 
+func get_colorblindness():
+	return settings.colorblindness.get_value()
+
+
 func get_dyslexia():
 	return settings.dyslexia.get_value()
 
@@ -265,6 +271,12 @@ func set_audio_mute(bus_index: int, toggle_on: bool):
 func set_borderless_window(toggle_on: bool):
 	settings.borderless.set_value(toggle_on)
 	OS.set_borderless_window(settings.borderless._value)
+
+	_save_settings_to_file()
+
+
+func set_colorblindness(option_index: int):
+	settings.colorblindness.set_value(option_index)
 
 	_save_settings_to_file()
 
