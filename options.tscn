@@ -1,16 +1,21 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://themes/interface_blue.tres" type="Theme" id=1]
 [ext_resource path="res://scripts/OptionsMenu.gd" type="Script" id=2]
 [ext_resource path="res://prefabs/slider_with_spinbox.tscn" type="PackedScene" id=3]
 [ext_resource path="res://prefabs/keybind.tscn" type="PackedScene" id=4]
 [ext_resource path="res://button_groups/keybind_tools.tres" type="ButtonGroup" id=5]
+[ext_resource path="res://hud.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scripts/InteractiveHUD.gd" type="Script" id=7]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.498039 )
 corner_detail = 2
 
 [sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 0, 0, 0, 0.498039 )
 corner_detail = 2
 
@@ -62,6 +67,7 @@ tab_align = 0
 
 [node name="Video" type="VBoxContainer" parent="Options Rows/TabContainer"]
 editor/display_folded = true
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 8.0
@@ -1344,6 +1350,7 @@ items = [ "Metric", null, false, 0, null, "Imperial", null, false, 1, null ]
 selected = 0
 
 [node name="Accessibility" type="VBoxContainer" parent="Options Rows/TabContainer"]
+editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -1426,13 +1433,58 @@ margin_top = 112.0
 margin_right = 282.0
 margin_bottom = 138.0
 
+[node name="HUD" type="VBoxContainer" parent="Options Rows/TabContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 36.0
+margin_right = -8.0
+margin_bottom = -8.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Color Options Row" type="HBoxContainer" parent="Options Rows/TabContainer/HUD"]
+margin_right = 992.0
+margin_bottom = 26.0
+
+[node name="HUD Color Label" type="Label" parent="Options Rows/TabContainer/HUD/Color Options Row"]
+margin_top = 4.0
+margin_right = 104.0
+margin_bottom = 22.0
+text = "Color Palette"
+
+[node name="HUD Color Options" type="OptionButton" parent="Options Rows/TabContainer/HUD/Color Options Row"]
+margin_left = 108.0
+margin_right = 170.0
+margin_bottom = 26.0
+text = "Blue"
+items = [ "Blue", null, false, 0, null, "Green", null, false, 1, null, "Amber", null, false, 2, null, "Custom", null, false, 3, null ]
+selected = 0
+
+[node name="HUD Panel" type="PanelContainer" parent="Options Rows/TabContainer/HUD"]
+margin_top = 30.0
+margin_right = 992.0
+margin_bottom = 510.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 2 )
+
+[node name="Interactive HUD" parent="Options Rows/TabContainer/HUD/HUD Panel" instance=ExtResource( 6 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 992.0
+margin_bottom = 480.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 7 )
+
 [node name="Popup Backdrop" type="PanelContainer" parent="."]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/panel = SubResource( 2 )
+custom_styles/panel = SubResource( 3 )
 
 [node name="Shadows Atlas Settings" type="PopupPanel" parent="."]
 editor/display_folded = true

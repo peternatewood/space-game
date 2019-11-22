@@ -10,6 +10,8 @@ onready var colorblindness_options = get_node("Options Rows/TabContainer/Accessi
 onready var controls_tabs = get_node("Options Rows/TabContainer/Controls/Controls Tabs")
 onready var edit_binding_checkbox = get_node("Options Rows/TabContainer/Controls/Binding Options/Edit Checkbox")
 onready var go_to_conflict_checkbox = get_node("Options Rows/TabContainer/Controls/Binding Options/Go to Conflict")
+onready var hud_color_options = get_node("Options Rows/TabContainer/HUD/Color Options Row/HUD Color Options")
+onready var interactive_hud = get_node("Options Rows/TabContainer/HUD/HUD Panel/Interactive HUD")
 onready var keybind_popup = get_node("Keybind Popup")
 onready var keybind_accept_button = get_node("Keybind Popup/Popup Rows/Popup Buttons/Accept Button")
 onready var keybind_cancel_button = get_node("Keybind Popup/Popup Rows/Popup Buttons/Cancel Button")
@@ -181,9 +183,11 @@ func _ready():
 						node.connect("keybind_changed", settings, "_on_keybind_changed")
 						keybinds.append(node)
 
+	# Game
 	var units_options = get_node("Options Rows/TabContainer/Game/Units Container/Units Options")
 	units_options.connect("item_selected", self, "_on_units_options_item_selected")
 
+	# Accessibility
 	var dyslexia_checkbox = get_node("Options Rows/TabContainer/Accessibility/Dyslexia Checkbox")
 	dyslexia_checkbox.set_pressed(settings.get_dyslexia())
 	dyslexia_checkbox.connect("toggled", self, "_on_dyslexia_checkbox_toggled")
@@ -199,6 +203,9 @@ func _ready():
 
 	update_color_pickers()
 
+	# HUD
+	hud_color_options.select(settings.get_hud_palette_index())
+	hud_color_options.connect("item_selected", self, "_on_hud_color_options_selected")
 
 func _handle_keybind_popup_input(event):
 	var is_valid_input: bool = false
@@ -270,6 +277,11 @@ func _on_fullscreen_checkbox_toggled(button_pressed: bool):
 
 func _on_hdr_checkbox_toggled(button_pressed: bool):
 	settings.set_hdr(button_pressed)
+
+
+func _on_hud_color_options_selected(item_index: int):
+	settings.set_hud_palette(item_index)
+	interactive_hud.set_palette(settings.get_hud_palette())
 
 
 func _on_keybind_button_pressed(keybind, event, input_type, button):
