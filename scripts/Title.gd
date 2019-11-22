@@ -37,7 +37,7 @@ func _on_exit_pressed():
 
 
 func _on_new_game_pressed():
-	mission_data.load_mission_data("res://missions/my_mission.tscn")
+	mission_data.load_mission_data("res://missions/debug_mission.tscn")
 	loader.change_scene("res://briefing.tscn")
 
 
