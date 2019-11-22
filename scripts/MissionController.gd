@@ -54,7 +54,7 @@ func _on_scene_loaded():
 		for index in range(mission_data.wing_loadouts[wing_index].size()):
 			var ship = targets_container.get_node_or_null(wing_name + " " + str(index + 1))
 
-			if ship.get_meta("ship_class") != mission_data.wing_loadouts[wing_index][index].ship_class:
+			if ship != null and ship.get_meta("ship_class") != mission_data.wing_loadouts[wing_index][index].ship_class:
 				var ship_instance = mission_data.wing_loadouts[wing_index][index].model.instance()
 
 				# Copy relevant data from ship to new instance
