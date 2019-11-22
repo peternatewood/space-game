@@ -24,16 +24,17 @@ Here I'll be keeping track of the all the features I want to implement, and chec
 - [x] Mission Briefing
 - [x] Loadout Menu
 - [x] Pause Menu
+- [x] Mission Editor
 - [ ] Campaign Tree
 - [ ] Capital Ships
 - [ ] Carrier Ships
 - [ ] User Interface Sounds
-- [ ] Ship/Weapon Sound Effects
+- [x] Ship/Weapon Sound Effects
 - [ ] Music
 
 ### Accessibility Options
 
-- [ ] Dyslexia-friendly theme
+- [x] Dyslexia-friendly theme
 - [ ] Colorblindness options
 
 ### Optional Features
@@ -42,7 +43,6 @@ I'd like to implement these, but I'm not sure whether they're feasible.
 
 - [ ] Customize HUD Colors
 - [ ] Custom Ships users can import
-- [ ] Mission Editor
 
 ## Feature Descriptions
 
