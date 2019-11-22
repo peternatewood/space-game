@@ -27,6 +27,8 @@ var settings: Dictionary = {
 	"fov": Setting.new("fov", 70),
 	"fullscreen": Setting.new("fullscreen", false),
 	"hdr": Setting.new("hdr", false),
+	"hud_palette_colors": Setting.new("hud_palette_colors", {}),
+	"hud_palette_index": Setting.new("hud_palette_index", 0),
 	"msaa": Setting.new("msaa", 0),
 	"reflections": Setting.new("reflections", 2048),
 	"resolution": Setting.new("resolution", Vector2(1280, 720)),
@@ -220,6 +222,19 @@ func get_fullscreen():
 	return settings.fullscreen.get_value()
 
 
+func get_hud_palette():
+	var hud_palette_index: int = settings.hud_palette_index.get_value()
+
+	if hud_palette_index == HUD_PALETTES.size():
+		return settings.hud_palette_colors.get_value()
+
+	return HUD_PALETTES[hud_palette_index]
+
+
+func get_hud_palette_index():
+	return settings.hud_palette_index.get_value()
+
+
 func get_interface_color(alignment: int, faded: bool = false):
 	var colorblindness_option = settings.colorblindness.get_value()
 
@@ -345,6 +360,16 @@ func set_hdr(toggle_on: bool):
 	_save_settings_to_file()
 
 
+func set_hud_palette(index: int, custom_colors: Dictionary = { "default": Color.white }):
+	settings.hud_palette_index.set_value(index)
+
+	if index == HUD_PALETTES.size():
+		# Set custom colors
+		settings.hud_palette_colors.set_value(custom_colors)
+
+	_save_settings_to_file()
+
+
 func set_msaa(option: int):
 	settings.msaa.set_value(option)
 	get_viewport().set_msaa(settings.msaa._value)
@@ -398,6 +423,12 @@ const MathHelper = preload("MathHelper.gd")
 const DISTANCE_UNITS: Array = [
 	"m",
 	"ft"
+]
+const HUD_PALETTES: Array = [
+	{ "default": Color("#80c0ff") }, # All light blue
+	{ "default": Color("#80d040") }, # All green
+	{ "default": Color("#ffc080") }  # All amber
+	# TODO: add more custom options
 ]
 const INTERFACE_COLORS: Array = [
 	[ Color(1.00, 1.00, 0.15, 1.0), Color(0.35, 1.00, 0.15, 1.0), Color(1.00, 0.35, 0.15, 1.0) ],
