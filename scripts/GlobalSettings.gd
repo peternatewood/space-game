@@ -367,6 +367,8 @@ func set_hud_palette(index: int, custom_colors: Dictionary = { "default": Color.
 		# Set custom colors
 		settings.hud_palette_colors.set_value(custom_colors)
 
+	emit_signal("hud_palette_changed")
+
 	_save_settings_to_file()
 
 
@@ -414,6 +416,7 @@ func set_vsync(toggle_on: bool):
 
 signal dyslexia_toggled
 signal fov_changed
+signal hud_palette_changed
 signal ui_colors_changed
 signal units_changed
 
