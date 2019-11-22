@@ -1,7 +1,6 @@
 extends Control
 
 onready var loader = get_node("/root/SceneLoader")
-onready var mission_data = get_node("/root/MissionData")
 onready var options_menu = get_node("Options Menu")
 onready var settings = get_node("/root/GlobalSettings")
 
@@ -37,8 +36,7 @@ func _on_exit_pressed():
 
 
 func _on_new_game_pressed():
-	mission_data.load_mission_data("res://missions/debug_mission.tscn")
-	loader.change_scene("res://briefing.tscn")
+	loader.change_scene("res://mission_select.tscn")
 
 
 func _on_options_pressed():
