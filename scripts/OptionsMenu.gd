@@ -179,6 +179,7 @@ func _ready():
 	units_options.connect("item_selected", self, "_on_units_options_item_selected")
 
 	var dyslexia_checkbox = get_node("Options Rows/TabContainer/Accessibility/Dyslexia Checkbox")
+	dyslexia_checkbox.set_pressed(settings.get_dyslexia())
 	dyslexia_checkbox.connect("toggled", self, "_on_dyslexia_checkbox_toggled")
 
 	toggle_dyslexia(settings.get_dyslexia())
