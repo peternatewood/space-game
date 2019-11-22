@@ -65,6 +65,9 @@ func _ready():
 	if mission_controller != null:
 		mission_controller.connect("mission_ready", self, "_on_mission_ready")
 
+	update_hud_colors()
+	settings.connect("hud_palette_changed", self, "update_hud_colors")
+
 	set_process(false)
 
 
@@ -529,9 +532,32 @@ func toggle_dyslexia(toggled_on: bool):
 		set_theme(settings.INCONSOLATA_THEME)
 
 
+func update_hud_colors():
+	var palette = settings.get_hud_palette()
+
+	for path in InteractiveHUD.COLORABLE_NODE_PATHS:
+		var node = get_node_or_null(path)
+
+		if node == null:
+			print("Invalid node path! " + path)
+		else:
+			var color: Color = palette.get(path, palette.default)
+			node.set_modulate(color)
+
+	for path in InteractiveHUD.SELF_COLORABLE_NODE_PATHS:
+		var node = get_node_or_null(path)
+
+		if node == null:
+			print("Invalid node path! " + path)
+		else:
+			var color: Color = palette.get(path, palette.default)
+			node.set_self_modulate(color)
+
+
 const AttackShipBase = preload("AttackShipBase.gd")
 const CapitalShipBase = preload("CapitalShipBase.gd")
 const EdgeTargetIcon = preload("EdgeTargetIcon.gd")
+const InteractiveHUD = preload("InteractiveHUD.gd")
 const MathHelper = preload("MathHelper.gd")
 const ShipIcon = preload("ShipIcon.gd")
 
