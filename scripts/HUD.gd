@@ -117,7 +117,7 @@ func _on_mission_ready():
 			# Set icon color based on alignment
 			var alignment = mission_controller.get_alignment(player.faction, node.faction)
 			if alignment != -1:
-				icon.set_modulate(settings.get_interface_color(alignment))
+				icon.set_modulate(settings.get_interface_color(alignment, true))
 			else:
 				icon.set_modulate(Color.white)
 
