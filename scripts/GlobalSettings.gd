@@ -1,7 +1,10 @@
 extends Node
 
 enum { MASTER, SOUND_EFFECTS, MUSIC, UI_SOUNDS, AUDIO_BUS_COUNT }
-enum { FULL, DEUTERANOPIA, TRITANOPIA, PROTANOPIA, MONOCHROMACY }
+enum Colorblindness { FULL, PROTANOPIA, DEUTERANOPIA, TRITANOPIA, CUSTOM }
+# Protanopia: no red photoreceptors
+# Dueteranopia: similar to protanopia, without dimming effect
+# Tritanopia: no blue photoreceptors (very rare)
 
 # TODO: change to using .cfg format and manipulating ProjectSettings directly
 
@@ -18,7 +21,8 @@ var settings: Dictionary = {
 	"audio_ui_sounds_percent": Setting.new("audio_ui_sounds_percent", 100),
 	"audio_ui_sounds_mute": Setting.new("audio_ui_sounds_mute", false),
 	"borderless": Setting.new("borderless", false),
-	"colorblindness": Setting.new("colorblindness", FULL),
+	"colorblindness": Setting.new("colorblindness", Colorblindness.FULL),
+	"custom_ui_colors": Setting.new("custom_ui_colors", [ Color.white, Color.white, Color.white ]),
 	"dyslexia": Setting.new("dyslexia", false),
 	"fov": Setting.new("fov", 70),
 	"fullscreen": Setting.new("fullscreen", false),
@@ -194,6 +198,16 @@ func get_colorblindness():
 	return settings.colorblindness.get_value()
 
 
+func get_custom_ui_color(ui_index: int, faded: bool = false):
+	if faded:
+		var color = settings.custom_ui_colors.get_value()[ui_index]
+		color.a = 0.5
+
+		return color
+
+	return settings.custom_ui_colors.get_value()[ui_index]
+
+
 func get_dyslexia():
 	return settings.dyslexia.get_value()
 
@@ -204,6 +218,18 @@ func get_fov():
 
 func get_fullscreen():
 	return settings.fullscreen.get_value()
+
+
+func get_interface_color(alignment: int, faded: bool = false):
+	var colorblindness_option = settings.colorblindness.get_value()
+
+	if colorblindness_option == Colorblindness.CUSTOM:
+		return get_custom_ui_color(alignment, faded)
+	else:
+		if faded:
+			return INTERFACE_COLORS_FADED[colorblindness_option][alignment]
+
+		return INTERFACE_COLORS[colorblindness_option][alignment]
 
 
 func get_hdr():
@@ -277,6 +303,16 @@ func set_borderless_window(toggle_on: bool):
 
 func set_colorblindness(option_index: int):
 	settings.colorblindness.set_value(option_index)
+	emit_signal("ui_colors_changed")
+
+	_save_settings_to_file()
+
+
+func set_custom_ui_color(type: int, new_color: Color):
+	var ui_colors = settings.custom_ui_colors._value
+	ui_colors[type] = new_color
+	settings.custom_ui_colors.set_value(ui_colors)
+	emit_signal("ui_colors_changed")
 
 	_save_settings_to_file()
 
@@ -353,6 +389,7 @@ func set_vsync(toggle_on: bool):
 
 signal dyslexia_toggled
 signal fov_changed
+signal ui_colors_changed
 signal units_changed
 
 const Keybind = preload("Keybind.gd")
@@ -361,6 +398,18 @@ const MathHelper = preload("MathHelper.gd")
 const DISTANCE_UNITS: Array = [
 	"m",
 	"ft"
+]
+const INTERFACE_COLORS: Array = [
+	[ Color(1.00, 1.00, 0.15, 1.0), Color(0.35, 1.00, 0.15, 1.0), Color(1.00, 0.35, 0.15, 1.0) ],
+	[ Color(0.00, 0.75, 0.65, 1.0), Color(0.00, 0.65, 1.00, 1.0), Color(0.85, 0.50, 0.00, 1.0) ],
+	[ Color(0.00, 0.60, 0.50, 1.0), Color(0.00, 0.50, 1.00, 1.0), Color(0.80, 0.40, 0.00, 1.0) ],
+	[ Color(0.95, 0.90, 0.25, 1.0), Color(0.35, 0.70, 0.90, 1.0), Color(0.80, 0.40, 0.00, 1.0) ]
+]
+const INTERFACE_COLORS_FADED: Array = [
+	[ Color(1.00, 1.00, 0.00, 0.5), Color(0.25, 1.00, 0.25, 0.5), Color(1.00, 0.25, 0.25, 0.5) ],
+	[ Color(0.00, 0.75, 0.65, 0.5), Color(0.00, 0.65, 1.00, 0.5), Color(0.85, 0.50, 0.00, 0.5) ],
+	[ Color(0.00, 0.60, 0.50, 0.5), Color(0.00, 0.50, 1.00, 0.5), Color(0.80, 0.40, 0.00, 0.5) ],
+	[ Color(0.95, 0.90, 0.25, 0.5), Color(0.35, 0.70, 0.90, 0.5), Color(0.80, 0.40, 0.00, 0.5) ]
 ]
 const INCONSOLATA_THEME = preload("res://themes/default_inconsolata.tres")
 const INCONSOLATA_INTERFACE_THEME = preload("res://themes/interface_blue.tres")
