@@ -1,6 +1,12 @@
 extends Control
 
 onready var clear_binding_checkbox = get_node("Options Rows/TabContainer/Controls/Binding Options/Clear Binding")
+onready var color_pickers: Array = [
+	get_node("Options Rows/TabContainer/Accessibility/Accessibility Grid/Neutral Color Picker"),
+	get_node("Options Rows/TabContainer/Accessibility/Accessibility Grid/Friendly Color Picker"),
+	get_node("Options Rows/TabContainer/Accessibility/Accessibility Grid/Hostile Color Picker")
+]
+onready var colorblindness_options = get_node("Options Rows/TabContainer/Accessibility/Accessibility Grid/Colorblindness Options")
 onready var controls_tabs = get_node("Options Rows/TabContainer/Controls/Controls Tabs")
 onready var edit_binding_checkbox = get_node("Options Rows/TabContainer/Controls/Binding Options/Edit Checkbox")
 onready var go_to_conflict_checkbox = get_node("Options Rows/TabContainer/Controls/Binding Options/Go to Conflict")
@@ -185,6 +191,14 @@ func _ready():
 	toggle_dyslexia(settings.get_dyslexia())
 	settings.connect("dyslexia_toggled", self, "toggle_dyslexia")
 
+	colorblindness_options.select(settings.get_colorblindness())
+	colorblindness_options.connect("item_selected", self, "_on_colorblindness_selected")
+
+	for index in range(color_pickers.size()):
+		color_pickers[index].connect("color_changed", self, "_on_color_picker_changed", [ index ])
+
+	update_color_pickers()
+
 
 func _handle_keybind_popup_input(event):
 	var is_valid_input: bool = false
@@ -228,6 +242,18 @@ func _on_back_button_pressed():
 
 func _on_borderless_checkbox_toggled(button_pressed: bool):
 	settings.set_borderless_window(button_pressed)
+
+
+func _on_color_picker_changed(new_color: Color, type_index: int):
+	if colorblindness_options.get_selected_id() != settings.Colorblindness.CUSTOM:
+		colorblindness_options.select(settings.Colorblindness.CUSTOM)
+
+	settings.set_custom_ui_color(type_index, new_color)
+
+
+func _on_colorblindness_selected(item_index: int):
+	settings.set_colorblindness(item_index)
+	update_color_pickers()
 
 
 func _on_dyslexia_checkbox_toggled(button_pressed: bool):
@@ -404,6 +430,18 @@ func toggle_dyslexia(toggle_on: bool):
 		set_theme(settings.OPEN_DYSLEXIC_INTERFACE_THEME)
 	else:
 		set_theme(settings.INCONSOLATA_INTERFACE_THEME)
+
+
+func update_color_pickers():
+	var colorblindness_option = settings.get_colorblindness()
+
+	if colorblindness_option == settings.Colorblindness.CUSTOM:
+		# Use custom options
+		for index in range(color_pickers.size()):
+			color_pickers[index].set_pick_color(settings.get_custom_ui_color(index))
+	else:
+		for index in range(color_pickers.size()):
+			color_pickers[index].set_pick_color(settings.INTERFACE_COLORS[colorblindness_option][index])
 
 
 signal back_button_pressed
