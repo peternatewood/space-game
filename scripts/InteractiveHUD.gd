@@ -3,8 +3,12 @@ extends Control
 onready var edge_target_icon = get_node("Edge Target Icon")
 onready var settings = get_node("/root/GlobalSettings")
 onready var target_class = get_node("Target View Container/Target View Rows/Target Class")
+onready var target_details_minimal = get_node("Target Details Minimal")
 onready var target_icon = get_node("Target Icon")
 onready var target_name = get_node("Target View Container/Target View Rows/Target Name")
+
+var current_node_path: String
+var is_current_node_self_modulated: bool = false
 
 
 func _ready():
@@ -17,7 +21,8 @@ func _ready():
 		if node == null:
 			print("Invalid node path! " + path)
 		else:
-			node.connect("gui_input", self, "_on_colorable_node_gui_input", [ node ])
+			node.connect("gui_input", self, "_on_colorable_node_gui_input", [ node, path ])
+			set_icon_color(path)
 
 	for path in SELF_COLORABLE_NODE_PATHS:
 		var node = get_node_or_null(path)
@@ -25,7 +30,8 @@ func _ready():
 		if node == null:
 			print("Invalid node path! " + path)
 		else:
-			node.connect("gui_input", self, "_on_colorable_node_gui_input", [ node, true ])
+			node.connect("gui_input", self, "_on_colorable_node_gui_input", [ node, path, true ])
+			set_icon_color(path)
 
 	# Show normally hidden nodes
 	get_node("Communications Menu").show()
@@ -39,16 +45,49 @@ func _ready():
 	# Hide a few nodes that are covering other nodes we need to click on
 	get_node("Radar/Radar Icons Container").hide()
 
+	settings.connect("hud_palette_color_changed", self, "set_icon_color")
 	settings.connect("ui_colors_changed", self, "update_colored_icons")
 	update_colored_icons()
 
 
-func _on_colorable_node_gui_input(event, node, is_self_modulated: bool = false):
+func _on_colorable_node_gui_input(event, node, path: String, is_self_modulated: bool = false):
 	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.pressed:
-		emit_signal("colorable_node_clicked", node, is_self_modulated)
+		current_node_path = path
+		is_current_node_self_modulated = is_self_modulated
+
+		emit_signal("colorable_node_clicked", node)
 
 
 # PUBLIC
+
+
+func set_current_icon_color(new_color: Color, update_settings: bool = true):
+	if update_settings:
+		settings.set_hud_custom_color(current_node_path, new_color)
+	else:
+		var node = get_node_or_null(current_node_path)
+		if node == null:
+			print("Invalid node path! " + current_node_path)
+		else:
+			if SELF_COLORABLE_NODE_PATHS.has(current_node_path):
+				node.set_self_modulate(new_color)
+			else:
+				node.set_modulate(new_color)
+
+
+func set_icon_color(path: String):
+	var node = get_node_or_null(path)
+	var is_self_modulated = SELF_COLORABLE_NODE_PATHS.has(path)
+
+	if node == null:
+		print("Invalid node path! " + path)
+	else:
+		var color = settings.get_hud_custom_color(path)
+
+		if is_self_modulated:
+			node.set_self_modulate(color)
+		else:
+			node.set_modulate(color)
 
 
 func set_palette(palette: Dictionary):
@@ -75,6 +114,7 @@ func update_colored_icons():
 	var target_color = settings.get_interface_color(2)
 
 	edge_target_icon.set_modulate(target_color)
+	target_details_minimal.set_modulate(target_color)
 	target_class.set_modulate(target_color)
 	target_icon.set_modulate(target_color)
 	target_name.set_modulate(target_color)
@@ -96,7 +136,6 @@ const COLORABLE_NODE_PATHS: Array = [
 	"Weapons Container",
 	"Target Reticule Outer",
 	"Target Reticule",
-	"Target Details Minimal",
 	"Radar/Radar Background",
 	"Target View Container/Target View Rows/Target Distance Container",
 	"Target View Container/Target View Rows/Target View Panel Container/Target Hull Container"

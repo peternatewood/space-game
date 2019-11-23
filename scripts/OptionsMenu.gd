@@ -210,6 +210,10 @@ func _ready():
 	hud_color_options.connect("item_selected", self, "_on_hud_color_options_selected")
 
 	interactive_hud.connect("colorable_node_clicked", self, "_on_interactive_hud_colorable_node_clicked")
+	color_picker_dialog.connect("confirmed", self, "_on_color_picker_dialog_confirmed")
+	color_picker_dialog.connect("popup_hide", self, "_on_color_picker_dialog_popup_hide")
+	hud_colorpicker.connect("color_changed", self, "_on_hud_colorpicker_changed")
+
 
 func _handle_keybind_popup_input(event):
 	var is_valid_input: bool = false
@@ -262,6 +266,16 @@ func _on_color_picker_changed(new_color: Color, type_index: int):
 	settings.set_custom_ui_color(type_index, new_color)
 
 
+func _on_color_picker_dialog_confirmed():
+	var new_color: Color = hud_colorpicker.get_pick_color()
+	interactive_hud.set_current_icon_color(new_color)
+
+
+func _on_color_picker_dialog_popup_hide():
+	var previous_color = settings.get_hud_custom_color(interactive_hud.current_node_path)
+	interactive_hud.set_current_icon_color(previous_color)
+
+
 func _on_colorblindness_selected(item_index: int):
 	settings.set_colorblindness(item_index)
 	update_color_pickers()
@@ -288,7 +302,11 @@ func _on_hud_color_options_selected(item_index: int):
 	interactive_hud.set_palette(settings.get_hud_palette())
 
 
-func _on_interactive_hud_colorable_node_clicked(node, is_self_modulated):
+func _on_hud_colorpicker_changed(new_color: Color):
+	interactive_hud.set_current_icon_color(new_color, false)
+
+
+func _on_interactive_hud_colorable_node_clicked(node):
 	var viewport_size = get_viewport().get_visible_rect().size
 
 	var popup_size: Vector2 = color_picker_dialog.get_size()

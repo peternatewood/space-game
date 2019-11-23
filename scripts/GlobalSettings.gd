@@ -27,7 +27,7 @@ var settings: Dictionary = {
 	"fov": Setting.new("fov", 70),
 	"fullscreen": Setting.new("fullscreen", false),
 	"hdr": Setting.new("hdr", false),
-	"hud_palette_colors": Setting.new("hud_palette_colors", {}),
+	"hud_palette_colors": Setting.new("hud_palette_colors", { "default": Color.white }),
 	"hud_palette_index": Setting.new("hud_palette_index", 0),
 	"msaa": Setting.new("msaa", 0),
 	"reflections": Setting.new("reflections", 2048),
@@ -222,6 +222,11 @@ func get_fullscreen():
 	return settings.fullscreen.get_value()
 
 
+func get_hud_custom_color(path: String):
+	var palette_colors = get_hud_palette()
+	return palette_colors.get(path, palette_colors.default)
+
+
 func get_hud_palette():
 	var hud_palette_index: int = settings.hud_palette_index.get_value()
 
@@ -360,13 +365,17 @@ func set_hdr(toggle_on: bool):
 	_save_settings_to_file()
 
 
-func set_hud_palette(index: int, custom_colors: Dictionary = { "default": Color.white }):
+func set_hud_custom_color(node_path: String, new_color: Color):
+	var palette_colors = settings.hud_palette_colors.get_value()
+	palette_colors[node_path] = new_color
+	settings.hud_palette_colors.set_value(palette_colors)
+	emit_signal("hud_palette_color_changed", node_path)
+
+	_save_settings_to_file()
+
+
+func set_hud_palette(index: int):
 	settings.hud_palette_index.set_value(index)
-
-	if index == HUD_PALETTES.size():
-		# Set custom colors
-		settings.hud_palette_colors.set_value(custom_colors)
-
 	emit_signal("hud_palette_changed")
 
 	_save_settings_to_file()
@@ -417,6 +426,7 @@ func set_vsync(toggle_on: bool):
 signal dyslexia_toggled
 signal fov_changed
 signal hud_palette_changed
+signal hud_palette_color_changed
 signal ui_colors_changed
 signal units_changed
 

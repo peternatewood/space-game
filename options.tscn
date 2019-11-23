@@ -12,7 +12,7 @@
 bg_color = Color( 0, 0, 0, 0.498039 )
 corner_detail = 2
 
-[sub_resource type="StyleBoxFlat" id=4]
+[sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0, 0, 0, 1 )
 
 [sub_resource type="StyleBoxFlat" id=3]
@@ -1467,7 +1467,7 @@ margin_right = 992.0
 margin_bottom = 510.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/panel = SubResource( 4 )
+custom_styles/panel = SubResource( 2 )
 
 [node name="Interactive HUD" parent="Options Rows/TabContainer/HUD/HUD Panel" instance=ExtResource( 6 )]
 anchor_right = 0.0
@@ -1481,7 +1481,7 @@ script = ExtResource( 7 )
 [node name="ColorPicker Popup" type="AcceptDialog" parent="."]
 margin_left = 8.0
 margin_top = 96.0
-margin_right = 344.0
+margin_right = 314.0
 margin_bottom = 602.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
@@ -1490,7 +1490,7 @@ window_title = "Change Color"
 [node name="HUD ColorPicker" type="ColorPicker" parent="ColorPicker Popup"]
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 328.0
+margin_right = 298.0
 margin_bottom = 464.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
