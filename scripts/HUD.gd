@@ -67,6 +67,7 @@ func _ready():
 
 	update_hud_colors()
 	settings.connect("hud_palette_changed", self, "update_hud_colors")
+	settings.connect("hud_palette_color_changed", self, "_on_hud_palette_color_changed")
 
 	set_process(false)
 
@@ -79,6 +80,21 @@ func _disconnect_target_signals(target):
 	if target is AttackShipBase:
 		for index in range(4):
 			target.shields[index].disconnect("hitpoints_changed", self, "_on_target_shield_changed")
+
+
+func _on_hud_palette_color_changed(path: String):
+	var node = get_node_or_null(path)
+	var is_self_modulated = InteractiveHUD.SELF_COLORABLE_NODE_PATHS.has(path)
+
+	if node == null:
+		print("Invalid node path! " + path)
+	else:
+		var color = settings.get_hud_custom_color(path)
+
+		if is_self_modulated:
+			node.set_self_modulate(color)
+		else:
+			node.set_modulate(color)
 
 
 func _on_mission_ready():
@@ -533,15 +549,13 @@ func toggle_dyslexia(toggled_on: bool):
 
 
 func update_hud_colors():
-	var palette = settings.get_hud_palette()
-
 	for path in InteractiveHUD.COLORABLE_NODE_PATHS:
 		var node = get_node_or_null(path)
 
 		if node == null:
 			print("Invalid node path! " + path)
 		else:
-			var color: Color = palette.get(path, palette.default)
+			var color: Color = settings.get_hud_custom_color(path)
 			node.set_modulate(color)
 
 	for path in InteractiveHUD.SELF_COLORABLE_NODE_PATHS:
@@ -550,7 +564,7 @@ func update_hud_colors():
 		if node == null:
 			print("Invalid node path! " + path)
 		else:
-			var color: Color = palette.get(path, palette.default)
+			var color: Color = settings.get_hud_custom_color(path)
 			node.set_self_modulate(color)
 
 
