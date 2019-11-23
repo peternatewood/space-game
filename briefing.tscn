@@ -827,10 +827,10 @@ light_color = Color( 0.847059, 0.933333, 0.996078, 1 )
 [node name="Ship Container" type="Spatial" parent="Columns/Menus Container/Loadout/Ship Preview Viewport"]
 
 [node name="Ship" parent="Columns/Menus Container/Loadout/Ship Preview Viewport/Ship Container" instance=ExtResource( 13 )]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0 )
+transform = Transform( -4.37114e-008, 0, 1, 0, 1, 0, -1, 0, -4.37114e-008, 0, 0, 0 )
 
 [node name="Camera" type="Camera" parent="Columns/Menus Container/Loadout/Ship Preview Viewport"]
-transform = Transform( -1, -8.74228e-08, 0, 8.44439e-08, -0.965926, 0.258819, -2.26267e-08, 0.258819, 0.965926, 0, 1, 4 )
+transform = Transform( -1, -8.74228e-008, 0, 8.44439e-008, -0.965926, 0.258819, -2.26267e-008, 0.258819, 0.965926, 0, 1, 4 )
 current = true
 fov = 45.0
 size = 3.0
@@ -896,3 +896,10 @@ anchor_bottom = 1.0
 margin_left = -41.0
 margin_top = -20.0
 text = "Start"
+
+[node name="Back Button" type="Button" parent="Columns/Menus Container"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -26.0
+margin_right = 48.0
+text = "Back"

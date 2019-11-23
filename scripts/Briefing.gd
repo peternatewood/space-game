@@ -15,7 +15,6 @@ onready var objectives_button = get_node("Columns/Menu Buttons/Objectives Button
 onready var objectives_container = get_node("Columns/Menus Container/Objectives Container")
 onready var secondary_objectives_container = get_node("Columns/Menus Container/Objectives Container/Objective Rows/Secondary Container")
 onready var settings = get_node("/root/GlobalSettings")
-onready var start_button = get_node("Columns/Menus Container/Start Button")
 
 
 func _ready():
@@ -37,9 +36,17 @@ func _ready():
 	loadout_button.connect("pressed", self, "_on_loadout_button_pressed")
 	objectives_button.connect("pressed", self, "_on_objectives_button_pressed")
 
+	var start_button = get_node("Columns/Menus Container/Start Button")
 	start_button.connect("pressed", self, "_on_start_button_pressed")
 
+	var back_button = get_node("Columns/Menus Container/Back Button")
+	back_button.connect("pressed", self, "_on_back_button_pressed")
+
 	toggle_dyslexia(settings.get_dyslexia())
+
+
+func _on_back_button_pressed():
+	loader.change_scene("res://mission_select.tscn")
 
 
 func _on_briefing_button_pressed():
