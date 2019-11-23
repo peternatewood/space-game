@@ -8,15 +8,15 @@ onready var settings = get_node("/root/GlobalSettings")
 func _ready():
 	var exit_button = get_node("Container/Exit")
 	var mission_editor_button = get_node("Container/Mission Editor")
-	var new_game_button = get_node("Container/New Game")
+	var mission_select_button = get_node("Container/Mission Select")
 	var options_button = get_node("Container/Options")
 
 	exit_button.connect("pressed", self, "_on_exit_pressed")
 	mission_editor_button.connect("pressed", self, "_on_mission_editor_pressed")
-	new_game_button.connect("pressed", self, "_on_new_game_pressed")
+	mission_select_button.connect("pressed", self, "_on_mission_select_pressed")
 	options_button.connect("pressed", self, "_on_options_pressed")
 
-	new_game_button.grab_focus()
+	mission_select_button.grab_focus()
 
 	options_menu.connect("back_button_pressed", self, "_on_back_button_pressed")
 
@@ -36,7 +36,7 @@ func _on_mission_editor_pressed():
 	loader.change_scene("res://editor/editor.tscn")
 
 
-func _on_new_game_pressed():
+func _on_mission_select_pressed():
 	loader.change_scene("res://mission_select.tscn")
 
 

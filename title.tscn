@@ -47,36 +47,43 @@ margin_bottom = 113.0
 rect_min_size = Vector2( 0, 12 )
 size_flags_horizontal = 3
 
-[node name="New Game" type="Button" parent="Container" groups=[
-"audible_hover",
-]]
+[node name="New Game" type="Button" parent="Container"]
 margin_top = 117.0
 margin_right = 364.0
 margin_bottom = 135.0
+disabled = true
 text = "New Game"
 
-[node name="Mission Editor" type="Button" parent="Container" groups=[
+[node name="Mission Select" type="Button" parent="Container" groups=[
 "audible_hover",
 ]]
 margin_top = 139.0
 margin_right = 364.0
 margin_bottom = 157.0
-text = "Mission Editor"
+text = "Mission Select"
 
-[node name="Options" type="Button" parent="Container" groups=[
+[node name="Mission Editor" type="Button" parent="Container" groups=[
 "audible_hover",
 ]]
 margin_top = 161.0
 margin_right = 364.0
 margin_bottom = 179.0
-text = "Options"
+text = "Mission Editor"
 
-[node name="Exit" type="Button" parent="Container" groups=[
+[node name="Options" type="Button" parent="Container" groups=[
 "audible_hover",
 ]]
 margin_top = 183.0
 margin_right = 364.0
 margin_bottom = 201.0
+text = "Options"
+
+[node name="Exit" type="Button" parent="Container" groups=[
+"audible_hover",
+]]
+margin_top = 205.0
+margin_right = 364.0
+margin_bottom = 223.0
 text = "Exit"
 
 [node name="Options Menu" parent="." instance=ExtResource( 6 )]
