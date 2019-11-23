@@ -270,6 +270,9 @@ func _on_player_target_changed(last_target):
 
 		# Update icons
 		if player.current_target is AttackShipBase:
+			if not target_overhead.visible:
+				target_overhead.show()
+
 			var overhead_icon = player.current_target.get_overhead_icon()
 			if overhead_icon == null:
 				print("Missing overhead icon for " + player.current_target.name)
