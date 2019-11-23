@@ -7,6 +7,7 @@ onready var debug = get_node("Controls Container/Debug")
 onready var debug_cube = get_node("Debug")
 onready var details_dialog = get_node("Controls Container/Details Dialog")
 onready var icons_container = get_node("Controls Container/Icons Container")
+onready var loader = get_node("/root/SceneLoader")
 onready var manipulator_overlay = get_node("Controls Container/Manipulator Overlay")
 onready var manipulator_viewport = get_node("Manipulator Viewport")
 onready var manual_window = get_node("Controls Container/Manual Window")
@@ -554,6 +555,8 @@ func _on_file_menu_id_pressed(item_id: int):
 		2:
 			save_file_dialog.popup_centered()
 		3:
+			loader.change_scene("res://title.tscn")
+		4:
 			get_tree().quit()
 
 
