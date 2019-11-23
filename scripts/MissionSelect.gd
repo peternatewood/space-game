@@ -2,9 +2,9 @@ extends Control
 
 onready var loader = get_node("/root/SceneLoader")
 onready var mission_data = get_node("/root/MissionData")
-onready var mission_rows = get_node("MarginContainer/Mission Select Rows/Missions Panel/Missions")
+onready var mission_rows = get_node("MarginContainer/Mission Select Rows/Missions Panel/Missions Scroll/Missions")
 onready var settings = get_node("/root/GlobalSettings")
-onready var user_mission_rows = get_node("MarginContainer/Mission Select Rows/User Missions Panel/User Missions")
+onready var user_mission_rows = get_node("MarginContainer/Mission Select Rows/User Missions Panel/User Missions Scroll/User Missions")
 
 
 func _ready():

@@ -37,38 +37,44 @@ text = "Missions"
 [node name="Missions Panel" type="PanelContainer" parent="MarginContainer/Mission Select Rows"]
 margin_top = 22.0
 margin_right = 992.0
-margin_bottom = 30.0
+margin_bottom = 267.0
 size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="Missions" type="VBoxContainer" parent="MarginContainer/Mission Select Rows/Missions Panel"]
+[node name="Missions Scroll" type="ScrollContainer" parent="MarginContainer/Mission Select Rows/Missions Panel"]
 margin_left = 8.0
 margin_top = 4.0
 margin_right = 984.0
-margin_bottom = 4.0
+margin_bottom = 241.0
+
+[node name="Missions" type="VBoxContainer" parent="MarginContainer/Mission Select Rows/Missions Panel/Missions Scroll"]
 
 [node name="User Missions Label" type="Label" parent="MarginContainer/Mission Select Rows"]
-margin_top = 34.0
+margin_top = 271.0
 margin_right = 992.0
-margin_bottom = 52.0
+margin_bottom = 289.0
 text = "User Missions"
 
 [node name="User Missions Panel" type="PanelContainer" parent="MarginContainer/Mission Select Rows"]
-margin_top = 56.0
+margin_top = 293.0
 margin_right = 992.0
-margin_bottom = 64.0
+margin_bottom = 538.0
 size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="User Missions" type="VBoxContainer" parent="MarginContainer/Mission Select Rows/User Missions Panel"]
+[node name="User Missions Scroll" type="ScrollContainer" parent="MarginContainer/Mission Select Rows/User Missions Panel"]
 margin_left = 8.0
 margin_top = 4.0
 margin_right = 984.0
-margin_bottom = 4.0
+margin_bottom = 241.0
+
+[node name="User Missions" type="VBoxContainer" parent="MarginContainer/Mission Select Rows/User Missions Panel/User Missions Scroll"]
 
 [node name="Back Button" type="Button" parent="MarginContainer/Mission Select Rows"]
 margin_left = 944.0
-margin_top = 68.0
+margin_top = 542.0
 margin_right = 992.0
-margin_bottom = 94.0
+margin_bottom = 568.0
 size_flags_horizontal = 8
 size_flags_vertical = 8
 text = "Back"
