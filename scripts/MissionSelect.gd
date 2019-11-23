@@ -32,6 +32,7 @@ func _ready():
 			file_name = dir.get_next()
 
 	# Get user mission paths and meta data
+	var user_mission_count: int = 0
 	dir = Directory.new()
 	if dir.open("user://") != OK:
 		print("Unable to open user:// directory")
@@ -52,7 +53,15 @@ func _ready():
 				mission_button.set_text(mission_name)
 				mission_button.connect("pressed", self, "_on_mission_button_pressed", [ mission_path ])
 
+				user_mission_count += 1
+
 			file_name = dir.get_next()
+
+	if user_mission_count == 0:
+		var none_label = Label.new()
+		user_mission_rows.add_child(none_label)
+		none_label.set_text("<none>")
+		user_mission_rows.set_tooltip("Create your own missions\nin the Mission Editor")
 
 	toggle_dyslexia(settings.get_dyslexia())
 
