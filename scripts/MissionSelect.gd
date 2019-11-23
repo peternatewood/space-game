@@ -2,9 +2,9 @@ extends Control
 
 onready var loader = get_node("/root/SceneLoader")
 onready var mission_data = get_node("/root/MissionData")
-onready var mission_rows = get_node("Mission Select Rows/Missions Panel/Missions")
+onready var mission_rows = get_node("MarginContainer/Mission Select Rows/Missions Panel/Missions")
 onready var settings = get_node("/root/GlobalSettings")
-onready var user_mission_rows = get_node("Mission Select Rows/User Missions Panel/User Missions")
+onready var user_mission_rows = get_node("MarginContainer/Mission Select Rows/User Missions Panel/User Missions")
 
 
 func _ready():
@@ -55,6 +55,13 @@ func _ready():
 			file_name = dir.get_next()
 
 	toggle_dyslexia(settings.get_dyslexia())
+
+	var back_button = get_node("MarginContainer/Mission Select Rows/Back Button")
+	back_button.connect("pressed", self, "_on_back_pressed")
+
+
+func _on_back_pressed():
+	loader.change_scene("res://title.tscn")
 
 
 func _on_mission_button_pressed(mission_path: String):

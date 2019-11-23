@@ -17,41 +17,58 @@ texture = ExtResource( 3 )
 expand = true
 stretch_mode = 7
 
-[node name="Mission Select Rows" type="VBoxContainer" parent="."]
-margin_left = 8.0
-margin_top = 4.0
-margin_right = 1016.0
-margin_bottom = 596.0
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 16.0
+margin_top = 16.0
+margin_right = -16.0
+margin_bottom = -16.0
 
-[node name="Missions Label" type="Label" parent="Mission Select Rows"]
-margin_right = 1008.0
-margin_bottom = 14.0
+[node name="Mission Select Rows" type="VBoxContainer" parent="MarginContainer"]
+margin_right = 992.0
+margin_bottom = 568.0
+
+[node name="Missions Label" type="Label" parent="MarginContainer/Mission Select Rows"]
+margin_right = 992.0
+margin_bottom = 18.0
 text = "Missions"
 
-[node name="Missions Panel" type="PanelContainer" parent="Mission Select Rows"]
-margin_top = 18.0
-margin_right = 1008.0
-margin_bottom = 26.0
+[node name="Missions Panel" type="PanelContainer" parent="MarginContainer/Mission Select Rows"]
+margin_top = 22.0
+margin_right = 992.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
 
-[node name="Missions" type="VBoxContainer" parent="Mission Select Rows/Missions Panel"]
+[node name="Missions" type="VBoxContainer" parent="MarginContainer/Mission Select Rows/Missions Panel"]
 margin_left = 8.0
 margin_top = 4.0
-margin_right = 1000.0
+margin_right = 984.0
 margin_bottom = 4.0
 
-[node name="User Missions Label" type="Label" parent="Mission Select Rows"]
-margin_top = 30.0
-margin_right = 1008.0
-margin_bottom = 44.0
+[node name="User Missions Label" type="Label" parent="MarginContainer/Mission Select Rows"]
+margin_top = 34.0
+margin_right = 992.0
+margin_bottom = 52.0
 text = "User Missions"
 
-[node name="User Missions Panel" type="PanelContainer" parent="Mission Select Rows"]
-margin_top = 48.0
-margin_right = 1008.0
-margin_bottom = 56.0
+[node name="User Missions Panel" type="PanelContainer" parent="MarginContainer/Mission Select Rows"]
+margin_top = 56.0
+margin_right = 992.0
+margin_bottom = 64.0
+size_flags_horizontal = 3
 
-[node name="User Missions" type="VBoxContainer" parent="Mission Select Rows/User Missions Panel"]
+[node name="User Missions" type="VBoxContainer" parent="MarginContainer/Mission Select Rows/User Missions Panel"]
 margin_left = 8.0
 margin_top = 4.0
-margin_right = 1000.0
+margin_right = 984.0
 margin_bottom = 4.0
+
+[node name="Back Button" type="Button" parent="MarginContainer/Mission Select Rows"]
+margin_left = 944.0
+margin_top = 68.0
+margin_right = 992.0
+margin_bottom = 94.0
+size_flags_horizontal = 8
+size_flags_vertical = 8
+text = "Back"
