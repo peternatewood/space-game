@@ -55,20 +55,28 @@ margin_right = 364.0
 margin_bottom = 135.0
 text = "New Game"
 
-[node name="Options" type="Button" parent="Container" groups=[
+[node name="Mission Editor" type="Button" parent="Container" groups=[
 "audible_hover",
 ]]
 margin_top = 139.0
 margin_right = 364.0
 margin_bottom = 157.0
-text = "Options"
+text = "Mission Editor"
 
-[node name="Exit" type="Button" parent="Container" groups=[
+[node name="Options" type="Button" parent="Container" groups=[
 "audible_hover",
 ]]
 margin_top = 161.0
 margin_right = 364.0
 margin_bottom = 179.0
+text = "Options"
+
+[node name="Exit" type="Button" parent="Container" groups=[
+"audible_hover",
+]]
+margin_top = 183.0
+margin_right = 364.0
+margin_bottom = 201.0
 text = "Exit"
 
 [node name="Options Menu" parent="." instance=ExtResource( 6 )]

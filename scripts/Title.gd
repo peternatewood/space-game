@@ -7,10 +7,12 @@ onready var settings = get_node("/root/GlobalSettings")
 
 func _ready():
 	var exit_button = get_node("Container/Exit")
+	var mission_editor_button = get_node("Container/Mission Editor")
 	var new_game_button = get_node("Container/New Game")
 	var options_button = get_node("Container/Options")
 
 	exit_button.connect("pressed", self, "_on_exit_pressed")
+	mission_editor_button.connect("pressed", self, "_on_mission_editor_pressed")
 	new_game_button.connect("pressed", self, "_on_new_game_pressed")
 	options_button.connect("pressed", self, "_on_options_pressed")
 
@@ -28,6 +30,10 @@ func _on_back_button_pressed():
 
 func _on_exit_pressed():
 	get_tree().quit()
+
+
+func _on_mission_editor_pressed():
+	loader.change_scene("res://editor/editor.tscn")
 
 
 func _on_new_game_pressed():
