@@ -171,6 +171,9 @@ func _on_add_ship_confirmed():
 		var ship_loadout = get_ship_loadout(selected_node)
 		ship_edit_dialog.fill_ship_info(selected_node, ship_loadout)
 
+	# Add an icon
+	icons_container.add_icon(ship_instance)
+
 
 func _on_controls_gui_input(event):
 	if event is InputEventMouseButton:
