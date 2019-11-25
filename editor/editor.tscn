@@ -1478,8 +1478,10 @@ resizable = true
 script = ExtResource( 14 )
 
 [node name="Waypoint Group Rows" type="VBoxContainer" parent="Controls Container/Waypoint Groups Dialog"]
-margin_right = 40.0
-margin_bottom = 40.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 160.0
+margin_bottom = 34.0
 
 [node name="Waypoint Group Lineedits" type="VBoxContainer" parent="Controls Container/Waypoint Groups Dialog/Waypoint Group Rows"]
 margin_right = 80.0

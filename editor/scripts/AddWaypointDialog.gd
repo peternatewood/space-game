@@ -3,6 +3,10 @@ extends AcceptDialog
 onready var waypoint_group_options = get_node("Add Waypoint Columns/Waypoint Group Options")
 
 
+func get_group_index():
+	return waypoint_group_options.get_selected_id()
+
+
 func populate_group_options(group_names: Array):
 	var current_group_count: int = waypoint_group_options.get_item_count()
 	var new_group_count: int = group_names.size()

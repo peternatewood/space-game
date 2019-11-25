@@ -106,6 +106,7 @@ func _ready():
 	details_dialog.connect("confirmed", self, "_on_details_dialog_confirmed")
 
 	waypoint_groups_dialog.connect("confirmed", self, "_on_waypoint_groups_confirmed")
+	add_waypoint_dialog.connect("confirmed", self, "_on_add_waypoint_confirmed")
 
 
 func _on_add_ship_confirmed():
@@ -180,6 +181,21 @@ func _on_add_ship_confirmed():
 
 	# Add an icon
 	icons_container.add_icon(ship_instance)
+
+
+func _on_add_waypoint_confirmed():
+	var waypoint = Position3D.new()
+	waypoints_container.add_child(waypoint)
+
+	var group_index: int = add_waypoint_dialog.get_group_index()
+	var group_name = waypoint_groups[group_index]
+	waypoint.add_to_group(group_name, true)
+
+	var scene_tree = get_tree()
+	var group_waypoint_count: int = scene_tree.get_nodes_in_group(group_name).size()
+	waypoint.set_name(group_name + " " + str(group_waypoint_count))
+
+	icons_container.add_waypoint_icon(waypoint)
 
 
 func _on_controls_gui_input(event):
@@ -804,3 +820,4 @@ const REQUIRED_META_DATA: Array = [
 	"objectives",
 	"wing_names"
 ]
+const WAYPOINT_ICON = preload("res://editor/prefabs/waypoint_icon.tscn")
