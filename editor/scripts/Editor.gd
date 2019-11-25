@@ -84,6 +84,7 @@ func _ready():
 	ship_edit_dialog.populate_wing_options(wing_names)
 
 	ship_edit_dialog.connect("update_pressed", self, "_on_edit_dialog_update_pressed")
+	ship_edit_dialog.connect("edit_ship_deleted", self, "_on_edit_dialog_ship_deleted")
 	ship_edit_dialog.previous_button.connect("pressed", self, "_on_edit_dialog_previous_pressed")
 	ship_edit_dialog.next_button.connect("pressed", self, "_on_edit_dialog_next_pressed")
 
@@ -243,6 +244,15 @@ func _on_details_dialog_confirmed():
 	mission_node.set_meta("briefing", [ details_dialog.briefing_textedit.text ])
 
 
+func _on_edit_dialog_next_pressed():
+	var next_index = (selected_node_index + 1) % targets_container.get_child_count()
+
+	if next_index != selected_node_index:
+		selected_node_index = next_index
+		selected_node = targets_container.get_child(selected_node_index)
+		ship_edit_dialog.fill_ship_info(selected_node, get_ship_loadout(selected_node))
+
+
 func _on_edit_dialog_previous_pressed():
 	var next_index = selected_node_index - 1
 	if next_index < 0:
@@ -254,13 +264,14 @@ func _on_edit_dialog_previous_pressed():
 		ship_edit_dialog.fill_ship_info(selected_node, get_ship_loadout(selected_node))
 
 
-func _on_edit_dialog_next_pressed():
-	var next_index = (selected_node_index + 1) % targets_container.get_child_count()
+func _on_edit_dialog_ship_deleted():
+	var ship_count = targets_container.get_child_count()
 
-	if next_index != selected_node_index:
-		selected_node_index = next_index
-		selected_node = targets_container.get_child(selected_node_index)
-		ship_edit_dialog.fill_ship_info(selected_node, get_ship_loadout(selected_node))
+	# Since we queue_free the ship, the count probably still includes the deleted ship
+	if ship_count <= 1:
+		ship_edit_dialog.hide()
+	else:
+		_on_edit_dialog_next_pressed()
 
 
 func _on_edit_menu_id_pressed(item_id: int):
@@ -269,7 +280,9 @@ func _on_edit_menu_id_pressed(item_id: int):
 			add_ship_dialog.popup_centered()
 		1:
 			var targets_count = targets_container.get_child_count()
-			if targets_count > 0:
+			if targets_count == 0:
+				print("No ships to edit!")
+			else:
 				selected_node_index = clamp(selected_node_index, targets_count - 1, 0)
 				selected_node = targets_container.get_child(selected_node_index)
 

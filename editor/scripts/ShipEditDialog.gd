@@ -1,5 +1,7 @@
 extends Control
 
+export (NodePath) var delete_confirm_path
+
 onready var capital_ship_options = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Capital Ship Options")
 onready var faction_options = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Faction Options")
 onready var hitpoints_spinbox = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Hitpoints SpinBox")
@@ -71,8 +73,19 @@ func _ready():
 	var close_button = get_node("Ship Edit Rows/Title Container/Close Button")
 	close_button.connect("pressed", self, "hide")
 
-	var update_button = get_node("Ship Edit Rows/Update Button")
+	var update_button = get_node("Ship Edit Rows/Bottom Buttons Container/Update Button")
 	update_button.connect("pressed", self, "_on_update_pressed")
+
+	var delete_confirm = get_node(delete_confirm_path)
+	delete_confirm.connect("confirmed", self, "_on_delete_confirmed")
+
+	var delete_button = get_node("Ship Edit Rows/Bottom Buttons Container/Delete Button")
+	delete_button.connect("pressed", delete_confirm, "popup_centered")
+
+
+func _on_delete_confirmed():
+	edit_ship.queue_free()
+	emit_signal("edit_ship_deleted")
 
 
 func _on_player_ship_toggled(button_pressed: bool):
@@ -81,8 +94,6 @@ func _on_player_ship_toggled(button_pressed: bool):
 			npc_settings.hide()
 		else:
 			npc_settings.show()
-
-#		emit_signal("player_ship_toggled", button_pressed)
 
 
 func _on_position_x_changed(new_value: float):
@@ -336,6 +347,7 @@ func prepare_options(mission_data, mission_node):
 		faction_index += 1
 
 
+signal edit_ship_deleted
 signal ship_position_changed
 signal ship_rotation_changed
 signal update_pressed

@@ -113,6 +113,7 @@ margin_top = -18.0
 text = "n/a"
 
 [node name="Ship Edit Dialog" type="PanelContainer" parent="Controls Container"]
+editor/display_folded = true
 visible = false
 anchor_left = 1.0
 anchor_right = 1.0
@@ -124,6 +125,7 @@ grow_horizontal = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 7 )
+delete_confirm_path = NodePath("../Delete Ship Confirm")
 
 [node name="Ship Edit Rows" type="VBoxContainer" parent="Controls Container/Ship Edit Dialog"]
 margin_left = 4.0
@@ -134,6 +136,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Title Container" type="HBoxContainer" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows"]
+editor/display_folded = true
 margin_right = 454.0
 margin_bottom = 22.0
 
@@ -153,6 +156,7 @@ size_flags_horizontal = 8
 text = "X"
 
 [node name="Next Prev Container" type="HBoxContainer" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows"]
+editor/display_folded = true
 margin_top = 26.0
 margin_right = 454.0
 margin_bottom = 48.0
@@ -867,11 +871,22 @@ margin_top = 182.0
 margin_right = 322.0
 margin_bottom = 210.0
 
-[node name="Update Button" type="Button" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows"]
+[node name="Bottom Buttons Container" type="HBoxContainer" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows"]
 margin_top = 503.0
 margin_right = 454.0
 margin_bottom = 525.0
+
+[node name="Update Button" type="Button" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Bottom Buttons Container"]
+margin_right = 394.0
+margin_bottom = 22.0
+size_flags_horizontal = 3
 text = "Update"
+
+[node name="Delete Button" type="Button" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Bottom Buttons Container"]
+margin_left = 398.0
+margin_right = 454.0
+margin_bottom = 22.0
+text = "Delete"
 
 [node name="Objectives Window" type="PanelContainer" parent="Controls Container"]
 editor/display_folded = true
@@ -1417,6 +1432,13 @@ margin_right = 142.0
 margin_bottom = 114.0
 rect_min_size = Vector2( 0, 60 )
 size_flags_vertical = 3
+
+[node name="Delete Ship Confirm" type="ConfirmationDialog" parent="Controls Container"]
+margin_right = 200.0
+margin_bottom = 70.0
+window_title = "Delete"
+dialog_text = "Are you sure you want
+to delete this ship?"
 
 [node name="Manipulator Viewport" type="Viewport" parent="."]
 pause_mode = 2
