@@ -83,7 +83,7 @@ func get_objective():
 	return objective
 
 
-func populate_fields(objective_object, ship_names: Array = [], new_objectives: Array = [ [], [], [] ]):
+func populate_fields(objective_object, new_ship_names: Array, new_objectives: Array = [ [], [], [] ]):
 	objective = objective_object
 	description_edit.set_text(objective_object.description)
 	title_lineedit.set_text(objective_object.name)
@@ -92,7 +92,7 @@ func populate_fields(objective_object, ship_names: Array = [], new_objectives: A
 
 	objectives = new_objectives
 	ship_names = []
-	for ship in ship_names:
+	for ship in new_ship_names:
 		ship_names.append(ship.name)
 
 	var failure_index: int = 0
@@ -147,13 +147,13 @@ func update_ship_names(ships: Array):
 		ship_names.append(ship.name)
 
 	for requirement in failure_rows.get_children():
-		requirement.update_ships(ship_names)
+		requirement.update_ship_names(ship_names)
 
 	for requirement in success_rows.get_children():
-		requirement.update_ships(ship_names)
+		requirement.update_ship_names(ship_names)
 
 	for requirement in trigger_rows.get_children():
-		requirement.update_ships(ship_names)
+		requirement.update_ship_names(ship_names)
 
 
 const Objective = preload("res://scripts/Objective.gd")
