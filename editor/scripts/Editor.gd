@@ -2,6 +2,7 @@ extends Spatial
 
 onready var about_window = get_node("Controls Container/About Window")
 onready var add_ship_dialog = get_node("Controls Container/Add Ship Dialog")
+onready var add_waypoint_dialog = get_node("Controls Container/Add Waypoint Dialog")
 onready var camera = get_node("Editor Camera")
 onready var debug = get_node("Controls Container/Debug")
 onready var debug_cube = get_node("Debug")
@@ -293,6 +294,11 @@ func _on_edit_menu_id_pressed(item_id: int):
 
 				ship_edit_dialog.fill_ship_info(selected_node, get_ship_loadout(selected_node))
 				ship_edit_dialog.show()
+		2:
+			if waypoint_groups.size() == 0:
+				print("No waypoint groups!")
+			else:
+				add_waypoint_dialog.popup_centered()
 
 
 func _on_edit_dialog_update_pressed():
@@ -647,6 +653,7 @@ func _on_ship_position_changed(position: Vector3):
 
 func _on_waypoint_groups_confirmed():
 	waypoint_groups = waypoint_groups_dialog.get_group_names()
+	add_waypoint_dialog.populate_group_options(waypoint_groups)
 
 
 func _on_wings_dialog_confirmed():
