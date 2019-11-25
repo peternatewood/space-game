@@ -108,6 +108,7 @@ func _ready():
 
 	waypoint_groups_dialog.connect("confirmed", self, "_on_waypoint_groups_confirmed")
 	add_waypoint_dialog.connect("confirmed", self, "_on_add_waypoint_confirmed")
+	edit_waypoints_panel.connect("add_pressed", self, "_on_edit_waypoints_add_pressed")
 
 
 func _on_add_ship_confirmed():
@@ -185,21 +186,10 @@ func _on_add_ship_confirmed():
 
 
 func _on_add_waypoint_confirmed():
-	var waypoint = Position3D.new()
-	waypoints_container.add_child(waypoint)
-
 	var group_index: int = add_waypoint_dialog.get_group_index()
 	var group_name = waypoint_groups[group_index]
-	waypoint.add_to_group(group_name, true)
 
-	var scene_tree = get_tree()
-	var group_waypoint_count: int = scene_tree.get_nodes_in_group(group_name).size()
-	waypoint.set_name(group_name + " " + str(group_waypoint_count))
-
-	icons_container.add_waypoint_icon(waypoint)
-
-	if edit_waypoints_panel.visible and group_name == edit_waypoints_panel.get_selected_group_name():
-		edit_waypoints_panel.add_waypoint(waypoint)
+	add_waypoint(group_name)
 
 
 func _on_controls_gui_input(event):
@@ -298,6 +288,11 @@ func _on_edit_dialog_ship_deleted():
 		ship_edit_dialog.hide()
 	else:
 		_on_edit_dialog_next_pressed()
+
+
+func _on_edit_waypoints_add_pressed():
+	var group_name = edit_waypoints_panel.get_selected_group_name()
+	add_waypoint(group_name)
 
 
 func _on_edit_menu_id_pressed(item_id: int):
@@ -728,6 +723,21 @@ func _process(delta):
 
 
 # PUBLIC
+
+
+func add_waypoint(group_name: String):
+	var waypoint = Position3D.new()
+	waypoints_container.add_child(waypoint)
+	waypoint.add_to_group(group_name, true)
+
+	var scene_tree = get_tree()
+	var group_waypoint_count: int = scene_tree.get_nodes_in_group(group_name).size()
+	waypoint.set_name(group_name + " " + str(group_waypoint_count))
+
+	icons_container.add_waypoint_icon(waypoint)
+
+	if edit_waypoints_panel.visible and group_name == edit_waypoints_panel.get_selected_group_name():
+		edit_waypoints_panel.add_waypoint(waypoint)
 
 
 func get_ship_loadout(ship):

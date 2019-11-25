@@ -936,11 +936,17 @@ margin_bottom = 48.0
 [node name="Waypoints Scroll" type="ScrollContainer" parent="Controls Container/Waypoint Edit Panel/Waypoint Edit Rows"]
 margin_top = 52.0
 margin_right = 472.0
-margin_bottom = 490.0
+margin_bottom = 464.0
 size_flags_vertical = 3
 scroll_horizontal_enabled = false
 
 [node name="Waypoint Rows" type="VBoxContainer" parent="Controls Container/Waypoint Edit Panel/Waypoint Edit Rows/Waypoints Scroll"]
+
+[node name="Add Button" type="Button" parent="Controls Container/Waypoint Edit Panel/Waypoint Edit Rows"]
+margin_top = 468.0
+margin_right = 472.0
+margin_bottom = 490.0
+text = "Add Waypoint to Group"
 
 [node name="Update Button" type="Button" parent="Controls Container/Waypoint Edit Panel/Waypoint Edit Rows"]
 margin_top = 494.0
@@ -1530,6 +1536,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 0
 
 [node name="Waypoint Groups Dialog" type="AcceptDialog" parent="Controls Container"]
+editor/display_folded = true
 margin_right = 96.0
 margin_bottom = 64.0
 window_title = "Waypoint Groups"

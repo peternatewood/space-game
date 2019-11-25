@@ -8,8 +8,15 @@ func _ready():
 	var close_button = get_node("Waypoint Edit Rows/Title Columns/Close Button")
 	close_button.connect("pressed", self, "hide")
 
+	var add_button = get_node("Waypoint Edit Rows/Add Button")
+	add_button.connect("pressed", self, "_on_add_pressed")
+
 	var update_button = get_node("Waypoint Edit Rows/Update Button")
 	update_button.connect("pressed", self, "_on_update_pressed")
+
+
+func _on_add_pressed():
+	emit_signal("add_pressed")
 
 
 func _on_update_pressed():
@@ -59,4 +66,5 @@ func populate_waypoint_group_options(waypoint_groups: Array):
 
 const WAYPOINT_EDIT = preload("res://editor/prefabs/waypoint_edit.tscn")
 
+signal add_pressed
 signal update_pressed
