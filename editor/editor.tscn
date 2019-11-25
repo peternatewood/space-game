@@ -1547,7 +1547,7 @@ script = ExtResource( 15 )
 margin_left = 8.0
 margin_top = 8.0
 margin_right = 160.0
-margin_bottom = 82.0
+margin_bottom = 146.0
 
 [node name="Waypoint Group Scroll" type="ScrollContainer" parent="Controls Container/Waypoint Groups Dialog/Waypoint Group Rows"]
 margin_right = 152.0

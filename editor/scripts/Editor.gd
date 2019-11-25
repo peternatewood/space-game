@@ -95,6 +95,7 @@ func _ready():
 
 	icons_container.connect("gui_input", self, "_on_controls_gui_input")
 	icons_container.connect("icon_clicked", self, "_on_icon_clicked")
+	icons_container.connect("waypoint_icon_clicked", self, "_on_waypoint_icon_clicked")
 
 	wings_dialog.populate_wing_names(wing_names)
 	wings_dialog.connect("confirmed", self, "_on_wings_dialog_confirmed")
@@ -686,6 +687,13 @@ func _on_waypoint_groups_confirmed():
 		edit_waypoints_panel.populate_waypoint_group_options(waypoint_groups)
 
 
+func _on_waypoint_icon_clicked(waypoint_node):
+	var waypoints = waypoints_container.get_children()
+
+	edit_waypoints_panel.populate_rows(waypoints, waypoint_groups)
+	edit_waypoints_panel.show()
+
+
 func _on_wings_dialog_confirmed():
 	wing_names = wings_dialog.get_wing_names()
 	ship_edit_dialog.populate_wing_options(wing_names)
@@ -849,4 +857,3 @@ const REQUIRED_META_DATA: Array = [
 	"objectives",
 	"wing_names"
 ]
-const WAYPOINT_ICON = preload("res://editor/prefabs/waypoint_icon.tscn")
