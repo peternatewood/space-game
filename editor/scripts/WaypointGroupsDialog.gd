@@ -21,7 +21,8 @@ func get_group_names():
 	var group_names: Array = []
 
 	for lineedit in group_rows.get_children():
-		group_names.append(lineedit.text)
+		if lineedit.text != "":
+			group_names.append(lineedit.text)
 
 	return group_names
 
