@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://editor/scripts/Editor.gd" type="Script" id=1]
 [ext_resource path="res://editor/default_mission.tscn" type="PackedScene" id=2]
@@ -7,18 +7,19 @@
 [ext_resource path="res://editor/scripts/GridLinesContainer.gd" type="Script" id=5]
 [ext_resource path="res://editor/scripts/IconsContainer.gd" type="Script" id=6]
 [ext_resource path="res://editor/scripts/ShipEditDialog.gd" type="Script" id=7]
-[ext_resource path="res://editor/scripts/ObjectivesWindow.gd" type="Script" id=8]
-[ext_resource path="res://editor/scripts/AddShipDialog.gd" type="Script" id=9]
-[ext_resource path="res://editor/scripts/WingsDialog.gd" type="Script" id=10]
-[ext_resource path="res://editor/scripts/ObjectivesDialog.gd" type="Script" id=11]
-[ext_resource path="res://editor/scripts/DetailsDialog.gd" type="Script" id=12]
-[ext_resource path="res://editor/scripts/AddWaypointDialog.gd" type="Script" id=13]
-[ext_resource path="res://editor/scripts/WaypointGroupsDialog.gd" type="Script" id=14]
-[ext_resource path="res://editor/scripts/ManipulatorViewport.gd" type="Script" id=15]
-[ext_resource path="res://editor/scripts/TransformControls.gd" type="Script" id=16]
-[ext_resource path="res://editor/models/translate_arrow_x.dae" type="PackedScene" id=17]
-[ext_resource path="res://editor/models/translate_arrow_y.dae" type="PackedScene" id=18]
-[ext_resource path="res://editor/models/translate_arrow_z.dae" type="PackedScene" id=19]
+[ext_resource path="res://editor/scripts/WaypointEditPanel.gd" type="Script" id=8]
+[ext_resource path="res://editor/scripts/ObjectivesWindow.gd" type="Script" id=9]
+[ext_resource path="res://editor/scripts/AddShipDialog.gd" type="Script" id=10]
+[ext_resource path="res://editor/scripts/WingsDialog.gd" type="Script" id=11]
+[ext_resource path="res://editor/scripts/ObjectivesDialog.gd" type="Script" id=12]
+[ext_resource path="res://editor/scripts/DetailsDialog.gd" type="Script" id=13]
+[ext_resource path="res://editor/scripts/AddWaypointDialog.gd" type="Script" id=14]
+[ext_resource path="res://editor/scripts/WaypointGroupsDialog.gd" type="Script" id=15]
+[ext_resource path="res://editor/scripts/ManipulatorViewport.gd" type="Script" id=16]
+[ext_resource path="res://editor/scripts/TransformControls.gd" type="Script" id=17]
+[ext_resource path="res://editor/models/translate_arrow_x.dae" type="PackedScene" id=18]
+[ext_resource path="res://editor/models/translate_arrow_y.dae" type="PackedScene" id=19]
+[ext_resource path="res://editor/models/translate_arrow_z.dae" type="PackedScene" id=20]
 
 [sub_resource type="ViewportTexture" id=1]
 viewport_path = NodePath("Manipulator Viewport")
@@ -90,7 +91,7 @@ margin_left = 44.0
 margin_right = 84.0
 margin_bottom = 22.0
 text = "Edit"
-items = [ "Add Ship", null, 0, false, false, 0, 0, null, "", false, "Edit Ship", null, 0, false, false, 1, 0, null, "", false, "Add Waypoint", null, 0, false, false, 2, 0, null, "", false ]
+items = [ "Add Ship", null, 0, false, false, 0, 0, null, "", false, "Edit Ship", null, 0, false, false, 1, 0, null, "", false, "Add Waypoint", null, 0, false, false, 2, 0, null, "", false, "Edit Waypoints", null, 0, false, false, 3, 0, null, "", false ]
 
 [node name="Mission Menu" type="MenuButton" parent="Controls Container/PanelContainer/Toolbar"]
 margin_left = 88.0
@@ -890,6 +891,57 @@ margin_right = 454.0
 margin_bottom = 22.0
 text = "Delete"
 
+[node name="Waypoint Edit Panel" type="PanelContainer" parent="Controls Container"]
+visible = false
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -480.0
+margin_top = -520.0
+grow_horizontal = 0
+grow_vertical = 0
+rect_min_size = Vector2( 480, 520 )
+script = ExtResource( 8 )
+
+[node name="Waypoint Edit Rows" type="VBoxContainer" parent="Controls Container/Waypoint Edit Panel"]
+margin_left = 4.0
+margin_top = 2.0
+margin_right = 476.0
+margin_bottom = 518.0
+
+[node name="Title Columns" type="HBoxContainer" parent="Controls Container/Waypoint Edit Panel/Waypoint Edit Rows"]
+margin_right = 472.0
+margin_bottom = 22.0
+
+[node name="Waypoint Title" type="Label" parent="Controls Container/Waypoint Edit Panel/Waypoint Edit Rows/Title Columns"]
+margin_top = 2.0
+margin_right = 452.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Edit"
+
+[node name="Close Button" type="Button" parent="Controls Container/Waypoint Edit Panel/Waypoint Edit Rows/Title Columns"]
+margin_left = 456.0
+margin_right = 472.0
+margin_bottom = 22.0
+text = "X"
+
+[node name="Waypoints Scroll" type="ScrollContainer" parent="Controls Container/Waypoint Edit Panel/Waypoint Edit Rows"]
+margin_top = 26.0
+margin_right = 472.0
+margin_bottom = 490.0
+size_flags_vertical = 3
+scroll_horizontal_enabled = false
+
+[node name="Waypoint Rows" type="VBoxContainer" parent="Controls Container/Waypoint Edit Panel/Waypoint Edit Rows/Waypoints Scroll"]
+
+[node name="Update Button" type="Button" parent="Controls Container/Waypoint Edit Panel/Waypoint Edit Rows"]
+margin_top = 494.0
+margin_right = 472.0
+margin_bottom = 516.0
+text = "Update Waypoints"
+
 [node name="Objectives Window" type="PanelContainer" parent="Controls Container"]
 editor/display_folded = true
 visible = false
@@ -898,7 +950,7 @@ margin_top = 44.0
 margin_right = 209.0
 margin_bottom = 444.0
 rect_min_size = Vector2( 200, 400 )
-script = ExtResource( 8 )
+script = ExtResource( 9 )
 
 [node name="Objectives Window Rows" type="VBoxContainer" parent="Controls Container/Objectives Window"]
 margin_left = 4.0
@@ -1071,7 +1123,7 @@ margin_right = 112.0
 margin_bottom = 64.0
 window_title = "Add Ship"
 resizable = true
-script = ExtResource( 9 )
+script = ExtResource( 10 )
 
 [node name="Add Ship Rows" type="VBoxContainer" parent="Controls Container/Add Ship Dialog"]
 margin_left = 8.0
@@ -1169,7 +1221,7 @@ editor/display_folded = true
 margin_right = 96.0
 margin_bottom = 64.0
 window_title = "Loadout Wings"
-script = ExtResource( 10 )
+script = ExtResource( 11 )
 
 [node name="Wings Dialog Rows" type="VBoxContainer" parent="Controls Container/Wings Dialog"]
 margin_left = 8.0
@@ -1274,7 +1326,7 @@ margin_right = 256.0
 margin_bottom = 366.0
 window_title = "Edit Objective"
 resizable = true
-script = ExtResource( 11 )
+script = ExtResource( 12 )
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Controls Container/Objective Edit Dialog"]
 margin_left = 8.0
@@ -1399,7 +1451,7 @@ margin_right = 96.0
 margin_bottom = 64.0
 window_title = "Mission Details"
 resizable = true
-script = ExtResource( 12 )
+script = ExtResource( 13 )
 
 [node name="Details Rows" type="VBoxContainer" parent="Controls Container/Details Dialog"]
 margin_left = 8.0
@@ -1444,11 +1496,12 @@ dialog_text = "Are you sure you want
 to delete this ship?"
 
 [node name="Add Waypoint Dialog" type="AcceptDialog" parent="Controls Container"]
+editor/display_folded = true
 margin_right = 96.0
 margin_bottom = 64.0
 window_title = "Add Waypoint"
 resizable = true
-script = ExtResource( 13 )
+script = ExtResource( 14 )
 
 [node name="Add Waypoint Columns" type="HBoxContainer" parent="Controls Container/Add Waypoint Dialog"]
 margin_left = 8.0
@@ -1471,11 +1524,12 @@ size_flags_horizontal = 3
 size_flags_vertical = 0
 
 [node name="Waypoint Groups Dialog" type="AcceptDialog" parent="Controls Container"]
+editor/display_folded = true
 margin_right = 96.0
 margin_bottom = 64.0
 window_title = "Waypoint Groups"
 resizable = true
-script = ExtResource( 14 )
+script = ExtResource( 15 )
 
 [node name="Waypoint Group Rows" type="VBoxContainer" parent="Controls Container/Waypoint Groups Dialog"]
 margin_left = 8.0
@@ -1500,21 +1554,21 @@ size = Vector2( 1920, 1080 )
 own_world = true
 transparent_bg = true
 render_target_v_flip = true
-script = ExtResource( 15 )
-
-[node name="Transform Controls" type="Spatial" parent="Manipulator Viewport"]
 script = ExtResource( 16 )
 
-[node name="Arrow X" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 17 )]
+[node name="Transform Controls" type="Spatial" parent="Manipulator Viewport"]
+script = ExtResource( 17 )
+
+[node name="Arrow X" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 18 )]
 transform = Transform( -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0 )
 monitoring = false
 monitorable = false
 
-[node name="Arrow Y" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 18 )]
+[node name="Arrow Y" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 19 )]
 monitoring = false
 monitorable = false
 
-[node name="Arrow Z" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 19 )]
+[node name="Arrow Z" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 20 )]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0 )
 monitoring = false
 monitorable = false

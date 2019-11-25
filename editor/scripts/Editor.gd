@@ -7,6 +7,7 @@ onready var camera = get_node("Editor Camera")
 onready var debug = get_node("Controls Container/Debug")
 onready var debug_cube = get_node("Debug")
 onready var details_dialog = get_node("Controls Container/Details Dialog")
+onready var edit_waypoints_panel = get_node("Controls Container/Waypoint Edit Panel")
 onready var icons_container = get_node("Controls Container/Icons Container")
 onready var loader = get_node("/root/SceneLoader")
 onready var manipulator_overlay = get_node("Controls Container/Manipulator Overlay")
@@ -315,6 +316,12 @@ func _on_edit_menu_id_pressed(item_id: int):
 				print("No waypoint groups!")
 			else:
 				add_waypoint_dialog.popup_centered()
+		3:
+			if waypoint_groups.size() == 0:
+				print("No waypoint groups!")
+			else:
+				edit_waypoints_panel.populate_rows(waypoints_container.get_children())
+				edit_waypoints_panel.show()
 
 
 func _on_edit_dialog_update_pressed():
