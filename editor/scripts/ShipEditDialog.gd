@@ -4,7 +4,7 @@ onready var capital_ship_options = get_node("Ship Edit Rows/Ship Edit Scroll/Shi
 onready var faction_options = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Faction Options")
 onready var hitpoints_spinbox = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Hitpoints SpinBox")
 onready var name_lineedit = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Name LineEdit")
-onready var next_button = get_node("Ship Edit Rows/Title Container/Next Button")
+onready var next_button = get_node("Ship Edit Rows/Next Prev Container/Next Button")
 onready var npc_settings = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows")
 onready var order_options: Array = [
 	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid/Order Type Option 1"),
@@ -20,7 +20,7 @@ onready var position_spinboxes: Dictionary = {
 	"y": get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Transform Container/Position Y SpinBox"),
 	"z": get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Transform Container/Position Z SpinBox")
 }
-onready var previous_button = get_node("Ship Edit Rows/Title Container/Previous Button")
+onready var previous_button = get_node("Ship Edit Rows/Next Prev Container/Previous Button")
 onready var rotation_spinboxes: Dictionary = {
 	"x": get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Transform Container/Rotation X SpinBox"),
 	"y": get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Transform Container/Rotation Y SpinBox"),
@@ -67,6 +67,9 @@ func _ready():
 	rotation_spinboxes.x.connect("value_changed", self, "_on_rotation_x_changed")
 	rotation_spinboxes.y.connect("value_changed", self, "_on_rotation_y_changed")
 	rotation_spinboxes.z.connect("value_changed", self, "_on_rotation_z_changed")
+
+	var close_button = get_node("Ship Edit Rows/Title Container/Close Button")
+	close_button.connect("pressed", self, "hide")
 
 	var update_button = get_node("Ship Edit Rows/Update Button")
 	update_button.connect("pressed", self, "_on_update_pressed")

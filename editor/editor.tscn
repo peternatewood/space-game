@@ -113,7 +113,6 @@ margin_top = -18.0
 text = "n/a"
 
 [node name="Ship Edit Dialog" type="PanelContainer" parent="Controls Container"]
-editor/display_folded = true
 visible = false
 anchor_left = 1.0
 anchor_right = 1.0
@@ -135,39 +134,52 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Title Container" type="HBoxContainer" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows"]
-editor/display_folded = true
 margin_right = 454.0
 margin_bottom = 22.0
 
-[node name="Previous Button" type="Button" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Title Container"]
-margin_right = 80.0
-margin_bottom = 22.0
-rect_min_size = Vector2( 80, 0 )
-text = "Previous"
-
 [node name="Title" type="Label" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Title Container"]
-margin_left = 84.0
 margin_top = 2.0
-margin_right = 370.0
+margin_right = 434.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "Edit"
 align = 1
 
-[node name="Next Button" type="Button" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Title Container"]
-margin_left = 374.0
+[node name="Close Button" type="Button" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Title Container"]
+margin_left = 438.0
+margin_right = 454.0
+margin_bottom = 22.0
+size_flags_horizontal = 8
+text = "X"
+
+[node name="Next Prev Container" type="HBoxContainer" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows"]
+margin_top = 26.0
+margin_right = 454.0
+margin_bottom = 48.0
+
+[node name="Previous Button" type="Button" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Next Prev Container"]
+margin_right = 225.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 80, 0 )
+size_flags_horizontal = 3
+text = "Previous"
+
+[node name="Next Button" type="Button" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Next Prev Container"]
+margin_left = 229.0
 margin_right = 454.0
 margin_bottom = 22.0
 rect_min_size = Vector2( 80, 0 )
+size_flags_horizontal = 3
 text = "Next"
 
 [node name="HSeparator" type="HSeparator" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows"]
-margin_top = 26.0
+margin_top = 52.0
 margin_right = 454.0
-margin_bottom = 30.0
+margin_bottom = 56.0
 
 [node name="Ship Edit Scroll" type="ScrollContainer" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows"]
-margin_top = 34.0
+editor/display_folded = true
+margin_top = 60.0
 margin_right = 454.0
 margin_bottom = 499.0
 size_flags_horizontal = 3
@@ -1418,7 +1430,7 @@ script = ExtResource( 13 )
 script = ExtResource( 14 )
 
 [node name="Arrow X" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 15 )]
-transform = Transform( -4.37114e-008, 1, 0, -1, -4.37114e-008, 0, 0, 0, 1, 0, 0, 0 )
+transform = Transform( -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0 )
 monitoring = false
 monitorable = false
 
@@ -1427,7 +1439,7 @@ monitoring = false
 monitorable = false
 
 [node name="Arrow Z" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 17 )]
-transform = Transform( 1, 0, 0, 0, -4.37114e-008, 1, 0, -1, -4.37114e-008, 0, 0, 0 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0 )
 monitoring = false
 monitorable = false
 
