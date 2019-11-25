@@ -19,6 +19,7 @@ onready var open_file_dialog = get_node("Controls Container/Open File Dialog")
 onready var save_file_dialog = get_node("Controls Container/Save File Dialog")
 onready var ship_edit_dialog = get_node("Controls Container/Ship Edit Dialog")
 onready var transform_controls = get_node("Manipulator Viewport/Transform Controls")
+onready var waypoint_groups_dialog = get_node("Controls Container/Waypoint Groups Dialog")
 onready var wings_dialog = get_node("Controls Container/Wings Dialog")
 
 var capital_ship_index_name_map: Array = []
@@ -35,6 +36,7 @@ var selected_node = null
 var selected_node_index: int = -1
 var ship_index_name_map: Array = []
 var targets_container
+var waypoint_groups: Array = []
 var waypoints_container
 var wing_names: Array = []
 
@@ -101,6 +103,8 @@ func _ready():
 	objectives_edit_dialog.connect("confirmed", self, "_on_objectives_dialog_confirmed")
 
 	details_dialog.connect("confirmed", self, "_on_details_dialog_confirmed")
+
+	waypoint_groups_dialog.connect("confirmed", self, "_on_waypoint_groups_confirmed")
 
 
 func _on_add_ship_confirmed():
@@ -547,17 +551,6 @@ func _on_icon_clicked(node):
 	ship_edit_dialog.show()
 
 
-func _on_mission_menu_id_pressed(item_id: int):
-	match item_id:
-		0:
-			details_dialog.populate_fields(mission_node.get_meta("name"), mission_node.get_meta("briefing"))
-			details_dialog.popup_centered()
-		1:
-			wings_dialog.popup_centered()
-		2:
-			objectives_window.show()
-
-
 func _on_file_menu_id_pressed(item_id: int):
 	match item_id:
 		0:
@@ -583,6 +576,19 @@ func _on_help_menu_id_pressed(item_id: int):
 			about_window.popup_centered()
 		1:
 			manual_window.popup_centered()
+
+
+func _on_mission_menu_id_pressed(item_id: int):
+	match item_id:
+		0:
+			details_dialog.populate_fields(mission_node.get_meta("name"), mission_node.get_meta("briefing"))
+			details_dialog.popup_centered()
+		1:
+			wings_dialog.popup_centered()
+		2:
+			waypoint_groups_dialog.popup_centered()
+		3:
+			objectives_window.show()
 
 
 func _on_objectives_dialog_confirmed():
@@ -637,6 +643,10 @@ func _on_save_dialog_file_selected(path: String):
 
 func _on_ship_position_changed(position: Vector3):
 	transform_controls.transform.origin = position
+
+
+func _on_waypoint_groups_confirmed():
+	waypoint_groups = waypoint_groups_dialog.get_group_names()
 
 
 func _on_wings_dialog_confirmed():
@@ -700,6 +710,13 @@ func get_wing_index(ship):
 func load_mission_info():
 	targets_container = mission_node.get_node("Targets Container")
 	waypoints_container = mission_node.get_node("Waypoints Container")
+
+	for waypoint in waypoints_container.get_children():
+		for group in waypoint.get_groups():
+			if not waypoint_groups.has(group):
+				waypoint_groups.append(group)
+
+	waypoint_groups_dialog.populate_row_options(waypoint_groups)
 
 	for meta_name in REQUIRED_META_DATA:
 		if not mission_node.has_meta(meta_name):

@@ -18,7 +18,7 @@ __meta__ = {
 },
 "briefing": [ "Test everything to do with individual missions." ],
 "default_loadouts": [ [ {
-"beam_weapons": [],
+"beam_weapons": [  ],
 "energy_weapons": [ "Energy Bolt", "Disintigrator" ],
 "missile_weapons": [ "Heat Seeker", "Heat Seeker" ],
 "name": "Alpha 1"
