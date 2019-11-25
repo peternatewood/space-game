@@ -35,6 +35,7 @@ var selected_node = null
 var selected_node_index: int = -1
 var ship_index_name_map: Array = []
 var targets_container
+var waypoints_container
 var wing_names: Array = []
 
 
@@ -698,6 +699,7 @@ func get_wing_index(ship):
 
 func load_mission_info():
 	targets_container = mission_node.get_node("Targets Container")
+	waypoints_container = mission_node.get_node("Waypoints Container")
 
 	for meta_name in REQUIRED_META_DATA:
 		if not mission_node.has_meta(meta_name):
