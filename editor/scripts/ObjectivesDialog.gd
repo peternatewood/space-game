@@ -10,6 +10,7 @@ onready var trigger_rows = get_node("ScrollContainer/VBoxContainer/Trigger Rows"
 
 var index: int = 0
 var objective
+var objectives: Array = [ [], [], [] ]
 var ship_names: Array = []
 var type: int = 0
 
@@ -25,25 +26,25 @@ func _ready():
 	add_trigger_button.connect("pressed", self, "_on_add_requirement_pressed", [ "trigger" ])
 
 
-func _on_add_requirement_pressed(type: String):
-	objective.add_requirement(type)
+func _on_add_requirement_pressed(category: String):
+	objective.add_requirement(category)
 
-	match type:
+	match category:
 		"failure":
-			add_requirement(type, objective.failure_requirements[objective.failure_requirements.size() - 1])
+			add_requirement(category, objective.failure_requirements[objective.failure_requirements.size() - 1])
 		"success":
-			add_requirement(type, objective.success_requirements[objective.success_requirements.size() - 1])
+			add_requirement(category, objective.success_requirements[objective.success_requirements.size() - 1])
 		"trigger":
-			add_requirement(type, objective.trigger_requirements[objective.trigger_requirements.size() - 1])
+			add_requirement(category, objective.trigger_requirements[objective.trigger_requirements.size() - 1])
 
 
 # PUBLIC
 
 
-func add_requirement(type: String, requirement_object):
+func add_requirement(category: String, requirement_object):
 	var requirement = REQUIREMENT.instance()
 
-	match type:
+	match category:
 		"failure":
 			failure_rows.add_child(requirement)
 		"success":
@@ -51,8 +52,8 @@ func add_requirement(type: String, requirement_object):
 		"trigger":
 			trigger_rows.add_child(requirement)
 
-	requirement.ship_names = ship_names
-	requirement.populate_fields(requirement_object)
+	requirement.update_ship_names(ship_names)
+	requirement.populate_fields(requirement_object, objectives)
 
 
 func get_objective():
@@ -82,19 +83,25 @@ func get_objective():
 	return objective
 
 
-func populate_fields(objective_object):
+func populate_fields(objective_object, ship_names: Array = [], new_objectives: Array = [ [], [], [] ]):
 	objective = objective_object
 	description_edit.set_text(objective_object.description)
 	title_lineedit.set_text(objective_object.name)
 	enabled_checkbox.set_pressed(objective_object.enabled)
 	is_critical_checkbox.set_pressed(objective_object.is_critical)
 
+	objectives = new_objectives
+	ship_names = []
+	for ship in ship_names:
+		ship_names.append(ship.name)
+
 	var failure_index: int = 0
 	var failure_count: int = failure_rows.get_child_count()
 	for requirement in objective_object.failure_requirements:
 		if failure_index < failure_count:
 			var failure_requirement = failure_rows.get_child(failure_index)
-			failure_requirement.populate_fields(requirement)
+			failure_requirement.update_ship_names(ship_names)
+			failure_requirement.populate_fields(requirement, objectives)
 		else:
 			add_requirement("failure", requirement)
 
@@ -108,7 +115,8 @@ func populate_fields(objective_object):
 	for requirement in objective_object.success_requirements:
 		if success_index < success_count:
 			var success_requirement = success_rows.get_child(success_index)
-			success_requirement.populate_fields(requirement)
+			success_requirement.update_ship_names(ship_names)
+			success_requirement.populate_fields(requirement, objectives)
 		else:
 			add_requirement("success", requirement)
 
@@ -122,7 +130,8 @@ func populate_fields(objective_object):
 	for requirement in objective_object.trigger_requirements:
 		if trigger_index < trigger_count:
 			var trigger_requirement = trigger_rows.get_child(trigger_index)
-			trigger_requirement.populate_fields(requirement)
+			trigger_requirement.update_ship_names(ship_names)
+			trigger_requirement.populate_fields(requirement, objectives)
 		else:
 			add_requirement("trigger", requirement)
 

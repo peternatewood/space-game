@@ -179,7 +179,7 @@ class Requirement extends Object:
 
 		objective_index = source_dictionary.get("objective_index", -1)
 		objective_type = source_dictionary.get("objective_type", -1)
-		target_names = source_dictionary.get("targets", [])
+		target_names = source_dictionary.get("target_names", [])
 		time_limit = source_dictionary.get("time_limit", 0.0)
 		waypoints_name = source_dictionary.get("waypoints_name", "")
 

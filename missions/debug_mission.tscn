@@ -18,8 +18,95 @@
 [node name="Mission Controller" type="Spatial"]
 script = ExtResource( 1 )
 __meta__ = {
+"armory": {
+"energy_weapons": [ "Energy Bolt", "Disintigrator" ],
+"missile_weapons": [ "Heat Seeker" ],
+"ships": [ "Spider Fighter", "Spider Interceptor", "Spider Bomber" ]
+},
+"briefing": [ "Test everything to do with individual missions." ],
+"default_loadouts": [ [ {
+"energy_weapons": [ "Energy Bolt", "Disintigrator" ],
+"missile_weapons": [ "Heat Seeker", "Heat Seeker" ],
+"name": "Alpha 1",
+"ship_class": "Spider Fighter"
+}, {
+"energy_weapons": [ "Energy Bolt", "Disintigrator" ],
+"missile_weapons": [ "Heat Seeker", "Heat Seeker" ],
+"name": "Alpha 2",
+"ship_class": "Spider Fighter"
+}, {
+"energy_weapons": [ "Energy Bolt", "Disintigrator" ],
+"missile_weapons": [ "Heat Seeker", "Heat Seeker" ],
+"name": "Alpha 3",
+"ship_class": "Spider Fighter"
+} ], [ {
+"energy_weapons": [ "Energy Bolt", "Disintigrator" ],
+"missile_weapons": [ "Heat Seeker", "Heat Seeker" ],
+"name": "Beta 1",
+"ship_class": "Spider Fighter"
+} ] ],
+"name": "Debug Mission",
+"non_player_loadouts": {
+"Buteo 1": {
+"energy_weapons": [ "Energy Bolt" ],
+"missile_weapons": [ "Heat Seeker" ]
+},
+"Buteo 2": {
+"energy_weapons": [ "Energy Bolt" ],
+"missile_weapons": [ "Heat Seeker" ]
+},
+"Hyla 1": {
+"energy_weapons": [ "Energy Bolt" ],
+"missile_weapons": [ "Heat Seeker" ]
+},
+"Hyla 2": {
+"energy_weapons": [ "Energy Bolt" ],
+"missile_weapons": [ "Heat Seeker" ]
+},
+"Spider Destroyer": {
+"energy_weapons": [ "Energy Bolt", "Energy Bolt", "Energy Bolt", "Disintigrator", "Disintigrator" ]
+}
+},
+"objectives": [ [ {
+"description": "Destroy every enemy wing to complete the mission.",
+"is_critical": true,
+"name": "Destroy All Enemies",
+"success_requirements": [ {
+"targets": [ "Buteo 1", "Buteo 2" ],
+"type": 1
+} ]
+} ], [ {
+"description": "Protect all ships in Alpha wing.",
+"failure_requirements": [ {
+"targets": [ "Alpha 2", "Alpha 3" ],
+"type": 1
+} ],
+"name": "Protect Friendly Ships",
+"success_requirements": [ {
+"objective_index": 0,
+"objective_type": 0,
+"type": 3
+} ],
+"trigger_requirements": [ {
+"targets": [ "Alpha 2", "Alpha 3" ],
+"type": 4
+} ]
+} ], [ {
+"description": "Complete the mission without calling in Beta wing: your reinforcements.",
+"failure_requirements": [ {
+"targets": [ "Beta 1" ],
+"type": 4
+} ],
+"name": "Don't Call In Reinforcements",
+"success_requirements": [ {
+"objective_index": 0,
+"objective_type": 0,
+"type": 3
+} ]
+} ] ],
 "player_path": "Targets Container/Alpha 1",
-"reinforcement_wings": [ "Beta" ]
+"reinforcement_wings": [ "Beta" ],
+"wing_names": [ "Alpha", "Beta", "", "", "", "" ]
 }
 
 [node name="Sun Light" type="DirectionalLight" parent="."]
@@ -34,7 +121,6 @@ script = ExtResource( 2 )
 script = ExtResource( 4 )
 faction = "spider"
 wing_name = "Alpha"
-camera_path = NodePath("../../Camera")
 
 [node name="Alpha 2" parent="Targets Container" instance=ExtResource( 3 )]
 transform = Transform( 0.787268, 0.302992, 0.537034, -0.226817, 0.95218, -0.204713, -0.573379, 0.0393554, 0.818344, 4.66133, 2.33831, -2.32113 )
@@ -42,7 +128,6 @@ script = ExtResource( 5 )
 faction = "spider"
 is_warped_in = false
 wing_name = "Alpha"
-initial_orders = [ 7 ]
 
 [node name="Alpha 3" parent="Targets Container" instance=ExtResource( 3 )]
 transform = Transform( -0.694721, -0.305488, -0.651183, -0.226817, 0.95218, -0.204713, 0.682581, 0.00548107, -0.730789, -10.4962, -2.45585, 4.0847 )
@@ -50,7 +135,6 @@ script = ExtResource( 5 )
 faction = "spider"
 is_warped_in = false
 wing_name = "Alpha"
-initial_orders = [ 7 ]
 
 [node name="Beta 1" parent="Targets Container" instance=ExtResource( 3 )]
 transform = Transform( -0.417827, 0.599459, -0.682693, -0.312929, -0.800406, -0.511299, -0.852934, 0, 0.522019, -4.55983, 2.07022, -11.4268 )
@@ -64,7 +148,7 @@ transform = Transform( 0.478177, -0.0391645, 0.87739, 0.696631, 0.62528, -0.3517
 script = ExtResource( 5 )
 faction = "frog"
 wing_name = "Hyla"
-initial_orders = [ 8 ]
+initial_orders = [ 7, 0, 0, 0, 0, 0 ]
 
 [node name="Hyla 2" parent="Targets Container" instance=ExtResource( 6 )]
 transform = Transform( 0.714087, 0.56136, -0.418275, -0.152566, 0.707917, 0.689621, 0.683229, -0.428635, 0.591159, -8.23028, 0, -14.6645 )
@@ -126,8 +210,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.69232, 0, 11.3315 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -22.8941, -5.28593, 1.1059 )
 
 [node name="HUD" parent="." instance=ExtResource( 12 )]
-camera_path = NodePath("../../Mission Controller/Camera")
-player_path = NodePath("../Targets Container/Alpha 1")
 
 [node name="Mission Start Overlay" parent="." instance=ExtResource( 13 )]
 

@@ -1,8 +1,5 @@
 extends Control
 
-export (NodePath) var camera_path
-export (NodePath) var player_path
-
 onready var debug = get_node("Debug")
 onready var distance_units_label = get_node("Target View Container/Target View Rows/Target Distance Container/Distance Units")
 onready var edge_target_icon = get_node("Edge Target Icon")
@@ -60,10 +57,17 @@ func _ready():
 	distance_units_label.set_text(GlobalSettings.DISTANCE_UNITS[units])
 	speed_units_label.set_text(GlobalSettings.SPEED_UNITS[units])
 
+	toggle_dyslexia(settings.get_dyslexia())
+	settings.connect("dyslexia_toggled", self, "toggle_dyslexia")
+	settings.connect("ui_colors_changed", self, "_on_ui_colors_changed")
 	settings.connect("units_changed", self, "_on_units_changed")
 
 	if mission_controller != null:
 		mission_controller.connect("mission_ready", self, "_on_mission_ready")
+
+	update_hud_colors()
+	settings.connect("hud_palette_changed", self, "update_hud_colors")
+	settings.connect("hud_palette_color_changed", self, "_on_hud_palette_color_changed")
 
 	set_process(false)
 
@@ -78,9 +82,24 @@ func _disconnect_target_signals(target):
 			target.shields[index].disconnect("hitpoints_changed", self, "_on_target_shield_changed")
 
 
+func _on_hud_palette_color_changed(path: String):
+	var node = get_node_or_null(path)
+	var is_self_modulated = InteractiveHUD.SELF_COLORABLE_NODE_PATHS.has(path)
+
+	if node == null:
+		print("Invalid node path! " + path)
+	else:
+		var color = settings.get_hud_custom_color(path)
+
+		if is_self_modulated:
+			node.set_self_modulate(color)
+		else:
+			node.set_modulate(color)
+
+
 func _on_mission_ready():
-	camera = get_node(camera_path)
-	player = get_node(player_path)
+	camera = get_viewport().get_camera()
+	player = mission_controller.player
 
 	var overhead_icon = player.get_overhead_icon()
 	if overhead_icon != null:
@@ -117,7 +136,7 @@ func _on_mission_ready():
 			# Set icon color based on alignment
 			var alignment = mission_controller.get_alignment(player.faction, node.faction)
 			if alignment != -1:
-				icon.set_modulate(ALIGNMENT_COLORS_FADED[alignment])
+				icon.set_modulate(settings.get_interface_color(alignment, true))
 			else:
 				icon.set_modulate(Color.white)
 
@@ -230,7 +249,7 @@ func _on_player_target_changed(last_target):
 		_disconnect_target_signals(last_target)
 
 		for icon in radar_icons:
-			icon.set_modulate(ALIGNMENT_COLORS_FADED[mission_controller.get_alignment(player.faction, icon.target.faction)])
+			icon.set_modulate(settings.get_interface_color(mission_controller.get_alignment(player.faction, icon.target.faction), true))
 
 	if player.has_target:
 		target_viewport.remove_child(target_view_model)
@@ -251,6 +270,9 @@ func _on_player_target_changed(last_target):
 
 		# Update icons
 		if player.current_target is AttackShipBase:
+			if not target_overhead.visible:
+				target_overhead.show()
+
 			var overhead_icon = player.current_target.get_overhead_icon()
 			if overhead_icon == null:
 				print("Missing overhead icon for " + player.current_target.name)
@@ -262,14 +284,14 @@ func _on_player_target_changed(last_target):
 		var alignment = mission_controller.get_alignment(player.faction, player.current_target.faction)
 		for icon in radar_icons:
 			if icon.target == player.current_target:
-				icon.set_modulate(Color.white if alignment == -1 else ALIGNMENT_COLORS[alignment])
+				icon.set_modulate(Color.white if alignment == -1 else settings.get_interface_color(alignment))
 				break
 
 		if alignment != -1:
-			target_name.set_modulate(ALIGNMENT_COLORS[alignment])
-			target_class.set_modulate(ALIGNMENT_COLORS[alignment])
-			edge_target_icon.set_modulate(ALIGNMENT_COLORS[alignment])
-			target_icon.set_modulate(ALIGNMENT_COLORS[alignment])
+			target_name.set_modulate(settings.get_interface_color(alignment))
+			target_class.set_modulate(settings.get_interface_color(alignment))
+			edge_target_icon.set_modulate(settings.get_interface_color(alignment))
+			target_icon.set_modulate(settings.get_interface_color(alignment))
 		else:
 			target_name.set_modulate(Color.white)
 			target_class.set_modulate(Color.white)
@@ -330,6 +352,31 @@ func _on_target_destroyed(target):
 func _on_target_shield_changed(percent: float, quadrant: int):
 	target_details_minimal.set_shield_alpha(quadrant, percent)
 	target_overhead.set_shield_alpha(quadrant, percent)
+
+
+func _on_ui_colors_changed():
+	var radar_icons = radar_icons_container.get_children()
+	for icon in radar_icons:
+		var alignment = mission_controller.get_alignment(player.faction, icon.target.faction)
+
+		if icon.target == player.current_target:
+			icon.set_modulate(Color.white if alignment == -1 else settings.get_interface_color(alignment))
+		else:
+			icon.set_modulate(Color.white if alignment == -1 else settings.get_interface_color(alignment, true))
+
+	if player.has_target:
+		var target_alignment = mission_controller.get_alignment(player.faction, player.current_target.faction)
+
+		if target_alignment != -1:
+			target_name.set_modulate(settings.get_interface_color(target_alignment))
+			target_class.set_modulate(settings.get_interface_color(target_alignment))
+			edge_target_icon.set_modulate(settings.get_interface_color(target_alignment))
+			target_icon.set_modulate(settings.get_interface_color(target_alignment))
+		else:
+			target_name.set_modulate(Color.white)
+			target_class.set_modulate(Color.white)
+			edge_target_icon.set_modulate(Color.white)
+			target_icon.set_modulate(Color.white)
 
 
 func _on_units_changed(units: int):
@@ -494,14 +541,43 @@ func _update_speed_indicator():
 		speed_indicator.set_position(indicator_pos)
 
 
+# PUBLIC
+
+
+func toggle_dyslexia(toggled_on: bool):
+	if toggled_on:
+		set_theme(settings.OPEN_DYSLEXIC_THEME)
+	else:
+		set_theme(settings.INCONSOLATA_THEME)
+
+
+func update_hud_colors():
+	for path in InteractiveHUD.COLORABLE_NODE_PATHS:
+		var node = get_node_or_null(path)
+
+		if node == null:
+			print("Invalid node path! " + path)
+		else:
+			var color: Color = settings.get_hud_custom_color(path)
+			node.set_modulate(color)
+
+	for path in InteractiveHUD.SELF_COLORABLE_NODE_PATHS:
+		var node = get_node_or_null(path)
+
+		if node == null:
+			print("Invalid node path! " + path)
+		else:
+			var color: Color = settings.get_hud_custom_color(path)
+			node.set_self_modulate(color)
+
+
 const AttackShipBase = preload("AttackShipBase.gd")
 const CapitalShipBase = preload("CapitalShipBase.gd")
 const EdgeTargetIcon = preload("EdgeTargetIcon.gd")
+const InteractiveHUD = preload("InteractiveHUD.gd")
 const MathHelper = preload("MathHelper.gd")
 const ShipIcon = preload("ShipIcon.gd")
 
-const ALIGNMENT_COLORS: Array = [ Color(1.0, 1.0, 0.0, 1.0), Color(0.25, 1.0, 0.25, 1.0), Color(1.0, 0.25, 0.25, 1.0) ]
-const ALIGNMENT_COLORS_FADED: Array = [ Color(1.0, 1.0, 0.0, 0.5), Color(0.25, 1.0, 0.25, 0.5), Color(1.0, 0.25, 0.25, 0.5) ]
 const OBJECTIVE_LABEL = preload("res://icons/objective_label.tscn")
 const RADAR_ICON = preload("res://icons/radar_icon.tscn")
 const RADAR_RANGE_SQ: float = 300.0 * 300.0

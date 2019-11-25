@@ -48,12 +48,14 @@ func _on_scene_loaded():
 		waypoints = waypoints_container.get_children()
 
 	# Assign loadouts from mission data to ships in scene
-	for wing_name in mission_data.wing_loadouts.keys():
-		for index in range(mission_data.wing_loadouts[wing_name].size()):
+	for wing_index in range(mission_data.wing_loadouts.size()):
+		var wing_name = mission_data.wing_names[wing_index]
+
+		for index in range(mission_data.wing_loadouts[wing_index].size()):
 			var ship = targets_container.get_node_or_null(wing_name + " " + str(index + 1))
 
-			if ship.get_meta("ship_class") != mission_data.wing_loadouts[wing_name][index].ship_class:
-				var ship_instance = mission_data.wing_loadouts[wing_name][index].model.instance()
+			if ship != null and ship.get_meta("ship_class") != mission_data.wing_loadouts[wing_index][index].ship_class:
+				var ship_instance = mission_data.wing_loadouts[wing_index][index].model.instance()
 
 				# Copy relevant data from ship to new instance
 				ship_instance.name = ship.name
@@ -80,16 +82,16 @@ func _on_scene_loaded():
 			if ship == null:
 				print("No such ship in scene: " + wing_name + " " + str(index + 1))
 			else:
-				ship.set_weapon_hardpoints(mission_data.get_weapon_models("energy_weapons", wing_name, index), mission_data.get_weapon_models("missile_weapons", wing_name, index))
+				ship.set_weapon_hardpoints(mission_data.get_weapon_models("energy_weapons", wing_index, index), mission_data.get_weapon_models("missile_weapons", wing_index, index))
 
 	# And don't forget the non-player-accessible ships!
-	for ship_name in mission_data.non_player_loadout.keys():
+	for ship_name in mission_data.non_player_loadouts.keys():
 		var ship = targets_container.get_node_or_null(ship_name)
 		if ship != null:
 			if ship is NPCShip:
-				ship.set_weapon_hardpoints(mission_data.non_player_loadout[ship_name].energy_weapons, mission_data.non_player_loadout[ship_name].missile_weapons)
+				ship.set_weapon_hardpoints(mission_data.non_player_loadouts[ship_name].energy_weapons, mission_data.non_player_loadouts[ship_name].missile_weapons)
 			elif ship is CapitalShipBase:
-				ship.set_weapon_turrets(mission_data.non_player_loadout[ship_name].beam_weapons, mission_data.non_player_loadout[ship_name].energy_weapons, mission_data.non_player_loadout[ship_name].missile_weapons)
+				ship.set_weapon_turrets(mission_data.non_player_loadouts[ship_name].beam_weapons, mission_data.non_player_loadouts[ship_name].energy_weapons, mission_data.non_player_loadouts[ship_name].missile_weapons)
 			else:
 				print("Invalid node in targets container: " + ship.name)
 

@@ -1,0 +1,195 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://scripts/MissionController.gd" type="Script" id=1]
+[ext_resource path="res://scripts/PlayerCamera.gd" type="Script" id=2]
+[ext_resource path="res://models/ships/spider_fighter/model.dae" type="PackedScene" id=3]
+[ext_resource path="res://scripts/Player.gd" type="Script" id=4]
+[ext_resource path="res://scripts/NPCShip.gd" type="Script" id=5]
+[ext_resource path="res://models/ships/hawk_fighter/model.dae" type="PackedScene" id=6]
+[ext_resource path="res://models/ships/spider_bomber/model.dae" type="PackedScene" id=7]
+[ext_resource path="res://models/ships/spider_interceptor/model.dae" type="PackedScene" id=8]
+[ext_resource path="res://hud.tscn" type="PackedScene" id=9]
+[ext_resource path="res://mission_start_overlay.tscn" type="PackedScene" id=10]
+[ext_resource path="res://pause_menu.tscn" type="PackedScene" id=11]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0, 0, 0, 0.498039 )
+corner_detail = 1
+
+[node name="Mission Controller" type="Spatial"]
+pause_mode = 1
+script = ExtResource( 1 )
+__meta__ = {
+"armory": {
+"energy_weapons": [ "Energy Bolt", "Disintigrator" ],
+"missile_weapons": [ "Heat Seeker" ],
+"ships": [ "Spider Fighter", "Spider Interceptor", "Spider Bomber" ]
+},
+"briefing": [ "Example mission made with the editor." ],
+"default_loadouts": [ [ {
+"energy_weapons": [ "Energy Bolt", "Disintigrator", "none" ],
+"missile_weapons": [ "Heat Seeker", "Heat Seeker", "none" ],
+"name": "Alpha 1"
+}, {
+"energy_weapons": [ "Energy Bolt", "Energy Bolt", "none" ],
+"missile_weapons": [ "Heat Seeker", "Heat Seeker", "none" ],
+"name": "Alpha 2"
+}, {
+"energy_weapons": [ "Energy Bolt", "Energy Bolt", "none" ],
+"missile_weapons": [ "Heat Seeker", "Heat Seeker", "none" ],
+"name": "Alpha 3"
+} ], [ {
+"energy_weapons": [ "Disintigrator", "none", "none" ],
+"missile_weapons": [ "Heat Seeker", "Heat Seeker", "Heat Seeker" ],
+"name": "Beta 1"
+} ], [ {
+"energy_weapons": [ "Energy Bolt", "Disintigrator", "none" ],
+"missile_weapons": [ "Heat Seeker", "Heat Seeker", "Heat Seeker" ],
+"name": "Gamma 1"
+} ], [  ], [  ], [  ] ],
+"name": "My Mission",
+"non_player_loadouts": {
+"Buteo 1": {
+"energy_weapons": [ "Energy Bolt", "Energy Bolt", "none" ],
+"missile_weapons": [ "Heat Seeker", "none", "none" ]
+},
+"Buteo 2": {
+"energy_weapons": [ "Energy Bolt", "none", "none" ],
+"missile_weapons": [ "Heat Seeker", "Heat Seeker", "none" ]
+}
+},
+"objectives": [ [ {
+"description": "",
+"enabled": true,
+"failure_requirements": [ {
+"objective_index": -1,
+"objective_type": -1,
+"target_names": [ "Buteo 1", "Buteo 2" ],
+"time_limit": 0.0,
+"type": 5,
+"waypoints_name": ""
+} ],
+"is_critical": true,
+"name": "Destroy Buteo Wing",
+"success_requirements": [ {
+"objective_index": -1,
+"objective_type": -1,
+"target_names": [ "Buteo 1", "Buteo 2" ],
+"time_limit": 0.0,
+"type": 1,
+"waypoints_name": ""
+} ],
+"trigger_requirements": [  ]
+} ], [ {
+"description": "",
+"enabled": true,
+"failure_requirements": [ {
+"objective_index": -1,
+"objective_type": -1,
+"target_names": [ "Beta 1" ],
+"time_limit": 0.0,
+"type": 1,
+"waypoints_name": ""
+} ],
+"is_critical": false,
+"name": "Protect Beta Wing",
+"success_requirements": [ {
+"objective_index": 0,
+"objective_type": 0,
+"target_names": [  ],
+"time_limit": 0.0,
+"type": 3,
+"waypoints_name": ""
+} ],
+"trigger_requirements": [  ]
+} ], [ {
+"description": "",
+"enabled": true,
+"failure_requirements": [ {
+"objective_index": -1,
+"objective_type": -1,
+"target_names": [ "Alpha 2" ],
+"time_limit": 0.0,
+"type": 4,
+"waypoints_name": ""
+} ],
+"is_critical": false,
+"name": "Don't Call Reinforcements",
+"success_requirements": [ {
+"objective_index": 0,
+"objective_type": 0,
+"target_names": [  ],
+"time_limit": 0.0,
+"type": 3,
+"waypoints_name": ""
+} ],
+"trigger_requirements": [  ]
+} ] ],
+"player_path": "Targets Container/Alpha 1",
+"reinforcement_wings": [ "Gamma" ],
+"wing_names": [ "Alpha", "Beta", "Gamma", "", "", "" ]
+}
+
+[node name="Sun Light" type="DirectionalLight" parent="."]
+transform = Transform( 0.707107, -0.612372, 0.353554, 0, 0.5, 0.866025, -0.707107, -0.612372, 0.353554, 0, 0, 0 )
+
+[node name="Camera" type="Camera" parent="."]
+script = ExtResource( 2 )
+
+[node name="Targets Container" type="Node" parent="."]
+
+[node name="Alpha 1" parent="Targets Container" instance=ExtResource( 3 )]
+script = ExtResource( 4 )
+faction = "spider"
+wing_name = "Alpha"
+
+[node name="Alpha 2" parent="Targets Container" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 1 )
+script = ExtResource( 5 )
+faction = "spider"
+wing_name = "Alpha"
+initial_orders = [ 4, 0, 0, 0, 0, 0 ]
+
+[node name="Alpha 3" parent="Targets Container" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 1 )
+script = ExtResource( 5 )
+faction = "spider"
+wing_name = "Alpha"
+initial_orders = [ 4, 0, 0, 0, 0, 0 ]
+
+[node name="Buteo 1" parent="Targets Container" instance=ExtResource( 6 )]
+transform = Transform( 0.948588, 0.194114, 0.25, 0.12941, 0.482963, -0.866025, -0.288849, 0.853854, 0.433013, 2, 3, -15 )
+script = ExtResource( 5 )
+faction = "hawk"
+initial_orders = [ 4, 0, 0, 0, 0, 0 ]
+
+[node name="Buteo 2" parent="Targets Container" instance=ExtResource( 6 )]
+transform = Transform( 0.948588, 0.194114, 0.25, 0.12941, 0.482963, -0.866025, -0.288849, 0.853854, 0.433013, 5, 4, -15 )
+script = ExtResource( 5 )
+faction = "hawk"
+initial_orders = [ 4, 0, 0, 0, 0, 0 ]
+
+[node name="Beta 1" parent="Targets Container" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, -4, -4 )
+script = ExtResource( 5 )
+faction = "spider"
+wing_name = "Beta"
+
+[node name="Gamma 1" parent="Targets Container" instance=ExtResource( 8 )]
+transform = Transform( 0.258819, -0.25, -0.933013, 0, 0.965926, -0.258819, 0.965926, 0.0669873, 0.25, -1, 1, -25 )
+script = ExtResource( 5 )
+faction = "spider"
+is_warped_in = false
+wing_name = "Gamma"
+initial_orders = [ 4, 0, 0, 0, 0, 0 ]
+
+[node name="Waypoints Container" type="Node" parent="."]
+
+[node name="HUD" parent="." instance=ExtResource( 9 )]
+
+[node name="Mission Start Overlay" parent="." instance=ExtResource( 10 )]
+custom_styles/panel = SubResource( 1 )
+
+[node name="Pause Menu" parent="." instance=ExtResource( 11 )]
+pause_mode = 2
+visible = false

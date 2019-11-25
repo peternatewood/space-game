@@ -42,6 +42,12 @@ func orbit(vel: Vector2):
 	rotate(Vector3.UP, ROTATION_SPEED * vel.x)
 
 
+func reset():
+	camera.transform.origin = INITIAL_POSITION
+	transform.origin = Vector3.ZERO
+	set_rotation_degrees(Vector3(-45, 0, 0))
+
+
 func zoom_in():
 	camera.transform.origin.z = camera.transform.origin.z / ZOOM_SPEED
 
@@ -50,6 +56,7 @@ func zoom_out():
 	camera.transform.origin.z = camera.transform.origin.z * ZOOM_SPEED
 
 
+const INITIAL_POSITION: Vector3 = Vector3(0, 0, 10)
 const ROTATION_SPEED: float = 0.02
 const TRANSLATE_SPEED: float = 0.02
 const ZOOM_SPEED: float = 1.1

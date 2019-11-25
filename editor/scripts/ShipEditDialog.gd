@@ -1,29 +1,19 @@
 extends Control
 
-onready var energy_weapon_labels: Array = [
-	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Energy Weapon Label 1"),
-	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Energy Weapon Label 2"),
-	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Energy Weapon Label 3")
-]
-onready var energy_weapon_options: Array = [
-	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Energy Weapon Options 1"),
-	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Energy Weapon Options 2"),
-	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Energy Weapon Options 3")
-]
+onready var capital_ship_options = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Capital Ship Options")
+onready var faction_options = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Faction Options")
 onready var hitpoints_spinbox = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Hitpoints SpinBox")
-onready var missile_weapon_labels: Array = [
-	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Missile Weapon Label 1"),
-	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Missile Weapon Label 2"),
-	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Missile Weapon Label 3")
-]
-onready var missile_weapon_options: Array = [
-	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Missile Weapon Options 1"),
-	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Missile Weapon Options 2"),
-	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Missile Weapon Options 3")
-]
 onready var name_lineedit = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Name LineEdit")
 onready var next_button = get_node("Ship Edit Rows/Title Container/Next Button")
 onready var npc_settings = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows")
+onready var order_options: Array = [
+	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid/Order Type Option 1"),
+	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid/Order Type Option 2"),
+	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid/Order Type Option 3"),
+	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid/Order Type Option 4"),
+	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid/Order Type Option 5"),
+	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid/Order Type Option 6")
+]
 onready var player_ship_checkbox = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Player Ship CheckBox")
 onready var position_spinboxes: Dictionary = {
 	"x": get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Transform Container/Position X SpinBox"),
@@ -36,24 +26,39 @@ onready var rotation_spinboxes: Dictionary = {
 	"y": get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Transform Container/Rotation Y SpinBox"),
 	"z": get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Transform Container/Rotation Z SpinBox")
 }
+onready var ship_class_options = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Attack Ship Options")
 onready var title = get_node("Ship Edit Rows/Title Container/Title")
-onready var ship_class_options = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Ship Class Options")
 onready var warped_in_checkbox = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Warped In CheckBox")
-onready var wing_lineedit = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Wing LineEdit")
+onready var wing_label = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Wing Label")
+onready var wing_options = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Wing Options")
 
+var beam_weapon_index_name_map: Array = []
 var edit_ship = null
 var energy_weapon_index_name_map: Array = []
 var is_populating: bool = false
 var missile_weapon_index_name_map: Array = []
+var beam_weapon_labels: Array = []
+var beam_weapon_options: Array = []
+var energy_weapon_labels: Array = []
+var energy_weapon_options: Array = []
+var missile_weapon_labels: Array = []
+var missile_weapon_options: Array = []
 
 
 func _ready():
-	hitpoints_spinbox.connect("value_changed", self, "_on_hitpoints_changed")
-	name_lineedit.connect("text_changed", self, "_on_name_changed")
+	# Grab weapon labels and slots
+	var ship_edit_grid = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid")
+	for index in range(6):
+		var number_str: String = str(index + 1)
+
+		beam_weapon_labels.append(ship_edit_grid.get_node("Beam Weapon Label " + number_str))
+		beam_weapon_options.append(ship_edit_grid.get_node("Beam Weapon Options " + number_str))
+		energy_weapon_labels.append(ship_edit_grid.get_node("Energy Weapon Label " + number_str))
+		energy_weapon_options.append(ship_edit_grid.get_node("Energy Weapon Options " + number_str))
+		missile_weapon_labels.append(ship_edit_grid.get_node("Missile Weapon Label " + number_str))
+		missile_weapon_options.append(ship_edit_grid.get_node("Missile Weapon Options " + number_str))
+
 	player_ship_checkbox.connect("toggled", self, "_on_player_ship_toggled")
-	ship_class_options.connect("item_selected", self, "_on_ship_class_changed")
-	warped_in_checkbox.connect("toggled", self, "_on_warped_in_toggled")
-	wing_lineedit.connect("text_changed", self, "_on_wing_changed")
 
 	position_spinboxes.x.connect("value_changed", self, "_on_position_x_changed")
 	position_spinboxes.y.connect("value_changed", self, "_on_position_y_changed")
@@ -63,28 +68,8 @@ func _ready():
 	rotation_spinboxes.y.connect("value_changed", self, "_on_rotation_y_changed")
 	rotation_spinboxes.z.connect("value_changed", self, "_on_rotation_z_changed")
 
-	var energy_weapon_index: int = 0
-	for option in energy_weapon_options:
-		option.connect("item_selected", self, "_on_ship_energy_weapon_changed", [ energy_weapon_index ])
-		energy_weapon_index += 1
-
-	var missile_weapon_index: int = 0
-	for option in missile_weapon_options:
-		option.connect("item_selected", self, "_on_ship_missile_weapon_changed", [ missile_weapon_index ])
-		missile_weapon_index += 1
-
-
-func _on_hitpoints_changed(new_value: float):
-	if not is_populating:
-		edit_ship.hull_hitpoints = int(new_value)
-
-
-func _on_name_changed(new_text: String):
-	if not is_populating:
-		var old_name = edit_ship.name
-		edit_ship.set_name(new_text)
-		title.set_text("Edit " + edit_ship.name)
-		emit_signal("ship_name_changed", old_name, edit_ship.name)
+	var update_button = get_node("Ship Edit Rows/Update Button")
+	update_button.connect("pressed", self, "_on_update_pressed")
 
 
 func _on_player_ship_toggled(button_pressed: bool):
@@ -94,7 +79,7 @@ func _on_player_ship_toggled(button_pressed: bool):
 		else:
 			npc_settings.show()
 
-		emit_signal("player_ship_toggled", button_pressed)
+#		emit_signal("player_ship_toggled", button_pressed)
 
 
 func _on_position_x_changed(new_value: float):
@@ -133,37 +118,9 @@ func _on_rotation_z_changed(new_value: float):
 		emit_signal("ship_rotation_changed", edit_ship.rotation_degrees)
 
 
-func _on_ship_class_changed(item_index: int):
-	if not is_populating:
-		emit_signal("ship_class_changed", item_index)
-
-
-func _on_ship_energy_weapon_changed(item_index: int, slot_index: int):
-	var weapon_name: String = "none"
-	if item_index != 0:
-		# The first item at [0] is "none", so we have to subtract one
-		weapon_name = energy_weapon_index_name_map[item_index - 1]
-
-	emit_signal("ship_energy_weapon_changed", weapon_name, slot_index)
-
-
-func _on_ship_missile_weapon_changed(item_index: int, slot_index: int):
-	var weapon_name: String
-	if item_index != 0:
-		# The first item at [0] is "none", so we have to subtract one
-		weapon_name = missile_weapon_index_name_map[item_index - 1]
-
-	emit_signal("ship_missile_weapon_changed", weapon_name, slot_index)
-
-
-func _on_warped_in_toggled(button_pressed: bool):
-	edit_ship.is_warped_in = button_pressed
-
-
-func _on_wing_changed(new_text: String):
-	if not is_populating:
-		# TODO: Ensure only valid characters are entered
-		edit_ship.wing_name = new_text
+func _on_update_pressed():
+	title.set_text("Edit " + name_lineedit.text)
+	emit_signal("update_pressed")
 
 
 # PUBLIC
@@ -188,6 +145,12 @@ func fill_ship_info(ship, loadout: Dictionary = {}):
 	rotation_spinboxes.y.set_value(ship.rotation_degrees.y)
 	rotation_spinboxes.z.set_value(ship.rotation_degrees.z)
 
+	faction_options.select(0)
+	for index in range(faction_options.get_item_count()):
+		if faction_options.get_item_text(index) == ship.faction:
+			faction_options.select(index)
+			break
+
 	var beam_weapon_slot_count: int = 0
 	var energy_weapon_slot_count: int = 0
 	var missile_weapon_slot_count: int = 0
@@ -196,9 +159,18 @@ func fill_ship_info(ship, loadout: Dictionary = {}):
 	var energy_weapons: Array = loadout.get("energy_weapons", [])
 	var missile_weapons: Array = loadout.get("missile_weapons", [])
 
+	wing_options.select(0)
 	if ship is AttackShipBase:
-		wing_lineedit.set_text(ship.wing_name)
+		ship_class_options.show()
+		capital_ship_options.hide()
+		player_ship_checkbox.show()
+		wing_label.show()
+		wing_options.show()
 
+		for index in range(wing_options.get_item_count()):
+			if wing_options.get_item_text(index) == ship.wing_name:
+				wing_options.select(index)
+				break
 		for ship_option_index in range(ship_class_options.get_item_count()):
 			if ship_class_options.get_item_text(ship_option_index) == ship.ship_class:
 				ship_class_options.select(ship_option_index)
@@ -207,9 +179,27 @@ func fill_ship_info(ship, loadout: Dictionary = {}):
 		energy_weapon_slot_count = ship.energy_weapon_hardpoints.size()
 		missile_weapon_slot_count = ship.missile_weapon_hardpoints.size()
 	elif ship is CapitalShipBase:
+		ship_class_options.hide()
+		capital_ship_options.show()
+		player_ship_checkbox.hide()
+		wing_label.hide()
+		wing_options.hide()
+
 		beam_weapon_slot_count = ship.beam_weapon_turrets.size()
 		energy_weapon_slot_count = ship.energy_weapon_turrets.size()
 		missile_weapon_slot_count = ship.missile_weapon_turrets.size()
+
+	for index in range(beam_weapon_options.size()):
+		if index < beam_weapon_slot_count:
+			var beam_weapon_options_index = beam_weapon_index_name_map.find(beam_weapons[index])
+			# Add one since the first item is "none" and the index will be "-1" if the item isn't found
+			beam_weapon_options[index].select(beam_weapon_options_index + 1)
+
+			beam_weapon_options[index].show()
+			beam_weapon_labels[index].show()
+		else:
+			beam_weapon_options[index].hide()
+			beam_weapon_labels[index].hide()
 
 	for index in range(energy_weapon_options.size()):
 		if index < energy_weapon_slot_count:
@@ -242,10 +232,57 @@ func fill_ship_info(ship, loadout: Dictionary = {}):
 		npc_settings.hide()
 	elif ship is ShipBase:
 		warped_in_checkbox.set_pressed(ship.is_warped_in)
+
+		for index in range(order_options.size()):
+			order_options[index].select(ship.initial_orders[index])
+
 		npc_settings.show()
 
 	edit_ship = ship
 	is_populating = false
+
+
+func get_energy_weapon_selections():
+	var energy_weapon_names: Array = []
+
+	for option in energy_weapon_options:
+		var selected_id = option.get_selected_id()
+		if selected_id == 0:
+			energy_weapon_names.append("none")
+		else:
+			energy_weapon_names.append(energy_weapon_index_name_map[selected_id - 1])
+
+	return energy_weapon_names
+
+
+func get_faction_name():
+	return faction_options.get_item_text(faction_options.get_selected_id())
+
+
+func get_missile_weapon_selections():
+	var missile_weapon_names: Array = []
+
+	for option in missile_weapon_options:
+		var selected_id = option.get_selected_id()
+		if selected_id == 0:
+			missile_weapon_names.append("none")
+		else:
+			missile_weapon_names.append(missile_weapon_index_name_map[selected_id - 1])
+
+	return missile_weapon_names
+
+
+func get_orders():
+	var orders_list: Array = []
+
+	for option in order_options:
+		orders_list.append(option.get_selected_id())
+
+	return orders_list
+
+
+func get_wing_index():
+	return wing_options.get_selected_id() - 1
 
 
 # According to the docs, Control.has_point does exist, but the engine disagrees
@@ -253,10 +290,27 @@ func has_point(point: Vector2):
 	return rect_position.x < point.x and point.x < rect_position.x + rect_size.x and rect_position.y < point.y and point.y < rect_position.y + rect_size.y
 
 
-func prepare_options(mission_data):
+func populate_wing_options(wing_names: Array):
+	for index in range(wing_names.size()):
+		var is_empty: bool = wing_names[index] == ""
+
+		if is_empty:
+			wing_options.set_item_text(index + 1, "none")
+		else:
+			wing_options.set_item_text(index + 1, wing_names[index])
+
+		wing_options.set_item_disabled(index + 1, is_empty)
+
+
+func prepare_options(mission_data, mission_node):
 	var ship_index: int = 0
 	for name in mission_data.ship_models.keys():
 		ship_class_options.add_item(name, ship_index)
+		ship_index += 1
+
+	ship_index = 0
+	for name in mission_data.capital_ship_models.keys():
+		capital_ship_options.add_item(name, ship_index)
 		ship_index += 1
 
 	# Start at one since the first option "none" is at index 0
@@ -273,14 +327,15 @@ func prepare_options(mission_data):
 			option.add_item(name, missile_weapon_index)
 		missile_weapon_index += 1
 
+	var faction_index: int = 1
+	for faction_name in mission_node.factions.keys():
+		faction_options.add_item(faction_name, faction_index)
+		faction_index += 1
 
-signal player_ship_toggled
-signal ship_class_changed
-signal ship_energy_weapon_changed
-signal ship_missile_weapon_changed
-signal ship_name_changed
+
 signal ship_position_changed
 signal ship_rotation_changed
+signal update_pressed
 
 const AttackShipBase = preload("res://scripts/AttackShipBase.gd")
 const CapitalShipBase = preload("res://scripts/CapitalShipBase.gd")

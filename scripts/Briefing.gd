@@ -14,7 +14,7 @@ onready var objective_rows: Array = [
 onready var objectives_button = get_node("Columns/Menu Buttons/Objectives Button")
 onready var objectives_container = get_node("Columns/Menus Container/Objectives Container")
 onready var secondary_objectives_container = get_node("Columns/Menus Container/Objectives Container/Objective Rows/Secondary Container")
-onready var start_button = get_node("Columns/Menus Container/Start Button")
+onready var settings = get_node("/root/GlobalSettings")
 
 
 func _ready():
@@ -36,7 +36,17 @@ func _ready():
 	loadout_button.connect("pressed", self, "_on_loadout_button_pressed")
 	objectives_button.connect("pressed", self, "_on_objectives_button_pressed")
 
+	var start_button = get_node("Columns/Menus Container/Start Button")
 	start_button.connect("pressed", self, "_on_start_button_pressed")
+
+	var back_button = get_node("Columns/Menus Container/Back Button")
+	back_button.connect("pressed", self, "_on_back_button_pressed")
+
+	toggle_dyslexia(settings.get_dyslexia())
+
+
+func _on_back_button_pressed():
+	loader.change_scene("res://mission_select.tscn")
 
 
 func _on_briefing_button_pressed():
@@ -59,6 +69,16 @@ func _on_objectives_button_pressed():
 
 func _on_start_button_pressed():
 	loader.load_scene(mission_data.mission_scene_path)
+
+
+# PUBLIC
+
+
+func toggle_dyslexia(toggle_on: bool):
+	if toggle_on:
+		set_theme(settings.OPEN_DYSLEXIC_INTERFACE_THEME)
+	else:
+		set_theme(settings.INCONSOLATA_INTERFACE_THEME)
 
 
 const Objective = preload("Objective.gd")

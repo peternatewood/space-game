@@ -1,9 +1,19 @@
 extends Control
 
 onready var clear_binding_checkbox = get_node("Options Rows/TabContainer/Controls/Binding Options/Clear Binding")
+onready var color_picker_dialog = get_node("ColorPicker Popup")
+onready var color_pickers: Array = [
+	get_node("Options Rows/TabContainer/Accessibility/Accessibility Grid/Neutral Color Picker"),
+	get_node("Options Rows/TabContainer/Accessibility/Accessibility Grid/Friendly Color Picker"),
+	get_node("Options Rows/TabContainer/Accessibility/Accessibility Grid/Hostile Color Picker")
+]
+onready var colorblindness_options = get_node("Options Rows/TabContainer/Accessibility/Accessibility Grid/Colorblindness Options")
 onready var controls_tabs = get_node("Options Rows/TabContainer/Controls/Controls Tabs")
 onready var edit_binding_checkbox = get_node("Options Rows/TabContainer/Controls/Binding Options/Edit Checkbox")
 onready var go_to_conflict_checkbox = get_node("Options Rows/TabContainer/Controls/Binding Options/Go to Conflict")
+onready var hud_color_options = get_node("Options Rows/TabContainer/HUD/Color Options Row/HUD Color Options")
+onready var hud_colorpicker = get_node("ColorPicker Popup/HUD ColorPicker")
+onready var interactive_hud = get_node("Options Rows/TabContainer/HUD/HUD Panel/Interactive HUD")
 onready var keybind_popup = get_node("Keybind Popup")
 onready var keybind_accept_button = get_node("Keybind Popup/Popup Rows/Popup Buttons/Accept Button")
 onready var keybind_cancel_button = get_node("Keybind Popup/Popup Rows/Popup Buttons/Cancel Button")
@@ -175,11 +185,34 @@ func _ready():
 						node.connect("keybind_changed", settings, "_on_keybind_changed")
 						keybinds.append(node)
 
+	# Game
 	var units_options = get_node("Options Rows/TabContainer/Game/Units Container/Units Options")
 	units_options.connect("item_selected", self, "_on_units_options_item_selected")
 
+	# Accessibility
 	var dyslexia_checkbox = get_node("Options Rows/TabContainer/Accessibility/Dyslexia Checkbox")
+	dyslexia_checkbox.set_pressed(settings.get_dyslexia())
 	dyslexia_checkbox.connect("toggled", self, "_on_dyslexia_checkbox_toggled")
+
+	toggle_dyslexia(settings.get_dyslexia())
+	settings.connect("dyslexia_toggled", self, "toggle_dyslexia")
+
+	colorblindness_options.select(settings.get_colorblindness())
+	colorblindness_options.connect("item_selected", self, "_on_colorblindness_selected")
+
+	for index in range(color_pickers.size()):
+		color_pickers[index].connect("color_changed", self, "_on_color_picker_changed", [ index ])
+
+	update_color_pickers()
+
+	# HUD
+	hud_color_options.select(settings.get_hud_palette_index())
+	hud_color_options.connect("item_selected", self, "_on_hud_color_options_selected")
+
+	interactive_hud.connect("colorable_node_clicked", self, "_on_interactive_hud_colorable_node_clicked")
+	color_picker_dialog.connect("confirmed", self, "_on_color_picker_dialog_confirmed")
+	color_picker_dialog.connect("popup_hide", self, "_on_color_picker_dialog_popup_hide")
+	hud_colorpicker.connect("color_changed", self, "_on_hud_colorpicker_changed")
 
 
 func _handle_keybind_popup_input(event):
@@ -226,6 +259,28 @@ func _on_borderless_checkbox_toggled(button_pressed: bool):
 	settings.set_borderless_window(button_pressed)
 
 
+func _on_color_picker_changed(new_color: Color, type_index: int):
+	if colorblindness_options.get_selected_id() != settings.Colorblindness.CUSTOM:
+		colorblindness_options.select(settings.Colorblindness.CUSTOM)
+
+	settings.set_custom_ui_color(type_index, new_color)
+
+
+func _on_color_picker_dialog_confirmed():
+	var new_color: Color = hud_colorpicker.get_pick_color()
+	interactive_hud.set_current_icon_color(new_color)
+
+
+func _on_color_picker_dialog_popup_hide():
+	var previous_color = settings.get_hud_custom_color(interactive_hud.current_node_path)
+	interactive_hud.set_current_icon_color(previous_color)
+
+
+func _on_colorblindness_selected(item_index: int):
+	settings.set_colorblindness(item_index)
+	update_color_pickers()
+
+
 func _on_dyslexia_checkbox_toggled(button_pressed: bool):
 	settings.set_dyslexia(button_pressed)
 
@@ -240,6 +295,33 @@ func _on_fullscreen_checkbox_toggled(button_pressed: bool):
 
 func _on_hdr_checkbox_toggled(button_pressed: bool):
 	settings.set_hdr(button_pressed)
+
+
+func _on_hud_color_options_selected(item_index: int):
+	settings.set_hud_palette(item_index)
+	interactive_hud.set_palette(settings.get_hud_palette())
+
+
+func _on_hud_colorpicker_changed(new_color: Color):
+	interactive_hud.set_current_icon_color(new_color, false)
+
+
+func _on_interactive_hud_colorable_node_clicked(node):
+	var viewport_size = get_viewport().get_visible_rect().size
+
+	var popup_size: Vector2 = color_picker_dialog.get_size()
+	var popup_left: float
+
+	if node.get_global_position().x < viewport_size.x / 2:
+		popup_left = viewport_size.x - popup_size.x
+	else:
+		popup_left = 0
+
+	var popup_position = Rect2(popup_left, viewport_size.y / 2 - popup_size.y / 2, popup_size.x, popup_size.y)
+
+	hud_colorpicker.set_pick_color(node.modulate)
+	color_picker_dialog.set_text(node.name)
+	color_picker_dialog.popup(popup_position)
 
 
 func _on_keybind_button_pressed(keybind, event, input_type, button):
@@ -393,6 +475,25 @@ func hide_popup_backdrop():
 
 func show_popup_backdrop():
 	popup_backdrop.show()
+
+
+func toggle_dyslexia(toggle_on: bool):
+	if toggle_on:
+		set_theme(settings.OPEN_DYSLEXIC_INTERFACE_THEME)
+	else:
+		set_theme(settings.INCONSOLATA_INTERFACE_THEME)
+
+
+func update_color_pickers():
+	var colorblindness_option = settings.get_colorblindness()
+
+	if colorblindness_option == settings.Colorblindness.CUSTOM:
+		# Use custom options
+		for index in range(color_pickers.size()):
+			color_pickers[index].set_pick_color(settings.get_custom_ui_color(index))
+	else:
+		for index in range(color_pickers.size()):
+			color_pickers[index].set_pick_color(settings.INTERFACE_COLORS[colorblindness_option][index])
 
 
 signal back_button_pressed

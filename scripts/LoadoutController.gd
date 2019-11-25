@@ -17,24 +17,18 @@ onready var ship_weapon_capacity_label = get_node("Ship Preview Container/Ship D
 onready var ship_wing_name = get_node("Weapon Slots Rows/Ship Wing Name")
 onready var weapon_slots_rows = get_node("Weapon Slots Rows")
 onready var weapon_preview = get_node("Weapon Preview Container")
-onready var wing_ships_container = get_node("Wing Ships Container")
+onready var wing_containers = get_node("Wing Ships Container").get_children()
 
 var current_ship_class: String
 var editing_ship_index: int = -1
-var editing_wing_name: String
+var editing_wing_index: int = -1
 var energy_weapon_data: Dictionary = {}
 var missile_weapon_data: Dictionary = {}
 var ship_data: Dictionary = {}
 var wing_ship_over
-var wing_containers: Dictionary = {}
 
 
 func _ready():
-	# Map wing names to container nodes
-	var wing_container_nodes = wing_ships_container.get_children()
-	for index in range(min(mission_data.VALID_WINGS.size(), wing_container_nodes.size())):
-		wing_containers[mission_data.VALID_WINGS[index]] = wing_container_nodes[index]
-
 	var ship_selection_container = get_node("Left Rows/Ships Panel/Ship Selection Container")
 	for ship_class in mission_data.ship_models.keys():
 		if mission_data.armory.ships.has(ship_class):
@@ -140,81 +134,90 @@ func _ready():
 		missile_weapon_slots[index].set_options(missile_weapon_data)
 		missile_weapon_slots[index].connect("icon_pressed", self, "_on_missile_weapon_slot_pressed", [ index ])
 
-	var wing_radios: Dictionary = {
-		"Alpha": get_node("Left Rows/Wings Panel/Wing Selection Container/Alpha CheckBox"),
-		"Beta": get_node("Left Rows/Wings Panel/Wing Selection Container/Beta CheckBox")
-	}
-	# Set wing ship icons based on wing defaults
-	for wing_name in wing_containers.keys():
-		if mission_data.wing_loadouts.has(wing_name):
-			var ship_radials = wing_containers[wing_name].get_children()
-			for ship_index in range(4):
-				if ship_index < mission_data.wing_loadouts[wing_name].size():
-					# Initialize ship options
-					ship_radials[ship_index].set_options(ship_data)
+	# Create wing checkboxes
+	var wing_selection_checkboxes = get_node("Left Rows/Wings Panel/Wing Selection Container").get_children()
+	var wing_index: int = 0
 
-					var ship_class = mission_data.wing_loadouts[wing_name][ship_index].ship_class
+	for index in range(wing_selection_checkboxes.size()):
+		var checkbox = wing_selection_checkboxes[index]
+		var wing_name = mission_data.wing_names[index]
 
-					ship_radials[ship_index].set_current_icon(ship_data[ship_class].icon)
-					ship_radials[ship_index].connect("radial_pressed", self, "_on_wing_radial_pressed", [ wing_name, ship_index ])
-					ship_radials[ship_index].connect("icon_pressed", self, "_on_wing_icon_pressed")
-				else:
-					ship_radials[ship_index].disable()
+		if wing_name == "":
+			checkbox.hide()
 		else:
-			wing_radios[wing_name].hide()
+			checkbox.set_text(mission_data.wing_names[index])
+			checkbox.connect("pressed", self, "_on_wing_checkbox_pressed", [ index ])
 
-	var index: int = 0
-	for node in get_node("Left Rows/Wings Panel/Wing Selection Container").get_children():
-		if node is CheckBox:
-			node.connect("pressed", self, "_on_wing_checkbox_pressed", [ mission_data.VALID_WINGS[index] ])
-			index += 1
+	# Set wing ship icons based on wing defaults
+	var wing_count: int = mission_data.wing_loadouts.size()
+	for wing_index in range(wing_containers.size()):
+		if wing_index < wing_count:
+			var ship_count: int = mission_data.wing_loadouts[wing_index].size()
+
+			for ship_index in range(4):
+				if ship_index < ship_count:
+					var ship_class: String = mission_data.wing_loadouts[wing_index][ship_index].get("ship_class", "")
+
+					wing_containers[wing_index].get_child(ship_index).set_options(ship_data)
+					wing_containers[wing_index].get_child(ship_index).set_current_icon(ship_data[ship_class].icon)
+					wing_containers[wing_index].get_child(ship_index).connect("radial_pressed", self, "_on_wing_radial_pressed", [ wing_index, ship_index ])
+					wing_containers[wing_index].get_child(ship_index).connect("icon_pressed", self, "_on_wing_icon_pressed")
+				else:
+					wing_containers[wing_index].get_child(ship_index).disable()
+		else:
+			wing_containers[wing_index].hide()
 
 	# Default to showing player/Alpha 1 loadout
-	_on_wing_radial_pressed("Alpha", 0)
+	_on_wing_radial_pressed(0, 0)
 
 
 func _on_energy_weapon_slot_pressed(weapon_name: String, slot_index: int):
-	if editing_wing_name == "" or editing_ship_index == -1:
+	if editing_wing_index == -1 or editing_ship_index == -1:
 		print("Something went wrong!")
-	elif weapon_name != mission_data.wing_loadouts[editing_wing_name][editing_ship_index].energy_weapons[slot_index].name:
-		mission_data.wing_loadouts[editing_wing_name][editing_ship_index].energy_weapons[slot_index].model = energy_weapon_data[weapon_name].model
-		mission_data.wing_loadouts[editing_wing_name][editing_ship_index].energy_weapons[slot_index].name = weapon_name
+	elif weapon_name != mission_data.wing_loadouts[editing_wing_index][editing_ship_index].energy_weapons[slot_index].name:
+		mission_data.wing_loadouts[editing_wing_index][editing_ship_index].energy_weapons[slot_index].model = energy_weapon_data[weapon_name].model
+		mission_data.wing_loadouts[editing_wing_index][editing_ship_index].energy_weapons[slot_index].name = weapon_name
 
 
 func _on_missile_weapon_slot_pressed(weapon_name: String, slot_index: int):
-	if editing_wing_name == "" or editing_ship_index == -1:
+	if editing_wing_index == -1 or editing_ship_index == -1:
 		print("Something went wrong!")
-	elif weapon_name != mission_data.wing_loadouts[editing_wing_name][editing_ship_index].missile_weapons[slot_index].name:
-		mission_data.wing_loadouts[editing_wing_name][editing_ship_index].missile_weapons[slot_index].model = missile_weapon_data[weapon_name].model
-		mission_data.wing_loadouts[editing_wing_name][editing_ship_index].missile_weapons[slot_index].name = weapon_name
+	elif weapon_name != mission_data.wing_loadouts[editing_wing_index][editing_ship_index].missile_weapons[slot_index].name:
+		mission_data.wing_loadouts[editing_wing_index][editing_ship_index].missile_weapons[slot_index].model = missile_weapon_data[weapon_name].model
+		mission_data.wing_loadouts[editing_wing_index][editing_ship_index].missile_weapons[slot_index].name = weapon_name
 
 
-func _on_wing_checkbox_pressed(pressed_wing_name: String):
-	for wing_name in wing_containers.keys():
-		wing_containers[wing_name].toggle(wing_name == pressed_wing_name)
+func _on_wing_checkbox_pressed(selected_index: int):
+	for index in range(wing_containers.size()):
+		if index == selected_index:
+			wing_containers[index].show()
+		else:
+			wing_containers[index].hide()
 
 
 func _on_wing_icon_pressed(ship_class: String):
-	if editing_wing_name == "" or editing_ship_index == -1:
+	if editing_wing_index == -1 or editing_ship_index == -1:
 		print("Something went wrong!")
-	elif ship_class != mission_data.wing_loadouts[editing_wing_name][editing_ship_index].ship_class:
-		mission_data.wing_loadouts[editing_wing_name][editing_ship_index].ship_class = ship_class
-		mission_data.wing_loadouts[editing_wing_name][editing_ship_index].model = ship_data[ship_class].model
+	elif ship_class != mission_data.wing_loadouts[editing_wing_index][editing_ship_index].ship_class:
+		mission_data.wing_loadouts[editing_wing_index][editing_ship_index].ship_class = ship_class
+		mission_data.wing_loadouts[editing_wing_index][editing_ship_index].model = ship_data[ship_class].model
 
-		_set_editing_ship(ship_class, editing_wing_name, editing_ship_index)
-
-
-func _on_wing_radial_pressed(wing_name: String, ship_index: int):
-	_set_editing_ship(mission_data.wing_loadouts[wing_name][ship_index].ship_class, wing_name, ship_index)
+		_set_editing_ship(ship_class, editing_wing_index, editing_ship_index)
 
 
-func _set_editing_ship(ship_class: String, wing_name: String, ship_index: int):
+func _on_wing_radial_pressed(wing_index: int, ship_index: int):
+	_set_editing_ship(mission_data.wing_loadouts[wing_index][ship_index].ship_class, wing_index, ship_index)
+
+
+func _set_editing_ship(ship_class: String, wing_index: int, ship_index: int):
+	var wing_name: String = mission_data.wing_names[wing_index]
+
 	_update_ship_preview(ship_class)
 	ship_overhead.set_texture(ship_data[ship_class].overhead)
 	ship_wing_name.set_text(wing_name + " " + str(ship_index + 1))
 
 	# Update weapon slot icons
-	var ship_loadout = mission_data.wing_loadouts[wing_name][ship_index]
+	var ship_loadout = mission_data.wing_loadouts[wing_index][ship_index]
 	for index in range(energy_weapon_slots.size()):
 		if index < ship_data[ship_loadout.ship_class].energy_weapon_slots:
 			energy_weapon_slots[index].show()
@@ -240,11 +243,11 @@ func _set_editing_ship(ship_class: String, wing_name: String, ship_index: int):
 			missile_weapon_slots[index].hide()
 
 	if editing_ship_index != -1:
-		wing_containers[editing_wing_name].get_child(editing_ship_index).toggle_border(false)
+		wing_containers[editing_wing_index].get_child(editing_ship_index).toggle_border(false)
 
-	wing_containers[wing_name].get_child(ship_index).toggle_border(true)
+	wing_containers[wing_index].get_child(ship_index).toggle_border(true)
 
-	editing_wing_name = wing_name
+	editing_wing_index = wing_index
 	editing_ship_index = ship_index
 
 	ship_overhead.show()

@@ -1,0 +1,80 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://themes/interface_blue.tres" type="Theme" id=1]
+[ext_resource path="res://scripts/MissionSelect.gd" type="Script" id=2]
+[ext_resource path="res://images/background_blue.png" type="Texture" id=3]
+
+[node name="Mission Select" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
+
+[node name="Background" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 3 )
+expand = true
+stretch_mode = 7
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 16.0
+margin_top = 16.0
+margin_right = -16.0
+margin_bottom = -16.0
+
+[node name="Mission Select Rows" type="VBoxContainer" parent="MarginContainer"]
+margin_right = 992.0
+margin_bottom = 568.0
+
+[node name="Missions Label" type="Label" parent="MarginContainer/Mission Select Rows"]
+margin_right = 992.0
+margin_bottom = 18.0
+text = "Missions"
+
+[node name="Missions Panel" type="PanelContainer" parent="MarginContainer/Mission Select Rows"]
+margin_top = 22.0
+margin_right = 992.0
+margin_bottom = 267.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Missions Scroll" type="ScrollContainer" parent="MarginContainer/Mission Select Rows/Missions Panel"]
+margin_left = 8.0
+margin_top = 4.0
+margin_right = 984.0
+margin_bottom = 241.0
+
+[node name="Missions" type="VBoxContainer" parent="MarginContainer/Mission Select Rows/Missions Panel/Missions Scroll"]
+
+[node name="User Missions Label" type="Label" parent="MarginContainer/Mission Select Rows"]
+margin_top = 271.0
+margin_right = 992.0
+margin_bottom = 289.0
+text = "User Missions"
+
+[node name="User Missions Panel" type="PanelContainer" parent="MarginContainer/Mission Select Rows"]
+margin_top = 293.0
+margin_right = 992.0
+margin_bottom = 538.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="User Missions Scroll" type="ScrollContainer" parent="MarginContainer/Mission Select Rows/User Missions Panel"]
+margin_left = 8.0
+margin_top = 4.0
+margin_right = 984.0
+margin_bottom = 241.0
+
+[node name="User Missions" type="VBoxContainer" parent="MarginContainer/Mission Select Rows/User Missions Panel/User Missions Scroll"]
+
+[node name="Back Button" type="Button" parent="MarginContainer/Mission Select Rows"]
+margin_left = 944.0
+margin_top = 542.0
+margin_right = 992.0
+margin_bottom = 568.0
+size_flags_horizontal = 8
+size_flags_vertical = 8
+text = "Back"

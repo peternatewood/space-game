@@ -668,7 +668,7 @@ margin_right = 66.0
 margin_bottom = -32.0
 rect_min_size = Vector2( 132, 66 )
 
-[node name="TextureRect" type="TextureRect" parent="Radar"]
+[node name="Radar Background" type="TextureRect" parent="Radar"]
 modulate = Color( 0.501961, 0.752941, 1, 1 )
 anchor_left = 0.5
 anchor_top = 0.5
@@ -703,13 +703,13 @@ custom_constants/separation = 0
 [node name="Target Name" type="Label" parent="Target View Container/Target View Rows"]
 margin_right = 164.0
 margin_bottom = 18.0
-text = "ship 1"
+text = "Hyla 1"
 
 [node name="Target Class" type="Label" parent="Target View Container/Target View Rows"]
 margin_top = 18.0
 margin_right = 164.0
 margin_bottom = 36.0
-text = "ship"
+text = "Frog Fighter"
 
 [node name="Target Distance Container" type="HBoxContainer" parent="Target View Container/Target View Rows"]
 modulate = Color( 0.501961, 0.752941, 1, 1 )
@@ -816,6 +816,8 @@ visible = false
 script = ExtResource( 24 )
 
 [node name="Arrow Up" type="Control" parent="Edge Target Icon"]
+editor/display_folded = true
+visible = false
 
 [node name="Arrow Up Poly" type="Polygon2D" parent="Edge Target Icon/Arrow Up"]
 polygon = PoolVector2Array( 0, 2, -6, 8, 6, 8 )
@@ -832,6 +834,8 @@ align = 1
 valign = 1
 
 [node name="Arrow Up Right" type="Control" parent="Edge Target Icon"]
+editor/display_folded = true
+visible = false
 
 [node name="Arrow Up Right Poly" type="Polygon2D" parent="Edge Target Icon/Arrow Up Right"]
 rotation = 0.785398
@@ -849,6 +853,8 @@ align = 1
 valign = 1
 
 [node name="Arrow Right" type="Control" parent="Edge Target Icon"]
+editor/display_folded = true
+visible = false
 
 [node name="Arrow Right Poly" type="Polygon2D" parent="Edge Target Icon/Arrow Right"]
 polygon = PoolVector2Array( -2, 0, -8, -6, -8, 6 )
@@ -867,6 +873,8 @@ align = 1
 valign = 1
 
 [node name="Arrow Down Right" type="Control" parent="Edge Target Icon"]
+editor/display_folded = true
+visible = false
 
 [node name="Arrow Down Right Poly" type="Polygon2D" parent="Edge Target Icon/Arrow Down Right"]
 rotation = 2.35619
@@ -886,6 +894,8 @@ align = 1
 valign = 1
 
 [node name="Arrow Down" type="Control" parent="Edge Target Icon"]
+editor/display_folded = true
+visible = false
 
 [node name="Arrow Down Poly" type="Polygon2D" parent="Edge Target Icon/Arrow Down"]
 polygon = PoolVector2Array( 0, -2, -6, -8, 6, -8 )
@@ -904,6 +914,8 @@ align = 1
 valign = 1
 
 [node name="Arrow Down Left" type="Control" parent="Edge Target Icon"]
+editor/display_folded = true
+visible = false
 
 [node name="Arrow Down Left Poly" type="Polygon2D" parent="Edge Target Icon/Arrow Down Left"]
 rotation = 3.92699
@@ -921,6 +933,8 @@ align = 1
 valign = 1
 
 [node name="Arrow Left" type="Control" parent="Edge Target Icon"]
+editor/display_folded = true
+visible = false
 
 [node name="Arrow Left Poly" type="Polygon2D" parent="Edge Target Icon/Arrow Left"]
 polygon = PoolVector2Array( 2, 0, 8, -6, 8, 6 )
@@ -937,6 +951,7 @@ align = 1
 valign = 1
 
 [node name="Arrow Up Left" type="Control" parent="Edge Target Icon"]
+editor/display_folded = true
 
 [node name="Arrow  Up Left Poly" type="Polygon2D" parent="Edge Target Icon/Arrow Up Left"]
 rotation = 5.49779
@@ -954,6 +969,10 @@ valign = 1
 [node name="Target Icon" type="Control" parent="."]
 editor/display_folded = true
 visible = false
+margin_left = 400.0
+margin_top = 240.0
+margin_right = 400.0
+margin_bottom = 240.0
 script = ExtResource( 25 )
 
 [node name="Top Left" type="Line2D" parent="Target Icon"]
@@ -1003,13 +1022,13 @@ margin_right = 726.0
 margin_bottom = 14.0
 
 [node name="Target Viewport" type="Viewport" parent="."]
-editor/display_folded = true
 size = Vector2( 160, 160 )
 own_world = true
 transparent_bg = true
 render_target_v_flip = true
 
 [node name="Camera" type="Camera" parent="Target Viewport"]
+transform = Transform( 0.707107, -0.40558, 0.579228, 0, 0.819152, 0.573577, -0.707107, -0.40558, 0.579228, 1, 1, 1 )
 environment = SubResource( 10 )
 projection = 1
 current = true

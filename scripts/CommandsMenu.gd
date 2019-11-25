@@ -6,8 +6,18 @@ onready var menus_container = get_node("Menus Container")
 onready var mission_controller = get_node_or_null("/root/Mission Controller")
 onready var root_menu = get_node("Root Commands")
 
+var allow_input: bool = false
 var command_type: int = NONE
 var commanding_ship
+var number_command_map: Array = [
+	0, # null
+	1, # Attack
+	2, # Defend
+	3, # Ignore
+	8, # Cover Me
+	4, # Attack Any
+	5  # Depart
+]
 var reinforcements_list
 var ship_commands
 var ships_menu
@@ -103,15 +113,21 @@ func _handle_number_press(number: int):
 			# Not a valid number, so we do nothing
 			return
 	elif ship_commands.visible:
+		if number >= number_command_map.size():
+			# Invalid command number
+			return
+
+		var command_index: int = number_command_map[number]
+
 		match command_type:
 			ALL_SHIPS:
 				for ship in mission_controller.get_commandable_ships():
-					ship.set_command(number, mission_controller.player)
+					ship.set_command(command_index, mission_controller.player)
 			WING:
 				for ship in wing.wing_ships:
-					ship.set_command(number, mission_controller.player)
+					ship.set_command(command_index, mission_controller.player)
 			SHIP:
-				commanding_ship.set_command(number, mission_controller.player)
+				commanding_ship.set_command(command_index, mission_controller.player)
 				commanding_ship = null
 			_:
 				# Not a valid number, so we do nothing
@@ -123,56 +139,59 @@ func _handle_number_press(number: int):
 
 
 func _input(event):
-	if event.is_action("toggle_communcations_menu") and event.pressed:
-		if visible:
-			hide()
-		else:
-			show()
-			timeout_countdown = TIMEOUT_DELAY
-	elif event is InputEventKey and event.pressed:
-		# Handle number inputs
-		match event.scancode:
-			KEY_1, KEY_KP_1:
-				_handle_number_press(1)
-			KEY_2, KEY_KP_2:
-				_handle_number_press(2)
-			KEY_3, KEY_KP_3:
-				_handle_number_press(3)
-			KEY_4, KEY_KP_4:
-				_handle_number_press(4)
-			KEY_5, KEY_KP_5:
-				_handle_number_press(5)
-			KEY_6, KEY_KP_6:
-				_handle_number_press(6)
-			KEY_7, KEY_KP_7:
-				_handle_number_press(7)
-			KEY_0, KEY_KP_0:
-				if wings_menu.visible:
-					menus_container.hide()
-					wings_menu.hide()
-					root_menu.show()
-				elif ships_menu.visible:
-					menus_container.hide()
-					ships_menu.hide()
-					root_menu.show()
-				elif reinforcements_list.visible:
-					menus_container.hide()
-					reinforcements_list.hide()
-					root_menu.show()
-				elif ship_commands.visible:
-					ship_commands.hide()
+	if allow_input:
+		if event.is_action("toggle_communcations_menu") and event.pressed:
+			if visible:
+				hide()
+			else:
+				show()
+				timeout_countdown = TIMEOUT_DELAY
+		elif event is InputEventKey and event.pressed:
+			# Handle number inputs
+			match event.scancode:
+				KEY_1, KEY_KP_1:
+					_handle_number_press(1)
+				KEY_2, KEY_KP_2:
+					_handle_number_press(2)
+				KEY_3, KEY_KP_3:
+					_handle_number_press(3)
+				KEY_4, KEY_KP_4:
+					_handle_number_press(4)
+				KEY_5, KEY_KP_5:
+					_handle_number_press(5)
+				KEY_6, KEY_KP_6:
+					_handle_number_press(6)
+				KEY_7, KEY_KP_7:
+					_handle_number_press(7)
+				KEY_0, KEY_KP_0:
+					if wings_menu.visible:
+						menus_container.hide()
+						wings_menu.hide()
+						root_menu.show()
+					elif ships_menu.visible:
+						menus_container.hide()
+						ships_menu.hide()
+						root_menu.show()
+					elif reinforcements_list.visible:
+						menus_container.hide()
+						reinforcements_list.hide()
+						root_menu.show()
+					elif ship_commands.visible:
+						ship_commands.hide()
 
-					match command_type:
-						ALL_SHIPS:
-							menus_container.hide()
-							root_menu.show()
-						WING:
-							wings_menu.show()
-						SHIP:
-							ships_menu.show()
+						match command_type:
+							ALL_SHIPS:
+								menus_container.hide()
+								root_menu.show()
+							WING:
+								wings_menu.show()
+							SHIP:
+								ships_menu.show()
 
 
 func _on_mission_ready():
+	allow_input = true
+
 	# Build ships list
 	var index: int = 1
 	var commandable_ships = mission_controller.get_commandable_ships(true)

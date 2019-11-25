@@ -1,6 +1,10 @@
 extends Node
 
 enum { MASTER, SOUND_EFFECTS, MUSIC, UI_SOUNDS, AUDIO_BUS_COUNT }
+enum Colorblindness { FULL, PROTANOPIA, DEUTERANOPIA, TRITANOPIA, CUSTOM }
+# Protanopia: no red photoreceptors
+# Dueteranopia: similar to protanopia, without dimming effect
+# Tritanopia: no blue photoreceptors (very rare)
 
 # TODO: change to using .cfg format and manipulating ProjectSettings directly
 
@@ -17,10 +21,14 @@ var settings: Dictionary = {
 	"audio_ui_sounds_percent": Setting.new("audio_ui_sounds_percent", 100),
 	"audio_ui_sounds_mute": Setting.new("audio_ui_sounds_mute", false),
 	"borderless": Setting.new("borderless", false),
+	"colorblindness": Setting.new("colorblindness", Colorblindness.FULL),
+	"custom_ui_colors": Setting.new("custom_ui_colors", [ Color.white, Color.white, Color.white ]),
 	"dyslexia": Setting.new("dyslexia", false),
 	"fov": Setting.new("fov", 70),
 	"fullscreen": Setting.new("fullscreen", false),
 	"hdr": Setting.new("hdr", false),
+	"hud_palette_colors": Setting.new("hud_palette_colors", { "default": Color.white }),
+	"hud_palette_index": Setting.new("hud_palette_index", 0),
 	"msaa": Setting.new("msaa", 0),
 	"reflections": Setting.new("reflections", 2048),
 	"resolution": Setting.new("resolution", Vector2(1280, 720)),
@@ -188,6 +196,20 @@ func get_borderless_window():
 	return settings.borderless_window.get_value()
 
 
+func get_colorblindness():
+	return settings.colorblindness.get_value()
+
+
+func get_custom_ui_color(ui_index: int, faded: bool = false):
+	if faded:
+		var color = settings.custom_ui_colors.get_value()[ui_index]
+		color.a = 0.5
+
+		return color
+
+	return settings.custom_ui_colors.get_value()[ui_index]
+
+
 func get_dyslexia():
 	return settings.dyslexia.get_value()
 
@@ -198,6 +220,36 @@ func get_fov():
 
 func get_fullscreen():
 	return settings.fullscreen.get_value()
+
+
+func get_hud_custom_color(path: String):
+	var palette_colors = get_hud_palette()
+	return palette_colors.get(path, palette_colors.default)
+
+
+func get_hud_palette():
+	var hud_palette_index: int = settings.hud_palette_index.get_value()
+
+	if hud_palette_index == HUD_PALETTES.size():
+		return settings.hud_palette_colors.get_value()
+
+	return HUD_PALETTES[hud_palette_index]
+
+
+func get_hud_palette_index():
+	return settings.hud_palette_index.get_value()
+
+
+func get_interface_color(alignment: int, faded: bool = false):
+	var colorblindness_option = settings.colorblindness.get_value()
+
+	if colorblindness_option == Colorblindness.CUSTOM:
+		return get_custom_ui_color(alignment, faded)
+	else:
+		if faded:
+			return INTERFACE_COLORS_FADED[colorblindness_option][alignment]
+
+		return INTERFACE_COLORS[colorblindness_option][alignment]
 
 
 func get_hdr():
@@ -269,6 +321,22 @@ func set_borderless_window(toggle_on: bool):
 	_save_settings_to_file()
 
 
+func set_colorblindness(option_index: int):
+	settings.colorblindness.set_value(option_index)
+	emit_signal("ui_colors_changed")
+
+	_save_settings_to_file()
+
+
+func set_custom_ui_color(type: int, new_color: Color):
+	var ui_colors = settings.custom_ui_colors._value
+	ui_colors[type] = new_color
+	settings.custom_ui_colors.set_value(ui_colors)
+	emit_signal("ui_colors_changed")
+
+	_save_settings_to_file()
+
+
 func set_dyslexia(toggle_on: bool):
 	settings.dyslexia.set_value(toggle_on)
 	emit_signal("dyslexia_toggled", settings.dyslexia._value)
@@ -293,6 +361,22 @@ func set_fullscreen(toggle_on: bool):
 func set_hdr(toggle_on: bool):
 	settings.hdr.set_value(toggle_on)
 	get_viewport().set_hdr(settings.hdr._value)
+
+	_save_settings_to_file()
+
+
+func set_hud_custom_color(node_path: String, new_color: Color):
+	var palette_colors = settings.hud_palette_colors.get_value()
+	palette_colors[node_path] = new_color
+	settings.hud_palette_colors.set_value(palette_colors)
+	emit_signal("hud_palette_color_changed", node_path)
+
+	_save_settings_to_file()
+
+
+func set_hud_palette(index: int):
+	settings.hud_palette_index.set_value(index)
+	emit_signal("hud_palette_changed")
 
 	_save_settings_to_file()
 
@@ -341,6 +425,9 @@ func set_vsync(toggle_on: bool):
 
 signal dyslexia_toggled
 signal fov_changed
+signal hud_palette_changed
+signal hud_palette_color_changed
+signal ui_colors_changed
 signal units_changed
 
 const Keybind = preload("Keybind.gd")
@@ -350,8 +437,28 @@ const DISTANCE_UNITS: Array = [
 	"m",
 	"ft"
 ]
+const HUD_PALETTES: Array = [
+	{ "default": Color("#80c0ff") }, # All light blue
+	{ "default": Color("#80d040") }, # All green
+	{ "default": Color("#ffc080") }  # All amber
+	# TODO: add more custom options
+]
+const INTERFACE_COLORS: Array = [
+	[ Color(1.00, 1.00, 0.15, 1.0), Color(0.35, 1.00, 0.15, 1.0), Color(1.00, 0.35, 0.15, 1.0) ],
+	[ Color(1.00, 1.00, 0.75, 1.0), Color(0.00, 0.50, 1.00, 1.0), Color(1.00, 0.50, 0.00, 1.0) ],
+	[ Color(1.00, 1.00, 0.85, 1.0), Color(0.00, 0.65, 1.00, 1.0), Color(1.00, 0.65, 0.00, 1.0) ],
+	[ Color(1.00, 1.00, 0.90, 1.0), Color(0.00, 0.50, 1.00, 1.0), Color(1.00, 0.25, 0.25, 1.0) ]
+]
+const INTERFACE_COLORS_FADED: Array = [
+	[ Color(1.00, 1.00, 0.00, 0.75), Color(0.25, 1.00, 0.25, 0.75), Color(1.00, 0.25, 0.25, 0.75) ],
+	[ Color(1.00, 1.00, 0.75, 0.75), Color(0.00, 0.50, 1.00, 0.75), Color(1.00, 0.50, 0.00, 0.75) ],
+	[ Color(1.00, 1.00, 0.85, 0.75), Color(0.00, 0.65, 1.00, 0.75), Color(1.00, 0.65, 0.00, 0.75) ],
+	[ Color(1.00, 1.00, 0.90, 0.75), Color(0.00, 0.50, 1.00, 0.75), Color(1.00, 0.25, 0.25, 0.75) ]
+]
 const INCONSOLATA_THEME = preload("res://themes/default_inconsolata.tres")
+const INCONSOLATA_INTERFACE_THEME = preload("res://themes/interface_blue.tres")
 const KEYBINDS_PATH: String = "user://keybinds.json"
+const OPEN_DYSLEXIC_INTERFACE_THEME = preload("res://themes/interface_blue_dyslexia.tres")
 const OPEN_DYSLEXIC_THEME = preload("res://themes/default_dyslexic.tres")
 const RESOLUTIONS: Array = [
 	# 4:3
