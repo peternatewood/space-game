@@ -198,6 +198,9 @@ func _on_add_waypoint_confirmed():
 
 	icons_container.add_waypoint_icon(waypoint)
 
+	if edit_waypoints_panel.visible and group_name == edit_waypoints_panel.get_selected_group_name():
+		edit_waypoints_panel.add_waypoint(waypoint)
+
 
 func _on_controls_gui_input(event):
 	if event is InputEventMouseButton:
@@ -683,6 +686,9 @@ func _on_ship_position_changed(position: Vector3):
 func _on_waypoint_groups_confirmed():
 	waypoint_groups = waypoint_groups_dialog.get_group_names()
 	add_waypoint_dialog.populate_group_options(waypoint_groups)
+
+	if edit_waypoints_panel.visible:
+		edit_waypoints_panel.populate_waypoint_group_options(waypoint_groups)
 
 
 func _on_wings_dialog_confirmed():
