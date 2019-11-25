@@ -1,6 +1,6 @@
 extends AcceptDialog
 
-onready var group_rows = get_node("Waypoint Group Rows/Waypoint Group Lineedits")
+onready var group_rows = get_node("Waypoint Group Rows/Waypoint Group Scroll/Waypoint Group Lineedits")
 
 
 func _ready():

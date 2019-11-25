@@ -1530,7 +1530,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 0
 
 [node name="Waypoint Groups Dialog" type="AcceptDialog" parent="Controls Container"]
-editor/display_folded = true
 margin_right = 96.0
 margin_bottom = 64.0
 window_title = "Waypoint Groups"
@@ -1541,16 +1540,39 @@ script = ExtResource( 15 )
 margin_left = 8.0
 margin_top = 8.0
 margin_right = 160.0
-margin_bottom = 34.0
+margin_bottom = 82.0
 
-[node name="Waypoint Group Lineedits" type="VBoxContainer" parent="Controls Container/Waypoint Groups Dialog/Waypoint Group Rows"]
-margin_right = 80.0
+[node name="Waypoint Group Scroll" type="ScrollContainer" parent="Controls Container/Waypoint Groups Dialog/Waypoint Group Rows"]
+margin_right = 152.0
+margin_bottom = 112.0
+rect_min_size = Vector2( 0, 112 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+scroll_horizontal_enabled = false
+
+[node name="Waypoint Group Lineedits" type="VBoxContainer" parent="Controls Container/Waypoint Groups Dialog/Waypoint Group Rows/Waypoint Group Scroll"]
+margin_right = 152.0
+margin_bottom = 92.0
 size_flags_horizontal = 3
 
+[node name="LineEdit" type="LineEdit" parent="Controls Container/Waypoint Groups Dialog/Waypoint Group Rows/Waypoint Group Scroll/Waypoint Group Lineedits"]
+margin_right = 152.0
+margin_bottom = 28.0
+
+[node name="LineEdit2" type="LineEdit" parent="Controls Container/Waypoint Groups Dialog/Waypoint Group Rows/Waypoint Group Scroll/Waypoint Group Lineedits"]
+margin_top = 32.0
+margin_right = 152.0
+margin_bottom = 60.0
+
+[node name="LineEdit3" type="LineEdit" parent="Controls Container/Waypoint Groups Dialog/Waypoint Group Rows/Waypoint Group Scroll/Waypoint Group Lineedits"]
+margin_top = 64.0
+margin_right = 152.0
+margin_bottom = 92.0
+
 [node name="Add Group Button" type="Button" parent="Controls Container/Waypoint Groups Dialog/Waypoint Group Rows"]
-margin_top = 4.0
-margin_right = 80.0
-margin_bottom = 26.0
+margin_top = 116.0
+margin_right = 152.0
+margin_bottom = 138.0
 size_flags_horizontal = 3
 text = "Add Group"
 
