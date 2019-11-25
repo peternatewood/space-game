@@ -309,6 +309,9 @@ func _on_edit_menu_id_pressed(item_id: int):
 				selected_node_index = clamp(selected_node_index, targets_count - 1, 0)
 				selected_node = targets_container.get_child(selected_node_index)
 
+				# Hide other panels
+				edit_waypoints_panel.hide()
+
 				ship_edit_dialog.fill_ship_info(selected_node, get_ship_loadout(selected_node))
 				ship_edit_dialog.show()
 		2:
@@ -322,6 +325,9 @@ func _on_edit_menu_id_pressed(item_id: int):
 			else:
 				edit_waypoints_panel.populate_rows(waypoints_container.get_children())
 				edit_waypoints_panel.show()
+
+				# Hide other panels
+				ship_edit_dialog.hide()
 
 
 func _on_edit_dialog_update_pressed():
