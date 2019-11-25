@@ -39,10 +39,23 @@ func get_selected_group_name():
 
 
 func populate_rows(waypoints: Array, waypoint_groups: Array):
-	for waypoint in waypoints:
-		var waypoint_edit = WAYPOINT_EDIT.instance()
-		waypoint_rows.add_child(waypoint_edit)
-		waypoint_edit.assign_waypoint(waypoint)
+	var new_waypoints_count: int = waypoints.size()
+	var current_waypoints_count: int = waypoint_rows.get_child_count()
+
+	for index in range(max(current_waypoints_count, new_waypoints_count)):
+		if index >= current_waypoints_count:
+			# Add edit controls
+			var waypoint_edit = WAYPOINT_EDIT.instance()
+			waypoint_rows.add_child(waypoint_edit)
+			waypoint_edit.assign_waypoint(waypoints[index])
+		else:
+			# Update existing edit controls
+			waypoint_rows.get_child(index).assign_waypoint(waypoints[index])
+
+		if index >= new_waypoints_count:
+			# Remove old options
+			waypoint_rows.remove_child(new_waypoints_count)
+
 
 	populate_waypoint_group_options(waypoint_groups)
 
@@ -61,7 +74,7 @@ func populate_waypoint_group_options(waypoint_groups: Array):
 
 		if index >= new_group_count:
 			# Remove old options
-			waypoint_group_options.remove_item(index)
+			waypoint_group_options.remove_item(new_group_count)
 
 
 const WAYPOINT_EDIT = preload("res://editor/prefabs/waypoint_edit.tscn")
