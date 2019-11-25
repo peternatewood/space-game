@@ -49,12 +49,12 @@ func add_objective(objective_data: Dictionary, type: int):
 
 func prepare_objectives(objectives: Array):
 	for type in range(min(objective_rows.size(), objectives.size())):
-		var index: int = 0
+		# Remove existing objectives first
+		for node in objective_rows[type].get_children():
+			node.queue_free()
 
 		for objective_data in objectives[type]:
 			add_objective(objective_data, type)
-
-			index += 1
 
 
 func update_objective(type: int, index: int, objective):
