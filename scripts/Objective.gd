@@ -133,6 +133,16 @@ func connect_targets_to_requirements(targets_container):
 				target_node.connect("warped_out", requirement, "_on_target_warped_out")
 
 
+func delete_requirement(type: String, index: int):
+	match type:
+		"failure":
+			failure_requirements.remove(index)
+		"success":
+			success_requirements.remove(index)
+		"trigger":
+			trigger_requirements.remove(index)
+
+
 func to_dictionary():
 	var data: Dictionary = {
 		"description": description,
