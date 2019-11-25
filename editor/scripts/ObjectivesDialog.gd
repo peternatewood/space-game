@@ -52,6 +52,7 @@ func add_requirement(category: String, requirement_object):
 		"trigger":
 			trigger_rows.add_child(requirement)
 
+	requirement.connect("tree_exiting", objective, "remove_requirement", [ category, requirement.get_position_in_parent() ])
 	requirement.update_ship_names(ship_names)
 	requirement.populate_fields(requirement_object, objectives)
 

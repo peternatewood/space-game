@@ -83,8 +83,24 @@ margin_top = 114.0
 margin_right = 178.0
 margin_bottom = 114.0
 
-[node name="Add Target Button" type="Button" parent="."]
+[node name="Bottom Buttons Container" type="HBoxContainer" parent="."]
 margin_top = 118.0
 margin_right = 178.0
 margin_bottom = 138.0
+
+[node name="Add Target Button" type="Button" parent="Bottom Buttons Container"]
+margin_right = 119.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
 text = "Add Target"
+
+[node name="Delete Button" type="Button" parent="Bottom Buttons Container"]
+margin_left = 123.0
+margin_right = 178.0
+margin_bottom = 20.0
+text = "Delete"
+
+[node name="HSeparator" type="HSeparator" parent="."]
+margin_top = 142.0
+margin_right = 178.0
+margin_bottom = 146.0

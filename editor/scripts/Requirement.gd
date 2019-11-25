@@ -1,6 +1,6 @@
 extends Control
 
-onready var add_target_button = get_node("Add Target Button")
+onready var add_target_button = get_node("Bottom Buttons Container/Add Target Button")
 onready var objective_options = get_node("Requirement Grid/Objective Options")
 onready var objective_type_options = get_node("Requirement Grid/Objective Type Options")
 onready var target_rows = get_node("Targets Rows")
@@ -16,6 +16,9 @@ func _ready():
 	add_target_button.connect("pressed", self, "_on_add_target_pressed")
 	objective_options.connect("item_selected", self, "_on_objective_changed")
 	objective_type_options.connect("item_selected", self, "_on_objective_type_changed")
+
+	var delete_button = get_node("Bottom Buttons Container/Delete Button")
+	delete_button.connect("pressed", self, "queue_free")
 
 
 func _on_add_target_pressed():
