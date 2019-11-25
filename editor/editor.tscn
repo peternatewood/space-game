@@ -1267,25 +1267,25 @@ margin_bottom = 188.0
 text = "Reinforcements"
 
 [node name="Objective Edit Dialog" type="AcceptDialog" parent="Controls Container"]
-editor/display_folded = true
-margin_right = 96.0
-margin_bottom = 64.0
+margin_right = 256.0
+margin_bottom = 366.0
 window_title = "Edit Objective"
+resizable = true
 script = ExtResource( 11 )
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Controls Container/Objective Edit Dialog"]
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 248.0
-margin_bottom = 328.0
-rect_min_size = Vector2( 240, 320 )
+margin_right = 408.0
+margin_bottom = 488.0
+rect_min_size = Vector2( 400, 480 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 scroll_horizontal_enabled = false
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Controls Container/Objective Edit Dialog/ScrollContainer"]
-margin_right = 240.0
-margin_bottom = 320.0
+margin_right = 400.0
+margin_bottom = 480.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 

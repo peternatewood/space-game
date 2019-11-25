@@ -1,11 +1,13 @@
 extends Control
 
-onready var options = get_node("Options")
+onready var options = get_node("Columns/Options")
 
 
 func _ready():
-	get_node("Delete Button").connect("pressed", self, "_on_delete_pressed")
 	options.connect("item_selected", self, "_on_options_item_selected")
+
+	var delete_button = get_node("Columns/Delete Button")
+	delete_button.connect("pressed", self, "_on_delete_pressed")
 
 
 func _on_delete_pressed():
