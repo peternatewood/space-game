@@ -171,6 +171,8 @@ func load_mission_data(path: String):
 		wing_names = mission_instance.get_meta("wing_names")
 
 		# Get loadout for each ship by wing
+		wing_loadouts = []
+
 		var default_loadouts = mission_instance.get_meta("default_loadouts")
 		var wing_index: int = 0
 		for loadout in default_loadouts:
