@@ -323,7 +323,7 @@ func _on_edit_menu_id_pressed(item_id: int):
 			if waypoint_groups.size() == 0:
 				print("No waypoint groups!")
 			else:
-				edit_waypoints_panel.populate_rows(waypoints_container.get_children())
+				edit_waypoints_panel.populate_rows(waypoints_container.get_children(), waypoint_groups)
 				edit_waypoints_panel.show()
 
 				# Hide other panels
