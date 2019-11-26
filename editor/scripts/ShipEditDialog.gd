@@ -8,14 +8,7 @@ onready var hitpoints_spinbox = get_node("Ship Edit Rows/Ship Edit Scroll/Ship E
 onready var name_lineedit = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Name LineEdit")
 onready var next_button = get_node("Ship Edit Rows/Next Prev Container/Next Button")
 onready var npc_settings = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows")
-onready var order_options: Array = [
-	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid/Order Type Option 1"),
-	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid/Order Type Option 2"),
-	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid/Order Type Option 3"),
-	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid/Order Type Option 4"),
-	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid/Order Type Option 5"),
-	get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Orders Grid/Order Type Option 6")
-]
+onready var order_rows = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Order Rows")
 onready var player_ship_checkbox = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Player Ship CheckBox")
 onready var position_spinboxes: Dictionary = {
 	"x": get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Transform Container/Position X SpinBox"),
@@ -35,16 +28,17 @@ onready var wing_label = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scr
 onready var wing_options = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Wing Options")
 
 var beam_weapon_index_name_map: Array = []
-var edit_ship = null
-var energy_weapon_index_name_map: Array = []
-var is_populating: bool = false
-var missile_weapon_index_name_map: Array = []
 var beam_weapon_labels: Array = []
 var beam_weapon_options: Array = []
+var edit_ship = null
+var energy_weapon_index_name_map: Array = []
 var energy_weapon_labels: Array = []
 var energy_weapon_options: Array = []
+var is_populating: bool = false
+var missile_weapon_index_name_map: Array = []
 var missile_weapon_labels: Array = []
 var missile_weapon_options: Array = []
+var orders: Array = []
 
 
 func _ready():
@@ -59,6 +53,8 @@ func _ready():
 		energy_weapon_options.append(ship_edit_grid.get_node("Energy Weapon Options " + number_str))
 		missile_weapon_labels.append(ship_edit_grid.get_node("Missile Weapon Label " + number_str))
 		missile_weapon_options.append(ship_edit_grid.get_node("Missile Weapon Options " + number_str))
+
+	orders = order_rows.get_children()
 
 	player_ship_checkbox.connect("toggled", self, "_on_player_ship_toggled")
 
@@ -247,8 +243,8 @@ func fill_ship_info(ship, loadout: Dictionary = {}):
 	elif ship is ShipBase:
 		warped_in_checkbox.set_pressed(ship.is_warped_in)
 
-		for index in range(order_options.size()):
-			order_options[index].select(ship.initial_orders[index])
+		for index in range(orders.size()):
+			orders[index].set_order(ship.initial_orders[index])
 
 		npc_settings.show()
 
@@ -289,8 +285,8 @@ func get_missile_weapon_selections():
 func get_orders():
 	var orders_list: Array = []
 
-	for option in order_options:
-		orders_list.append(option.get_selected_id())
+	for order in orders:
+		orders_list.append(order.get_order_type_index())
 
 	return orders_list
 
