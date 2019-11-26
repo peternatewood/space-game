@@ -322,7 +322,6 @@ func _on_edit_menu_id_pressed(item_id: int):
 			if waypoint_groups.size() == 0:
 				print("No waypoint groups!")
 			else:
-				edit_waypoints_panel.populate_rows(waypoints_container.get_children(), waypoint_groups)
 				edit_waypoints_panel.show()
 
 				# Hide other panels
@@ -683,15 +682,15 @@ func _on_waypoint_groups_confirmed():
 	waypoint_groups = waypoint_groups_dialog.get_group_names()
 	add_waypoint_dialog.populate_group_options(waypoint_groups)
 
-	if edit_waypoints_panel.visible:
-		edit_waypoints_panel.populate_waypoint_group_options(waypoint_groups)
+	edit_waypoints_panel.populate_waypoint_group_options(waypoint_groups)
+
+	# TODO: Update each waypoint's group name, if changed
 
 
 func _on_waypoint_icon_clicked(waypoint_node):
 	var waypoints = waypoints_container.get_children()
 	var group_name = waypoint_node.get_groups()[0]
 
-	edit_waypoints_panel.populate_rows(waypoints, waypoint_groups)
 	edit_waypoints_panel.select_group_name(group_name)
 	edit_waypoints_panel.show()
 
@@ -746,8 +745,7 @@ func add_waypoint(group_name: String):
 
 	icons_container.add_waypoint_icon(waypoint)
 
-	if edit_waypoints_panel.visible and group_name == edit_waypoints_panel.get_selected_group_name():
-		edit_waypoints_panel.add_waypoint(waypoint)
+	edit_waypoints_panel.add_waypoint(waypoint)
 
 
 func get_ship_loadout(ship):
