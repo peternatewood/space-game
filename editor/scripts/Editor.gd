@@ -778,8 +778,12 @@ func load_mission_info():
 				waypoint_groups.append(group)
 
 		icons_container.add_waypoint_icon(waypoint)
+		edit_waypoints_panel.add_waypoint(waypoint)
 
 	waypoint_groups_dialog.populate_row_options(waypoint_groups)
+	edit_waypoints_panel.populate_waypoint_group_options(waypoint_groups)
+	# Select a group so the panel toggles the waypoint edits
+	edit_waypoints_panel.waypoint_group_options.select(0)
 
 	for meta_name in REQUIRED_META_DATA:
 		if not mission_node.has_meta(meta_name):
