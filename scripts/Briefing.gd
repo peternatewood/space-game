@@ -46,7 +46,7 @@ func _ready():
 
 
 func _on_back_button_pressed():
-	loader.change_scene("res://mission_select.tscn")
+	loader.load_scene("res://mission_select.tscn")
 
 
 func _on_briefing_button_pressed():

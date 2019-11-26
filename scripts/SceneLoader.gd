@@ -51,14 +51,6 @@ func _update_progress(loader):
 # PUBLIC
 
 
-func change_scene(path: String):
-	current_scene.queue_free()
-
-	var scene_resource = load(path)
-	current_scene = scene_resource.instance()
-	get_tree().get_root().add_child(current_scene)
-
-
 func load_scene(path: String):
 	current_scene.queue_free()
 

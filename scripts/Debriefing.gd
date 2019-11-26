@@ -37,7 +37,7 @@ func _ready():
 
 
 func _on_next_pressed():
-	loader.change_scene("res://title.tscn")
+	loader.load_scene("res://title.tscn")
 
 
 # PUBLIC

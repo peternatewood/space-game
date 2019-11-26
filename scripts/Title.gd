@@ -33,11 +33,11 @@ func _on_exit_pressed():
 
 
 func _on_mission_editor_pressed():
-	loader.change_scene("res://editor/editor.tscn")
+	loader.load_scene("res://editor/editor.tscn")
 
 
 func _on_mission_select_pressed():
-	loader.change_scene("res://mission_select.tscn")
+	loader.load_scene("res://mission_select.tscn")
 
 
 func _on_options_pressed():

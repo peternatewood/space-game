@@ -38,7 +38,7 @@ func _on_main_menu_confirmed():
 
 
 func _on_player_warped_out():
-	loader.change_scene("res://debriefing.tscn")
+	loader.load_scene("res://debriefing.tscn")
 
 
 func _on_scene_loaded():

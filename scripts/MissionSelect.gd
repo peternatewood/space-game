@@ -70,12 +70,12 @@ func _ready():
 
 
 func _on_back_pressed():
-	loader.change_scene("res://title.tscn")
+	loader.load_scene("res://title.tscn")
 
 
 func _on_mission_button_pressed(mission_path: String):
 	mission_data.load_mission_data(mission_path)
-	loader.change_scene("res://briefing.tscn")
+	loader.load_scene("res://briefing.tscn")
 
 
 # PUBLIC
