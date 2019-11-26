@@ -83,6 +83,9 @@ func add_target(name: String = ""):
 
 func get_requirement():
 	requirement.type = type_options.get_selected_id()
+	# Both objective OptionButtons start at 0, but the first option is "none" meaning -1
+	requirement.objective_type = objective_type_options.get_selected_id() - 1
+	requirement.objective_index = objective_options.get_selected_id() - 1
 
 	var target_names: Array = []
 	for target in target_rows.get_children():
