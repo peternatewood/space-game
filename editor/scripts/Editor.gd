@@ -737,6 +737,7 @@ func _process(delta):
 func add_waypoint(group_name: String):
 	var waypoint = Position3D.new()
 	waypoints_container.add_child(waypoint)
+	waypoint.set_owner(mission_node)
 	waypoint.add_to_group(group_name, true)
 
 	var scene_tree = get_tree()
