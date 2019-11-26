@@ -855,6 +855,12 @@ func load_mission_info():
 	if start_overlay != null:
 		start_overlay.hide()
 
+	var player_movement_particles = mission_node.get_node_or_null("Player Movement Debris")
+	if player_movement_particles == null:
+		print("Player Movement Debris is missing!")
+	else:
+		player_movement_particles.hide()
+
 
 func save_mission_to_file(path: String):
 	# Show elements in the mission scene that we hid for the editor
@@ -865,6 +871,12 @@ func save_mission_to_file(path: String):
 	var start_overlay = mission_node.get_node_or_null("Mission Start Overlay")
 	if start_overlay != null:
 		start_overlay.show()
+
+	var player_movement_particles = mission_node.get_node_or_null("Player Movement Debris")
+	if player_movement_particles == null:
+		print("Player Movement Debris is missing!")
+	else:
+		player_movement_particles.show()
 
 	var mission_scene = PackedScene.new()
 	var scene_error = mission_scene.pack(mission_node)
@@ -885,6 +897,9 @@ func save_mission_to_file(path: String):
 
 	if start_overlay != null:
 		start_overlay.hide()
+
+	if player_movement_particles != null:
+		player_movement_particles.hide()
 
 
 const AttackShipBase = preload("res://scripts/AttackShipBase.gd")

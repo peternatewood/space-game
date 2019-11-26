@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://scripts/MissionController.gd" type="Script" id=1]
 [ext_resource path="res://scripts/PlayerCamera.gd" type="Script" id=2]
@@ -8,9 +8,10 @@
 [ext_resource path="res://models/ships/hawk_fighter/model.dae" type="PackedScene" id=6]
 [ext_resource path="res://models/ships/spider_bomber/model.dae" type="PackedScene" id=7]
 [ext_resource path="res://models/ships/spider_interceptor/model.dae" type="PackedScene" id=8]
-[ext_resource path="res://hud.tscn" type="PackedScene" id=9]
-[ext_resource path="res://mission_start_overlay.tscn" type="PackedScene" id=10]
-[ext_resource path="res://pause_menu.tscn" type="PackedScene" id=11]
+[ext_resource path="res://scripts/MovementDebris.gd" type="Script" id=9]
+[ext_resource path="res://hud.tscn" type="PackedScene" id=10]
+[ext_resource path="res://mission_start_overlay.tscn" type="PackedScene" id=11]
+[ext_resource path="res://pause_menu.tscn" type="PackedScene" id=12]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.498039 )
@@ -185,11 +186,14 @@ initial_orders = [ 4, 0, 0, 0, 0, 0 ]
 
 [node name="Waypoints Container" type="Node" parent="."]
 
-[node name="HUD" parent="." instance=ExtResource( 9 )]
+[node name="Player Movement Debris" type="Spatial" parent="."]
+script = ExtResource( 9 )
 
-[node name="Mission Start Overlay" parent="." instance=ExtResource( 10 )]
+[node name="HUD" parent="." instance=ExtResource( 10 )]
+
+[node name="Mission Start Overlay" parent="." instance=ExtResource( 11 )]
 custom_styles/panel = SubResource( 1 )
 
-[node name="Pause Menu" parent="." instance=ExtResource( 11 )]
+[node name="Pause Menu" parent="." instance=ExtResource( 12 )]
 pause_mode = 2
 visible = false

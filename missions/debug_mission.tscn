@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://scripts/MissionController.gd" type="Script" id=1]
 [ext_resource path="res://scripts/PlayerCamera.gd" type="Script" id=2]
@@ -11,9 +11,10 @@
 [ext_resource path="res://scripts/CapitalShipBase.gd" type="Script" id=9]
 [ext_resource path="res://models/asteroid/asteroid.dae" type="PackedScene" id=10]
 [ext_resource path="res://scripts/ActorBase.gd" type="Script" id=11]
-[ext_resource path="res://hud.tscn" type="PackedScene" id=12]
-[ext_resource path="res://mission_start_overlay.tscn" type="PackedScene" id=13]
-[ext_resource path="res://pause_menu.tscn" type="PackedScene" id=14]
+[ext_resource path="res://scripts/MovementDebris.gd" type="Script" id=12]
+[ext_resource path="res://hud.tscn" type="PackedScene" id=13]
+[ext_resource path="res://mission_start_overlay.tscn" type="PackedScene" id=14]
+[ext_resource path="res://pause_menu.tscn" type="PackedScene" id=15]
 
 [node name="Mission Controller" type="Spatial"]
 script = ExtResource( 1 )
@@ -209,10 +210,13 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.69232, 0, 11.3315 )
 [node name="Waypoint4" type="Position3D" parent="Waypoints Container"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -22.8941, -5.28593, 1.1059 )
 
-[node name="HUD" parent="." instance=ExtResource( 12 )]
+[node name="Player Movement Debris" type="Spatial" parent="."]
+script = ExtResource( 12 )
 
-[node name="Mission Start Overlay" parent="." instance=ExtResource( 13 )]
+[node name="HUD" parent="." instance=ExtResource( 13 )]
 
-[node name="Pause Menu" parent="." instance=ExtResource( 14 )]
+[node name="Mission Start Overlay" parent="." instance=ExtResource( 14 )]
+
+[node name="Pause Menu" parent="." instance=ExtResource( 15 )]
 pause_mode = 2
 visible = false

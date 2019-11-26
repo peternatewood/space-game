@@ -11,9 +11,6 @@ var input_velocity: Vector3
 
 
 func _ready():
-	var debris = DEBRIS_PARTICLES.instance()
-	add_child(debris)
-
 	if has_warp_ramp_up:
 		self.connect("warping_ramped_up", warp_ramp_up_player, "stop")
 
@@ -280,4 +277,3 @@ const AttackShipBase = preload("AttackShipBase.gd")
 
 const CAM_ROLL_MOD: float = 0.25
 const CAM_THROTTLE_MOD: float = 1.5
-const DEBRIS_PARTICLES = preload("res://models/Debris_Particles.tscn")
