@@ -29,6 +29,10 @@ func _on_name_lineedit_changed(new_text: String):
 	emit_signal("name_changed", new_text)
 
 
+func _on_waypoint_tree_exiting():
+	queue_free()
+
+
 func _on_waypoint_renamed():
 	name_label.set_text(waypoint_node.name)
 
@@ -51,6 +55,7 @@ func _on_z_spinbox_changed(new_value: float):
 func assign_waypoint(waypoint):
 	waypoint_node = waypoint
 	waypoint_node.connect("renamed", self, "_on_waypoint_renamed")
+	waypoint_node.connect("tree_exiting", self, "_on_waypoint_tree_exiting")
 
 	name_label.set_text(waypoint.name)
 

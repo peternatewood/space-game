@@ -57,13 +57,14 @@ func populate_waypoint_group_options(waypoint_groups: Array):
 		if index >= current_group_count:
 			# Add options
 			waypoint_group_options.add_item(waypoint_groups[index], index)
+		elif index >= new_group_count:
+			# Remove old options
+			waypoint_group_options.remove_item(new_group_count)
 		else:
 			# Update current item text
 			waypoint_group_options.set_item_text(index, waypoint_groups[index])
 
-		if index >= new_group_count:
-			# Remove old options
-			waypoint_group_options.remove_item(new_group_count)
+	waypoint_group_options.select(0)
 
 
 func select_group_name(group_name: String):

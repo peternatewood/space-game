@@ -692,7 +692,6 @@ func _on_waypoint_deleted():
 
 func _on_waypoint_groups_confirmed():
 	var new_waypoint_groups: Array = waypoint_groups_dialog.get_group_names()
-	print("new waypoint groups ", new_waypoint_groups)
 	add_waypoint_dialog.populate_group_options(new_waypoint_groups)
 
 	edit_waypoints_panel.populate_waypoint_group_options(new_waypoint_groups)
@@ -703,8 +702,10 @@ func _on_waypoint_groups_confirmed():
 
 	for index in range(max(new_group_count, current_group_count)):
 		if index >= new_group_count:
-			# TODO: Remove all waypoints in this removed group
-			pass
+			# Remove all waypoints in this removed group
+			var waypoints_in_group: Array = get_tree().get_nodes_in_group(waypoint_groups[index])
+			for waypoint in waypoints_in_group:
+				waypoint.queue_free()
 		elif index < current_group_count:
 			if new_waypoint_groups[index] != waypoint_groups[index]:
 				# Update each waypoint's name and group name
