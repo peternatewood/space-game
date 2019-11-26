@@ -121,6 +121,23 @@ func populate_fields(requirement_object, new_objectives: Array = [ [], [], [] ])
 		target_index += 1
 
 
+func populate_waypoint_options(waypoint_groups: Array):
+	var current_group_count: int = waypoint_options.get_item_count()
+	var new_group_count: int = waypoint_groups.size()
+
+	for index in range(max(current_group_count, new_group_count)):
+		if index >= current_group_count:
+			# Add waypoint items
+			waypoint_options.add_item(waypoint_groups[index], index)
+		else:
+			if index >= new_group_count:
+				# Remove old waypoint items
+				waypoint_options.remove_item(new_group_count)
+			else:
+				# Update item text
+				waypoint_options.set_item_text(index, waypoint_groups[index])
+
+
 func update_objective_fields():
 	var objective_index: int = 1
 	var selected_index = objective_type_options.get_selected_id()

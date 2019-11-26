@@ -13,6 +13,7 @@ var objective
 var objectives: Array = [ [], [], [] ]
 var ship_names: Array = []
 var type: int = 0
+var waypoint_groups: Array = []
 
 
 func _ready():
@@ -55,6 +56,7 @@ func add_requirement(category: String, requirement_object):
 	requirement.connect("tree_exiting", objective, "remove_requirement", [ category, requirement.get_position_in_parent() ])
 	requirement.update_ship_names(ship_names)
 	requirement.populate_fields(requirement_object, objectives)
+	requirement.populate_waypoint_options(waypoint_groups)
 
 
 func get_objective():
@@ -155,6 +157,20 @@ func update_ship_names(ships: Array):
 
 	for requirement in trigger_rows.get_children():
 		requirement.update_ship_names(ship_names)
+
+
+func update_waypoint_groups(new_waypoint_groups: Array):
+	waypoint_groups = new_waypoint_groups
+
+	# Update all existing requirements
+	for requirement in failure_rows.get_children():
+		requirement.populate_waypoint_options(waypoint_groups)
+
+	for requirement in success_rows.get_children():
+		requirement.populate_waypoint_options(waypoint_groups)
+
+	for requirement in trigger_rows.get_children():
+		requirement.populate_waypoint_options(waypoint_groups)
 
 
 const Objective = preload("res://scripts/Objective.gd")

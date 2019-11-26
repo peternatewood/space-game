@@ -695,6 +695,7 @@ func _on_waypoint_groups_confirmed():
 	add_waypoint_dialog.populate_group_options(waypoint_groups)
 
 	edit_waypoints_panel.populate_waypoint_group_options(waypoint_groups)
+	objectives_edit_dialog.update_waypoint_groups(waypoint_groups)
 
 	# TODO: Update each waypoint's group name, if changed
 
@@ -808,6 +809,7 @@ func load_mission_info():
 	wing_names = mission_node.get_meta("wing_names")
 
 	objectives_window.prepare_objectives(objectives)
+	objectives_edit_dialog.update_waypoint_groups(waypoint_groups)
 	objectives_edit_dialog.update_ship_names(targets_container.get_children())
 	ship_edit_dialog.populate_wing_options(wing_names)
 	wings_dialog.populate_wing_names(wing_names)
