@@ -691,13 +691,33 @@ func _on_waypoint_deleted():
 
 
 func _on_waypoint_groups_confirmed():
-	waypoint_groups = waypoint_groups_dialog.get_group_names()
-	add_waypoint_dialog.populate_group_options(waypoint_groups)
+	var new_waypoint_groups: Array = waypoint_groups_dialog.get_group_names()
+	print("new waypoint groups ", new_waypoint_groups)
+	add_waypoint_dialog.populate_group_options(new_waypoint_groups)
 
-	edit_waypoints_panel.populate_waypoint_group_options(waypoint_groups)
-	objectives_edit_dialog.update_waypoint_groups(waypoint_groups)
+	edit_waypoints_panel.populate_waypoint_group_options(new_waypoint_groups)
+	objectives_edit_dialog.update_waypoint_groups(new_waypoint_groups)
 
-	# TODO: Update each waypoint's group name, if changed
+	var current_group_count: int = waypoint_groups.size()
+	var new_group_count: int = new_waypoint_groups.size()
+
+	for index in range(max(new_group_count, current_group_count)):
+		if index >= new_group_count:
+			# TODO: Remove all waypoints in this removed group
+			pass
+		elif index < current_group_count:
+			if new_waypoint_groups[index] != waypoint_groups[index]:
+				# Update each waypoint's name and group name
+				var waypoints_in_group: Array = get_tree().get_nodes_in_group(waypoint_groups[index])
+				var number: int = 1
+
+				for waypoint in waypoints_in_group:
+					waypoint.set_name(new_waypoint_groups[index] + " " + str(number))
+					waypoint.remove_from_group(waypoint_groups[index])
+					waypoint.add_to_group(new_waypoint_groups[index])
+					number += 1
+
+	waypoint_groups = new_waypoint_groups
 
 
 func _on_waypoint_icon_clicked(waypoint_node):
