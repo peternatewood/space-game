@@ -689,8 +689,10 @@ func _on_waypoint_groups_confirmed():
 
 func _on_waypoint_icon_clicked(waypoint_node):
 	var waypoints = waypoints_container.get_children()
+	var group_name = waypoint_node.get_groups()[0]
 
 	edit_waypoints_panel.populate_rows(waypoints, waypoint_groups)
+	edit_waypoints_panel.select_group_name(group_name)
 	edit_waypoints_panel.show()
 
 

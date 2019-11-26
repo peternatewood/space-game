@@ -99,6 +99,16 @@ func populate_waypoint_group_options(waypoint_groups: Array):
 			waypoint_group_options.remove_item(new_group_count)
 
 
+func select_group_name(group_name: String):
+	for index in range(waypoint_group_options.get_item_count()):
+		if waypoint_group_options.get_item_text(index) == group_name:
+			waypoint_group_options.select(index)
+			_on_waypoint_group_selected(index)
+			return true
+
+	return false
+
+
 const WAYPOINT_EDIT = preload("res://editor/prefabs/waypoint_edit.tscn")
 
 signal add_pressed
