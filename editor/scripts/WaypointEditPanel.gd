@@ -8,6 +8,8 @@ func _ready():
 	var close_button = get_node("Waypoint Edit Rows/Title Columns/Close Button")
 	close_button.connect("pressed", self, "hide")
 
+	waypoint_group_options.connect("item_selected", self, "_on_waypoint_group_selected")
+
 	var add_button = get_node("Waypoint Edit Rows/Add Button")
 	add_button.connect("pressed", self, "_on_add_pressed")
 
@@ -21,6 +23,16 @@ func _on_add_pressed():
 
 func _on_update_pressed():
 	emit_signal("update_pressed")
+
+
+func _on_waypoint_group_selected(item_index: int):
+	var selected_group_name: String = get_selected_group_name()
+
+	for waypoint_edit in waypoint_rows.get_children():
+		if waypoint_edit.waypoint_node.is_in_group(selected_group_name):
+			waypoint_edit.show()
+		else:
+			waypoint_edit.hide()
 
 
 # PUBLIC
@@ -39,6 +51,10 @@ func get_selected_group_name():
 
 
 func populate_rows(waypoints: Array, waypoint_groups: Array):
+	populate_waypoint_group_options(waypoint_groups)
+
+	var selected_group_name: String = get_selected_group_name()
+
 	var new_waypoints_count: int = waypoints.size()
 	var current_waypoints_count: int = waypoint_rows.get_child_count()
 
@@ -48,16 +64,22 @@ func populate_rows(waypoints: Array, waypoint_groups: Array):
 			var waypoint_edit = WAYPOINT_EDIT.instance()
 			waypoint_rows.add_child(waypoint_edit)
 			waypoint_edit.assign_waypoint(waypoints[index])
+
+			if not waypoints[index].is_in_group(selected_group_name):
+				waypoint_edit.hide()
 		else:
 			# Update existing edit controls
-			waypoint_rows.get_child(index).assign_waypoint(waypoints[index])
+			var waypoint_edit = waypoint_rows.get_child(index)
+			waypoint_edit.assign_waypoint(waypoints[index])
+
+			if waypoint_edit.waypoint_node.is_in_group(selected_group_name):
+				waypoint_edit.show()
+			else:
+				waypoint_edit.hide()
 
 		if index >= new_waypoints_count:
 			# Remove old options
 			waypoint_rows.remove_child(new_waypoints_count)
-
-
-	populate_waypoint_group_options(waypoint_groups)
 
 
 func populate_waypoint_group_options(waypoint_groups: Array):
