@@ -110,6 +110,7 @@ func _ready():
 	waypoint_groups_dialog.connect("confirmed", self, "_on_waypoint_groups_confirmed")
 	add_waypoint_dialog.connect("confirmed", self, "_on_add_waypoint_confirmed")
 	edit_waypoints_panel.connect("add_pressed", self, "_on_edit_waypoints_add_pressed")
+	edit_waypoints_panel.connect("waypoint_deleted", self, "_on_waypoint_deleted")
 
 
 func _on_add_ship_confirmed():
@@ -676,6 +677,17 @@ func _on_save_dialog_file_selected(path: String):
 
 func _on_ship_position_changed(position: Vector3):
 	transform_controls.transform.origin = position
+
+
+func _on_waypoint_deleted():
+	# Rename waypoints in the current group
+	var group_name = edit_waypoints_panel.get_selected_group_name()
+	var waypoints_in_group: Array = get_tree().get_nodes_in_group(group_name)
+	var number: int = 1
+
+	for waypoint in waypoints_in_group:
+		waypoint.set_name(group_name + " " + str(number))
+		number += 1
 
 
 func _on_waypoint_groups_confirmed():

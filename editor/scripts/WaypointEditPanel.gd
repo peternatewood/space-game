@@ -13,16 +13,13 @@ func _ready():
 	var add_button = get_node("Waypoint Edit Rows/Add Button")
 	add_button.connect("pressed", self, "_on_add_pressed")
 
-	var update_button = get_node("Waypoint Edit Rows/Update Button")
-	update_button.connect("pressed", self, "_on_update_pressed")
-
 
 func _on_add_pressed():
 	emit_signal("add_pressed")
 
 
-func _on_update_pressed():
-	emit_signal("update_pressed")
+func _on_waypoint_edit_deleted():
+	emit_signal("waypoint_deleted")
 
 
 func _on_waypoint_group_selected(item_index: int):
@@ -42,6 +39,8 @@ func add_waypoint(waypoint_node):
 	var waypoint_edit = WAYPOINT_EDIT.instance()
 	waypoint_rows.add_child(waypoint_edit)
 	waypoint_edit.assign_waypoint(waypoint_node)
+
+	waypoint_edit.connect("delete_pressed", self, "_on_waypoint_edit_deleted")
 
 
 func get_selected_group_name():
@@ -81,3 +80,4 @@ const WAYPOINT_EDIT = preload("res://editor/prefabs/waypoint_edit.tscn")
 
 signal add_pressed
 signal update_pressed
+signal waypoint_deleted
