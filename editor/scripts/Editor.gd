@@ -777,6 +777,8 @@ func load_mission_info():
 			if not waypoint_groups.has(group):
 				waypoint_groups.append(group)
 
+		icons_container.add_waypoint_icon(waypoint)
+
 	waypoint_groups_dialog.populate_row_options(waypoint_groups)
 
 	for meta_name in REQUIRED_META_DATA:
