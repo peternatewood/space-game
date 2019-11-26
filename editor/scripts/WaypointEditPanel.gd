@@ -50,38 +50,6 @@ func get_selected_group_name():
 	return waypoint_group_options.get_item_text(selected_index)
 
 
-func populate_rows(waypoints: Array, waypoint_groups: Array):
-	populate_waypoint_group_options(waypoint_groups)
-
-	var selected_group_name: String = get_selected_group_name()
-
-	var new_waypoints_count: int = waypoints.size()
-	var current_waypoints_count: int = waypoint_rows.get_child_count()
-
-	for index in range(max(current_waypoints_count, new_waypoints_count)):
-		if index >= current_waypoints_count:
-			# Add edit controls
-			var waypoint_edit = WAYPOINT_EDIT.instance()
-			waypoint_rows.add_child(waypoint_edit)
-			waypoint_edit.assign_waypoint(waypoints[index])
-
-			if not waypoints[index].is_in_group(selected_group_name):
-				waypoint_edit.hide()
-		else:
-			# Update existing edit controls
-			var waypoint_edit = waypoint_rows.get_child(index)
-			waypoint_edit.assign_waypoint(waypoints[index])
-
-			if waypoint_edit.waypoint_node.is_in_group(selected_group_name):
-				waypoint_edit.show()
-			else:
-				waypoint_edit.hide()
-
-		if index >= new_waypoints_count:
-			# Remove old options
-			waypoint_rows.remove_child(new_waypoints_count)
-
-
 func populate_waypoint_group_options(waypoint_groups: Array):
 	var new_group_count: int = waypoint_groups.size()
 	var current_group_count: int = waypoint_group_options.get_item_count()
