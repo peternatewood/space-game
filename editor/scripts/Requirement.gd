@@ -87,6 +87,9 @@ func get_requirement():
 	requirement.objective_type = objective_type_options.get_selected_id() - 1
 	requirement.objective_index = objective_options.get_selected_id() - 1
 
+	var selected_waypoint_index: int = waypoint_options.get_selected_id()
+	requirement.waypoints_name = waypoint_options.get_item_text(selected_waypoint_index)
+
 	var target_names: Array = []
 	for target in target_rows.get_children():
 		target_names.append(target.get_name())
@@ -125,20 +128,22 @@ func populate_fields(requirement_object, new_objectives: Array = [ [], [], [] ])
 
 
 func populate_waypoint_options(waypoint_groups: Array):
-	var current_group_count: int = waypoint_options.get_item_count()
+	# We subtract one from our options count, to exclude the "none" option
+	var current_group_count: int = waypoint_options.get_item_count() - 1
 	var new_group_count: int = waypoint_groups.size()
 
+	# Note: the waypoint option index is always one greater than the waypoint group index so our first element can be "none"
 	for index in range(max(current_group_count, new_group_count)):
 		if index >= current_group_count:
 			# Add waypoint items
-			waypoint_options.add_item(waypoint_groups[index], index)
+			waypoint_options.add_item(waypoint_groups[index], index + 1)
 		else:
 			if index >= new_group_count:
 				# Remove old waypoint items
-				waypoint_options.remove_item(new_group_count)
+				waypoint_options.remove_item(new_group_count + 1)
 			else:
 				# Update item text
-				waypoint_options.set_item_text(index, waypoint_groups[index])
+				waypoint_options.set_item_text(index + 1, waypoint_groups[index])
 
 
 func update_objective_fields():
