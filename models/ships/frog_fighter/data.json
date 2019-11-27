@@ -1,4 +1,5 @@
 {
+  "is_capital_ship": false,
   "ship_class": "Frog Fighter",
   "hull_hitpoints": 110.0,
   "shield_hitpoints": 120.0,

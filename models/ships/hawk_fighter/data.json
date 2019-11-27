@@ -1,4 +1,5 @@
 {
+  "is_capital_ship": false,
   "ship_class": "Hawk Fighter",
   "hull_hitpoints": 90.0,
   "shield_hitpoints": 90.0,

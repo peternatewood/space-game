@@ -117,6 +117,7 @@ margin_top = -18.0
 text = "n/a"
 
 [node name="Ship Edit Dialog" type="PanelContainer" parent="Controls Container"]
+editor/display_folded = true
 visible = false
 anchor_left = 1.0
 anchor_right = 1.0
@@ -275,7 +276,6 @@ margin_bottom = 86.0
 text = "Player Ship"
 
 [node name="Ship Edit Grid" type="GridContainer" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows"]
-editor/display_folded = true
 margin_top = 90.0
 margin_right = 442.0
 margin_bottom = 696.0
@@ -287,16 +287,9 @@ margin_right = 168.0
 margin_bottom = 20.0
 text = "Class"
 
-[node name="Attack Ship Options" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid"]
+[node name="Ship Options" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid"]
 margin_left = 172.0
 margin_right = 442.0
-margin_bottom = 22.0
-size_flags_horizontal = 3
-
-[node name="Capital Ship Options" type="OptionButton" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid"]
-visible = false
-margin_left = 172.0
-margin_right = 294.0
 margin_bottom = 22.0
 size_flags_horizontal = 3
 
@@ -954,8 +947,8 @@ script = ExtResource( 11 )
 [node name="Add Ship Rows" type="VBoxContainer" parent="Controls Container/Add Ship Dialog"]
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 118.0
-margin_bottom = 34.0
+margin_right = 104.0
+margin_bottom = 26.0
 
 [node name="Warnings Label" type="Label" parent="Controls Container/Add Ship Dialog/Add Ship Rows"]
 visible = false
@@ -965,17 +958,9 @@ custom_styles/normal = SubResource( 2 )
 text = "Warning"
 autowrap = true
 
-[node name="Ship Category Options" type="OptionButton" parent="Controls Container/Add Ship Dialog/Add Ship Rows"]
-margin_right = 190.0
-margin_bottom = 22.0
-text = "Attack Ship"
-items = [ "Attack Ship", null, false, 0, null, "Capital Ship", null, false, 1, null ]
-selected = 0
-
 [node name="Add Ship Grid" type="GridContainer" parent="Controls Container/Add Ship Dialog/Add Ship Rows"]
-margin_top = 26.0
 margin_right = 190.0
-margin_bottom = 80.0
+margin_bottom = 54.0
 columns = 2
 
 [node name="Name Label" type="Label" parent="Controls Container/Add Ship Dialog/Add Ship Rows/Add Ship Grid"]
@@ -996,17 +981,11 @@ margin_right = 80.0
 margin_bottom = 52.0
 text = "Ship Class"
 
-[node name="Attack Ship Options" type="OptionButton" parent="Controls Container/Add Ship Dialog/Add Ship Rows/Add Ship Grid"]
+[node name="Ship Options" type="OptionButton" parent="Controls Container/Add Ship Dialog/Add Ship Rows/Add Ship Grid"]
 margin_left = 84.0
 margin_top = 32.0
 margin_right = 190.0
 margin_bottom = 54.0
-
-[node name="Capital Ship Options" type="OptionButton" parent="Controls Container/Add Ship Dialog/Add Ship Rows/Add Ship Grid"]
-visible = false
-margin_top = 26.0
-margin_right = 80.0
-margin_bottom = 48.0
 
 [node name="About Window" type="WindowDialog" parent="Controls Container"]
 editor/display_folded = true

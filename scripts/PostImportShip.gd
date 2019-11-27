@@ -85,11 +85,40 @@ func post_import(scene):
 	warp_ramp_up.set_owner(scene)
 
 	# Add script to weapon hardpoints groups
-	for energy_hardpoints in scene.get_node("Energy Weapon Groups").get_children():
-		energy_hardpoints.set_script(WeaponHardpoints)
+	if scene.has_node("Energy Weapon Groups"):
+		for energy_hardpoints in scene.get_node("Energy Weapon Groups").get_children():
+			energy_hardpoints.set_script(WeaponHardpoints)
 
-	for missile_hardpoints in scene.get_node("Missile Weapon Groups").get_children():
-		missile_hardpoints.set_script(WeaponHardpoints)
+	if scene.has_node("Missile Weapon Groups"):
+		for missile_hardpoints in scene.get_node("Missile Weapon Groups").get_children():
+			missile_hardpoints.set_script(WeaponHardpoints)
+
+	# Not all capital ships will have all types of turret
+	var has_beam_weapons = scene.has_node("Beam Weapon Turrets")
+	scene.set_meta("has_beam_weapon_turrets", has_beam_weapons)
+	var has_energy_weapons = scene.has_node("Energy Weapon Turrets")
+	scene.set_meta("has_energy_weapon_turrets", has_energy_weapons)
+	var has_missile_weapons = scene.has_node("Missile Weapon Turrets")
+	scene.set_meta("has_missile_weapon_turrets", has_missile_weapons)
+
+	# Replace turret placeholders with turret instances
+	if has_beam_weapons:
+		pass
+
+	if has_energy_weapons:
+		var turrets_container = scene.get_node("Energy Weapon Turrets")
+		for turret_placeholder in turrets_container.get_children():
+			var turret_xform: Transform = turret_placeholder.transform
+			turret_placeholder.free()
+
+			var turret = ENERGY_WEAPON_TURRET.instance()
+			turret.transform = turret_xform
+			scene.add_collision_exception_with(turret)
+			turrets_container.add_child(turret)
+			turret.set_owner(scene)
+
+	if has_missile_weapons:
+		pass
 
 	# Some common physics settings
 	scene.set_angular_damp(0.85)
@@ -109,6 +138,29 @@ func post_import(scene):
 	target_raycast.set_cast_to(raycast_start + 200 * Vector3.FORWARD)
 	target_raycast.set_enabled(true)
 
+	# Prep Debris bodies
+	if scene.has_node("Debris"):
+		var debris_container = scene.get_node("Debris")
+		for node in debris_container.get_children():
+			# Just like importing actors, replace the static bodies with their collision shapes
+			for child in node.get_children():
+				if child is StaticBody:
+					for static_child in child.get_children():
+						if static_child is CollisionShape:
+							var collision_shape = static_child.duplicate(Node.DUPLICATE_USE_INSTANCING)
+							collision_shape.transform = child.transform
+							node.add_child(collision_shape)
+							collision_shape.set_owner(scene)
+							# Also disable the shape since this is just for debris
+							collision_shape.set_disabled(true)
+							collision_shape.set_name("Collision Shape")
+
+					node.remove_child(child)
+				elif child is MeshInstance:
+					child.set_name("Mesh")
+
+			node.hide()
+
 	# This is used for loading the data file and other resources
 	var source_folder = get_source_folder()
 	var data_file = File.new()
@@ -117,6 +169,7 @@ func post_import(scene):
 	# Set defaults to be overridden by data file
 	var max_speed: float = 7.0
 	var ship_data: Dictionary = {
+		"is_capital_ship": false,
 		"hull_hitpoints": 100.0,
 		"missile_capacity": 55.0,
 		"shield_hitpoints": 100.0,
@@ -166,6 +219,7 @@ const WeaponHardpoints = preload("WeaponHardpoints.gd")
 const BLUE_EXHAUST_MATERIAL = preload("res://materials/blue_exhaust.tres")
 const BLUE_SHIELD_MATERIAL = preload("res://materials/blue_shield.tres")
 const COLLISION_SOUND = preload("res://sounds/collision.wav")
+const ENERGY_WEAPON_TURRET = preload("res://models/turrets/energy_weapon_turret/model.dae")
 const ENGINE_LOOP = preload("res://sounds/engine_loop.wav")
 const EXHAUST_LIGHT_MATERIAL = preload("res://materials/exhaust_light.tres")
 const WARP_BOOM = preload("res://sounds/warp_boom.wav")

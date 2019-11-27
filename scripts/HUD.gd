@@ -77,7 +77,7 @@ func _disconnect_target_signals(target):
 	target.disconnect("destroyed", self, "_on_target_destroyed")
 	target.disconnect("warped_out", self, "_on_target_destroyed")
 
-	if target is AttackShipBase:
+	if not target.is_capital_ship:
 		for index in range(4):
 			target.shields[index].disconnect("hitpoints_changed", self, "_on_target_shield_changed")
 
@@ -261,15 +261,17 @@ func _on_player_target_changed(last_target):
 		player.current_target.connect("warped_out", self, "_on_target_destroyed", [ player.current_target ])
 
 		for index in range(4):
-			if player.current_target is AttackShipBase:
+			if player.current_target.is_capital_ship:
+				_on_target_shield_changed(0, index)
+			else:
 				player.current_target.shields[index].connect("hitpoints_changed", self, "_on_target_shield_changed", [ index ])
 				# Also update the icons manually
 				_on_target_shield_changed(player.current_target.shields[index].get_hitpoints_fraction(), index)
-			else:
-				_on_target_shield_changed(0, index)
 
 		# Update icons
-		if player.current_target is AttackShipBase:
+		if player.current_target.is_capital_ship:
+			target_overhead.hide()
+		else:
 			if not target_overhead.visible:
 				target_overhead.show()
 
@@ -278,8 +280,6 @@ func _on_player_target_changed(last_target):
 				print("Missing overhead icon for " + player.current_target.name)
 			else:
 				target_overhead.set_overhead_icon(overhead_icon)
-		else:
-			target_overhead.hide()
 
 		var alignment = mission_controller.get_alignment(player.faction, player.current_target.faction)
 		for icon in radar_icons:
@@ -303,10 +303,10 @@ func _on_player_target_changed(last_target):
 
 		target_details_minimal.set_hull(player.current_target.get_hull_percent())
 		for index in range(4):
-			if player.current_target is AttackShipBase:
-				target_details_minimal.set_shield_alpha(index, player.current_target.shields[index].get_hitpoints_fraction())
-			else:
+			if player.current_target.is_capital_ship:
 				target_details_minimal.set_shield_alpha(index, 0)
+			else:
+				target_details_minimal.set_shield_alpha(index, player.current_target.shields[index].get_hitpoints_fraction())
 
 		# Update target viewport
 		target_class.set_text(player.current_target.ship_class)
@@ -571,8 +571,6 @@ func update_hud_colors():
 			node.set_self_modulate(color)
 
 
-const AttackShipBase = preload("AttackShipBase.gd")
-const CapitalShipBase = preload("CapitalShipBase.gd")
 const EdgeTargetIcon = preload("EdgeTargetIcon.gd")
 const InteractiveHUD = preload("InteractiveHUD.gd")
 const MathHelper = preload("MathHelper.gd")

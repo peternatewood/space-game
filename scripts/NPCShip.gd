@@ -1,4 +1,4 @@
-extends "res://scripts/AttackShipBase.gd"
+extends "res://scripts/ShipBase.gd"
 
 enum ORDER_TYPE { PASSIVE, ATTACK, DEFEND, IGNORE, ATTACK_ANY, DEPART, ARRIVE, PATROL, COVER_ME }
 

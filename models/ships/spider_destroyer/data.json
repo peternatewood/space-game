@@ -1,4 +1,5 @@
 {
+  "is_capital_ship": true,
   "ship_class": "Spider Destroyer",
   "hull_hitpoints": 800.0,
   "mass": 100,

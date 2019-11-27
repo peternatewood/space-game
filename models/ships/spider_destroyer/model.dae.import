@@ -2,19 +2,19 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/model.dae-a5a837650f0cfa02c27b3a42364dacda.scn"
+path="res://.import/model.dae-d6a2f5f97f1e154a6c891a6bfcde5ab6.scn"
 
 [deps]
 
-source_file="res://models/capital_ships/spider_destroyer/model.dae"
-dest_files=[ "res://.import/model.dae-a5a837650f0cfa02c27b3a42364dacda.scn" ]
+source_file="res://models/ships/spider_destroyer/model.dae"
+dest_files=[ "res://.import/model.dae-d6a2f5f97f1e154a6c891a6bfcde5ab6.scn" ]
 
 [params]
 
 nodes/root_type="RigidBody"
 nodes/root_name="Spider Destroyer"
 nodes/root_scale=1.0
-nodes/custom_script="res://scripts/PostImportCapitalShip.gd"
+nodes/custom_script="res://scripts/PostImportShip.gd"
 nodes/storage=0
 materials/location=1
 materials/storage=1

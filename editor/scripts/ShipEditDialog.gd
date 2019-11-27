@@ -2,7 +2,6 @@ extends Control
 
 export (NodePath) var delete_confirm_path
 
-onready var capital_ship_options = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Capital Ship Options")
 onready var faction_options = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Faction Options")
 onready var hitpoints_spinbox = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Hitpoints SpinBox")
 onready var name_lineedit = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Name LineEdit")
@@ -21,7 +20,7 @@ onready var rotation_spinboxes: Dictionary = {
 	"y": get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Transform Container/Rotation Y SpinBox"),
 	"z": get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Transform Container/Rotation Z SpinBox")
 }
-onready var ship_class_options = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Attack Ship Options")
+onready var ship_class_options = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Ship Options")
 onready var title = get_node("Ship Edit Rows/Title Container/Title")
 onready var warped_in_checkbox = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/NPC Ship Rows/Warped In CheckBox")
 onready var wing_label = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid/Wing Label")
@@ -170,9 +169,15 @@ func fill_ship_info(ship, loadout: Dictionary = {}):
 	var missile_weapons: Array = loadout.get("missile_weapons", [])
 
 	wing_options.select(0)
-	if ship is AttackShipBase:
-		ship_class_options.show()
-		capital_ship_options.hide()
+	if ship.is_capital_ship:
+		player_ship_checkbox.hide()
+		wing_label.hide()
+		wing_options.hide()
+
+		beam_weapon_slot_count = ship.beam_weapon_turrets.size()
+		energy_weapon_slot_count = ship.energy_weapon_turrets.size()
+		missile_weapon_slot_count = ship.missile_weapon_turrets.size()
+	else:
 		player_ship_checkbox.show()
 		wing_label.show()
 		wing_options.show()
@@ -181,23 +186,14 @@ func fill_ship_info(ship, loadout: Dictionary = {}):
 			if wing_options.get_item_text(index) == ship.wing_name:
 				wing_options.select(index)
 				break
-		for ship_option_index in range(ship_class_options.get_item_count()):
-			if ship_class_options.get_item_text(ship_option_index) == ship.ship_class:
-				ship_class_options.select(ship_option_index)
-				break
+
+	for ship_option_index in range(ship_class_options.get_item_count()):
+		if ship_class_options.get_item_text(ship_option_index) == ship.ship_class:
+			ship_class_options.select(ship_option_index)
+			break
 
 		energy_weapon_slot_count = ship.energy_weapon_hardpoints.size()
 		missile_weapon_slot_count = ship.missile_weapon_hardpoints.size()
-	elif ship is CapitalShipBase:
-		ship_class_options.hide()
-		capital_ship_options.show()
-		player_ship_checkbox.hide()
-		wing_label.hide()
-		wing_options.hide()
-
-		beam_weapon_slot_count = ship.beam_weapon_turrets.size()
-		energy_weapon_slot_count = ship.energy_weapon_turrets.size()
-		missile_weapon_slot_count = ship.missile_weapon_turrets.size()
 
 	for index in range(beam_weapon_options.size()):
 		if index < beam_weapon_slot_count:
@@ -318,11 +314,6 @@ func prepare_options(mission_data, mission_node):
 		ship_class_options.add_item(name, ship_index)
 		ship_index += 1
 
-	ship_index = 0
-	for name in mission_data.capital_ship_models.keys():
-		capital_ship_options.add_item(name, ship_index)
-		ship_index += 1
-
 	# Start at one since the first option "none" is at index 0
 	var energy_weapon_index: int = 1
 	for name in mission_data.energy_weapon_models.keys():
@@ -348,8 +339,6 @@ signal ship_position_changed
 signal ship_rotation_changed
 signal update_pressed
 
-const AttackShipBase = preload("res://scripts/AttackShipBase.gd")
-const CapitalShipBase = preload("res://scripts/CapitalShipBase.gd")
 const NPCShip = preload("res://scripts/NPCShip.gd")
 const Player = preload("res://scripts/Player.gd")
 const ShipBase = preload("res://scripts/ShipBase.gd")
