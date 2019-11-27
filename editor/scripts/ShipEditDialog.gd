@@ -104,6 +104,8 @@ func _ready():
 
 	orders = order_rows.get_children()
 
+	ship_class_options.connect("item_selected", self, "_on_ship_class_changed")
+
 	player_ship_checkbox.connect("toggled", self, "_on_player_ship_toggled")
 
 	position_spinboxes.x.connect("value_changed", self, "_on_position_x_changed")
@@ -174,6 +176,23 @@ func _on_rotation_z_changed(new_value: float):
 	if not is_populating:
 		edit_ship.rotation_degrees.z = new_value
 		emit_signal("ship_rotation_changed", edit_ship.rotation_degrees)
+
+
+func _on_ship_class_changed(item_index: int):
+	var ship_class = ship_class_options.get_item_text(ship_class_options.get_selected_id())
+
+	if ship_data[ship_class].is_capital_ship:
+		if player_ship_checkbox.visible:
+			player_ship_checkbox.hide()
+		if wing_options.visible:
+			wing_label.hide()
+			wing_options.hide()
+	else:
+		if not player_ship_checkbox.visible:
+			player_ship_checkbox.show()
+		if not wing_options.visible:
+			wing_label.show()
+			wing_options.show()
 
 
 func _on_update_pressed():
