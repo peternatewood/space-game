@@ -38,9 +38,58 @@ var missile_weapon_index_name_map: Array = []
 var missile_weapon_labels: Array = []
 var missile_weapon_options: Array = []
 var orders: Array = []
+var ship_data: Dictionary = {}
 
 
 func _ready():
+	# Get some ship data to toggle options
+	var dir = Directory.new()
+	if dir.open("res://models/ships") != OK:
+		print("Unable to open res://models/ships directory")
+	else:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while file_name != "":
+			if dir.current_is_dir() and file_name != "." and file_name != "..":
+				var model_dir = dir.get_current_dir() + "/" + file_name + "/"
+				var model_file = load(model_dir + "model.dae")
+				var ship_instance = model_file.instance()
+
+				if ship_instance.has_meta("ship_class"):
+					var ship_class = ship_instance.get_meta("ship_class")
+
+					var beam_weapon_count: int = 0
+					var energy_weapon_count: int = 0
+					var missile_weapon_count: int = 0
+					var is_capital_ship: bool = false
+
+					if ship_instance.has_meta("is_capital_ship"):
+						is_capital_ship = ship_instance.get_meta("is_capital_ship")
+
+					if is_capital_ship:
+						if ship_instance.get_meta("has_beam_weapon_turrets"):
+							beam_weapon_count = ship_instance.get_node("Beam Weapon Turrets").get_child_count()
+						if ship_instance.get_meta("has_energy_weapon_turrets"):
+							energy_weapon_count = ship_instance.get_node("Energy Weapon Turrets").get_child_count()
+						if ship_instance.get_meta("has_missile_weapon_turrets"):
+							missile_weapon_count = ship_instance.get_node("Missile Weapon Turrets").get_child_count()
+					else:
+						if ship_instance.has_node("Energy Weapon Groups"):
+							energy_weapon_count = ship_instance.get_node("Energy Weapon Groups").get_child_count()
+						if ship_instance.has_node("Missile Weapon Groups"):
+							missile_weapon_count = ship_instance.get_node("Missile Weapon Groups").get_child_count()
+
+					ship_data[ship_class] = {
+						"beam_weapon_count": beam_weapon_count,
+						"energy_weapon_count": energy_weapon_count,
+						"is_capital_ship": is_capital_ship,
+						"missile_weapon_count": missile_weapon_count
+					}
+				else:
+					print("Error! Ship missing ship_class property: ", model_dir)
+
+			file_name = dir.get_next()
+
 	# Grab weapon labels and slots
 	var ship_edit_grid = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid")
 	for index in range(6):
