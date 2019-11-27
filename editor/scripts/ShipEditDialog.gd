@@ -194,6 +194,36 @@ func _on_ship_class_changed(item_index: int):
 			wing_label.show()
 			wing_options.show()
 
+	var beam_weapon_options_count: int = beam_weapon_options.size()
+	for index in range(max(beam_weapon_options_count, ship_data[ship_class].beam_weapon_count)):
+		if index >= ship_data[ship_class].beam_weapon_count:
+			if beam_weapon_options[index].visible:
+				beam_weapon_labels[index].hide()
+				beam_weapon_options[index].hide()
+		elif index < beam_weapon_options_count and not beam_weapon_options[index].visible:
+			beam_weapon_labels[index].show()
+			beam_weapon_options[index].show()
+
+	var energy_weapon_options_count: int = energy_weapon_options.size()
+	for index in range(max(energy_weapon_options_count, ship_data[ship_class].energy_weapon_count)):
+		if index >= ship_data[ship_class].energy_weapon_count:
+			if energy_weapon_options[index].visible:
+				energy_weapon_labels[index].hide()
+				energy_weapon_options[index].hide()
+		elif index < energy_weapon_options_count and not energy_weapon_options[index].visible:
+			energy_weapon_labels[index].show()
+			energy_weapon_options[index].show()
+
+	var missile_weapon_options_count: int = missile_weapon_options.size()
+	for index in range(max(missile_weapon_options_count, ship_data[ship_class].missile_weapon_count)):
+		if index >= ship_data[ship_class].missile_weapon_count:
+			if missile_weapon_options[index].visible:
+				missile_weapon_labels[index].hide()
+				missile_weapon_options[index].hide()
+		elif index < missile_weapon_options_count and not missile_weapon_options[index].visible:
+			missile_weapon_labels[index].show()
+			missile_weapon_options[index].show()
+
 
 func _on_update_pressed():
 	# Reset/deselect certain options if capital ship
