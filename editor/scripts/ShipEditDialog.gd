@@ -177,6 +177,18 @@ func _on_rotation_z_changed(new_value: float):
 
 
 func _on_update_pressed():
+	# Reset/deselect certain options if capital ship
+	var ship_class: String = ship_class_options.get_item_text(ship_class_options.get_selected_id())
+	var is_capital_ship = ship_data.get(ship_class, {}).get("is_capital_ship", false)
+
+	if is_capital_ship:
+		# Can't be a player ship
+		if player_ship_checkbox.pressed:
+			player_ship_checkbox.set_pressed(false)
+		# Cannot belong to a wing
+		if wing_options.get_selected_id() != 0:
+			wing_options.select(0)
+
 	title.set_text("Edit " + name_lineedit.text)
 	emit_signal("update_pressed")
 
