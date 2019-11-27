@@ -40,7 +40,11 @@ func _ready():
 					elif model_file == null:
 						print("Unable to load model file at " + model_dir)
 					else:
-						ship_models[data_parsed.result.get("ship_class", "ship")] = model_file
+						if data_parsed.result.has("ship_class"):
+							var ship_class: String = data_parsed.result["ship_class"]
+							ship_models[ship_class] = model_file
+						else:
+							print("Ship data file missing ship_class: ", model_dir)
 
 				data_file.close()
 
