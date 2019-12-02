@@ -73,7 +73,7 @@ func _load_settings_from_file():
 			print("User settings file read error: ", file_error)
 
 	# Always save settings, in case the file is missing some defaults
-	_save_settings_to_file()
+	_save_all_settings_to_file()
 
 	# Actually update settings from file settings
 	for bus_index in range(AUDIO_BUS_COUNT):
@@ -117,13 +117,30 @@ func _save_keybinds_to_file():
 	keybinds_file.close()
 
 
-func _save_settings_to_file():
+func _save_all_settings_to_file():
 	var settings_file = ConfigFile.new()
 
 	for key in settings.keys():
 		settings_file.set_value(settings[key]._section, key, settings[key]._value)
 
 	settings_file.save(SETTINGS_PATH)
+
+
+func _save_setting_to_file(key: String):
+	if settings.has(key):
+		var settings_file = File.new()
+		# Just in case the user settings file is missing
+		if not settings_file.file_exists(SETTINGS_PATH):
+			_save_all_settings_to_file()
+
+		settings_file = ConfigFile.new()
+		settings_file.load(SETTINGS_PATH)
+
+		settings_file.set_value(settings[key]._section, key, settings[key]._value)
+
+		settings_file.save(SETTINGS_PATH)
+	else:
+		print("Invalid setting name: ", key)
 
 
 func _update_fullscreen():
@@ -259,48 +276,54 @@ func set_audio_percent(bus_index: int, percent: float):
 	match bus_index:
 		MASTER:
 			settings.audio_master_percent.set_value(percent)
+			_save_setting_to_file("audio_master_percent")
 		MUSIC:
 			settings.audio_music_percent.set_value(percent)
+			_save_setting_to_file("audio_music_percent")
 		SOUND_EFFECTS:
 			settings.audio_sound_effects_percent.set_value(percent)
+			_save_setting_to_file("audio_sound_effects_percent")
 		UI_SOUNDS:
 			settings.audio_ui_sounds_percent.set_value(percent)
+			_save_setting_to_file("audio_ui_sounds_percent")
 		_:
 			return
 
 	AudioServer.set_bus_volume_db(bus_index, MathHelper.percent_to_db(percent))
-	_save_settings_to_file()
 
 
 func set_audio_mute(bus_index: int, toggle_on: bool):
 	match bus_index:
 		MASTER:
 			settings.audio_master_mute.set_value(toggle_on)
+			_save_setting_to_file("audio_master_mute")
 		MUSIC:
 			settings.audio_music_mute.set_value(toggle_on)
+			_save_setting_to_file("audio_music_mute")
 		SOUND_EFFECTS:
 			settings.audio_sound_effects_mute.set_value(toggle_on)
+			_save_setting_to_file("audio_sound_effects_mute")
 		UI_SOUNDS:
 			settings.audio_ui_sounds_mute.set_value(toggle_on)
+			_save_setting_to_file("audio_ui_sounds_mute")
 		_:
 			return
 
 	AudioServer.set_bus_mute(bus_index, toggle_on)
-	_save_settings_to_file()
 
 
 func set_borderless_window(toggle_on: bool):
 	settings.borderless.set_value(toggle_on)
 	OS.set_borderless_window(settings.borderless._value)
 
-	_save_settings_to_file()
+	_save_setting_to_file("borderless")
 
 
 func set_colorblindness(option_index: int):
 	settings.colorblindness.set_value(option_index)
 	emit_signal("ui_colors_changed")
 
-	_save_settings_to_file()
+	_save_setting_to_file("colorblindness")
 
 
 func set_custom_ui_color(type: int, new_color: Color):
@@ -309,35 +332,35 @@ func set_custom_ui_color(type: int, new_color: Color):
 	settings.custom_ui_colors.set_value(ui_colors)
 	emit_signal("ui_colors_changed")
 
-	_save_settings_to_file()
+	_save_setting_to_file("ui_colors")
 
 
 func set_dyslexia(toggle_on: bool):
 	settings.dyslexia.set_value(toggle_on)
 	emit_signal("dyslexia_toggled", settings.dyslexia._value)
 
-	_save_settings_to_file()
+	_save_setting_to_file("dyslexia")
 
 
 func set_fov(value: int):
 	settings.fov.set_value(value)
 	emit_signal("fov_changed", settings.fov._value)
 
-	_save_settings_to_file()
+	_save_setting_to_file("fov")
 
 
 func set_fullscreen(toggle_on: bool):
 	settings.fullscreen.set_value(toggle_on)
 	_update_fullscreen()
 
-	_save_settings_to_file()
+	_save_setting_to_file("fullscreen")
 
 
 func set_hdr(toggle_on: bool):
 	settings.hdr.set_value(toggle_on)
 	get_viewport().set_hdr(settings.hdr._value)
 
-	_save_settings_to_file()
+	_save_setting_to_file("hdr")
 
 
 func set_hud_custom_color(node_path: String, new_color: Color):
@@ -346,28 +369,28 @@ func set_hud_custom_color(node_path: String, new_color: Color):
 	settings.hud_palette_colors.set_value(palette_colors)
 	emit_signal("hud_palette_color_changed", node_path)
 
-	_save_settings_to_file()
+	_save_setting_to_file("hud_palette_colors")
 
 
 func set_hud_palette(index: int):
 	settings.hud_palette_index.set_value(index)
 	emit_signal("hud_palette_changed")
 
-	_save_settings_to_file()
+	_save_setting_to_file("hud_palette_index")
 
 
 func set_msaa(option: int):
 	settings.msaa.set_value(option)
 	get_viewport().set_msaa(settings.msaa._value)
 
-	_save_settings_to_file()
+	_save_setting_to_file("msaa")
 
 
 func set_resolution(new_resolution: Vector2):
 	settings.resolution.set_value(new_resolution)
 	_update_resolution()
 
-	_save_settings_to_file()
+	_save_setting_to_file("resolution")
 
 	return settings.resolution._value
 
@@ -375,27 +398,27 @@ func set_resolution(new_resolution: Vector2):
 func set_shadows_dir_atlas_size(value: int):
 	settings.shadows_dir.set_value(value)
 
-	_save_settings_to_file()
+	_save_setting_to_file("shadows_dir")
 
 
 func set_shadows_point_atlas_size(value: int):
 	settings.shadows_point.set_value(value)
 
-	_save_settings_to_file()
+	_save_setting_to_file("shadows_point")
 
 
 func set_units(new_units: int):
 	settings.units.set_value(new_units)
 	emit_signal("units_changed", settings.units._value)
 
-	_save_settings_to_file()
+	_save_setting_to_file("units")
 
 
 func set_vsync(toggle_on: bool):
 	settings.vsync.set_value(toggle_on)
 	OS.set_use_vsync(settings.vsync._value)
 
-	_save_settings_to_file()
+	_save_setting_to_file("vsyncs")
 
 
 signal dyslexia_toggled
