@@ -10,34 +10,7 @@ enum Colorblindness { FULL, PROTANOPIA, DEUTERANOPIA, TRITANOPIA, CUSTOM }
 
 var keybinds: Dictionary = {}
 # Default settings
-var settings: Dictionary = {
-	"aniso_filtering": Setting.new("aniso_filtering", 0),
-	"audio_master_percent": Setting.new("audio_master_percent", 100),
-	"audio_master_mute": Setting.new("audio_master_mute", false),
-	"audio_music_percent": Setting.new("audio_music_percent", 100),
-	"audio_music_mute": Setting.new("audio_music_mute", false),
-	"audio_sound_effects_percent": Setting.new("audio_sound_effects_percent", 100),
-	"audio_sound_effects_mute": Setting.new("audio_sound_effects_mute", false),
-	"audio_ui_sounds_percent": Setting.new("audio_ui_sounds_percent", 100),
-	"audio_ui_sounds_mute": Setting.new("audio_ui_sounds_mute", false),
-	"borderless": Setting.new("borderless", false),
-	"colorblindness": Setting.new("colorblindness", Colorblindness.FULL),
-	"custom_ui_colors": Setting.new("custom_ui_colors", [ Color.white, Color.white, Color.white ]),
-	"dyslexia": Setting.new("dyslexia", false),
-	"fov": Setting.new("fov", 70),
-	"fullscreen": Setting.new("fullscreen", false),
-	"hdr": Setting.new("hdr", false),
-	"hud_palette_colors": Setting.new("hud_palette_colors", { "default": Color.white }),
-	"hud_palette_index": Setting.new("hud_palette_index", 0),
-	"msaa": Setting.new("msaa", 0),
-	"reflections": Setting.new("reflections", 2048),
-	"resolution": Setting.new("resolution", Vector2(1280, 720)),
-	"shadows_dir": Setting.new("shadows_dir", 4096),
-	"shadows_point": Setting.new("shadows_point", 4096),
-	"subsurf_scatter": Setting.new("subsurf_scatter", 0),
-	"units": Setting.new("units", MathHelper.Units.METRIC),
-	"vsync": Setting.new("vsync", true)
-}
+var settings: Dictionary = {}
 
 
 func _ready():
@@ -45,8 +18,21 @@ func _ready():
 	for action in InputMap.get_actions():
 		keybinds[action] = Keybind.action_to_simplified_events(action)
 
+	_load_default_settings()
 	_load_keybinds_from_file()
 	_load_settings_from_file()
+
+
+func _load_default_settings():
+	var settings_file = ConfigFile.new()
+	var file_error = settings_file.load(DEFAULT_SETTINGS_PATH)
+
+	if file_error == OK:
+		for section in settings_file.get_sections():
+			for key in settings_file.get_section_keys(section):
+				settings[key] = Setting.new(section, settings_file.get_value(section, key))
+	else:
+		print("Default settings file load error: ", file_error)
 
 
 func _load_keybinds_from_file():
@@ -73,22 +59,18 @@ func _load_keybinds_from_file():
 
 func _load_settings_from_file():
 	var settings_file = File.new()
-	if settings_file.file_exists(SETTINGS_PATH):
-		var file_error = settings_file.open(SETTINGS_PATH, File.READ)
-		if file_error == OK:
-			var parse_result = JSON.parse(settings_file.get_as_text())
-			if parse_result.error == OK:
-				for key in parse_result.result.keys():
-					if settings.has(key):
-						settings[key].set_value(parse_result.result[key])
-			else:
-				print("Error parsing settings file: " + parse_result.error_string)
-		else:
-			print("File read error: " + str(file_error))
+	var file_error: int
 
-		settings_file.close()
-	else:
-		print("File not found")
+	if settings_file.file_exists(SETTINGS_PATH):
+		settings_file = ConfigFile.new()
+		file_error = settings_file.load(SETTINGS_PATH)
+
+		if file_error == OK:
+			for section in settings_file.get_sections():
+				for key in settings_file.get_section_keys(section):
+					settings[key] = Setting.new(section, settings_file.get_value(section, key))
+		else:
+			print("User settings file read error: ", file_error)
 
 	# Always save settings, in case the file is missing some defaults
 	_save_settings_to_file()
@@ -136,19 +118,12 @@ func _save_keybinds_to_file():
 
 
 func _save_settings_to_file():
-	var settings_file = File.new()
-	settings_file.open(SETTINGS_PATH, File.WRITE)
+	var settings_file = ConfigFile.new()
 
-	var string_settings: Dictionary = {}
 	for key in settings.keys():
-		match settings[key]._type:
-			TYPE_BOOL, TYPE_INT, TYPE_REAL, TYPE_STRING:
-				string_settings[key] = settings[key]._value
-			_:
-				string_settings[key] = settings[key]._value_string
+		settings_file.set_value(settings[key]._section, key, settings[key]._value)
 
-	settings_file.store_string(JSON.print(string_settings))
-	settings_file.close()
+	settings_file.save(SETTINGS_PATH)
 
 
 func _update_fullscreen():
@@ -433,6 +408,7 @@ signal units_changed
 const Keybind = preload("Keybind.gd")
 const MathHelper = preload("MathHelper.gd")
 
+const DEFAULT_SETTINGS_PATH = "res://settings.cfg"
 const DISTANCE_UNITS: Array = [
 	"m",
 	"ft"
@@ -490,7 +466,7 @@ const RESOLUTIONS: Array = [
 	Vector2(2560, 1600),
 	Vector2(3840, 2400)
 ]
-const SETTINGS_PATH: String = "user://settings.json"
+const SETTINGS_PATH: String = "user://settings.cfg"
 # Low, Medium, High, Maximum
 const SHADOW_QUALITY: Array = [
 	1024,
@@ -506,28 +482,22 @@ const SPEED_UNITS: Array = [
 
 # Used to maintain properties of a given setting
 class Setting:
-	var _name: String
+	var _section: String
 	var _type: int
 	var _value
-	var _value_string: String
 
 
-	func _init(name: String, value):
-		_name = name
+	func _init(section: String, value):
+		_section = section
 
 		if value != null:
 			_type = typeof(value)
 			set_value(value)
 		else:
 			_type = TYPE_NIL
-			_value_string = "null"
 
 
 	# PUBLIC
-
-
-	func get_name():
-		return _name
 
 
 	func get_value():
@@ -535,26 +505,17 @@ class Setting:
 
 
 	func set_value(value):
-		if value == null:
-			_value_string = "null"
-			return
-
 		if typeof(value) == _type:
 			_value = value
-			_value_string = var2str(_value)
 
-			return _value
 		elif _type == TYPE_INT:
 			_value = int(value)
-			_value_string = var2str(_value)
 
-			return _value
 		elif typeof(value) == TYPE_STRING:
 			_value = str2var(value)
-			_value_string = value
 
-			return _value
 		else:
-			print("Invalid type for " + _name + " setting: " + str(typeof(value)))
+			print("Invalid type for this setting: " + str(typeof(value)))
+			return null
 
-		return null
+		return _value
