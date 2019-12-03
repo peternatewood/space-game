@@ -33,7 +33,10 @@ func _attack_current_target():
 			is_flying_at_target = false
 		else:
 			var desired_throttle: float = _get_throttle_to_match_target_speed()
-			throttle = max(desired_throttle, 0.1)
+			if target_dist_squared < MIN_FULL_SPEED_DIST_SQ:
+				throttle = max(desired_throttle, 0.5)
+			else:
+				throttle = 1.0
 	else:
 		if target_dist_squared > MAX_TARGET_DIST_SQ:
 			is_flying_at_target = true
@@ -198,7 +201,8 @@ func set_command(command: int, commander):
 
 const LINE_OF_FIRE_SQ: float = 4.0 # Squared to make processing faster
 const MAX_TARGET_DIST_SQ: float = pow(15, 2)
-const MIN_TARGET_DIST_SQ: float = pow(6, 2)
+const MIN_FULL_SPEED_DIST_SQ: float = pow(10, 2)
+const MIN_TARGET_DIST_SQ: float = pow(8, 2)
 const PATROL_THROTTLE: float = 0.7
 
 
