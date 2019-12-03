@@ -296,11 +296,30 @@ custom_styles/panel = SubResource( 5 )
 
 [node name="Objective Rows" type="VBoxContainer" parent="Objectives Container"]
 margin_left = 1.0
-margin_top = 10.0
-margin_right = 1.0
-margin_bottom = 10.0
+margin_top = 1.0
+margin_right = 161.0
+margin_bottom = 63.0
 size_flags_vertical = 4
 alignment = 1
+
+[node name="Incomplete Objective Label" type="Label" parent="Objectives Container/Objective Rows"]
+margin_right = 160.0
+margin_bottom = 18.0
+text = "Incomplete Objective"
+
+[node name="Completed Objective Label" type="Label" parent="Objectives Container/Objective Rows"]
+modulate = Color( 0.501961, 0.501961, 0.501961, 1 )
+margin_top = 22.0
+margin_right = 160.0
+margin_bottom = 40.0
+text = "Completed Objective"
+
+[node name="Failed Objective Label" type="Label" parent="Objectives Container/Objective Rows"]
+modulate = Color( 1, 0, 0, 1 )
+margin_top = 44.0
+margin_right = 160.0
+margin_bottom = 62.0
+text = "Failed Objective"
 
 [node name="Player Overhead" parent="." instance=ExtResource( 6 )]
 modulate = Color( 0.501961, 0.752941, 1, 1 )
