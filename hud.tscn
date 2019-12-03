@@ -494,19 +494,19 @@ custom_styles/panel = SubResource( 6 )
 [node name="Weapons Rows" type="VBoxContainer" parent="Weapons Container"]
 margin_left = 4.0
 margin_top = 4.0
-margin_right = 130.0
+margin_right = 118.0
 margin_bottom = 74.0
 size_flags_vertical = 4
 alignment = 1
 
 [node name="Energy Weapons" type="VBoxContainer" parent="Weapons Container/Weapons Rows"]
-margin_right = 126.0
+margin_right = 114.0
 margin_bottom = 18.0
 size_flags_vertical = 4
 alignment = 1
 
 [node name="Energy Weapon Container 1" parent="Weapons Container/Weapons Rows/Energy Weapons" instance=ExtResource( 16 )]
-margin_right = 126.0
+margin_right = 114.0
 
 [node name="Energy Weapon Container 2" parent="Weapons Container/Weapons Rows/Energy Weapons" instance=ExtResource( 16 )]
 visible = false
@@ -515,23 +515,23 @@ margin_bottom = 40.0
 
 [node name="HSeparator" type="HSeparator" parent="Weapons Container/Weapons Rows"]
 margin_top = 22.0
-margin_right = 126.0
+margin_right = 114.0
 margin_bottom = 26.0
 custom_styles/separator = SubResource( 7 )
 
 [node name="Missile Weapons" type="VBoxContainer" parent="Weapons Container/Weapons Rows"]
 margin_top = 30.0
-margin_right = 126.0
+margin_right = 114.0
 margin_bottom = 70.0
 size_flags_vertical = 4
 alignment = 1
 
 [node name="Missile Weapon Container 1" parent="Weapons Container/Weapons Rows/Missile Weapons" instance=ExtResource( 17 )]
-margin_right = 126.0
+margin_right = 114.0
 
 [node name="Missile Weapon Container 2" parent="Weapons Container/Weapons Rows/Missile Weapons" instance=ExtResource( 17 )]
 margin_top = 22.0
-margin_right = 126.0
+margin_right = 114.0
 margin_bottom = 40.0
 
 [node name="Missile Weapon Container 3" parent="Weapons Container/Weapons Rows/Missile Weapons" instance=ExtResource( 17 )]

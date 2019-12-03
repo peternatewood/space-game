@@ -23,34 +23,35 @@ polygon = PoolVector2Array( 0, -6, 6, 0, 0, 6 )
 [node name="Missile Name" type="Label" parent="."]
 margin_left = 10.0
 margin_top = 2.0
-margin_right = 56.0
+margin_right = 71.0
 margin_bottom = 16.0
+size_flags_horizontal = 3
 text = "Missile"
 
 [node name="VSeparator" type="VSeparator" parent="."]
-margin_left = 60.0
-margin_right = 64.0
+margin_left = 75.0
+margin_right = 79.0
 margin_bottom = 18.0
 custom_styles/separator = SubResource( 1 )
 
 [node name="Missile Ammo" type="Label" parent="."]
-margin_left = 68.0
+margin_left = 83.0
 margin_top = 2.0
-margin_right = 76.0
+margin_right = 91.0
 margin_bottom = 16.0
 text = "0"
 align = 2
 
 [node name="Separator" type="Label" parent="."]
-margin_left = 80.0
+margin_left = 95.0
 margin_top = 2.0
-margin_right = 85.0
+margin_right = 100.0
 margin_bottom = 16.0
 text = "/"
 
 [node name="Missile Capacity" type="Label" parent="."]
-margin_left = 89.0
+margin_left = 104.0
 margin_top = 2.0
-margin_right = 97.0
+margin_right = 112.0
 margin_bottom = 16.0
 text = "0"
