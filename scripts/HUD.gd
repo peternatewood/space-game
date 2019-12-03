@@ -168,6 +168,9 @@ func _on_mission_ready():
 	if not player.has_target:
 		target_details_minimal.hide()
 
+	for child in objectives_rows.get_children():
+		child.free()
+
 	for index in range(mission_controller.mission_data.objectives.size()):
 		for objective in mission_controller.mission_data.objectives[index]:
 			var objective_label = OBJECTIVE_LABEL.instance()
