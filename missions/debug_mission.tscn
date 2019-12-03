@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://scripts/MissionController.gd" type="Script" id=1]
 [ext_resource path="res://scripts/PlayerCamera.gd" type="Script" id=2]
@@ -8,15 +8,12 @@
 [ext_resource path="res://models/ships/frog_fighter/model.dae" type="PackedScene" id=6]
 [ext_resource path="res://models/ships/hawk_fighter/model.dae" type="PackedScene" id=7]
 [ext_resource path="res://models/ships/spider_destroyer/model.dae" type="PackedScene" id=8]
-[ext_resource path="res://scripts/NPCShip.gd" type="Script" id=9]
-[ext_resource path="res://models/asteroid/asteroid.dae" type="PackedScene" id=10]
-[ext_resource path="res://scripts/ActorBase.gd" type="Script" id=11]
-[ext_resource path="res://scripts/MovementDebris.gd" type="Script" id=12]
-[ext_resource path="res://hud.tscn" type="PackedScene" id=13]
-[ext_resource path="res://mission_start_overlay.tscn" type="PackedScene" id=14]
-[ext_resource path="res://pause_menu.tscn" type="PackedScene" id=15]
-
-
+[ext_resource path="res://models/asteroid/asteroid.dae" type="PackedScene" id=9]
+[ext_resource path="res://scripts/ActorBase.gd" type="Script" id=10]
+[ext_resource path="res://scripts/MovementDebris.gd" type="Script" id=11]
+[ext_resource path="res://hud.tscn" type="PackedScene" id=12]
+[ext_resource path="res://mission_start_overlay.tscn" type="PackedScene" id=13]
+[ext_resource path="res://pause_menu.tscn" type="PackedScene" id=14]
 
 [node name="Mission Controller" type="Spatial"]
 script = ExtResource( 1 )
@@ -131,6 +128,7 @@ script = ExtResource( 5 )
 faction = "spider"
 is_warped_in = false
 wing_name = "Alpha"
+initial_orders = [ 6, 0, 0, 0, 0, 0 ]
 
 [node name="Alpha 3" parent="Targets Container" instance=ExtResource( 3 )]
 transform = Transform( -0.694721, -0.305488, -0.651183, -0.226817, 0.95218, -0.204713, 0.682581, 0.00548107, -0.730789, -10.4962, -2.45585, 4.0847 )
@@ -138,6 +136,7 @@ script = ExtResource( 5 )
 faction = "spider"
 is_warped_in = false
 wing_name = "Alpha"
+initial_orders = [ 6, 0, 0, 0, 0, 0 ]
 
 [node name="Beta 1" parent="Targets Container" instance=ExtResource( 3 )]
 transform = Transform( -0.417827, 0.599459, -0.682693, -0.312929, -0.800406, -0.511299, -0.852934, 0, 0.522019, -4.55983, 2.07022, -11.4268 )
@@ -173,30 +172,30 @@ wing_name = "Buteo"
 
 [node name="Spider Destroyer" parent="Targets Container" instance=ExtResource( 8 )]
 transform = Transform( 0.488285, -0.115362, 0.865025, 0.473604, 0.867587, -0.151634, -0.732991, 0.48372, 0.478266, 17.7772, 2.62768, -38.5596 )
-script = ExtResource( 9 )
+script = ExtResource( 5 )
 faction = "spider"
 
 [node name="Asteroids Container" type="Node" parent="."]
 
-[node name="Asteroid" parent="Asteroids Container" instance=ExtResource( 10 )]
+[node name="Asteroid" parent="Asteroids Container" instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11.9108, 0, -8.19799 )
-script = ExtResource( 11 )
+script = ExtResource( 10 )
 
-[node name="Asteroid2" parent="Asteroids Container" instance=ExtResource( 10 )]
+[node name="Asteroid2" parent="Asteroids Container" instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.89396, -6.71257, 7.66448 )
-script = ExtResource( 11 )
+script = ExtResource( 10 )
 
-[node name="Asteroid3" parent="Asteroids Container" instance=ExtResource( 10 )]
+[node name="Asteroid3" parent="Asteroids Container" instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.10207, -3.187, 4.12244 )
-script = ExtResource( 11 )
+script = ExtResource( 10 )
 
-[node name="Asteroid4" parent="Asteroids Container" instance=ExtResource( 10 )]
+[node name="Asteroid4" parent="Asteroids Container" instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15.0285, 9.41962, -26.4233 )
-script = ExtResource( 11 )
+script = ExtResource( 10 )
 
-[node name="Asteroid5" parent="Asteroids Container" instance=ExtResource( 10 )]
+[node name="Asteroid5" parent="Asteroids Container" instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.18502, 5.07815, -14.7815 )
-script = ExtResource( 11 )
+script = ExtResource( 10 )
 
 [node name="Waypoints Container" type="Node" parent="."]
 
@@ -213,12 +212,12 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.69232, 0, 11.3315 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -22.8941, -5.28593, 1.1059 )
 
 [node name="Player Movement Debris" type="Spatial" parent="."]
-script = ExtResource( 12 )
+script = ExtResource( 11 )
 
-[node name="HUD" parent="." instance=ExtResource( 13 )]
+[node name="HUD" parent="." instance=ExtResource( 12 )]
 
-[node name="Mission Start Overlay" parent="." instance=ExtResource( 14 )]
+[node name="Mission Start Overlay" parent="." instance=ExtResource( 13 )]
 
-[node name="Pause Menu" parent="." instance=ExtResource( 15 )]
+[node name="Pause Menu" parent="." instance=ExtResource( 14 )]
 pause_mode = 2
 visible = false
