@@ -5,9 +5,9 @@ extends "PostImportActor.gd"
 func post_import(scene):
 	# Change shield collision meshes to Area nodes
 	for child in scene.get_children():
-		if child.name.begins_with("Shield") and child is MeshInstance:
+		if child.name.begins_with("Shield"):
 			var shield_name = child.name
-			child.set_name(shield_name + " Mesh")
+			child.set_name(shield_name + " Container")
 
 			# Add the area node to the scene
 			var area_node: Area = Area.new()
@@ -16,14 +16,26 @@ func post_import(scene):
 			area_node.set_name(shield_name)
 
 			# Get the collision shape and shield mesh
-			var shield_static
-			for node in scene.get_children():
-				if node.name.begins_with(shield_name) and node is StaticBody:
+			var shield_static: StaticBody
+			var shield_mesh: MeshInstance
+			for node in child.get_children():
+				if node is StaticBody:
 					shield_static = node
+				elif node is MeshInstance:
+					shield_mesh = node.duplicate(Node.DUPLICATE_USE_INSTANCING)
+					shield_mesh.transform = node.transform
+
+					node.queue_free()
+
+			#var collision_shape: CollisionShape = shield_static.get_node("shape").duplicate(Node.DUPLICATE_USE_INSTANCING)
+			var collision_shape: CollisionShape
+			for static_child in shield_static.get_children():
+				if static_child is CollisionShape:
+					collision_shape = static_child.duplicate(Node.DUPLICATE_USE_INSTANCING)
+					collision_shape.transform = child.transform
+
+					static_child.queue_free()
 					break
-			var collision_shape: CollisionShape = shield_static.get_node("shape").duplicate(Node.DUPLICATE_USE_INSTANCING)
-			collision_shape.transform = child.transform
-			var shield_mesh: MeshInstance = child.duplicate(Node.DUPLICATE_USE_INSTANCING)
 
 			# Add the shield mesh (note: set_owner must be the Scene, not the node's parent)
 			area_node.add_child(shield_mesh)
@@ -34,13 +46,14 @@ func post_import(scene):
 
 			# Add the collision shape
 			area_node.add_child(collision_shape)
+			collision_shape.set_name("shape")
 			collision_shape.set_owner(scene)
 
 			area_node.set_script(ShieldQuadrant)
 
 			# Remove the static node and original shield mesh
-			scene.remove_child(shield_static)
-			scene.remove_child(child)
+			shield_static.queue_free()
+			child.queue_free()
 
 	var exhaust_mesh = scene.get_node("Exhaust")
 	exhaust_mesh.set_surface_material(0, BLUE_EXHAUST_MATERIAL)
