@@ -186,7 +186,8 @@ func post_import(scene):
 		"hull_hitpoints": 100.0,
 		"missile_capacity": 55.0,
 		"shield_hitpoints": 100.0,
-		"ship_class": "ship"
+		"ship_class": "ship",
+		"turn_speed": 25
 	}
 
 	if data_file.file_exists(data_file_name):

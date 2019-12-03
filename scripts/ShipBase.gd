@@ -30,7 +30,7 @@ var has_warp_boom: bool = false
 var has_warp_ramp_up: bool = false
 var last_speed: float = 0.0
 var last_speed_sq: float = 0.0
-var max_speed: float
+var max_speed: float = get_meta("max_speed")
 var missile_weapon_hardpoints
 var missile_weapon_index: int = 0
 var missile_weapon_turrets: Array = []
@@ -39,13 +39,13 @@ var power_distribution: Array = [
 	float(TOTAL_SYSTEM_POWER / 3),
 	float(TOTAL_SYSTEM_POWER / 3)
 ]
-var propulsion_force: float = 1.0
+var propulsion_force: float = get_meta("propulsion_force")
 var shields: Array = []
 var target_index: int = 0
 var targeting_ships: Array = []
 var throttle: float
 var torque_vector: Vector3
-var turn_speed: float
+var turn_speed: float = get_meta("turn_speed")
 var warp_destination: Vector3
 var warp_origin: Vector3
 var warp_speed: float
@@ -55,13 +55,6 @@ var weapon_battery: float = MAX_WEAPON_BATTERY
 
 
 func _ready():
-	if has_meta("propulsion_force"):
-		propulsion_force = get_meta("propulsion_force")
-	if has_meta("max_hull_hitpoints"):
-		max_hull_hitpoints = get_meta("hull_hitpoints")
-	if has_meta("max_speed"):
-		max_speed = get_meta("max_speed")
-
 	if get_meta("has_beam_weapon_turrets"):
 		beam_weapon_turrets = get_node("Beam Weapon Turrets").get_children()
 	if get_meta("has_energy_weapon_turrets"):
@@ -99,9 +92,6 @@ func _ready():
 	has_engine_loop = engine_loop_player != null
 	has_warp_boom = warp_boom_player != null
 	has_warp_ramp_up = warp_ramp_up_player != null
-
-	# Set turn speed based on mass
-	turn_speed = 2.5 * mass
 
 
 func _cycle_energy_weapon(direction: int):

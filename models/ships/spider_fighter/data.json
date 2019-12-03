@@ -5,5 +5,6 @@
   "shield_hitpoints": 100.0,
   "mass": 10,
   "max_speed": 65.0,
-  "missile_capacity": 50.0
+  "missile_capacity": 50.0,
+  "turn_speed": 44
 }
