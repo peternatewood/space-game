@@ -21,6 +21,8 @@ func _on_mission_ready():
 		debris_instance.transform.origin = MAX_DISTANCE * direction
 		debris_particles.append(debris_instance)
 
+	mission_controller.player.connect("destroyed", self, "queue_free")
+
 	set_process(true)
 
 
