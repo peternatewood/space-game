@@ -3,7 +3,7 @@
 [ext_resource path="res://scripts/EnergyWeaponContainer.gd" type="Script" id=1]
 
 [node name="Energy Weapon Container" type="HBoxContainer"]
-margin_right = 110.0
+margin_right = 62.0
 margin_bottom = 18.0
 script = ExtResource( 1 )
 
@@ -19,6 +19,6 @@ polygon = PoolVector2Array( 0, -6, 6, 0, 0, 6 )
 [node name="Weapon Name" type="Label" parent="."]
 margin_left = 10.0
 margin_top = 2.0
-margin_right = 48.0
+margin_right = 108.0
 margin_bottom = 16.0
-text = "wep 1"
+text = "Energy Weapon"
