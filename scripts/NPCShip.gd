@@ -136,10 +136,10 @@ func _turn_towards_target(target_pos: Vector3):
 	if is_flying_at_target:
 		# Stop turning if angular vel is high enough
 		var angle_to_target: float = (-transform.basis.z).angle_to(to_target)
-		if abs(angular_velocity.y) > abs(angle_to_target):
-			x_dot /= 2
-		if abs(angular_velocity.x) > abs(angle_to_target):
-			y_dot /= 2
+		if angular_velocity.y != 0:
+			x_dot * min(1, abs(angle_to_target / angular_velocity.y))
+		if angular_velocity.x != 0:
+			y_dot * min(1, abs(angle_to_target / angular_velocity.x))
 
 		torque_vector = transform.basis.x * y_dot - transform.basis.y * x_dot
 	else:
