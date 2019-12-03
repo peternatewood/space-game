@@ -93,9 +93,7 @@ static func units_to_speed(amount: float, units: int):
 			return 19.438445 * amount
 
 
-# This one turned out to be too high?
-#const MASS_SPEED_FACTOR: float = 0.031124095253675
-const MASS_SPEED_FACTOR: float = 0.015562047626838
+const MASS_SPEED_FACTOR: float = 0.031124095253675
 
 """
 TODO: figure out the curve for this conversion; for now we're just expecting 0.85 damping for all ships
