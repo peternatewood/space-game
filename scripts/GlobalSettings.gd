@@ -6,10 +6,7 @@ enum Colorblindness { FULL, PROTANOPIA, DEUTERANOPIA, TRITANOPIA, CUSTOM }
 # Dueteranopia: similar to protanopia, without dimming effect
 # Tritanopia: no blue photoreceptors (very rare)
 
-# TODO: change to using .cfg format and manipulating ProjectSettings directly
-
 var keybinds: Dictionary = {}
-# Default settings
 var settings: Dictionary = {}
 
 
@@ -38,21 +35,23 @@ func _load_default_settings():
 func _load_keybinds_from_file():
 	var keybinds_file = File.new()
 	if keybinds_file.file_exists(KEYBINDS_PATH):
-		var file_error = keybinds_file.open(KEYBINDS_PATH, File.READ)
+		keybinds_file = ConfigFile.new()
+		var file_error = keybinds_file.load(KEYBINDS_PATH)
 		if file_error == OK:
-			var parse_result = JSON.parse(keybinds_file.get_as_text())
-			if parse_result.error == OK:
-				for action in parse_result.result.keys():
-					if keybinds.has(action):
-						keybinds[action] = parse_result.result[action]
-			else:
-				print("Error parsing keybinds file: " + parse_result.error_string)
-		else:
-			print("File read error: " + str(file_error))
+			for action in keybinds_file.get_sections():
+				var keybind: Dictionary = {}
 
-		keybinds_file.close()
+				for input_type in keybinds_file.get_section_keys(action):
+					keybind[input_type] = keybinds_file.get_value(action, input_type)
+
+				keybinds[action] = keybind
+		else:
+			print("User keybinds file read error: ", file_error)
 	else:
-		print("File not found")
+		print("User keybinds file not found")
+		# Assign events to keybinds object from InputMap
+		for action in InputMap.get_actions():
+			keybinds[action] = Keybind.action_to_simplified_events(action)
 
 	_save_keybinds_to_file()
 
@@ -111,10 +110,14 @@ func _on_keybind_changed(action):
 
 
 func _save_keybinds_to_file():
-	var keybinds_file = File.new()
-	keybinds_file.open(KEYBINDS_PATH, File.WRITE)
-	keybinds_file.store_string(JSON.print(keybinds))
-	keybinds_file.close()
+	var keybinds_file = ConfigFile.new()
+
+	for action in InputMap.get_actions():
+		var keybind = Keybind.action_to_simplified_events(action)
+		for input_type in keybind.keys():
+			keybinds_file.set_value(action, input_type, keybind[input_type])
+
+	keybinds_file.save(KEYBINDS_PATH)
 
 
 func _save_all_settings_to_file():
@@ -456,7 +459,7 @@ const INTERFACE_COLORS_FADED: Array = [
 ]
 const INCONSOLATA_THEME = preload("res://themes/default_inconsolata.tres")
 const INCONSOLATA_INTERFACE_THEME = preload("res://themes/interface_blue.tres")
-const KEYBINDS_PATH: String = "user://keybinds.json"
+const KEYBINDS_PATH: String = "user://keybinds.cfg"
 const OPEN_DYSLEXIC_INTERFACE_THEME = preload("res://themes/interface_blue_dyslexia.tres")
 const OPEN_DYSLEXIC_THEME = preload("res://themes/default_dyslexic.tres")
 const RESOLUTIONS: Array = [
