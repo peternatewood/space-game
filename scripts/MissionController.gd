@@ -71,9 +71,7 @@ func _on_scene_loaded():
 				targets_container.add_child(ship_instance)
 				targets_container.move_child(ship_instance, ship_tree_pos)
 
-				if ship_instance is Player:
-					ship_instance.camera_path = ship.camera_path
-				elif ship_instance is NPCShip:
+				if ship_instance is NPCShip:
 					ship_instance.initial_orders = ship.initial_orders
 
 				ship.free()
