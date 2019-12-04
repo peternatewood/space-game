@@ -119,35 +119,34 @@ func _cycle_missile_weapon(direction: int):
 
 
 func _destroy():
+	# Generate debris
+	if has_node("Debris"):
+		for node in get_node("Debris").get_children():
+			var debris = DEBRIS_PREFAB.instance()
+
+			var debris_mesh = node.get_node("Mesh").duplicate(DUPLICATE_USE_INSTANCING)
+			debris.add_child(debris_mesh)
+			debris_mesh.transform = Transform.IDENTITY
+			var debris_collider = node.get_node("Collision Shape").duplicate(DUPLICATE_USE_INSTANCING)
+			debris.add_child(debris_collider)
+			debris_collider.transform = Transform.IDENTITY
+			debris_collider.set_disabled(false)
+
+			debris.set_mass(mass)
+			mission_controller.add_child(debris)
+			debris.transform = node.global_transform
+
+		_disable_shapes(true)
+
 	var explosion
 
 	if is_capital_ship:
 		explosion = LARGE_EXPLOSION_PREFAB.instance()
-		explosion.transform.origin = transform.origin
-		mission_controller.add_child(explosion)
-
-		_disable_shapes(true)
-
-		# Generate debris
-		if has_node("Debris"):
-			for node in get_node("Debris").get_children():
-				var debris = DEBRIS_PREFAB.instance()
-
-				var debris_mesh = node.get_node("Mesh").duplicate(DUPLICATE_USE_INSTANCING)
-				debris.add_child(debris_mesh)
-				debris_mesh.transform = Transform.IDENTITY
-				var debris_collider = node.get_node("Collision Shape").duplicate(DUPLICATE_USE_INSTANCING)
-				debris.add_child(debris_collider)
-				debris_collider.transform = Transform.IDENTITY
-				debris_collider.set_disabled(false)
-
-				debris.set_mass(mass)
-				mission_controller.add_child(debris)
-				debris.transform = node.global_transform
 	else:
 		explosion = EXPLOSION_PREFAB.instance()
-		explosion.transform.origin = transform.origin
-		mission_controller.add_child(explosion)
+
+	explosion.transform.origin = transform.origin
+	mission_controller.add_child(explosion)
 
 	._destroy()
 
