@@ -120,15 +120,51 @@ func post_import(scene):
 
 	if has_energy_weapons:
 		var turrets_container = scene.get_node("Energy Weapon Turrets")
-		for turret_placeholder in turrets_container.get_children():
-			var turret_xform: Transform = turret_placeholder.transform
-			turret_placeholder.free()
+		for turret in turrets_container.get_children():
+			var turret_area: Area = Area.new()
+			turrets_container.add_child(turret_area)
+			turret_area.set_owner(scene)
+			turret_area.transform = turret.transform
 
-			var turret = ENERGY_WEAPON_TURRET.instance()
-			turret.transform = turret_xform
-			scene.add_collision_exception_with(turret)
-			turrets_container.add_child(turret)
-			turret.set_owner(scene)
+			# Move static body collision shapes into root, and remove the static bodies
+			for child in turret.get_children():
+				if child is StaticBody:
+					for static_body_child in child.get_children():
+						if static_body_child is CollisionShape:
+							# Copy collision shape to turret root
+							var collision_shape = static_body_child.duplicate(Node.DUPLICATE_USE_INSTANCING)
+							turret_area.add_child(collision_shape)
+							collision_shape.transform = child.transform
+							collision_shape.set_owner(scene)
+
+				elif child is MeshInstance:
+					var mesh_instance = child.duplicate(Node.DUPLICATE_USE_INSTANCING)
+					turret_area.add_child(mesh_instance)
+					mesh_instance.transform = child.transform
+					mesh_instance.set_owner(scene)
+
+			# Remove turret spatial
+			turret.free()
+
+			var barrels: MeshInstance
+			for child in turret_area.get_children():
+				if child.name.begins_with("Barrels"):
+					barrels = child
+					barrels.set_name("Barrels")
+					break
+
+			# Add raycast to barrels for targeting
+			var raycast_start: Vector3 = Vector3.ZERO
+			var target_raycast = RayCast.new()
+			barrels.add_child(target_raycast)
+			target_raycast.set_owner(scene)
+			target_raycast.transform.origin = raycast_start
+			target_raycast.set_name("Target Raycast")
+			target_raycast.set_cast_to(raycast_start + 200 * Vector3.FORWARD)
+			target_raycast.set_enabled(true)
+
+			turret_area.set_meta("hull_hitpoints", 100.0)
+			turret_area.set_script(EnergyWeaponTurret)
 
 	if has_missile_weapons:
 		pass
@@ -168,7 +204,7 @@ func post_import(scene):
 							collision_shape.set_disabled(true)
 							collision_shape.set_name("Collision Shape")
 
-					node.remove_child(child)
+					child.free()
 				elif child is MeshInstance:
 					child.set_name("Mesh")
 
@@ -226,6 +262,7 @@ func post_import(scene):
 	return .post_import(scene)
 
 
+const EnergyWeaponTurret = preload("EnergyWeaponTurret.gd")
 const MathHelper = preload("MathHelper.gd")
 const ShieldQuadrant = preload("ShieldQuadrant.gd")
 const WeaponHardpoints = preload("WeaponHardpoints.gd")
@@ -233,7 +270,6 @@ const WeaponHardpoints = preload("WeaponHardpoints.gd")
 const BLUE_EXHAUST_MATERIAL = preload("res://materials/blue_exhaust.tres")
 const BLUE_SHIELD_MATERIAL = preload("res://materials/blue_shield.tres")
 const COLLISION_SOUND = preload("res://sounds/collision.wav")
-const ENERGY_WEAPON_TURRET = preload("res://models/turrets/energy_weapon_turret/model.dae")
 const ENGINE_LOOP = preload("res://sounds/engine_loop.wav")
 const EXHAUST_LIGHT_MATERIAL = preload("res://materials/exhaust_light.tres")
 const WARP_BOOM = preload("res://sounds/warp_boom.wav")

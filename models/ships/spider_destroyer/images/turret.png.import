@@ -2,8 +2,8 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/turret.png-dc193e7d0d31799ce6cfe204a8fce096.s3tc.stex"
-path.etc2="res://.import/turret.png-dc193e7d0d31799ce6cfe204a8fce096.etc2.stex"
+path.s3tc="res://.import/turret.png-af0d53c6188d822d6d9a3d13a1980cf6.s3tc.stex"
+path.etc2="res://.import/turret.png-af0d53c6188d822d6d9a3d13a1980cf6.etc2.stex"
 metadata={
 "imported_formats": [ "s3tc", "etc2" ],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://models/capital_ships/spider_destroyer/images/turret.png"
-dest_files=[ "res://.import/turret.png-dc193e7d0d31799ce6cfe204a8fce096.s3tc.stex", "res://.import/turret.png-dc193e7d0d31799ce6cfe204a8fce096.etc2.stex" ]
+source_file="res://models/ships/spider_destroyer/images/turret.png"
+dest_files=[ "res://.import/turret.png-af0d53c6188d822d6d9a3d13a1980cf6.s3tc.stex", "res://.import/turret.png-af0d53c6188d822d6d9a3d13a1980cf6.etc2.stex" ]
 
 [params]
 
