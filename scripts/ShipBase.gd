@@ -11,13 +11,13 @@ export (String) var wing_name
 onready var chase_view = get_node("Chase View")
 onready var cockpit_view = get_node("Cockpit View")
 onready var engine_loop_player = get_node_or_null("Engine Loop")
+onready var exhaust = get_node("Exhaust")
 onready var is_capital_ship: bool = get_meta("is_capital_ship")
 onready var ship_class: String = get_meta("ship_class")
 onready var source_folder = get_meta("source_folder")
 onready var target_raycast = get_node("Target Raycast")
 onready var warp_boom_player = get_node("Warp Boom Player")
 onready var warp_ramp_up_player = get_node("Warp Ramp Up Player")
-
 
 var beam_weapon_turrets: Array = []
 var current_target
@@ -281,6 +281,14 @@ func _process(delta):
 				# Ranges from half recovery rate to full recovery rate (0.5 - 1.0)
 				var battery_recovery_rate: float = WEAPON_BATTERY_RECOVERY_RATE * (0.5 + 0.5 * power_distribution[WEAPON] / MAX_SYSTEM_POWER)
 				weapon_battery = min(MAX_WEAPON_BATTERY, weapon_battery + delta * battery_recovery_rate)
+
+			# Update thruster exhaust scale
+			if exhaust.scale.z != throttle:
+				var z_scale: float = lerp(exhaust.scale.z, throttle, delta)
+				if abs(throttle - z_scale) < 0.01:
+					z_scale = throttle
+
+				exhaust.set_scale(Vector3(1, 1, z_scale))
 		WARP_IN:
 			transform.origin = warp_origin.linear_interpolate(warp_destination, 1 - max(0, warping_countdown / WARP_DURATION))
 			warping_countdown -= delta
