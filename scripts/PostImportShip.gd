@@ -126,6 +126,8 @@ func post_import(scene):
 			turret_area.set_owner(scene)
 			turret_area.transform = turret.transform
 
+			var barrels: MeshInstance
+
 			# Move static body collision shapes into root, and remove the static bodies
 			for child in turret.get_children():
 				if child is StaticBody:
@@ -143,6 +145,13 @@ func post_import(scene):
 					mesh_instance.transform = child.transform
 					mesh_instance.set_owner(scene)
 
+					if child.name.begins_with("Turret Base"):
+						mesh_instance.set_name("Turret Base")
+					elif child.name.begins_with("Barrels"):
+						barrels = mesh_instance
+						barrels.set_name("Barrels")
+
+					# The hardpoints don't get duplicated, so we have to dupe them manually
 					for mesh_child in child.get_children():
 						var hardpoint = mesh_child.duplicate(Node.DUPLICATE_USE_INSTANCING)
 						mesh_instance.add_child(hardpoint)
@@ -150,13 +159,6 @@ func post_import(scene):
 
 			# Remove turret spatial
 			turret.free()
-
-			var barrels: MeshInstance
-			for child in turret_area.get_children():
-				if child.name.begins_with("Barrels"):
-					barrels = child
-					barrels.set_name("Barrels")
-					break
 
 			# Add raycast to barrels for targeting
 			var raycast_start: Vector3 = Vector3.ZERO
@@ -172,7 +174,59 @@ func post_import(scene):
 			turret_area.set_script(EnergyWeaponTurret)
 
 	if has_missile_weapons:
-		pass
+		var turrets_container = scene.get_node("Missile Weapon Turrets")
+		for turret in turrets_container.get_children():
+			var turret_area: Area = Area.new()
+			turrets_container.add_child(turret_area)
+			turret_area.set_owner(scene)
+			turret_area.transform = turret.transform
+
+			var missile_rack: MeshInstance
+
+			# Move static body collision shapes into root, and remove the static bodies
+			for child in turret.get_children():
+				if child is StaticBody:
+					for static_body_child in child.get_children():
+						if static_body_child is CollisionShape:
+							# Copy collision shape to turret root
+							var collision_shape = static_body_child.duplicate(Node.DUPLICATE_USE_INSTANCING)
+							turret_area.add_child(collision_shape)
+							collision_shape.transform = child.transform
+							collision_shape.set_owner(scene)
+
+				elif child is MeshInstance:
+					var mesh_instance = child.duplicate(Node.DUPLICATE_USE_INSTANCING)
+					turret_area.add_child(mesh_instance)
+					mesh_instance.transform = child.transform
+					mesh_instance.set_owner(scene)
+
+					if child.name.begins_with("Turret Base"):
+						mesh_instance.set_name("Turret Base")
+					elif child.name.begins_with("Missile Rack"):
+						missile_rack = mesh_instance
+						missile_rack.set_name("Missile Rack")
+
+						# The hardpoints don't get duplicated, so we have to dupe them manually
+						for mesh_child in child.get_children():
+							var hardpoint = mesh_child.duplicate(Node.DUPLICATE_USE_INSTANCING)
+							mesh_instance.add_child(hardpoint)
+							hardpoint.set_owner(scene)
+
+			# Remove turret spatial
+			turret.free()
+
+			# Add raycast to missile_rack for targeting
+			var raycast_start: Vector3 = Vector3.ZERO
+			var target_raycast = RayCast.new()
+			missile_rack.add_child(target_raycast)
+			target_raycast.set_owner(scene)
+			target_raycast.transform.origin = raycast_start
+			target_raycast.set_name("Target Raycast")
+			target_raycast.set_cast_to(raycast_start + 200 * Vector3.FORWARD)
+			target_raycast.set_enabled(true)
+
+			turret_area.set_meta("hull_hitpoints", 100.0)
+			turret_area.set_script(MissileWeaponTurret)
 
 	# Some common physics settings
 	scene.set_angular_damp(0.85)
@@ -269,6 +323,7 @@ func post_import(scene):
 
 const EnergyWeaponTurret = preload("EnergyWeaponTurret.gd")
 const MathHelper = preload("MathHelper.gd")
+const MissileWeaponTurret = preload("MissileWeaponTurret.gd")
 const ShieldQuadrant = preload("ShieldQuadrant.gd")
 const WeaponHardpoints = preload("WeaponHardpoints.gd")
 
