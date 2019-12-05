@@ -8,6 +8,7 @@ onready var capital_ship = get_parent().get_parent()
 onready var max_hull_hitpoints: int = get_meta("hull_hitpoints")
 onready var mission_controller = get_node_or_null("/root/Mission Controller")
 onready var settings = get_node("/root/GlobalSettings")
+onready var turret_base = get_node("Turret Base")
 
 var current_target
 var destruction_countdown: float
@@ -55,6 +56,11 @@ func _on_mission_ready():
 	set_process(true)
 
 
+func _on_target_destroyed():
+	has_target = false
+	current_target = null
+
+
 func _point_at_target(delta):
 	pass
 
@@ -96,6 +102,13 @@ func get_hull_percent():
 
 func is_target_in_range():
 	return has_target and (current_target.transform.origin - global_transform.origin).length_squared() <= firing_range * firing_range
+
+
+func set_target(target = null):
+	has_target = target != null
+	current_target = target
+
+	target.connect("destroyed", self, "_on_target_destroyed")
 
 
 func set_weapon(weapon_scene):
