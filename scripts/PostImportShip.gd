@@ -143,6 +143,11 @@ func post_import(scene):
 					mesh_instance.transform = child.transform
 					mesh_instance.set_owner(scene)
 
+					for mesh_child in child.get_children():
+						var hardpoint = mesh_child.duplicate(Node.DUPLICATE_USE_INSTANCING)
+						mesh_instance.add_child(hardpoint)
+						hardpoint.set_owner(scene)
+
 			# Remove turret spatial
 			turret.free()
 
