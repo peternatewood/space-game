@@ -65,6 +65,7 @@ __meta__ = {
 },
 "Spider Destroyer": {
 "energy_weapons": [ "Energy Bolt", "Energy Bolt", "Energy Bolt", "Disintigrator", "Disintigrator" ]
+"missile_weapons": [ "Heat Seeker" ]
 }
 },
 "objectives": [ [ {
