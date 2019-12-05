@@ -42,7 +42,7 @@ func _destroy():
 
 
 func _on_body_entered(body):
-	if body is WeaponBase:
+	if body is WeaponBase and body.owner_ship != capital_ship:
 		_deal_damage(body.damage_hull)
 		body.destroy()
 	elif body != capital_ship:
