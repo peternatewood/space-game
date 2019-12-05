@@ -24,28 +24,32 @@ func _defended_target_destroyed(order_index):
 
 
 func _attack_current_target():
-	_turn_towards_target(current_target.transform.origin)
-
-	var to_target: Vector3 = current_target.transform.origin - transform.origin
-	var target_dist_squared: float = to_target.length_squared()
-	if is_flying_at_target:
-		if target_dist_squared < MIN_TARGET_DIST_SQ:
-			is_flying_at_target = false
-		else:
-			var desired_throttle: float = _get_throttle_to_match_target_speed()
-			if target_dist_squared < MIN_FULL_SPEED_DIST_SQ:
-				throttle = max(desired_throttle, 0.5)
-			else:
-				throttle = 1.0
+	if is_capital_ship:
+		# TODO: move close enough to fire on target?
+		pass
 	else:
-		if target_dist_squared > MAX_TARGET_DIST_SQ:
-			is_flying_at_target = true
-		else:
-			throttle = (-transform.basis.z).angle_to(to_target) / PI
+		_turn_towards_target(current_target.transform.origin)
 
-	var raycast_collider = target_raycast.get_collider()
-	if raycast_collider == current_target:
-		_fire_energy_weapon()
+		var to_target: Vector3 = current_target.transform.origin - transform.origin
+		var target_dist_squared: float = to_target.length_squared()
+		if is_flying_at_target:
+			if target_dist_squared < MIN_TARGET_DIST_SQ:
+				is_flying_at_target = false
+			else:
+				var desired_throttle: float = _get_throttle_to_match_target_speed()
+				if target_dist_squared < MIN_FULL_SPEED_DIST_SQ:
+					throttle = max(desired_throttle, 0.5)
+				else:
+					throttle = 1.0
+		else:
+			if target_dist_squared > MAX_TARGET_DIST_SQ:
+				is_flying_at_target = true
+			else:
+				throttle = (-transform.basis.z).angle_to(to_target) / PI
+
+		var raycast_collider = target_raycast.get_collider()
+		if raycast_collider == current_target:
+			_fire_energy_weapon()
 
 
 func _get_next_waypoint():

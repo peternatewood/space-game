@@ -2,7 +2,6 @@ extends "res://scripts/TurretBase.gd"
 
 onready var barrels = get_node("Barrels")
 onready var target_raycast = get_node("Barrels/Target Raycast")
-onready var turret_base = get_node("Turret Base")
 
 var hardpoint_index: int = 0
 var hardpoint_count: int
