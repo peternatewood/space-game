@@ -116,7 +116,47 @@ func post_import(scene):
 
 	# Replace turret placeholders with turret instances
 	if has_beam_weapons:
-		pass
+		var turrets_container = scene.get_node("Beam Weapon Turrets")
+		for turret in turrets_container.get_children():
+			var turret_area: Area = Area.new()
+			turrets_container.add_child(turret_area)
+			turret_area.set_owner(scene)
+			turret_area.transform = turret.transform
+
+			var hardpoint: Spatial
+
+			# Move static body collision shapes into root, and remove the static bodies
+			for child in turret.get_children():
+				if child is StaticBody:
+					for static_body_child in child.get_children():
+						if static_body_child is CollisionShape:
+							# Copy collision shape to turret root
+							var collision_shape = static_body_child.duplicate(Node.DUPLICATE_USE_INSTANCING)
+							turret_area.add_child(collision_shape)
+							collision_shape.transform = child.transform
+							collision_shape.set_owner(scene)
+
+				elif child.name.begins_with("Hardpoint"):
+					hardpoint = child.duplicate(Node.DUPLICATE_USE_INSTANCING)
+					turret_area.add_child(hardpoint)
+					hardpoint.transform = child.transform
+					hardpoint.set_owner(scene)
+					hardpoint.set_name("Hardpoint")
+
+				elif child is MeshInstance:
+					var mesh_instance = child.duplicate(Node.DUPLICATE_USE_INSTANCING)
+					turret_area.add_child(mesh_instance)
+					mesh_instance.transform = child.transform
+					mesh_instance.set_owner(scene)
+
+					if child.name.begins_with("Turret Base"):
+						mesh_instance.set_name("Turret Base")
+
+			# Remove turret spatial
+			turret.free()
+
+			turret_area.set_meta("hull_hitpoints", 100.0)
+			turret_area.set_script(BeamWeaponTurret)
 
 	if has_energy_weapons:
 		var turrets_container = scene.get_node("Energy Weapon Turrets")
@@ -321,6 +361,7 @@ func post_import(scene):
 	return .post_import(scene)
 
 
+const BeamWeaponTurret = preload("BeamWeaponTurret.gd")
 const EnergyWeaponTurret = preload("EnergyWeaponTurret.gd")
 const MathHelper = preload("MathHelper.gd")
 const MissileWeaponTurret = preload("MissileWeaponTurret.gd")

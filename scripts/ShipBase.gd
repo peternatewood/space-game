@@ -343,10 +343,10 @@ func _set_current_target(node):
 		current_target.connect("warped_out", self, "_on_target_destroyed")
 		current_target.handle_being_targeted(self)
 
-#		for turret in beam_weapon_turrets:
-#			turret.set_target(node)
-#		for turret in energy_weapon_turrets:
-#			turret.set_target(node)
+		for turret in beam_weapon_turrets:
+			turret.set_target(node)
+		for turret in energy_weapon_turrets:
+			turret.set_target(node)
 		for turret in missile_weapon_turrets:
 			turret.set_target(node)
 
