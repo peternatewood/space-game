@@ -1381,7 +1381,7 @@ text = "Add Group"
 editor/display_folded = true
 margin_right = 222.0
 margin_bottom = 200.0
-rect_min_size = Vector2( 240, 320 )
+rect_min_size = Vector2( 320, 400 )
 window_title = "Armory"
 resizable = true
 script = ExtResource( 17 )
@@ -1395,41 +1395,61 @@ margin_right = -8.0
 margin_bottom = -38.0
 
 [node name="Ships Label" type="Label" parent="Controls Container/Armory Dialog/Scroll Rows"]
-margin_right = 224.0
+margin_right = 304.0
 margin_bottom = 18.0
 text = "Ships"
 
 [node name="Ships Scroll" type="ScrollContainer" parent="Controls Container/Armory Dialog/Scroll Rows"]
 margin_top = 22.0
-margin_right = 224.0
-margin_bottom = 135.0
+margin_right = 304.0
+margin_bottom = 115.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 scroll_horizontal_enabled = false
 
 [node name="Ship Items" type="VBoxContainer" parent="Controls Container/Armory Dialog/Scroll Rows/Ships Scroll"]
-margin_right = 224.0
-margin_bottom = 113.0
+margin_right = 304.0
+margin_bottom = 93.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Weapons Label" type="Label" parent="Controls Container/Armory Dialog/Scroll Rows"]
-margin_top = 139.0
-margin_right = 224.0
-margin_bottom = 157.0
-text = "Weapons"
+[node name="Energy Weapons Label" type="Label" parent="Controls Container/Armory Dialog/Scroll Rows"]
+margin_top = 119.0
+margin_right = 304.0
+margin_bottom = 137.0
+text = "Energy Weapons"
 
-[node name="Weapons Scroll" type="ScrollContainer" parent="Controls Container/Armory Dialog/Scroll Rows"]
-margin_top = 161.0
-margin_right = 224.0
-margin_bottom = 274.0
+[node name="Energy Weapons Scroll" type="ScrollContainer" parent="Controls Container/Armory Dialog/Scroll Rows"]
+margin_top = 141.0
+margin_right = 304.0
+margin_bottom = 234.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 scroll_horizontal_enabled = false
 
-[node name="Weapon Items" type="VBoxContainer" parent="Controls Container/Armory Dialog/Scroll Rows/Weapons Scroll"]
-margin_right = 224.0
-margin_bottom = 113.0
+[node name="Energy Weapon Items" type="VBoxContainer" parent="Controls Container/Armory Dialog/Scroll Rows/Energy Weapons Scroll"]
+margin_right = 304.0
+margin_bottom = 93.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Missile Weapons Label" type="Label" parent="Controls Container/Armory Dialog/Scroll Rows"]
+margin_top = 238.0
+margin_right = 304.0
+margin_bottom = 256.0
+text = "Missile Weapons"
+
+[node name="Missile Weapons Scroll" type="ScrollContainer" parent="Controls Container/Armory Dialog/Scroll Rows"]
+margin_top = 260.0
+margin_right = 304.0
+margin_bottom = 354.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+scroll_horizontal_enabled = false
+
+[node name="Missile Weapon Items" type="VBoxContainer" parent="Controls Container/Armory Dialog/Scroll Rows/Missile Weapons Scroll"]
+margin_right = 304.0
+margin_bottom = 94.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 

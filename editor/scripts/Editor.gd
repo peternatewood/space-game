@@ -25,6 +25,7 @@ onready var transform_controls = get_node("Manipulator Viewport/Transform Contro
 onready var waypoint_groups_dialog = get_node("Controls Container/Waypoint Groups Dialog")
 onready var wings_dialog = get_node("Controls Container/Wings Dialog")
 
+var armory: Dictionary
 var current_mouse_button: int = -1
 var has_player_ship: bool = true
 var manipulator_node = null
@@ -47,6 +48,8 @@ func _ready():
 	get_tree().set_pause(true)
 
 	scene_file_regex.compile("^[\\w\\_\\-]+\\.tscn$")
+
+	armory_dialog.populate_items(mission_data.ship_models.keys(), mission_data.energy_weapon_models.keys(), mission_data.missile_weapon_models.keys())
 
 	load_mission_info()
 
@@ -111,8 +114,6 @@ func _ready():
 	add_waypoint_dialog.connect("confirmed", self, "_on_add_waypoint_confirmed")
 	edit_waypoints_panel.connect("add_pressed", self, "_on_edit_waypoints_add_pressed")
 	edit_waypoints_panel.connect("waypoint_deleted", self, "_on_waypoint_deleted")
-
-	armory_dialog.populate_items(mission_data.ship_models.keys(), mission_data.energy_weapon_models.keys(), mission_data.missile_weapon_models.keys())
 
 
 func _on_add_ship_confirmed():
@@ -829,11 +830,13 @@ func load_mission_info():
 			print("Missing required data: " + meta_name)
 			return
 
+	armory = mission_node.get_meta("armory")
 	default_loadouts = mission_node.get_meta("default_loadouts")
 	non_player_loadouts = mission_node.get_meta("non_player_loadouts")
 	objectives = mission_node.get_meta("objectives")
 	wing_names = mission_node.get_meta("wing_names")
 
+	armory_dialog.set_items(armory["ships"], armory["energy_weapons"], armory["missile_weapons"])
 	objectives_window.prepare_objectives(objectives)
 	objectives_edit_dialog.update_waypoint_groups(waypoint_groups)
 	objectives_edit_dialog.update_ship_names(targets_container.get_children())
