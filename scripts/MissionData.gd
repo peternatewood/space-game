@@ -50,6 +50,22 @@ func _ready():
 
 			file_name = dir.get_next()
 
+	if dir.open("res://models/beam_weapons") != OK:
+		print("Unable to open res://models/beam_weapons directory")
+	else:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while file_name != "":
+			if dir.current_is_dir() and file_name != "." and file_name != "..":
+				var model_dir = dir.get_current_dir() + "/" + file_name + "/"
+				var model_file = load(model_dir + "model.tscn")
+
+				var weapon_instance = model_file.instance()
+
+				beam_weapon_models[weapon_instance.weapon_name] = model_file
+
+			file_name = dir.get_next()
+
 	if dir.open("res://models/energy_weapons") != OK:
 		print("Unable to open res://models/energy_weapons directory")
 	else:

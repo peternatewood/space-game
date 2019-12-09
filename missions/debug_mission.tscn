@@ -67,6 +67,11 @@ __meta__ = {
 "Spider Destroyer": {
 "energy_weapons": [ "Energy Bolt", "Energy Bolt", "Energy Bolt", "Disintigrator", "Disintigrator" ],
 "missile_weapons": [ "Heat Seeker" ]
+},
+"Spider Battleship": {
+"beam_weapons": [ "Argon Beam", "Argon Beam", "Argon Beam", "Argon Beam" ],
+"energy_weapons": [ "Energy Bolt", "Energy Bolt", "Disintigrator", "Disintigrator" ],
+"missile_weapons": [ "Heat Seeker", "Heat Seeker", "Heat Seeker", "Heat Seeker" ]
 }
 },
 "objectives": [ [ {

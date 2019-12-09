@@ -36,6 +36,12 @@ albedo_texture = ExtResource( 3 )
 
 [node name="Blue Beam" type="Spatial"]
 script = ExtResource( 1 )
+fire_delay = 6.0
+fire_duration = 2.0
+hull_damage = 25.0
+shield_damage = 65.0
+warm_up_duration = 2.5
+weapon_name = "Argon Beam"
 
 [node name="Beam" type="Spatial" parent="."]
 
