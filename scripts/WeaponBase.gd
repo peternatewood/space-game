@@ -2,8 +2,8 @@ extends RigidBody
 
 onready var mission_controller = get_node("/root/Mission Controller")
 
-var damage_hull: int = 15
-var damage_shield: int = 10
+var damage_hull: float = 15
+var damage_shield: float = 10
 var fire_delay: float = 0.3 # In seconds
 var firing_force: float = 1.0
 var firing_range: float = 10.0
