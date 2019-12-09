@@ -21,8 +21,6 @@ var target_pos: Vector3
 func _ready():
 	camera = get_viewport().get_camera()
 
-	target_raycast.add_exception(beam)
-
 	beam.hide()
 	core.hide()
 
@@ -47,16 +45,11 @@ func _process(delta):
 					set_firing_state(FIRING)
 			FIRING:
 				raycast_container.look_at(target_pos, Vector3.UP)
-				var distance_squared: float = beam_vector.z * beam_vector.z
 
 				if target_raycast.is_colliding():
 					var collider = target_raycast.get_collider()
-					distance_squared = global_transform.origin.distance_squared_to(collider.transform.origin)
 
 					if collider is ActorBase:
-						if distance_squared != beam_vector.z * beam_vector.z:
-							beam_vector.z = sqrt(distance_squared)
-
 						collider._deal_damage(delta * hull_damage)
 					elif collider is ShieldQuadrant:
 						var collider_parent = collider.get_parent()
@@ -65,12 +58,9 @@ func _process(delta):
 							if collider_parent is ActorBase:
 								collider_parent._deal_damage(delta * hull_damage)
 						else:
-							distance_squared = global_transform.origin.distance_squared_to(collider_parent.transform.origin)
 							collider._damage(delta * shield_damage)
 
-				# Resize the beam in case another ship crosses it
-				if distance_squared != beam_vector.z * beam_vector.z:
-					beam_vector.z = sqrt(distance_squared)
+				# TODO: Resize the beam in case another ship crosses it
 
 				beam.look_at(target_pos, camera.transform.basis.y)
 				# look_at resets the scale so we have to force it again
