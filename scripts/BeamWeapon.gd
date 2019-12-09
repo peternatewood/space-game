@@ -67,7 +67,7 @@ func _process(delta):
 
 				# TODO: Resize the beam in case another ship crosses it
 
-				beam.look_at(target_pos, camera.transform.basis.y)
+				beam.look_at(target_pos, camera.transform.basis.x)
 				# look_at resets the scale so we have to force it again
 				beam.set_scale(beam_vector)
 
