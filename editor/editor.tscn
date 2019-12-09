@@ -117,7 +117,6 @@ margin_top = -18.0
 text = "n/a"
 
 [node name="Ship Edit Dialog" type="PanelContainer" parent="Controls Container"]
-editor/display_folded = true
 visible = false
 anchor_left = 1.0
 anchor_right = 1.0

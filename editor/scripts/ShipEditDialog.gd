@@ -297,13 +297,13 @@ func fill_ship_info(ship, loadout: Dictionary = {}):
 				wing_options.select(index)
 				break
 
-	for ship_option_index in range(ship_class_options.get_item_count()):
-		if ship_class_options.get_item_text(ship_option_index) == ship.ship_class:
-			ship_class_options.select(ship_option_index)
-			break
+		for ship_option_index in range(ship_class_options.get_item_count()):
+			if ship_class_options.get_item_text(ship_option_index) == ship.ship_class:
+				ship_class_options.select(ship_option_index)
+				break
 
-		energy_weapon_slot_count = ship.energy_weapon_hardpoints.size()
-		missile_weapon_slot_count = ship.missile_weapon_hardpoints.size()
+			energy_weapon_slot_count = ship.energy_weapon_hardpoints.size()
+			missile_weapon_slot_count = ship.missile_weapon_hardpoints.size()
 
 	for index in range(beam_weapon_options.size()):
 		if index < beam_weapon_slot_count:
@@ -356,6 +356,19 @@ func fill_ship_info(ship, loadout: Dictionary = {}):
 
 	edit_ship = ship
 	is_populating = false
+
+
+func get_beam_weapon_selections():
+	var beam_weapon_names: Array = []
+
+	for option in beam_weapon_options:
+		var selected_id = option.get_selected_id()
+		if selected_id == 0:
+			beam_weapon_names.append("none")
+		else:
+			beam_weapon_names.append(beam_weapon_index_name_map[selected_id - 1])
+
+	return beam_weapon_names
 
 
 func get_energy_weapon_selections():
@@ -423,6 +436,13 @@ func prepare_options(mission_data, mission_node):
 	for name in mission_data.ship_models.keys():
 		ship_class_options.add_item(name, ship_index)
 		ship_index += 1
+
+	# Start at one since the first option "none" is at index 0
+	var beam_weapon_index: int = 1
+	for name in mission_data.beam_weapon_models.keys():
+		for option in beam_weapon_options:
+			option.add_item(name, beam_weapon_index)
+		beam_weapon_index += 1
 
 	# Start at one since the first option "none" is at index 0
 	var energy_weapon_index: int = 1

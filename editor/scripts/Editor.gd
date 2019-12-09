@@ -72,6 +72,9 @@ func _ready():
 	add_ship_dialog.populate_ship_options(ship_index_name_map)
 	add_ship_dialog.connect("confirmed", self, "_on_add_ship_confirmed")
 
+	for beam_weapon_name in mission_data.beam_weapon_models.keys():
+		ship_edit_dialog.beam_weapon_index_name_map.append(beam_weapon_name)
+
 	for energy_weapon_name in mission_data.energy_weapon_models.keys():
 		ship_edit_dialog.energy_weapon_index_name_map.append(energy_weapon_name)
 
@@ -523,6 +526,13 @@ func _on_edit_dialog_update_pressed():
 					ship_index += 1
 
 	# Update ship loadout
+	var beam_weapons = ship_edit_dialog.get_beam_weapon_selections()
+	for slot_index in range(beam_weapons.size()):
+		if ship_loadout.beam_weapons.size() <= slot_index:
+			ship_loadout.beam_weapons.append(beam_weapons[slot_index])
+		else:
+			ship_loadout.beam_weapons[slot_index] = beam_weapons[slot_index]
+
 	var energy_weapons = ship_edit_dialog.get_energy_weapon_selections()
 	for slot_index in range(energy_weapons.size()):
 		if ship_loadout.energy_weapons.size() <= slot_index:
