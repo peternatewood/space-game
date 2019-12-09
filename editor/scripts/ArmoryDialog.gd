@@ -5,6 +5,28 @@ onready var missile_weapon_items = get_node("Scroll Rows/Missile Weapons Scroll/
 onready var ship_items = get_node("Scroll Rows/Ships Scroll/Ship Items")
 
 
+func get_armory():
+	var armory = {
+		"energy_weapons": [],
+		"missile_weapons": [],
+		"ships": []
+	}
+
+	for button in energy_weapon_items.get_children():
+		if button.pressed:
+			armory.energy_weapons.append(button.text)
+
+	for button in missile_weapon_items.get_children():
+		if button.pressed:
+			armory.missile_weapons.append(button.text)
+
+	for button in ship_items.get_children():
+		if button.pressed:
+			armory.ships.append(button.text)
+
+	return armory
+
+
 func populate_items(ship_names: Array, energy_weapon_names: Array, missile_weapon_names: Array):
 	for ship in ship_names:
 		var ship_check = CheckButton.new()

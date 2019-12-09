@@ -115,6 +115,8 @@ func _ready():
 	edit_waypoints_panel.connect("add_pressed", self, "_on_edit_waypoints_add_pressed")
 	edit_waypoints_panel.connect("waypoint_deleted", self, "_on_waypoint_deleted")
 
+	armory_dialog.connect("confirmed", self, "_on_armory_confirmed")
+
 
 func _on_add_ship_confirmed():
 	# Run validations first
@@ -187,6 +189,11 @@ func _on_add_waypoint_confirmed():
 	var group_name = waypoint_groups[group_index]
 
 	add_waypoint(group_name)
+
+
+func _on_armory_confirmed():
+	armory = armory_dialog.get_armory()
+	mission_node.set_meta("armory", armory)
 
 
 func _on_controls_gui_input(event):
