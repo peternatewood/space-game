@@ -5,12 +5,6 @@ onready var hardpoint = get_node("Hardpoint")
 var beam
 
 
-func _ready():
-	beam = BLUE_BEAM.instance()
-	add_child(beam)
-	beam.transform.origin = hardpoint.transform.origin
-
-
 func _on_target_destroyed():
 	beam.has_target = false
 
@@ -32,4 +26,7 @@ func set_target(node = null):
 		beam.set_target(node)
 
 
-const BLUE_BEAM = preload("res://prefabs/blue_beam.tscn")
+func set_weapon(weapon_scene):
+	beam = weapon_scene.instance()
+	add_child(beam)
+	beam.transform.origin = hardpoint.transform.origin
