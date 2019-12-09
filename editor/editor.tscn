@@ -1317,14 +1317,14 @@ margin_bottom = 30.0
 size_flags_vertical = 4
 
 [node name="Waypoint Group Label" type="Label" parent="Controls Container/Add Waypoint Dialog/Add Waypoint Columns"]
-margin_top = 11.0
+margin_top = 2.0
 margin_right = 40.0
-margin_bottom = 29.0
+margin_bottom = 20.0
 text = "Group"
 
 [node name="Waypoint Group Options" type="OptionButton" parent="Controls Container/Add Waypoint Dialog/Add Waypoint Columns"]
 margin_left = 44.0
-margin_right = 98.0
+margin_right = 128.0
 margin_bottom = 22.0
 size_flags_horizontal = 3
 size_flags_vertical = 0

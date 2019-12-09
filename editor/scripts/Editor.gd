@@ -732,6 +732,7 @@ func _on_waypoint_groups_confirmed():
 					number += 1
 
 	waypoint_groups = new_waypoint_groups
+	mission_node.set_meta("waypoint_groups", waypoint_groups)
 
 
 func _on_waypoint_icon_clicked(waypoint_node):
@@ -819,11 +820,13 @@ func load_mission_info():
 	targets_container = mission_node.get_node("Targets Container")
 	waypoints_container = mission_node.get_node("Waypoints Container")
 
-	for waypoint in waypoints_container.get_children():
-		for group in waypoint.get_groups():
-			if not waypoint_groups.has(group):
-				waypoint_groups.append(group)
+	if mission_node.has_meta("waypoint_groups"):
+		waypoint_groups = mission_node.get_meta("waypoint_groups")
+	else:
+		waypoint_groups = []
+		mission_node.set_meta("waypoint_groups", waypoint_groups)
 
+	for waypoint in waypoints_container.get_children():
 		icons_container.add_waypoint_icon(waypoint)
 		edit_waypoints_panel.add_waypoint(waypoint)
 

@@ -31,6 +31,7 @@ __meta__ = {
 "objectives": [ [  ], [  ], [  ] ],
 "player_path": "Targets Container/Alpha 1",
 "reinforcement_wings": [  ],
+"waypoint_groups": [  ],
 "wing_names": [ "Alpha", "", "", "", "", "" ]
 }
 
