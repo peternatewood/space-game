@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://scripts/MissionController.gd" type="Script" id=1]
 [ext_resource path="res://scripts/PlayerCamera.gd" type="Script" id=2]
@@ -8,12 +8,13 @@
 [ext_resource path="res://models/ships/frog_fighter/model.dae" type="PackedScene" id=6]
 [ext_resource path="res://models/ships/hawk_fighter/model.dae" type="PackedScene" id=7]
 [ext_resource path="res://models/ships/spider_destroyer/model.dae" type="PackedScene" id=8]
-[ext_resource path="res://models/asteroid/asteroid.dae" type="PackedScene" id=9]
-[ext_resource path="res://scripts/ActorBase.gd" type="Script" id=10]
-[ext_resource path="res://scripts/MovementDebris.gd" type="Script" id=11]
-[ext_resource path="res://hud.tscn" type="PackedScene" id=12]
-[ext_resource path="res://mission_start_overlay.tscn" type="PackedScene" id=13]
-[ext_resource path="res://pause_menu.tscn" type="PackedScene" id=14]
+[ext_resource path="res://models/ships/spider_battleship/model.dae" type="PackedScene" id=9]
+[ext_resource path="res://models/asteroid/asteroid.dae" type="PackedScene" id=10]
+[ext_resource path="res://scripts/ActorBase.gd" type="Script" id=11]
+[ext_resource path="res://scripts/MovementDebris.gd" type="Script" id=12]
+[ext_resource path="res://hud.tscn" type="PackedScene" id=13]
+[ext_resource path="res://mission_start_overlay.tscn" type="PackedScene" id=14]
+[ext_resource path="res://pause_menu.tscn" type="PackedScene" id=15]
 
 [node name="Mission Controller" type="Spatial"]
 script = ExtResource( 1 )
@@ -64,7 +65,7 @@ __meta__ = {
 "missile_weapons": [ "Heat Seeker" ]
 },
 "Spider Destroyer": {
-"energy_weapons": [ "Energy Bolt", "Energy Bolt", "Energy Bolt", "Disintigrator", "Disintigrator" ]
+"energy_weapons": [ "Energy Bolt", "Energy Bolt", "Energy Bolt", "Disintigrator", "Disintigrator" ],
 "missile_weapons": [ "Heat Seeker" ]
 }
 },
@@ -176,27 +177,33 @@ transform = Transform( 0.488285, -0.115362, 0.865025, 0.473604, 0.867587, -0.151
 script = ExtResource( 5 )
 faction = "spider"
 
+[node name="Spider Battleship" parent="Targets Container" instance=ExtResource( 9 )]
+transform = Transform( -0.258633, -0.0723507, -0.963262, 0.429072, 0.884814, -0.181663, 0.865451, -0.460293, -0.197798, -15.2927, 8.3505, -25.4432 )
+script = ExtResource( 5 )
+faction = "spider"
+initial_orders = [ 4, 0, 0, 0, 0, 0 ]
+
 [node name="Asteroids Container" type="Node" parent="."]
 
-[node name="Asteroid" parent="Asteroids Container" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11.9108, 0, -8.19799 )
-script = ExtResource( 10 )
+[node name="Asteroid" parent="Asteroids Container" instance=ExtResource( 10 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11.9108, 5.04699, -8.19799 )
+script = ExtResource( 11 )
 
-[node name="Asteroid2" parent="Asteroids Container" instance=ExtResource( 9 )]
+[node name="Asteroid2" parent="Asteroids Container" instance=ExtResource( 10 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.89396, -6.71257, 7.66448 )
-script = ExtResource( 10 )
+script = ExtResource( 11 )
 
-[node name="Asteroid3" parent="Asteroids Container" instance=ExtResource( 9 )]
+[node name="Asteroid3" parent="Asteroids Container" instance=ExtResource( 10 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.10207, -3.187, 4.12244 )
-script = ExtResource( 10 )
+script = ExtResource( 11 )
 
-[node name="Asteroid4" parent="Asteroids Container" instance=ExtResource( 9 )]
+[node name="Asteroid4" parent="Asteroids Container" instance=ExtResource( 10 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15.0285, 9.41962, -26.4233 )
-script = ExtResource( 10 )
+script = ExtResource( 11 )
 
-[node name="Asteroid5" parent="Asteroids Container" instance=ExtResource( 9 )]
+[node name="Asteroid5" parent="Asteroids Container" instance=ExtResource( 10 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.18502, 5.07815, -14.7815 )
-script = ExtResource( 10 )
+script = ExtResource( 11 )
 
 [node name="Waypoints Container" type="Node" parent="."]
 
@@ -213,12 +220,12 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.69232, 0, 11.3315 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -22.8941, -5.28593, 1.1059 )
 
 [node name="Player Movement Debris" type="Spatial" parent="."]
-script = ExtResource( 11 )
+script = ExtResource( 12 )
 
-[node name="HUD" parent="." instance=ExtResource( 12 )]
+[node name="HUD" parent="." instance=ExtResource( 13 )]
 
-[node name="Mission Start Overlay" parent="." instance=ExtResource( 13 )]
+[node name="Mission Start Overlay" parent="." instance=ExtResource( 14 )]
 
-[node name="Pause Menu" parent="." instance=ExtResource( 14 )]
+[node name="Pause Menu" parent="." instance=ExtResource( 15 )]
 pause_mode = 2
 visible = false
