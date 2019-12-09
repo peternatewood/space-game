@@ -1,0 +1,8 @@
+{
+  "is_capital_ship": true,
+  "ship_class": "Spider Battleship",
+  "hull_hitpoints": 1600.0,
+  "mass": 250,
+  "max_speed": 25.0,
+  "turn_speed": 1.1
+}
