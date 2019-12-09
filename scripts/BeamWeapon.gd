@@ -2,6 +2,13 @@ extends Spatial
 
 enum { NONE, WARMING_UP, FIRING, COOLING_DOWN }
 
+export (float) var fire_delay = 7.0
+export (float) var fire_duration = 3.0
+export (float) var hull_damage = 20
+export (float) var shield_damage = 50
+export (float) var warm_up_duration = 2.0
+export (String) var weapon_name = "beam weapon"
+
 onready var beam = get_node("Beam")
 onready var core = get_node("Core")
 onready var raycast_container = get_node("Raycast Container")
@@ -13,8 +20,6 @@ var countdown: float
 var current_target
 var firing_state: int = NONE
 var has_target: bool = false
-var hull_damage: float = 25.0 # Damage per second
-var shield_damage: float = 65.0 # Damage per second
 var target_pos: Vector3
 
 
@@ -39,7 +44,7 @@ func _process(delta):
 						# Look for other targets?
 						pass
 			WARMING_UP:
-				core.set_scale(Vector3.ONE * (1 - (countdown / WARM_UP_DURATION)))
+				core.set_scale(Vector3.ONE * (1 - (countdown / warm_up_duration)))
 
 				if countdown <= 0:
 					set_firing_state(FIRING)
@@ -72,7 +77,7 @@ func _process(delta):
 				if countdown <= 0:
 					set_firing_state(COOLING_DOWN)
 			COOLING_DOWN:
-				core.set_scale(Vector3.ONE * (countdown / WARM_UP_DURATION))
+				core.set_scale(Vector3.ONE * (countdown / warm_up_duration))
 
 				if countdown <= 0:
 					set_firing_state(NONE)
@@ -101,19 +106,19 @@ func set_firing_state(new_state: int):
 
 	match firing_state:
 		NONE:
-			countdown += FIRE_DELAY
+			countdown += fire_delay
 			core.hide()
 		WARMING_UP:
-			countdown += WARM_UP_DURATION
+			countdown += warm_up_duration
 			core.set_scale(Vector3.ZERO)
 			core.show()
 		FIRING:
-			countdown += FIRE_DURATION
+			countdown += fire_duration
 			# Fire at target's position at this moment, allowing fast ships to evade
 			target_pos = current_target.transform.origin
 			beam_vector.z = global_transform.origin.distance_to(current_target.transform.origin)
 		COOLING_DOWN:
-			countdown += WARM_UP_DURATION
+			countdown += warm_up_duration
 			beam.hide()
 
 
@@ -124,7 +129,3 @@ func set_target(target_node):
 
 const ActorBase = preload("ActorBase.gd")
 const ShieldQuadrant = preload("ShieldQuadrant.gd")
-
-const FIRE_DELAY: float = 6.0
-const FIRE_DURATION: float = 2.0
-const WARM_UP_DURATION: float = 2.5
