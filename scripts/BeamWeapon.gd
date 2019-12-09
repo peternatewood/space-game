@@ -105,6 +105,7 @@ func set_firing_state(new_state: int):
 			core.hide()
 		WARMING_UP:
 			countdown += WARM_UP_DURATION
+			core.set_scale(Vector3.ZERO)
 			core.show()
 		FIRING:
 			countdown += FIRE_DURATION
