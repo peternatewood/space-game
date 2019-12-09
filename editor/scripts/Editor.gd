@@ -3,6 +3,7 @@ extends Spatial
 onready var about_window = get_node("Controls Container/About Window")
 onready var add_ship_dialog = get_node("Controls Container/Add Ship Dialog")
 onready var add_waypoint_dialog = get_node("Controls Container/Add Waypoint Dialog")
+onready var armory_dialog = get_node("Controls Container/Armory Dialog")
 onready var camera = get_node("Editor Camera")
 onready var debug = get_node("Controls Container/Debug")
 onready var debug_cube = get_node("Debug")
@@ -110,6 +111,8 @@ func _ready():
 	add_waypoint_dialog.connect("confirmed", self, "_on_add_waypoint_confirmed")
 	edit_waypoints_panel.connect("add_pressed", self, "_on_edit_waypoints_add_pressed")
 	edit_waypoints_panel.connect("waypoint_deleted", self, "_on_waypoint_deleted")
+
+	armory_dialog.populate_items(mission_data.ship_models.keys(), mission_data.energy_weapon_models.keys(), mission_data.missile_weapon_models.keys())
 
 
 func _on_add_ship_confirmed():
@@ -623,6 +626,8 @@ func _on_mission_menu_id_pressed(item_id: int):
 			waypoint_groups_dialog.popup_centered()
 		3:
 			objectives_window.show()
+		4:
+			armory_dialog.popup_centered()
 
 
 func _on_objectives_dialog_confirmed():
