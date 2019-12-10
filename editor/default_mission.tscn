@@ -24,6 +24,20 @@ __meta__ = {
 "missile_weapons": [ "Heat Seeker", "Heat Seeker" ],
 "name": "Alpha 1"
 } ], [  ], [  ], [  ], [  ], [  ] ],
+"factions": {
+"spider": {
+"frog": 0,
+"hawk": 2
+},
+"frog": {
+"spider": 0,
+"hawk": 0
+},
+"hawk": {
+"frog": 0,
+"spider": 2
+}
+},
 "name": "Debug Mission",
 "non_player_loadouts": {
 

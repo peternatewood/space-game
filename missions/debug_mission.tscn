@@ -46,6 +46,20 @@ __meta__ = {
 "name": "Beta 1",
 "ship_class": "Spider Fighter"
 } ] ],
+"factions": {
+"frog": {
+"hawk": 0,
+"spider": 0
+},
+"hawk": {
+"frog": 0,
+"spider": 2
+},
+"spider": {
+"frog": 0,
+"hawk": 2
+}
+},
 "name": "Debug Mission",
 "non_player_loadouts": {
 "Buteo 1": {

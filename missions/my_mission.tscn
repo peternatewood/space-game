@@ -48,6 +48,20 @@ __meta__ = {
 "missile_weapons": [ "Heat Seeker", "Heat Seeker", "Heat Seeker" ],
 "name": "Gamma 1"
 } ], [  ], [  ], [  ] ],
+"factions": {
+"frog": {
+"hawk": 0,
+"spider": 0
+},
+"hawk": {
+"frog": 0,
+"spider": 2
+},
+"spider": {
+"frog": 0,
+"hawk": 2
+}
+},
 "name": "My Mission",
 "non_player_loadouts": {
 "Buteo 1": {
