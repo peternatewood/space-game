@@ -2,13 +2,13 @@ extends "res://scripts/ShipBase.gd"
 
 enum ORDER_TYPE { PASSIVE, ATTACK, DEFEND, IGNORE, ATTACK_ANY, DEPART, ARRIVE, PATROL, COVER_ME }
 
-export (Array, ORDER_TYPE) var initial_orders = [
-	ORDER_TYPE.PASSIVE,
-	ORDER_TYPE.PASSIVE,
-	ORDER_TYPE.PASSIVE,
-	ORDER_TYPE.PASSIVE,
-	ORDER_TYPE.PASSIVE,
-	ORDER_TYPE.PASSIVE
+export (Array) var initial_orders = [
+	{ "type": ORDER_TYPE.PASSIVE, "target": null, "priority": 50 },
+	{ "type": ORDER_TYPE.PASSIVE, "target": null, "priority": 50 },
+	{ "type": ORDER_TYPE.PASSIVE, "target": null, "priority": 50 },
+	{ "type": ORDER_TYPE.PASSIVE, "target": null, "priority": 50 },
+	{ "type": ORDER_TYPE.PASSIVE, "target": null, "priority": 50 },
+	{ "type": ORDER_TYPE.PASSIVE, "target": null, "priority": 50 }
 ]
 
 var defend_target
@@ -16,11 +16,6 @@ var is_flying_at_target: bool = true
 var orders: Array = []
 var waypoint_pos: Vector3
 var waypoint_index: int = -1
-
-
-func _defended_target_destroyed(order_index):
-	orders[order_index].target = null
-	orders[order_index].type = ORDER_TYPE.PASSIVE
 
 
 func _attack_current_target():
@@ -52,17 +47,22 @@ func _attack_current_target():
 			_fire_energy_weapon()
 
 
+func _defended_target_destroyed(order_index):
+	orders[order_index].target = null
+	orders[order_index].type = ORDER_TYPE.PASSIVE
+
+
 func _get_next_waypoint():
 	waypoint_index = (waypoint_index + 1) % mission_controller.waypoints.size()
 	waypoint_pos = mission_controller.get_next_waypoint_pos(waypoint_index)
 
 
 func _on_mission_ready():
-	for order_type in initial_orders:
-		var order = Order.new(order_type)
+	for order_data in initial_orders:
+		var order = Order.new(order_data.type, order_data.target, order_data.priority)
 		orders.append(order)
 
-		match order_type:
+		match order.type:
 			ORDER_TYPE.ARRIVE:
 				# TODO: Provide a way to specify arrival delay
 				var warp_in_timer = Timer.new()

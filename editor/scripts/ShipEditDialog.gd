@@ -405,7 +405,7 @@ func get_orders():
 	var orders_list: Array = []
 
 	for order in orders:
-		orders_list.append(order.get_order_type_index())
+		orders_list.append(order.get_order())
 
 	return orders_list
 

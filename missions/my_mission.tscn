@@ -149,32 +149,178 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 1 )
 script = ExtResource( 5 )
 faction = "spider"
 wing_name = "Alpha"
-initial_orders = [ 4, 0, 0, 0, 0, 0 ]
+initial_orders = [ {
+"type": 4,
+"target": null,
+"priority": 50
+},
+{
+"type": 0,
+"target": null,
+"priority": 50
+},
+{
+"type": 0,
+"target": null,
+"priority": 50
+},
+{
+"type": 0,
+"target": null,
+"priority": 50
+},
+{
+"type": 0,
+"target": null,
+"priority": 50
+},
+{
+"type": 0,
+"target": null,
+"priority": 50
+} ]
 
 [node name="Alpha 3" parent="Targets Container" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 1 )
 script = ExtResource( 5 )
 faction = "spider"
 wing_name = "Alpha"
-initial_orders = [ 4, 0, 0, 0, 0, 0 ]
+initial_orders = [ {
+"type": 4,
+"target": null,
+"priority": 50
+},
+{
+"type": 0,
+"target": null,
+"priority": 50
+},
+{
+"type": 0,
+"target": null,
+"priority": 50
+},
+{
+"type": 0,
+"target": null,
+"priority": 50
+},
+{
+"type": 0,
+"target": null,
+"priority": 50
+},
+{
+"type": 0,
+"target": null,
+"priority": 50
+} ]
 
 [node name="Buteo 1" parent="Targets Container" instance=ExtResource( 6 )]
 transform = Transform( 0.948588, 0.194114, 0.25, 0.12941, 0.482963, -0.866025, -0.288849, 0.853854, 0.433013, 2, 3, -15 )
 script = ExtResource( 5 )
 faction = "hawk"
-initial_orders = [ 4, 0, 0, 0, 0, 0 ]
+initial_orders = [ {
+"type": 4,
+"target": null,
+"priority": 50
+},
+{
+"type": 0,
+"target": null,
+"priority": 50
+},
+{
+"type": 0,
+"target": null,
+"priority": 50
+},
+{
+"type": 0,
+"target": null,
+"priority": 50
+},
+{
+"type": 0,
+"target": null,
+"priority": 50
+},
+{
+"type": 0,
+"target": null,
+"priority": 50
+} ]
 
 [node name="Buteo 2" parent="Targets Container" instance=ExtResource( 6 )]
 transform = Transform( 0.948588, 0.194114, 0.25, 0.12941, 0.482963, -0.866025, -0.288849, 0.853854, 0.433013, 5, 4, -15 )
 script = ExtResource( 5 )
 faction = "hawk"
-initial_orders = [ 4, 0, 0, 0, 0, 0 ]
+initial_orders = [ {
+"type": 4,
+"target": null,
+"priority": 50
+},
+{
+"type": 0,
+"target": null,
+"priority": 50
+},
+{
+"type": 0,
+"target": null,
+"priority": 50
+},
+{
+"type": 0,
+"target": null,
+"priority": 50
+},
+{
+"type": 0,
+"target": null,
+"priority": 50
+},
+{
+"type": 0,
+"target": null,
+"priority": 50
+} ]
 
 [node name="Beta 1" parent="Targets Container" instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, -4, -4 )
 script = ExtResource( 5 )
 faction = "spider"
 wing_name = "Beta"
+initial_orders = [ {
+"type": 0,
+"target": null,
+"priority": 50
+},
+{
+"type": 0,
+"target": null,
+"priority": 50
+},
+{
+"type": 0,
+"target": null,
+"priority": 50
+},
+{
+"type": 0,
+"target": null,
+"priority": 50
+},
+{
+"type": 0,
+"target": null,
+"priority": 50
+},
+{
+"type": 0,
+"target": null,
+"priority": 50
+} ]
 
 [node name="Gamma 1" parent="Targets Container" instance=ExtResource( 8 )]
 transform = Transform( 0.258819, -0.25, -0.933013, 0, 0.965926, -0.258819, 0.965926, 0.0669873, 0.25, -1, 1, -25 )
@@ -182,7 +328,36 @@ script = ExtResource( 5 )
 faction = "spider"
 is_warped_in = false
 wing_name = "Gamma"
-initial_orders = [ 4, 0, 0, 0, 0, 0 ]
+initial_orders = [ {
+"type": 0,
+"target": null,
+"priority": 50
+},
+{
+"type": 0,
+"target": null,
+"priority": 50
+},
+{
+"type": 0,
+"target": null,
+"priority": 50
+},
+{
+"type": 0,
+"target": null,
+"priority": 50
+},
+{
+"type": 0,
+"target": null,
+"priority": 50
+},
+{
+"type": 0,
+"target": null,
+"priority": 50
+} ]
 
 [node name="Waypoints Container" type="Node" parent="."]
 
