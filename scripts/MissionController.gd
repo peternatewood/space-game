@@ -2,17 +2,13 @@ extends Node
 
 enum { NEUTRAL, FRIENDLY, HOSTILE }
 
+onready var factions = get_meta("factions")
 onready var loader = get_node("/root/SceneLoader")
 onready var mission_data = get_node("/root/MissionData")
 onready var pause_menu = get_node("Pause Menu")
 onready var player_path: String = get_meta("player_path")
 onready var reinforcement_wings: Array = get_meta("reinforcement_wings")
 
-var factions = {
-	"frog": { "hawk": FRIENDLY, "spider": NEUTRAL },
-	"hawk": { "frog": FRIENDLY, "spider": HOSTILE },
-	"spider": { "hawk": HOSTILE, "frog": NEUTRAL }
-}
 var player
 var targets_container
 var waypoints: Array = []
