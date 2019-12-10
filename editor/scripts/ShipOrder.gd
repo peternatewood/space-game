@@ -3,6 +3,27 @@ extends Control
 onready var priority_spinbox = get_node("Priority SpinBox")
 onready var target_options = get_node("Target Options")
 onready var type_options = get_node("Type Options")
+onready var waypoint_options = get_node("Waypoint Options")
+
+
+func _ready():
+	type_options.connect("item_selected", self, "_on_type_item_selected")
+
+
+func _on_type_item_selected(item_index: int):
+	match item_index:
+		NPCShip.ORDER_TYPE.PATROL:
+			target_options.hide()
+			waypoint_options.show()
+		NPCShip.ORDER_TYPE.ATTACK, NPCShip.ORDER_TYPE.DEFEND, NPCShip.ORDER_TYPE.IGNORE:
+			target_options.show()
+			waypoint_options.hide()
+		_:
+			target_options.hide()
+			waypoint_options.hide()
+
+
+# PUBLIC
 
 
 func add_target(ship):
@@ -40,6 +61,7 @@ func rename_target(old_name: String, new_name: String):
 func set_order(new_order: Dictionary):
 	priority_spinbox.set_value(new_order.priority)
 	type_options.select(new_order.type)
+	_on_type_item_selected(new_order.type)
 
 	if new_order.target:
 		for index in range(target_options.get_item_count()):
@@ -48,6 +70,7 @@ func set_order(new_order: Dictionary):
 				break
 	else:
 		target_options.select(0)
+
 
 func set_targets(ships: Array):
 	# Skip the first item since it's "none"
@@ -63,3 +86,6 @@ func set_targets(ships: Array):
 		else:
 			# Add one since the first item is "none"
 			target_options.set_item_text(index + 1, ships[index].name)
+
+
+const NPCShip = preload("res://scripts/NPCShip.gd")

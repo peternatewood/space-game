@@ -357,7 +357,7 @@ func fill_ship_info(ship, loadout: Dictionary = {}):
 
 	if is_player:
 		npc_settings.hide()
-	elif ship is ShipBase:
+	else:
 		warped_in_checkbox.set_pressed(ship.is_warped_in)
 
 		for index in range(orders.size()):
