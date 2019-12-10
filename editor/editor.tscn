@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://editor/scripts/Editor.gd" type="Script" id=1]
 [ext_resource path="res://editor/default_mission.tscn" type="PackedScene" id=2]
@@ -17,11 +17,12 @@
 [ext_resource path="res://editor/scripts/AddWaypointDialog.gd" type="Script" id=15]
 [ext_resource path="res://editor/scripts/WaypointGroupsDialog.gd" type="Script" id=16]
 [ext_resource path="res://editor/scripts/ArmoryDialog.gd" type="Script" id=17]
-[ext_resource path="res://editor/scripts/ManipulatorViewport.gd" type="Script" id=18]
-[ext_resource path="res://editor/scripts/TransformControls.gd" type="Script" id=19]
-[ext_resource path="res://editor/models/translate_arrow_x.dae" type="PackedScene" id=20]
-[ext_resource path="res://editor/models/translate_arrow_y.dae" type="PackedScene" id=21]
-[ext_resource path="res://editor/models/translate_arrow_z.dae" type="PackedScene" id=22]
+[ext_resource path="res://editor/scripts/FactionsDialog.gd" type="Script" id=18]
+[ext_resource path="res://editor/scripts/ManipulatorViewport.gd" type="Script" id=19]
+[ext_resource path="res://editor/scripts/TransformControls.gd" type="Script" id=20]
+[ext_resource path="res://editor/models/translate_arrow_x.dae" type="PackedScene" id=21]
+[ext_resource path="res://editor/models/translate_arrow_y.dae" type="PackedScene" id=22]
+[ext_resource path="res://editor/models/translate_arrow_z.dae" type="PackedScene" id=23]
 
 [sub_resource type="ViewportTexture" id=1]
 viewport_path = NodePath("Manipulator Viewport")
@@ -100,7 +101,7 @@ margin_left = 88.0
 margin_right = 152.0
 margin_bottom = 22.0
 text = "Mission"
-items = [ "Details", null, 0, false, false, 0, 0, null, "", false, "Wings", null, 0, false, false, 1, 0, null, "", false, "Waypoint Groups", null, 0, false, false, 2, 0, null, "", false, "Objectives", null, 0, false, false, 3, 0, null, "", false, "Armory", null, 0, false, false, 4, 0, null, "", false ]
+items = [ "Details", null, 0, false, false, 0, 0, null, "", false, "Wings", null, 0, false, false, 1, 0, null, "", false, "Waypoint Groups", null, 0, false, false, 2, 0, null, "", false, "Objectives", null, 0, false, false, 3, 0, null, "", false, "Armory", null, 0, false, false, 4, 0, null, "", false, "Factions", null, 0, false, false, 5, 0, null, "", false ]
 
 [node name="Help Menu" type="MenuButton" parent="Controls Container/PanelContainer/Toolbar"]
 margin_left = 156.0
@@ -195,7 +196,7 @@ size_flags_vertical = 3
 scroll_horizontal_enabled = false
 
 [node name="Ship Edit Scroll Rows" type="VBoxContainer" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll"]
-margin_right = 262.0
+margin_right = 204.0
 margin_bottom = 256.0
 
 [node name="Transform Container" type="GridContainer" parent="Controls Container/Ship Edit Dialog/Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows"]
@@ -1453,27 +1454,68 @@ margin_bottom = 94.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
+[node name="Factions Dialog" type="AcceptDialog" parent="Controls Container"]
+editor/display_folded = true
+margin_right = 203.0
+margin_bottom = 207.0
+rect_min_size = Vector2( 240, 240 )
+window_title = "Factions"
+resizable = true
+script = ExtResource( 18 )
+
+[node name="Rows" type="VBoxContainer" parent="Controls Container/Factions Dialog"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 232.0
+margin_bottom = 202.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Faction Scroller" type="ScrollContainer" parent="Controls Container/Factions Dialog/Rows"]
+margin_right = 224.0
+margin_bottom = 136.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+scroll_horizontal_enabled = false
+
+[node name="Faction Rows" type="VBoxContainer" parent="Controls Container/Factions Dialog/Rows/Faction Scroller"]
+margin_right = 224.0
+margin_bottom = 136.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="New Faction Name" type="LineEdit" parent="Controls Container/Factions Dialog/Rows"]
+margin_top = 140.0
+margin_right = 224.0
+margin_bottom = 168.0
+
+[node name="Add Faction Button" type="Button" parent="Controls Container/Factions Dialog/Rows"]
+margin_top = 172.0
+margin_right = 224.0
+margin_bottom = 194.0
+text = "Add Faction"
+
 [node name="Manipulator Viewport" type="Viewport" parent="."]
 pause_mode = 2
 size = Vector2( 1920, 1080 )
 own_world = true
 transparent_bg = true
 render_target_v_flip = true
-script = ExtResource( 18 )
-
-[node name="Transform Controls" type="Spatial" parent="Manipulator Viewport"]
 script = ExtResource( 19 )
 
-[node name="Arrow X" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 20 )]
+[node name="Transform Controls" type="Spatial" parent="Manipulator Viewport"]
+script = ExtResource( 20 )
+
+[node name="Arrow X" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 21 )]
 transform = Transform( -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0 )
 monitoring = false
 monitorable = false
 
-[node name="Arrow Y" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 21 )]
+[node name="Arrow Y" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 22 )]
 monitoring = false
 monitorable = false
 
-[node name="Arrow Z" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 22 )]
+[node name="Arrow Z" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 23 )]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0 )
 monitoring = false
 monitorable = false

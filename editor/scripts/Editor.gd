@@ -9,6 +9,7 @@ onready var debug = get_node("Controls Container/Debug")
 onready var debug_cube = get_node("Debug")
 onready var details_dialog = get_node("Controls Container/Details Dialog")
 onready var edit_waypoints_panel = get_node("Controls Container/Waypoint Edit Panel")
+onready var factions_dialog = get_node("Controls Container/Factions Dialog")
 onready var icons_container = get_node("Controls Container/Icons Container")
 onready var loader = get_node("/root/SceneLoader")
 onready var manipulator_overlay = get_node("Controls Container/Manipulator Overlay")
@@ -27,6 +28,7 @@ onready var wings_dialog = get_node("Controls Container/Wings Dialog")
 
 var armory: Dictionary
 var current_mouse_button: int = -1
+var factions: Dictionary
 var has_player_ship: bool = true
 var manipulator_node = null
 var default_loadouts: Array = []
@@ -116,6 +118,7 @@ func _ready():
 	edit_waypoints_panel.connect("waypoint_deleted", self, "_on_waypoint_deleted")
 
 	armory_dialog.connect("confirmed", self, "_on_armory_confirmed")
+	factions_dialog.connect("confirmed", self, "_on_factions_dialog_confirmed")
 
 
 func _on_add_ship_confirmed():
@@ -582,6 +585,19 @@ func _on_edit_dialog_update_pressed():
 	mission_node.set_meta("default_loadouts", default_loadouts)
 
 
+func _on_factions_dialog_confirmed():
+	factions = factions_dialog.get_faction_data()
+
+	var faction_names: Array = factions.keys()
+	ship_edit_dialog.set_faction_options(faction_names)
+	# Update ship factions
+	for ship in targets_container.get_children():
+		if not faction_names.has(ship.faction):
+			ship.faction = "none"
+
+	mission_node.set_meta("factions", factions)
+
+
 func _on_icon_clicked(node):
 	if node == null:
 		print("No such node attached!")
@@ -637,6 +653,8 @@ func _on_mission_menu_id_pressed(item_id: int):
 			objectives_window.show()
 		4:
 			armory_dialog.popup_centered()
+		5:
+			factions_dialog.popup_centered()
 
 
 func _on_objectives_dialog_confirmed():
@@ -819,6 +837,13 @@ func get_wing_index(ship):
 
 
 func load_mission_info():
+	# Reset all other stuff
+	ship_edit_dialog.edit_ship = null
+	ship_edit_dialog.hide()
+	objectives_edit_dialog.hide()
+	objectives_window.hide()
+	camera.reset()
+
 	targets_container = mission_node.get_node("Targets Container")
 	waypoints_container = mission_node.get_node("Waypoints Container")
 
@@ -844,6 +869,7 @@ func load_mission_info():
 
 	armory = mission_node.get_meta("armory")
 	default_loadouts = mission_node.get_meta("default_loadouts")
+	factions = mission_node.get_meta("factions")
 	non_player_loadouts = mission_node.get_meta("non_player_loadouts")
 	objectives = mission_node.get_meta("objectives")
 	wing_names = mission_node.get_meta("wing_names")
@@ -851,19 +877,14 @@ func load_mission_info():
 	var ships = targets_container.get_children()
 
 	armory_dialog.set_items(armory["ships"], armory["energy_weapons"], armory["missile_weapons"])
+	factions_dialog.set_factions(factions)
 	objectives_window.prepare_objectives(objectives)
 	objectives_edit_dialog.update_waypoint_groups(waypoint_groups)
 	objectives_edit_dialog.update_ship_names(ships)
 	ship_edit_dialog.populate_order_options(ships, waypoint_groups)
 	ship_edit_dialog.populate_wing_options(wing_names)
+	ship_edit_dialog.set_faction_options(factions.keys())
 	wings_dialog.populate_wing_names(wing_names)
-
-	# Reset all other stuff
-	ship_edit_dialog.edit_ship = null
-	ship_edit_dialog.hide()
-	objectives_edit_dialog.hide()
-	objectives_window.hide()
-	camera.reset()
 
 	# Add icons
 	for child in targets_container.get_children():
@@ -931,6 +952,7 @@ const Player = preload("res://scripts/Player.gd")
 const DEFAULT_MISSION = preload("res://editor/default_mission.tscn")
 const REQUIRED_META_DATA: Array = [
 	"default_loadouts",
+	"factions",
 	"non_player_loadouts",
 	"objectives",
 	"wing_names"

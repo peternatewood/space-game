@@ -475,10 +475,28 @@ func prepare_options(mission_data, mission_node):
 			option.add_item(name, missile_weapon_index)
 		missile_weapon_index += 1
 
-	var faction_index: int = 1
-	for faction_name in mission_node.factions.keys():
-		faction_options.add_item(faction_name, faction_index)
-		faction_index += 1
+
+func set_faction_options(faction_names: Array):
+	# Subtract one to exclude the "none" option
+	var old_faction_count: int = faction_options.get_item_count() - 1
+	var new_faction_count: int = faction_names.size()
+
+	for index in range(max(old_faction_count, new_faction_count)):
+		if index >= old_faction_count:
+			# Add new faction option
+			faction_options.add_item(faction_names[index], faction_options.get_item_count())
+		elif index >= new_faction_count:
+			# Remove old faction option
+			# add one to exclude the "none" option
+			faction_options.remove_item(new_faction_count + 1)
+		else:
+			# Update existing faction option
+			faction_options.set_item_text(index + 1, faction_names[index])
+
+	# Update edit ship if faction has changed or been removed
+	if visible and not faction_names.has(edit_ship.faction):
+		faction_options.select(0)
+		edit_ship.faction = "none"
 
 
 func set_waypoint_groups(waypoint_groups: Array):
