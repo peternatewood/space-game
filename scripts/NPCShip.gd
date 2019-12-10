@@ -3,12 +3,12 @@ extends "res://scripts/ShipBase.gd"
 enum ORDER_TYPE { PASSIVE, ATTACK, DEFEND, IGNORE, ATTACK_ANY, DEPART, ARRIVE, PATROL, COVER_ME }
 
 export (Array) var initial_orders = [
-	{ "type": ORDER_TYPE.PASSIVE, "target": null, "priority": 50 },
-	{ "type": ORDER_TYPE.PASSIVE, "target": null, "priority": 50 },
-	{ "type": ORDER_TYPE.PASSIVE, "target": null, "priority": 50 },
-	{ "type": ORDER_TYPE.PASSIVE, "target": null, "priority": 50 },
-	{ "type": ORDER_TYPE.PASSIVE, "target": null, "priority": 50 },
-	{ "type": ORDER_TYPE.PASSIVE, "target": null, "priority": 50 }
+	{ "type": ORDER_TYPE.PASSIVE, "target": "", "priority": 50 },
+	{ "type": ORDER_TYPE.PASSIVE, "target": "", "priority": 50 },
+	{ "type": ORDER_TYPE.PASSIVE, "target": "", "priority": 50 },
+	{ "type": ORDER_TYPE.PASSIVE, "target": "", "priority": 50 },
+	{ "type": ORDER_TYPE.PASSIVE, "target": "", "priority": 50 },
+	{ "type": ORDER_TYPE.PASSIVE, "target": "", "priority": 50 }
 ]
 
 var defend_target
@@ -59,7 +59,13 @@ func _get_next_waypoint():
 
 func _on_mission_ready():
 	for order_data in initial_orders:
-		var order = Order.new(order_data.type, order_data.target, order_data.priority)
+		var target_node = null
+		for target in mission_controller.get_targets():
+			if target.name == order_data.target:
+				target_node = target
+				break
+
+		var order = Order.new(order_data.type, target_node, order_data.priority)
 		orders.append(order)
 
 		match order.type:
