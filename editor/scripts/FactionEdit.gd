@@ -21,13 +21,16 @@ func _on_text_changed(new_text: String):
 # PUBLIC
 
 
-func add_faction_alignment(faction_name: String):
-	alignments[faction_name] = 0
+func add_faction_alignment(new_faction_name: String):
+	if new_faction_name == name_lineedit.text:
+		print("Don't add alignments to same faction name")
+	else:
+		alignments[new_faction_name] = 0
 
-	var faction_alignment_instance = FACTION_ALIGNMENT.instance()
-	rows.add_child(faction_alignment_instance)
-	faction_alignment_instance.alignment_options.select(alignments[faction_name])
-	faction_alignment_instance.faction_name.set_text(faction_name)
+		var faction_alignment_instance = FACTION_ALIGNMENT.instance()
+		rows.add_child(faction_alignment_instance)
+		faction_alignment_instance.alignment_options.select(alignments[new_faction_name])
+		faction_alignment_instance.faction_name.set_text(new_faction_name)
 
 
 func set_faction_alignments(faction_data: Dictionary):
@@ -36,6 +39,8 @@ func set_faction_alignments(faction_data: Dictionary):
 
 	var old_faction_count: int = rows.get_child_count()
 	var new_faction_count: int = faction_data.size()
+
+	var faction_alignments = rows.get_children()
 	var faction_names = faction_data.keys()
 
 	for index in range(max(old_faction_count, new_faction_count)):
@@ -47,7 +52,10 @@ func set_faction_alignments(faction_data: Dictionary):
 			rows.add_child(alignment)
 			alignment.alignment_options.select(faction_data[faction])
 			alignment.faction_name.set_text(faction)
-		elif index < new_faction_count:
+		elif index >= new_faction_count:
+			# Remove old faction
+			faction_alignments[index].queue_free
+		else:
 			# Update faction
 			var faction: String = faction_names[index]
 			var alignment = rows.get_child(index)
@@ -68,23 +76,24 @@ func set_faction_name(new_name: String):
 
 
 func update_faction_names(old_name: String, new_name: String):
-	var new_alignment: Dictionary = {}
+	if old_name != faction_name:
+		var new_alignment: int = 0
 
-	for alignment_name in alignments.keys():
-		if alignment_name == old_name:
-			new_alignment = alignments[alignment_name]
+		for alignment_name in alignments.keys():
+			if alignment_name == old_name:
+				new_alignment = alignments[alignment_name]
 
-	alignments[new_name] = new_alignment
-	alignments.erase(old_name)
+		alignments[new_name] = new_alignment
+		alignments.erase(old_name)
 
-	user_entering = false
+		user_entering = false
 
-	for faction_alignment in rows.get_children():
-		if faction_alignment.faction_name.text == old_name:
-			faction_alignment.faction_name.set_text(new_name)
-			break
+		for faction_alignment in rows.get_children():
+			if faction_alignment.faction_name.text == old_name:
+				faction_alignment.faction_name.set_text(new_name)
+				break
 
-	user_entering = true
+		user_entering = true
 
 
 signal faction_name_changed
