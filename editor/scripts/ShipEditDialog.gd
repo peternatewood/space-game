@@ -430,9 +430,10 @@ func has_point(point: Vector2):
 	return rect_position.x < point.x and point.x < rect_position.x + rect_size.x and rect_position.y < point.y and point.y < rect_position.y + rect_size.y
 
 
-func populate_order_targets(ships: Array):
+func populate_order_options(ships: Array, waypoint_groups: Array):
 	for order in orders:
 		order.set_targets(ships)
+		order.set_waypoint_groups(waypoint_groups)
 
 
 func populate_wing_options(wing_names: Array):
@@ -478,6 +479,11 @@ func prepare_options(mission_data, mission_node):
 	for faction_name in mission_node.factions.keys():
 		faction_options.add_item(faction_name, faction_index)
 		faction_index += 1
+
+
+func set_waypoint_groups(waypoint_groups: Array):
+	for order in orders:
+		order.set_waypoint_groups(waypoint_groups)
 
 
 signal edit_ship_deleted

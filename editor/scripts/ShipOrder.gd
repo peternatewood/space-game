@@ -30,6 +30,10 @@ func add_target(ship):
 	target_options.add_item(ship.name, target_options.get_item_count())
 
 
+func add_waypoint_group(group_name: String):
+	waypoint_options.add_item(group_name, waypoint_options.get_item_count())
+
+
 func get_order():
 	var target_name = null
 	var target_option_index: int = target_options.get_selected_id()
@@ -63,13 +67,21 @@ func set_order(new_order: Dictionary):
 	type_options.select(new_order.type)
 	_on_type_item_selected(new_order.type)
 
+	target_options.select(0)
 	if new_order.target:
-		for index in range(target_options.get_item_count()):
-			if target_options.get_item_text(index) == new_order.target:
-				target_options.select(index)
-				break
-	else:
-		target_options.select(0)
+		match new_order.type:
+			NPCShip.ORDER_TYPE.PATROL:
+				for index in range(waypoint_options.get_item_count()):
+					if waypoint_options.get_item_text(index) == new_order.target:
+						waypoint_options.select(index)
+						break
+			NPCShip.ORDER_TYPE.ATTACK, NPCShip.ORDER_TYPE.DEFEND, NPCShip.ORDER_TYPE.IGNORE:
+				for index in range(target_options.get_item_count()):
+					if target_options.get_item_text(index) == new_order.target:
+						target_options.select(index)
+						break
+			_:
+				target_options.select(0)
 
 
 func set_targets(ships: Array):
@@ -86,6 +98,22 @@ func set_targets(ships: Array):
 		else:
 			# Add one since the first item is "none"
 			target_options.set_item_text(index + 1, ships[index].name)
+
+
+func set_waypoint_groups(waypoint_groups: Array):
+	# Skip the first item since it's "none"
+	var old_group_count: int = waypoint_options.get_item_count() - 1
+	var new_group_count: int = waypoint_groups.size()
+
+	for index in range(max(new_group_count, old_group_count)):
+		if index >= old_group_count:
+			add_waypoint_group(waypoint_groups[index])
+		elif index >= new_group_count:
+			# Add one since the first item is "none"
+			waypoint_options.remove_item(index + 1)
+		else:
+			# Add one since the first item is "none"
+			waypoint_options.set_item_text(index + 1, waypoint_groups[index].name)
 
 
 const NPCShip = preload("res://scripts/NPCShip.gd")

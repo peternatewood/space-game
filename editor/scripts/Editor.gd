@@ -732,6 +732,7 @@ func _on_waypoint_groups_confirmed():
 					waypoint.add_to_group(new_waypoint_groups[index])
 					number += 1
 
+	ship_edit_dialog.set_waypoint_groups(new_waypoint_groups)
 	waypoint_groups = new_waypoint_groups
 	mission_node.set_meta("waypoint_groups", waypoint_groups)
 
@@ -853,7 +854,7 @@ func load_mission_info():
 	objectives_window.prepare_objectives(objectives)
 	objectives_edit_dialog.update_waypoint_groups(waypoint_groups)
 	objectives_edit_dialog.update_ship_names(ships)
-	ship_edit_dialog.populate_order_targets(ships)
+	ship_edit_dialog.populate_order_options(ships, waypoint_groups)
 	ship_edit_dialog.populate_wing_options(wing_names)
 	wings_dialog.populate_wing_names(wing_names)
 
