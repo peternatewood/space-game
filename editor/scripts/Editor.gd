@@ -179,6 +179,7 @@ func _on_add_ship_confirmed():
 
 		var ship_loadout = get_ship_loadout(selected_node)
 		ship_edit_dialog.fill_ship_info(selected_node, ship_loadout)
+		ship_edit_dialog.add_order_target(ship_instance.name)
 
 	# Add an icon
 	icons_container.add_icon(ship_instance)
@@ -846,10 +847,13 @@ func load_mission_info():
 	objectives = mission_node.get_meta("objectives")
 	wing_names = mission_node.get_meta("wing_names")
 
+	var ships = targets_container.get_children()
+
 	armory_dialog.set_items(armory["ships"], armory["energy_weapons"], armory["missile_weapons"])
 	objectives_window.prepare_objectives(objectives)
 	objectives_edit_dialog.update_waypoint_groups(waypoint_groups)
-	objectives_edit_dialog.update_ship_names(targets_container.get_children())
+	objectives_edit_dialog.update_ship_names(ships)
+	ship_edit_dialog.populate_order_targets(ships)
 	ship_edit_dialog.populate_wing_options(wing_names)
 	wings_dialog.populate_wing_names(wing_names)
 

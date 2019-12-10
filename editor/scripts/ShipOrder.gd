@@ -5,6 +5,10 @@ onready var target_options = get_node("Target Options")
 onready var type_options = get_node("Type Options")
 
 
+func add_target(ship):
+	target_options.add_item(ship.name, target_options.get_item_count())
+
+
 func get_order():
 	var target_name = null
 	var target_option_index: int = target_options.get_selected_id()
@@ -19,14 +23,43 @@ func get_order():
 	}
 
 
+func remove_target(ship_name: String):
+	for index in range(target_options.get_item_count()):
+		if target_options.get_item_text(index) == ship_name:
+			target_options.remove_item(index)
+			break
+
+
+func rename_target(old_name: String, new_name: String):
+	for index in range(target_options.get_item_count()):
+		if target_options.get_item_text(index) == old_name:
+			target_options.set_item_text(index, new_name)
+			break
+
+
 func set_order(new_order: Dictionary):
 	priority_spinbox.set_value(new_order.priority)
 	type_options.select(new_order.type)
 
-	if new_order.target == null:
-		target_options.select(0)
-	else:
+	if new_order.target:
 		for index in range(target_options.get_item_count()):
 			if target_options.get_item_text(index) == new_order.target:
 				target_options.select(index)
 				break
+	else:
+		target_options.select(0)
+
+func set_targets(ships: Array):
+	# Skip the first item since it's "none"
+	var old_ship_count: int = target_options.get_item_count() - 1
+	var new_ship_count: int = ships.size()
+
+	for index in range(max(new_ship_count, old_ship_count)):
+		if index >= old_ship_count:
+			add_target(ships[index])
+		elif index >= new_ship_count:
+			# Add one since the first item is "none"
+			target_options.remove_item(index + 1)
+		else:
+			# Add one since the first item is "none"
+			target_options.set_item_text(index + 1, ships[index].name)

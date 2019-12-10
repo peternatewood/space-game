@@ -130,6 +130,9 @@ func _ready():
 
 
 func _on_delete_confirmed():
+	for order in orders:
+		order.remove_target(edit_ship.name)
+
 	edit_ship.queue_free()
 	emit_signal("edit_ship_deleted")
 
@@ -238,11 +241,19 @@ func _on_update_pressed():
 		if wing_options.get_selected_id() != 0:
 			wing_options.select(0)
 
+	for order in orders:
+		order.rename_target(edit_ship.name, name_lineedit.text)
+
 	title.set_text("Edit " + name_lineedit.text)
 	emit_signal("update_pressed")
 
 
 # PUBLIC
+
+
+func add_order_target(ship):
+	for order in orders:
+		order.add_target(ship)
 
 
 func fill_ship_info(ship, loadout: Dictionary = {}):
@@ -417,6 +428,11 @@ func get_wing_index():
 # According to the docs, Control.has_point does exist, but the engine disagrees
 func has_point(point: Vector2):
 	return rect_position.x < point.x and point.x < rect_position.x + rect_size.x and rect_position.y < point.y and point.y < rect_position.y + rect_size.y
+
+
+func populate_order_targets(ships: Array):
+	for order in orders:
+		order.set_targets(ships)
 
 
 func populate_wing_options(wing_names: Array):
