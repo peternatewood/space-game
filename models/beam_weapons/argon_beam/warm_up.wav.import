@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/warm_up.wav-be9adacf7eda55ef706e6c5e44a55a78.sample"
+
+[deps]
+
+source_file="res://models/beam_weapons/argon_beam/warm_up.wav"
+dest_files=[ "res://.import/warm_up.wav-be9adacf7eda55ef706e6c5e44a55a78.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
