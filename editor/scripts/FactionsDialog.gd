@@ -19,6 +19,11 @@ func _on_add_faction_pressed():
 		add_faction_edit(faction_name_lineedit.text, default_alignments)
 
 
+func _on_faction_deleted(faction_name: String):
+	for faction_edit in faction_rows.get_children():
+		faction_edit.remove_faction(faction_name)
+
+
 func _on_faction_name_changed(old_name: String, new_name: String):
 	for faction_edit in faction_rows.get_children():
 		faction_edit.update_faction_names(old_name, new_name)
@@ -32,6 +37,8 @@ func add_faction_edit(faction_name: String, alignment_data: Dictionary):
 	faction_rows.add_child(faction_edit_instance)
 	faction_edit_instance.set_faction_name(faction_name)
 	faction_edit_instance.set_faction_alignments(alignment_data)
+
+	faction_edit_instance.connect("deleted", self, "_on_faction_deleted")
 	faction_edit_instance.connect("faction_name_changed", self, "_on_faction_name_changed")
 
 

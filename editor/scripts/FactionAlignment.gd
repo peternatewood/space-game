@@ -1,7 +1,7 @@
 extends Control
 
 onready var alignment_options = get_node("Alignment Options")
-onready var faction_name = get_node("Faction Name")
+onready var faction_lineedit = get_node("Faction Name")
 
 
 func _ready():

@@ -1,5 +1,6 @@
 extends Control
 
+onready var delete_button = get_node("Delete Button")
 onready var name_lineedit = get_node("Name LineEdit")
 onready var rows = get_node("Rows")
 
@@ -9,7 +10,13 @@ var user_entering: bool = true
 
 
 func _ready():
+	delete_button.connect("pressed", self, "_on_delete_pressed")
 	name_lineedit.connect("text_changed", self, "_on_text_changed")
+
+
+func _on_delete_pressed():
+	emit_signal("deleted", faction_name)
+	queue_free()
 
 
 func _on_text_changed(new_text: String):
@@ -30,7 +37,16 @@ func add_faction_alignment(new_faction_name: String):
 		var faction_alignment_instance = FACTION_ALIGNMENT.instance()
 		rows.add_child(faction_alignment_instance)
 		faction_alignment_instance.alignment_options.select(alignments[new_faction_name])
-		faction_alignment_instance.faction_name.set_text(new_faction_name)
+		faction_alignment_instance.faction_lineedit.set_text(new_faction_name)
+
+
+func remove_faction(removed_faction: String):
+	for faction_alignment in rows.get_children():
+		if faction_alignment.faction_lineedit.text == removed_faction:
+			faction_alignment.queue_free()
+			break
+
+	alignments.erase(removed_faction)
 
 
 func set_faction_alignments(faction_data: Dictionary):
@@ -51,7 +67,7 @@ func set_faction_alignments(faction_data: Dictionary):
 
 			rows.add_child(alignment)
 			alignment.alignment_options.select(faction_data[faction])
-			alignment.faction_name.set_text(faction)
+			alignment.faction_lineedit.set_text(faction)
 		elif index >= new_faction_count:
 			# Remove old faction
 			faction_alignments[index].queue_free
@@ -61,7 +77,7 @@ func set_faction_alignments(faction_data: Dictionary):
 			var alignment = rows.get_child(index)
 
 			alignment.alignment_options.select(faction_data[faction])
-			alignment.faction_name.set_text(faction)
+			alignment.faction_lineedit.set_text(faction)
 
 	user_entering = true
 
@@ -89,13 +105,14 @@ func update_faction_names(old_name: String, new_name: String):
 		user_entering = false
 
 		for faction_alignment in rows.get_children():
-			if faction_alignment.faction_name.text == old_name:
-				faction_alignment.faction_name.set_text(new_name)
+			if faction_alignment.faction_lineedit.text == old_name:
+				faction_alignment.faction_lineedit.set_text(new_name)
 				break
 
 		user_entering = true
 
 
+signal deleted
 signal faction_name_changed
 
 const FACTION_ALIGNMENT = preload("res://editor/prefabs/faction_alignment.tscn")
