@@ -35,13 +35,13 @@ Here I'll be keeping track of the all the features I want to implement, and chec
 ### Accessibility Options
 
 - [x] Dyslexia-friendly theme
-- [ ] Colorblindness options
+- [x] Colorblindness options
 
 ### Optional Features
 
 I'd like to implement these, but I'm not sure whether they're feasible.
 
-- [ ] Customize HUD Colors
+- [x] Customize HUD Colors
 - [ ] Custom Ships users can import
 
 ## Feature Descriptions
