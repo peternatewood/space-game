@@ -79,8 +79,10 @@ margin_bottom = 70.0
 window_title = "New Profile Name"
 
 [node name="New Profile LineEdit" type="LineEdit" parent="New Profile Dialog"]
-margin_right = 58.0
-margin_bottom = 24.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 192.0
+margin_bottom = 34.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
