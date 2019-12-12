@@ -28,6 +28,7 @@ config/icon="res://images/icon.png"
 GlobalSettings="*res://scripts/GlobalSettings.gd"
 SceneLoader="*res://scripts/SceneLoader.gd"
 MissionData="*res://scripts/MissionData.gd"
+ProfilesData="*res://scripts/ProfilesData.gd"
 
 [input]
 
