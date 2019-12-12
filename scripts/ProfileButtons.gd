@@ -15,7 +15,7 @@ func _on_delete_pressed():
 
 
 func _on_name_pressed():
-	print(name_button.text)
+	emit_signal("name_pressed", name_button.text)
 
 
 # PUBLIC
@@ -30,3 +30,4 @@ func set_profile(profile_name: String):
 
 
 signal delete_pressed
+signal name_pressed
