@@ -32,6 +32,7 @@ Here I'll be keeping track of the all the features I want to implement, and chec
 - [x] Ship/Weapon Sound Effects
 - [ ] Ship Subsystems
 - [ ] Lead Indicator
+- [ ] Gallery/Library
 - [ ] Music
 
 ### Accessibility Options
@@ -44,6 +45,7 @@ Here I'll be keeping track of the all the features I want to implement, and chec
 I'd like to implement these, but I'm not sure whether they're feasible.
 
 - [x] Customize HUD Colors
+- [ ] Cockpit Model for each playable ship
 - [ ] Custom Ships users can import
 
 ## Feature Descriptions
@@ -57,6 +59,7 @@ Here are some more in-depth descriptions for certain features.
 - __Loadout Menu__: The player chooses their ship and loadout before launching the mission.
 - __Campaign Tree__: Missions need to be connected to each other to form a progression. A tree structure will allow for paths that branch off or loop around. Whether the player meets certain objectives during a mission will determine how the following missions will branch and loop.
 - __Carrier Ships__: Ship that can launch small ships (fighters/bombers.) Maybe the player can land there to repair/reload?
+- __Gallery/Library__: View detailed info on ships
 
 ## Mission Objectives
 
