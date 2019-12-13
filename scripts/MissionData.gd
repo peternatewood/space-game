@@ -164,6 +164,10 @@ func get_weapon_models(type: String, wing_index: int, ship_index: int):
 	return models
 
 
+func has_profile_started_campaign():
+	return profiles_data.current_profile.campaign != ""
+
+
 func load_campaign_data(path: String, save_to_profile: bool = false):
 	var campaign_directory: Directory = Directory.new()
 	var campaign_file: ConfigFile = ConfigFile.new()
