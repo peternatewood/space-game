@@ -178,6 +178,10 @@ func get_weapon_models(type: String, wing_index: int, ship_index: int):
 	return models
 
 
+func get_unlocked_missions():
+	return profiles_data.current_profile.unlocked_missions
+
+
 func has_profile_started_campaign():
 	return profiles_data.current_profile.campaign != ""
 
@@ -217,6 +221,7 @@ func load_mission_data(path: String, save_to_profile: bool = false):
 
 		if save_to_profile:
 			profiles_data.set_mission(path)
+			profiles_data.unlock_mission(path)
 
 		# Check for required meta data
 		var missing_meta: bool = false
