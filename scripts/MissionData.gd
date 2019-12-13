@@ -156,6 +156,20 @@ func _ready():
 # PUBLIC
 
 
+func get_next_mission_path():
+	var next_mission_path
+
+	for mission_data in campaign_data.missions:
+		if mission_data.path == mission_scene_path:
+			var next_mission_index = mission_data.get("next_mission", null)
+			if next_mission_index != null:
+				return campaign_data.missions[next_mission_index].path
+
+			return null
+
+	return null
+
+
 func get_weapon_models(type: String, wing_index: int, ship_index: int):
 	var models: Array = []
 	for weapon_data in wing_loadouts[wing_index][ship_index][type]:

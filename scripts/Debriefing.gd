@@ -37,7 +37,13 @@ func _ready():
 
 
 func _on_next_pressed():
-	loader.load_scene("res://title.tscn")
+	var next_mission_path = mission_data.get_next_mission_path()
+
+	if next_mission_path == null:
+		loader.load_scene("res://title.tscn")
+	else:
+		mission_data.load_mission_data(next_mission_path, true)
+		loader.load_scene("res://briefing.tscn")
 
 
 # PUBLIC
