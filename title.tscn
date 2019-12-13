@@ -84,12 +84,18 @@ margin_right = 364.0
 margin_bottom = 223.0
 text = "Options"
 
-[node name="Exit" type="Button" parent="Container" groups=[
-"audible_hover",
-]]
+[node name="Change Profile" type="Button" parent="Container"]
 margin_top = 227.0
 margin_right = 364.0
 margin_bottom = 245.0
+text = "Change Profile"
+
+[node name="Exit" type="Button" parent="Container" groups=[
+"audible_hover",
+]]
+margin_top = 249.0
+margin_right = 364.0
+margin_bottom = 267.0
 text = "Exit"
 
 [node name="Options Menu" parent="." instance=ExtResource( 6 )]
