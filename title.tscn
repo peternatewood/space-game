@@ -53,36 +53,42 @@ margin_right = 364.0
 margin_bottom = 135.0
 text = "New Campaign"
 
-[node name="Mission Select" type="Button" parent="Container" groups=[
-"audible_hover",
-]]
+[node name="Continue Campaign" type="Button" parent="Container"]
 margin_top = 139.0
 margin_right = 364.0
 margin_bottom = 157.0
-text = "Mission Select"
+text = "Continue Campaign"
 
-[node name="Mission Editor" type="Button" parent="Container" groups=[
+[node name="Mission Select" type="Button" parent="Container" groups=[
 "audible_hover",
 ]]
 margin_top = 161.0
 margin_right = 364.0
 margin_bottom = 179.0
-text = "Mission Editor"
+text = "Mission Select"
 
-[node name="Options" type="Button" parent="Container" groups=[
+[node name="Mission Editor" type="Button" parent="Container" groups=[
 "audible_hover",
 ]]
 margin_top = 183.0
 margin_right = 364.0
 margin_bottom = 201.0
-text = "Options"
+text = "Mission Editor"
 
-[node name="Exit" type="Button" parent="Container" groups=[
+[node name="Options" type="Button" parent="Container" groups=[
 "audible_hover",
 ]]
 margin_top = 205.0
 margin_right = 364.0
 margin_bottom = 223.0
+text = "Options"
+
+[node name="Exit" type="Button" parent="Container" groups=[
+"audible_hover",
+]]
+margin_top = 227.0
+margin_right = 364.0
+margin_bottom = 245.0
 text = "Exit"
 
 [node name="Options Menu" parent="." instance=ExtResource( 6 )]
