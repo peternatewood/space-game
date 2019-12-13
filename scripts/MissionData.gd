@@ -1,5 +1,7 @@
 extends Node
 
+onready var profiles_data = get_node("/root/ProfilesData")
+
 var armory: Dictionary
 var beam_weapon_models: Dictionary
 var briefing: Array
@@ -160,6 +162,26 @@ func get_weapon_models(type: String, wing_index: int, ship_index: int):
 		models.append(weapon_data.model)
 
 	return models
+
+
+func load_campaign_data(path: String, save_to_profile: bool = false):
+	var campaign_directory: Directory = Directory.new()
+	var campaign_file: ConfigFile = ConfigFile.new()
+
+	if campaign_directory.file_exists(path):
+		var load_error = campaign_file.load(path)
+
+		if load_error == OK:
+			campaign_data["name"] = campaign_file.get_value("details", "name")
+			campaign_data["description"] = campaign_file.get_value("details", "description")
+			campaign_data["missions"] = campaign_file.get_value("mission_tree", "missions")
+
+			if save_to_profile:
+				profiles_data.set_campaign(path)
+		else:
+			print("Error loading campaign file ", path, ": ", load_error)
+	else:
+		print("Unable to find campaign file at: ", path)
 
 
 # Loads mission data from file; returns true if successful, false if not
