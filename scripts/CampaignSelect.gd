@@ -14,3 +14,12 @@ func _ready():
 
 		campaign_button.set_text_align(Button.ALIGN_LEFT)
 		campaign_button.set_text(campaign_data.name + ": " + campaign_data.description)
+		campaign_button.connect("pressed", self, "_on_campaign_button_pressed", [ campaign_data.path ])
+
+
+func _on_campaign_button_pressed(campaign_path: String):
+	# Load campaign data and save campaign path to current profile
+	mission_data.load_campaign_data(campaign_path, true)
+	# Load first mission in campaign and save first mission path to current profile
+	mission_data.load_mission_data(mission_data.campaign_data.missions[0].path, true)
+	loader.load_scene("res://briefing.tscn")
