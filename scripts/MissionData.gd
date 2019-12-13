@@ -184,6 +184,11 @@ func load_campaign_data(path: String, save_to_profile: bool = false):
 		print("Unable to find campaign file at: ", path)
 
 
+func load_current_profile_mission():
+	load_campaign_data(profiles_data.current_profile.campaign)
+	load_mission_data(profiles_data.current_profile.mission)
+
+
 # Loads mission data from file; returns true if successful, false if not
 func load_mission_data(path: String, save_to_profile: bool = false):
 	var file = File.new()
