@@ -3,6 +3,9 @@ extends Node
 var armory: Dictionary
 var beam_weapon_models: Dictionary
 var briefing: Array
+var campaign_data: Dictionary
+var custom_campaign_list: Array = []
+var default_campaign_list: Array = []
 var energy_weapon_models: Dictionary
 var missile_weapon_models: Dictionary
 var mission_name: String
@@ -121,6 +124,29 @@ func _ready():
 						missile_weapon_models[data_parsed.result.get("name", "missile weapon")] = model_file
 
 				data_file.close()
+
+			file_name = dir.get_next()
+
+	# Build campaign list
+	if dir.open("res://campaigns") != OK:
+		print("Unable to open res://campaigns directory")
+	else:
+		var campaign_file: ConfigFile = ConfigFile.new()
+
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while file_name != "":
+			if not dir.current_is_dir() and file_name.ends_with(".cfg"):
+				var campaign_path: String = dir.get_current_dir() + "/" + file_name
+				campaign_file.load(campaign_path)
+
+				var default_campaign_data: Dictionary = {
+					"path": campaign_path,
+					"name": campaign_file.get_value("details", "name"),
+					"description": campaign_file.get_value("details", "description")
+				}
+
+				default_campaign_list.append(default_campaign_data)
 
 			file_name = dir.get_next()
 
