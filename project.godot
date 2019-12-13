@@ -16,7 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Space Game"
-run/main_scene="res://title.tscn"
+run/main_scene="res://profiles.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="Space Game"
 boot_splash/image="res://images/boot_splash.png"
