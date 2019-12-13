@@ -274,7 +274,7 @@ func post_import(scene):
 
 	# Add raycast for targeting
 	var raycast_start: Vector3
-	var cockpit_view = scene.get_node("Cockpit View")
+	var cockpit_view = scene.get_node_or_null("Cockpit View")
 	if cockpit_view != null:
 		raycast_start = cockpit_view.transform.origin
 

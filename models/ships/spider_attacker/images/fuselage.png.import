@@ -2,8 +2,8 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/small_ship_debris.png-388493e6294e042ca895cea7bf7767a3.s3tc.stex"
-path.etc2="res://.import/small_ship_debris.png-388493e6294e042ca895cea7bf7767a3.etc2.stex"
+path.s3tc="res://.import/fuselage.png-0d9338ad4d59a63a2a985c23e2aa5cc6.s3tc.stex"
+path.etc2="res://.import/fuselage.png-0d9338ad4d59a63a2a985c23e2aa5cc6.etc2.stex"
 metadata={
 "imported_formats": [ "s3tc", "etc2" ],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://models/ships/spider_bomber/images/small_ship_debris.png"
-dest_files=[ "res://.import/small_ship_debris.png-388493e6294e042ca895cea7bf7767a3.s3tc.stex", "res://.import/small_ship_debris.png-388493e6294e042ca895cea7bf7767a3.etc2.stex" ]
+source_file="res://models/ships/spider_attacker/images/fuselage.png"
+dest_files=[ "res://.import/fuselage.png-0d9338ad4d59a63a2a985c23e2aa5cc6.s3tc.stex", "res://.import/fuselage.png-0d9338ad4d59a63a2a985c23e2aa5cc6.etc2.stex" ]
 
 [params]
 

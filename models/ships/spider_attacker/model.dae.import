@@ -2,17 +2,17 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/model.dae-8dbac3cd5db704430f01781dfa1f1043.scn"
+path="res://.import/model.dae-e4022c682a2aba2ee0f0e78e407ce57e.scn"
 
 [deps]
 
-source_file="res://models/ships/spider_bomber/model.dae"
-dest_files=[ "res://.import/model.dae-8dbac3cd5db704430f01781dfa1f1043.scn" ]
+source_file="res://models/ships/spider_attacker/model.dae"
+dest_files=[ "res://.import/model.dae-e4022c682a2aba2ee0f0e78e407ce57e.scn" ]
 
 [params]
 
 nodes/root_type="RigidBody"
-nodes/root_name="Spider Bomber"
+nodes/root_name="Spider Attacker"
 nodes/root_scale=1.0
 nodes/custom_script="res://scripts/PostImportShip.gd"
 nodes/storage=0
