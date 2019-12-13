@@ -9,8 +9,11 @@ onready var settings = get_node("/root/GlobalSettings")
 func _ready():
 	mission_name.set_text(mission_data.mission_name)
 
-	var next_button = get_node("Rows/Next Button")
+	var next_button = get_node("Rows/Buttons Container/Next Button")
+	var retry_button = get_node("Rows/Buttons Container/Retry Button")
+
 	next_button.connect("pressed", self, "_on_next_pressed")
+	retry_button.connect("pressed", self, "_on_retry_pressed")
 
 	# Populate objective containers
 	var objective_containers: Array = [
@@ -44,6 +47,11 @@ func _on_next_pressed():
 	else:
 		mission_data.load_mission_data(next_mission_path, true)
 		loader.load_scene("res://briefing.tscn")
+
+
+func _on_retry_pressed():
+	mission_data.load_mission_data(mission_data.mission_scene_path)
+	loader.load_scene("res://briefing.tscn")
 
 
 # PUBLIC
