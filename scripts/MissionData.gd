@@ -185,12 +185,15 @@ func load_campaign_data(path: String, save_to_profile: bool = false):
 
 
 # Loads mission data from file; returns true if successful, false if not
-func load_mission_data(path: String):
+func load_mission_data(path: String, save_to_profile: bool = false):
 	var file = File.new()
 
 	if file.file_exists(path):
 		var mission_scene = load(path)
 		var mission_instance = mission_scene.instance()
+
+		if save_to_profile:
+			profiles_data.set_mission(path)
 
 		# Check for required meta data
 		var missing_meta: bool = false
