@@ -47,11 +47,11 @@ margin_bottom = 113.0
 rect_min_size = Vector2( 0, 12 )
 size_flags_horizontal = 3
 
-[node name="New Game" type="Button" parent="Container"]
+[node name="New Campaign" type="Button" parent="Container"]
 margin_top = 117.0
 margin_right = 364.0
 margin_bottom = 135.0
-text = "New Game"
+text = "New Campaign"
 
 [node name="Mission Select" type="Button" parent="Container" groups=[
 "audible_hover",

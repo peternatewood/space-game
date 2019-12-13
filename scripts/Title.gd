@@ -9,13 +9,13 @@ func _ready():
 	var exit_button = get_node("Container/Exit")
 	var mission_editor_button = get_node("Container/Mission Editor")
 	var mission_select_button = get_node("Container/Mission Select")
-	var new_game_button = get_node("Container/New Game")
+	var new_campaign_button = get_node("Container/New Campaign")
 	var options_button = get_node("Container/Options")
 
 	exit_button.connect("pressed", self, "_on_exit_pressed")
 	mission_editor_button.connect("pressed", self, "_on_mission_editor_pressed")
 	mission_select_button.connect("pressed", self, "_on_mission_select_pressed")
-	new_game_button.connect("pressed", self, "_on_new_game_pressed")
+	new_campaign_button.connect("pressed", self, "_on_new_campaign_pressed")
 	options_button.connect("pressed", self, "_on_options_pressed")
 
 	mission_select_button.grab_focus()
@@ -42,7 +42,7 @@ func _on_mission_select_pressed():
 	loader.load_scene("res://mission_select.tscn")
 
 
-func _on_new_game_pressed():
+func _on_new_campaign_pressed():
 	loader.load_scene("res://campaign_select.tscn")
 
 
