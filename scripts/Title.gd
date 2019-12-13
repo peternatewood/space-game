@@ -14,14 +14,18 @@ func _ready():
 	var new_campaign_button = get_node("Container/New Campaign")
 	var options_button = get_node("Container/Options")
 
-	continue_campaign_button.connect("pressed", self, "_on_continue_campaign_pressed")
+	if mission_data.has_profile_started_campaign():
+		continue_campaign_button.set_disabled(false)
+		continue_campaign_button.connect("pressed", self, "_on_continue_campaign_pressed")
+		continue_campaign_button.grab_focus()
+	else:
+		new_campaign_button.grab_focus()
+
 	exit_button.connect("pressed", self, "_on_exit_pressed")
 	mission_editor_button.connect("pressed", self, "_on_mission_editor_pressed")
 	mission_select_button.connect("pressed", self, "_on_mission_select_pressed")
 	new_campaign_button.connect("pressed", self, "_on_new_campaign_pressed")
 	options_button.connect("pressed", self, "_on_options_pressed")
-
-	mission_select_button.grab_focus()
 
 	options_menu.connect("back_button_pressed", self, "_on_back_button_pressed")
 

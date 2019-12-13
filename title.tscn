@@ -57,6 +57,7 @@ text = "New Campaign"
 margin_top = 139.0
 margin_right = 364.0
 margin_bottom = 157.0
+disabled = true
 text = "Continue Campaign"
 
 [node name="Mission Select" type="Button" parent="Container" groups=[
