@@ -26,10 +26,12 @@ Here I'll be keeping track of the all the features I want to implement, and chec
 - [x] Pause Menu
 - [x] Mission Editor
 - [ ] Campaign Tree
-- [ ] Capital Ships
+- [x] Capital Ships
 - [ ] Carrier Ships
 - [ ] User Interface Sounds
 - [x] Ship/Weapon Sound Effects
+- [ ] Ship Subsystems
+- [ ] Lead Indicator
 - [ ] Music
 
 ### Accessibility Options
