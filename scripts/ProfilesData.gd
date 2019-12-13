@@ -91,4 +91,13 @@ func set_campaign(path: String):
 	profile_file.save(USER_PROFILE_PATH)
 
 
+func set_mission(path: String):
+	var profile_file: ConfigFile = ConfigFile.new()
+	profile_file.load(USER_PROFILE_PATH)
+
+	profile_file.set_value(profile_section_map[current_profile.name], "mission", path)
+
+	profile_file.save(USER_PROFILE_PATH)
+
+
 const USER_PROFILE_PATH: String = "user://profiles.cfg"
