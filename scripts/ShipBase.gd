@@ -24,6 +24,7 @@ var current_target
 var energy_weapon_hardpoints: Array = []
 var energy_weapon_index: int = 0
 var energy_weapon_turrets: Array = []
+var engines_operative: bool = true
 var has_engine_loop: bool = false
 var has_target: bool = false
 var has_warp_boom: bool = false
@@ -41,6 +42,7 @@ var power_distribution: Array = [
 ]
 var propulsion_force: float = get_meta("propulsion_force")
 var shields: Array = []
+var subsystems: Dictionary = {}
 var target_index: int = 0
 var targeting_ships: Array = []
 var throttle: float
@@ -86,6 +88,56 @@ func _ready():
 		for quadrant in shields:
 			quadrant.set_max_hitpoints(shield_hitpoints)
 			quadrant.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
+
+	# Get subsystem nodes
+	var subsystems_container = get_node_or_null("Subsystems")
+	if subsystems_container == null:
+		print(name, " missing subsystems container!")
+	else:
+		var communications_node = subsystems_container.get_node_or_null("Communications")
+		if communications_node == null:
+			print(name, " missing communications subsystem node!")
+		else:
+			communications_node.owner_ship = self
+			communications_node.connect("damaged", self, "_on_communications_damaged")
+			communications_node.connect("destroyed", self, "_on_communications_destroyed")
+			subsystems["communications"] = communications_node
+
+		var engines_node = subsystems_container.get_node_or_null("Engines")
+		if engines_node == null:
+			print(name, " missing engines subsystem node!")
+		else:
+			engines_node.owner_ship = self
+			engines_node.connect("damaged", self, "_on_engines_damaged")
+			engines_node.connect("destroyed", self, "_on_engines_destroyed")
+			subsystems["engines"] = engines_node
+
+		var navigation_node = subsystems_container.get_node_or_null("Navigation")
+		if navigation_node == null:
+			print(name, " missing navigation subsystem node!")
+		else:
+			navigation_node.owner_ship = self
+			navigation_node.connect("damaged", self, "_on_navigation_damaged")
+			navigation_node.connect("destroyed", self, "_on_navigation_destroyed")
+			subsystems["navigation"] = communications_node
+
+		var sensors_node = subsystems_container.get_node_or_null("Sensors")
+		if sensors_node == null:
+			print(name, " missing sensors subsystem node!")
+		else:
+			sensors_node.owner_ship = self
+			sensors_node.connect("damaged", self, "_on_sensors_damaged")
+			sensors_node.connect("destroyed", self, "_on_sensors_destroyed")
+			subsystems["sensors"] = communications_node
+
+		var weapons_node = subsystems_container.get_node_or_null("Weapons")
+		if weapons_node == null:
+			print(name, " missing weapons subsystem node!")
+		else:
+			weapons_node.owner_ship = self
+			weapons_node.connect("damaged", self, "_on_weapons_damaged")
+			weapons_node.connect("destroyed", self, "_on_weapons_destroyed")
+			subsystems["weapons"] = weapons_node
 
 	destruction_delay = 2.0
 
@@ -225,6 +277,22 @@ func _increment_power_level(system: int, direction: int):
 				quadrant.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
 
 
+func _on_communications_damaged(hitpoint_percent: float):
+	emit_signal("subsystem_damaged", "communications", hitpoint_percent)
+
+
+func _on_communications_destroyed():
+	pass
+
+
+func _on_engines_damaged(hitpoint_percent: float):
+	emit_signal("subsystem_damaged", "engines", hitpoint_percent)
+
+
+func _on_engines_destroyed():
+	pass
+
+
 func _on_mission_ready():
 	if has_engine_loop:
 		connect("speed_changed", self, "_on_speed_changed")
@@ -244,6 +312,22 @@ func _on_mission_ready():
 
 	if not is_warped_in:
 		hide_and_disable()
+
+
+func _on_navigation_damaged(hitpoint_percent: float):
+	emit_signal("subsystem_damaged", "navigation", hitpoint_percent)
+
+
+func _on_navigation_destroyed():
+	pass
+
+
+func _on_sensors_damaged(hitpoint_percent: float):
+	emit_signal("subsystem_damaged", "sensors", hitpoint_percent)
+
+
+func _on_sensors_destroyed():
+	pass
 
 
 func _on_speed_changed(speed: float):
@@ -266,6 +350,14 @@ func _on_targeting_ship_destroyed(destroyed_ship):
 			targeting_ships.remove(index)
 			return
 		index += 1
+
+
+func _on_weapons_damaged(hitpoint_percent: float):
+	emit_signal("subsystem_damaged", "weapons", hitpoint_percent)
+
+
+func _on_weapons_destroyed():
+	pass
 
 
 func _physics_process(delta):
@@ -525,6 +617,7 @@ static func get_weapon_capacity_level(capacity: float):
 signal energy_weapon_changed
 signal missile_weapon_changed
 signal speed_changed
+signal subsystem_damaged
 signal warped_in
 signal warped_out
 signal warping_in
