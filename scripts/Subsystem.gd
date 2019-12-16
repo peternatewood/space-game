@@ -1,5 +1,7 @@
 extends Area
 
+enum Category { COMMUNICATIONS, ENGINES, NAVIGATION, SENSORS, WEAPONS}
+
 export (float) var hitpoints = -1
 
 onready var max_hitpoints = get_meta("hitpoints")
@@ -10,8 +12,6 @@ var owner_ship
 
 
 func _ready():
-	self.connect("body_entered", self, "_on_body_entered")
-
 	if mission_controller != null:
 		mission_controller.connect("mission_ready", self, "_on_mission_ready")
 
@@ -44,6 +44,8 @@ func _on_body_entered(body):
 func _on_mission_ready():
 	if hitpoints < 0:
 		hitpoints = max_hitpoints
+
+	self.connect("body_entered", self, "_on_body_entered")
 
 	set_process(true)
 
