@@ -6,5 +6,12 @@
   "mass": 9,
   "max_speed": 75.0,
   "missile_capacity": 40.0,
+  "subsystem_hitpoints": {
+    "Communications": 40.0,
+    "Engines": 80.0,
+    "Navigation": 40.0,
+    "Sensors": 60.0,
+    "Weapons": 85.0
+  },
   "turn_speed": 50
 }
