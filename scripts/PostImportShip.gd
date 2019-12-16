@@ -55,6 +55,38 @@ func post_import(scene):
 			shield_static.queue_free()
 			child.queue_free()
 
+	# Handle Subsystem collision shapes
+	var subsystems_container = scene.get_node_or_null("Subsystems")
+	if subsystems_container == null:
+		print("Subsystems container missing!")
+	else:
+		var subsystem_name_regex: RegEx = RegEx.new()
+		subsystem_name_regex.compile("Sub (\\w+)")
+
+		for child in subsystems_container.get_children():
+			var subsystem_name_match = subsystem_name_regex.search(child.name)
+			if subsystem_name_match.strings.size() < 2:
+				print("Invalid subsystem name: ", child.name)
+			else:
+				var subsystem_area: Area = Area.new()
+				subsystems_container.add_child(subsystem_area)
+				subsystem_area.set_owner(scene)
+
+				subsystem_area.transform = child.transform
+				subsystem_area.set_name(subsystem_name_match.strings[1])
+
+				var collision_shape
+				for static_child in child.get_children():
+					if static_child is CollisionShape:
+						collision_shape = static_child.duplicate(Node.DUPLICATE_USE_INSTANCING)
+						break
+
+				child.queue_free()
+
+				subsystem_area.add_child(collision_shape)
+				collision_shape.set_owner(scene)
+				subsystem_area.set_script(Subsystem)
+
 	var exhaust_mesh = scene.get_node("Exhaust")
 	exhaust_mesh.set_surface_material(0, BLUE_EXHAUST_MATERIAL)
 	exhaust_mesh.set_cast_shadows_setting(GeometryInstance.SHADOW_CASTING_SETTING_OFF)
@@ -339,6 +371,15 @@ func post_import(scene):
 			if mass != null and typeof(mass) == TYPE_REAL:
 				scene.set_mass(mass)
 
+			var subsystem_hitpoints = data_parsed.result.get("subsystem_hitpoints")
+			if subsystem_hitpoints != null and subsystems_container != null:
+				for subsystem_name in subsystem_hitpoints.keys():
+					var subsystem_node = subsystems_container.get_node_or_null(subsystem_name)
+					if subsystem_node == null:
+						print("Unable to find subsystem node: ", subsystem_name)
+					else:
+						subsystem_node.set_meta("hitpoints", subsystem_hitpoints[subsystem_name])
+
 			# Speed in data file is in m/s, so we have to divide by 10 to get actual value
 			var parsed_max_speed = data_parsed.result.get("max_speed")
 			if parsed_max_speed != null and typeof(parsed_max_speed) == TYPE_REAL:
@@ -366,6 +407,7 @@ const EnergyWeaponTurret = preload("EnergyWeaponTurret.gd")
 const MathHelper = preload("MathHelper.gd")
 const MissileWeaponTurret = preload("MissileWeaponTurret.gd")
 const ShieldQuadrant = preload("ShieldQuadrant.gd")
+const Subsystem = preload("Subsystem.gd")
 const WeaponHardpoints = preload("WeaponHardpoints.gd")
 
 const BLUE_EXHAUST_MATERIAL = preload("res://materials/blue_exhaust.tres")
