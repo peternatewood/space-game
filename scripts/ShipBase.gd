@@ -278,7 +278,7 @@ func _increment_power_level(system: int, direction: int):
 
 
 func _on_communications_damaged(hitpoint_percent: float):
-	emit_signal("subsystem_damaged", "communications", hitpoint_percent)
+	emit_signal("subsystem_damaged", Subsystem.Category.COMMUNICATIONS, hitpoint_percent)
 
 
 func _on_communications_destroyed():
@@ -286,7 +286,7 @@ func _on_communications_destroyed():
 
 
 func _on_engines_damaged(hitpoint_percent: float):
-	emit_signal("subsystem_damaged", "engines", hitpoint_percent)
+	emit_signal("subsystem_damaged", Subsystem.Category.ENGINES, hitpoint_percent)
 
 
 func _on_engines_destroyed():
@@ -315,7 +315,7 @@ func _on_mission_ready():
 
 
 func _on_navigation_damaged(hitpoint_percent: float):
-	emit_signal("subsystem_damaged", "navigation", hitpoint_percent)
+	emit_signal("subsystem_damaged", Subsystem.Category.NAVIGATION, hitpoint_percent)
 
 
 func _on_navigation_destroyed():
@@ -323,7 +323,7 @@ func _on_navigation_destroyed():
 
 
 func _on_sensors_damaged(hitpoint_percent: float):
-	emit_signal("subsystem_damaged", "sensors", hitpoint_percent)
+	emit_signal("subsystem_damaged", Subsystem.Category.SENSORS, hitpoint_percent)
 
 
 func _on_sensors_destroyed():
@@ -353,7 +353,7 @@ func _on_targeting_ship_destroyed(destroyed_ship):
 
 
 func _on_weapons_damaged(hitpoint_percent: float):
-	emit_signal("subsystem_damaged", "weapons", hitpoint_percent)
+	emit_signal("subsystem_damaged", Subsystem.Category.WEAPONS, hitpoint_percent)
 
 
 func _on_weapons_destroyed():
@@ -625,6 +625,7 @@ signal warping_ramped_up
 
 const ActorBase = preload("ActorBase.gd")
 const ShieldQuadrant = preload("ShieldQuadrant.gd")
+const Subsystem = preload("Subsystem.gd")
 
 const ACCELERATION: float = 0.1
 const DESTRUCTION_SMOKE = preload("res://models/Destruction_Smoke.tscn")
