@@ -119,7 +119,7 @@ func _ready():
 			navigation_node.owner_ship = self
 			navigation_node.connect("damaged", self, "_on_navigation_damaged")
 			navigation_node.connect("destroyed", self, "_on_navigation_destroyed")
-			subsystems["navigation"] = communications_node
+			subsystems["navigation"] = navigation_node
 
 		var sensors_node = subsystems_container.get_node_or_null("Sensors")
 		if sensors_node == null:
@@ -128,7 +128,7 @@ func _ready():
 			sensors_node.owner_ship = self
 			sensors_node.connect("damaged", self, "_on_sensors_damaged")
 			sensors_node.connect("destroyed", self, "_on_sensors_destroyed")
-			subsystems["sensors"] = communications_node
+			subsystems["sensors"] = sensors_node
 
 		var weapons_node = subsystems_container.get_node_or_null("Weapons")
 		if weapons_node == null:
