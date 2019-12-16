@@ -25,6 +25,7 @@ onready var sensors_bar_label = get_node("Damage Bars Panel/Damage Bars Grid/Sen
 onready var settings = get_node("/root/GlobalSettings")
 onready var speed_indicator = get_node("Throttle Bar Container/Speed Indicator")
 onready var speed_units_label = get_node("Target View Container/Target View Rows/Target Distance Container/Speed Units")
+onready var subsystem_target_icon = get_node("Subsystem Target Icon")
 onready var target_details_minimal = get_node("Target Details Minimal")
 onready var target_icon = get_node("Target Icon")
 onready var target_overhead = get_node("Target Overhead")
@@ -136,6 +137,8 @@ func _on_mission_ready():
 	player.connect("energy_weapon_changed", self, "_on_player_energy_weapon_changed")
 	player.connect("missile_weapon_changed", self, "_on_player_missile_weapon_changed")
 	player.connect("subsystem_damaged", self, "_on_subsystem_damaged")
+	player.connect("subsystem_deselected", self, "_on_subsystem_deselected")
+	player.connect("subsystem_targeted", self, "_on_subsystem_targeted")
 
 	for subsystem_name in player.subsystems.keys():
 		match subsystem_name:
@@ -397,6 +400,14 @@ func _on_subsystem_damaged(subsystem_category: int, hitpoint_percent: float):
 			weapons_bar.set_value(100 * hitpoint_percent)
 
 
+func _on_subsystem_deselected():
+	subsystem_target_icon.hide()
+
+
+func _on_subsystem_targeted():
+	subsystem_target_icon.show()
+
+
 func _on_target_damaged():
 	var hull_percent = max(0, player.current_target.get_hull_percent())
 	target_details_minimal.set_hull(hull_percent)
@@ -512,6 +523,23 @@ func _process(delta):
 
 			var bounding_box = Rect2(min_pos, max_pos - min_pos)
 			target_icon.update_icon(icon_pos, bounding_box, target_dist)
+
+			if player.current_subsystem_index != -1:
+				var subsystem_position = camera.unproject_position(player.current_subsystem.global_transform.origin)
+				subsystem_target_icon.set_position(subsystem_position)
+
+				var icon_size: Vector2 = Vector2.ONE
+				for point in player.current_subsystem.get_points_global():
+					var unprojected: Vector2 = camera.unproject_position(point)
+					var x_pos: float = abs(unprojected.x - subsystem_position.x)
+					var y_pos: float = abs(unprojected.y - subsystem_position.y)
+
+					if x_pos > icon_size.x:
+						icon_size.x = x_pos
+					if y_pos > icon_size.y:
+						icon_size.y = y_pos
+
+				subsystem_target_icon.set_icon_size(icon_size)
 
 			if edge_target_icon.visible:
 				edge_target_icon.hide()

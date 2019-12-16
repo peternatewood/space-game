@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=2]
+[gd_scene load_steps=38 format=2]
 
 [ext_resource path="res://themes/default_inconsolata.tres" type="Theme" id=1]
 [ext_resource path="res://scripts/HUD.gd" type="Script" id=2]
@@ -25,7 +25,8 @@
 [ext_resource path="res://images/radar_bg.svg" type="Texture" id=23]
 [ext_resource path="res://scripts/EdgeTargetIcon.gd" type="Script" id=24]
 [ext_resource path="res://scripts/TargetIcon.gd" type="Script" id=25]
-[ext_resource path="res://models/ships/frog_fighter/model.dae" type="PackedScene" id=26]
+[ext_resource path="res://scripts/SubsystemTargetIcon.gd" type="Script" id=26]
+[ext_resource path="res://models/ships/frog_fighter/model.dae" type="PackedScene" id=27]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 4.0
@@ -159,6 +160,7 @@ margin_bottom = 18.0
 text = "00"
 
 [node name="Damage Bars Panel" type="PanelContainer" parent="."]
+editor/display_folded = true
 modulate = Color( 0.501961, 0.752941, 1, 1 )
 anchor_left = 0.5
 anchor_right = 0.5
@@ -410,6 +412,7 @@ margin_bottom = 18.0
 text = "0. Back"
 
 [node name="Objectives Container" type="PanelContainer" parent="."]
+editor/display_folded = true
 modulate = Color( 0.501961, 0.752941, 1, 1 )
 anchor_left = 1.0
 anchor_top = 0.5
@@ -1166,6 +1169,39 @@ text = "0"
 align = 2
 valign = 1
 
+[node name="Subsystem Target Icon" type="Control" parent="."]
+editor/display_folded = true
+visible = false
+script = ExtResource( 26 )
+
+[node name="Top Left" type="Line2D" parent="Subsystem Target Icon"]
+position = Vector2( -8, -8 )
+points = PoolVector2Array( 0, 4, 0, 0, 4, 0 )
+width = 1.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = 2105495040
+
+[node name="Top Right" type="Line2D" parent="Subsystem Target Icon"]
+position = Vector2( 8, -8 )
+points = PoolVector2Array( -4, 0, 0, 0, 0, 4 )
+width = 1.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = 2105495040
+
+[node name="Bottom Right" type="Line2D" parent="Subsystem Target Icon"]
+position = Vector2( 8, 8 )
+points = PoolVector2Array( 0, -4, 0, 0, -4, 0 )
+width = 1.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = 2105495040
+
+[node name="Bottom Left" type="Line2D" parent="Subsystem Target Icon"]
+position = Vector2( -8, 8 )
+points = PoolVector2Array( 4, 0, 0, 0, 0, -4 )
+width = 1.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = 2105495040
+
 [node name="Debug" type="Label" parent="."]
 visible = false
 margin_right = 726.0
@@ -1186,7 +1222,7 @@ current = true
 size = 3.0
 far = 50.0
 
-[node name="Frog Fighter" parent="Target Viewport" instance=ExtResource( 26 )]
+[node name="Frog Fighter" parent="Target Viewport" instance=ExtResource( 27 )]
 input_ray_pickable = false
 collision_layer = 0
 collision_mask = 0
