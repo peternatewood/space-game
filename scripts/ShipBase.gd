@@ -20,6 +20,8 @@ onready var warp_boom_player = get_node("Warp Boom Player")
 onready var warp_ramp_up_player = get_node("Warp Ramp Up Player")
 
 var beam_weapon_turrets: Array = []
+var current_subsystem
+var current_subsystem_index: int = -1
 var current_target
 var energy_weapon_hardpoints: Array = []
 var energy_weapon_index: int = 0
@@ -170,6 +172,33 @@ func _cycle_missile_weapon(direction: int):
 	emit_signal("missile_weapon_changed")
 
 
+func _cycle_target_subsystems():
+	if has_target:
+		var target_subsystems_count: int = current_target.subsystems.size()
+
+		if target_subsystems_count > 0:
+			current_subsystem_index = (current_subsystem_index + 1) % target_subsystems_count
+			current_subsystem = current_target.subsystems[current_target.subsystems.keys()[current_subsystem_index]]
+
+			emit_signal("subsystem_targeted")
+
+
+func _deselect_current_target():
+	has_target = false
+	current_target.disconnect("destroyed", self, "_on_target_destroyed")
+	current_target.disconnect("warped_out", self, "_on_target_destroyed")
+	current_target.handle_target_deselected(self)
+	current_target = null
+
+
+func _deselect_target_subsystem():
+	if has_target:
+		current_subsystem_index = -1
+		current_subsystem = null
+
+		emit_signal("subsystem_deselected")
+
+
 func _destroy():
 	# Generate debris
 	if has_node("Debris"):
@@ -201,14 +230,6 @@ func _destroy():
 	mission_controller.add_child(explosion)
 
 	._destroy()
-
-
-func _deselect_current_target():
-	has_target = false
-	current_target.disconnect("destroyed", self, "_on_target_destroyed")
-	current_target.disconnect("warped_out", self, "_on_target_destroyed")
-	current_target.handle_target_deselected(self)
-	current_target = null
 
 
 func _fire_energy_weapon():
@@ -423,6 +444,8 @@ func _process(delta):
 
 
 func _set_current_target(node):
+	_deselect_target_subsystem()
+
 	if has_target:
 		current_target.disconnect("destroyed", self, "_on_target_destroyed")
 		current_target.disconnect("warped_out", self, "_on_target_destroyed")
@@ -618,6 +641,8 @@ signal energy_weapon_changed
 signal missile_weapon_changed
 signal speed_changed
 signal subsystem_damaged
+signal subsystem_deselected
+signal subsystem_targeted
 signal warped_in
 signal warped_out
 signal warping_in

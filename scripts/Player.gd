@@ -110,6 +110,10 @@ func _input(event):
 				_set_current_target(targets[target_index])
 
 			emit_signal("target_changed", last_target)
+		elif event.is_action("deselect_subsystem") and event.pressed:
+			_deselect_target_subsystem()
+		elif event.is_action("target_subsystem") and event.pressed:
+			_cycle_target_subsystems()
 		# Shield Boosting/Redirecting
 		elif event.is_action("boost_shield_front") and event.pressed:
 			ShieldQuadrant.boost_shield_quadrant(shields, FRONT)
