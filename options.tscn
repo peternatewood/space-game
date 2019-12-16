@@ -42,6 +42,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="First Row" type="HBoxContainer" parent="Options Rows"]
+editor/display_folded = true
 margin_right = 1008.0
 margin_bottom = 26.0
 
@@ -67,6 +68,7 @@ tab_align = 0
 
 [node name="Video" type="VBoxContainer" parent="Options Rows/TabContainer"]
 editor/display_folded = true
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 8.0
@@ -376,8 +378,6 @@ margin_bottom = 124.0
 text = "Mute"
 
 [node name="Controls" type="VBoxContainer" parent="Options Rows/TabContainer"]
-editor/display_folded = true
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 8.0
@@ -391,7 +391,6 @@ margin_bottom = 480.0
 size_flags_vertical = 3
 
 [node name="Movement" type="VBoxContainer" parent="Options Rows/TabContainer/Controls/Controls Tabs"]
-editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 8.0
@@ -402,6 +401,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Controls Header" type="HBoxContainer" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement"]
+editor/display_folded = true
 margin_right = 976.0
 margin_bottom = 26.0
 
@@ -472,8 +472,8 @@ size_flags_vertical = 3
 scroll_horizontal_enabled = false
 
 [node name="Controls Grid" type="GridContainer" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll"]
-editor/display_folded = true
-margin_right = 976.0
+margin_right = 964.0
+margin_bottom = 536.0
 size_flags_horizontal = 3
 columns = 2
 
@@ -701,7 +701,36 @@ margin_right = 964.0
 margin_bottom = 476.0
 action = "deselect_target"
 
+[node name="Target Subsystem Label" type="Label" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll/Controls Grid"]
+margin_top = 484.0
+margin_right = 192.0
+margin_bottom = 502.0
+text = "Target Subsystem"
+
+[node name="Target Subsystem" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll/Controls Grid" instance=ExtResource( 4 )]
+anchor_right = 0.0
+margin_left = 196.0
+margin_top = 480.0
+margin_right = 964.0
+margin_bottom = 506.0
+action = "target_subsystem"
+
+[node name="Deselect Subsystem Label" type="Label" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll/Controls Grid"]
+margin_top = 514.0
+margin_right = 192.0
+margin_bottom = 532.0
+text = "Deselect Subsystem"
+
+[node name="Deselect Subsystem" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll/Controls Grid" instance=ExtResource( 4 )]
+anchor_right = 0.0
+margin_left = 196.0
+margin_top = 510.0
+margin_right = 964.0
+margin_bottom = 536.0
+action = "deselect_subsystem"
+
 [node name="Weapons" type="VBoxContainer" parent="Options Rows/TabContainer/Controls/Controls Tabs"]
+editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -1433,6 +1462,7 @@ margin_right = 282.0
 margin_bottom = 138.0
 
 [node name="HUD" type="VBoxContainer" parent="Options Rows/TabContainer"]
+editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -1479,6 +1509,7 @@ size_flags_vertical = 3
 script = ExtResource( 7 )
 
 [node name="ColorPicker Popup" type="AcceptDialog" parent="."]
+editor/display_folded = true
 margin_left = 8.0
 margin_top = 96.0
 margin_right = 314.0
