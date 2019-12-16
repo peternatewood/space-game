@@ -1,19 +1,27 @@
 extends Control
 
+onready var communications_bar = get_node("Damage Bars Panel/Damage Bars Grid/Communications Bar")
+onready var communications_bar_label = get_node("Damage Bars Panel/Damage Bars Grid/Communications Label")
 onready var debug = get_node("Debug")
 onready var distance_units_label = get_node("Target View Container/Target View Rows/Target Distance Container/Distance Units")
 onready var edge_target_icon = get_node("Edge Target Icon")
 onready var energy_weapon_rows = get_node("Weapons Container/Weapons Rows/Energy Weapons").get_children()
+onready var engines_bar = get_node("Damage Bars Panel/Damage Bars Grid/Engines Bar")
+onready var engines_bar_label = get_node("Damage Bars Panel/Damage Bars Grid/Engines Label")
 onready var hud_bars = get_node("HUD Bars")
 onready var in_range_icon = get_node("Target Reticule/In Range Indicator")
 onready var missile_weapon_rows = get_node("Weapons Container/Weapons Rows/Missile Weapons").get_children()
 onready var mission_controller = get_node("/root/Mission Controller")
 onready var mission_timer = get_node("Mission Timer")
+onready var navigation_bar = get_node("Damage Bars Panel/Damage Bars Grid/Navigation Bar")
+onready var navigation_bar_label = get_node("Damage Bars Panel/Damage Bars Grid/Navigation Label")
 onready var objectives_rows = get_node("Objectives Container/Objective Rows")
 onready var player_overhead = get_node("Player Overhead")
-onready var player_hull_bar = get_node("Hull Bar")
+onready var player_hull_bar = get_node("Damage Bars Panel/Damage Bars Grid/Hull Bar")
 onready var power_container = get_node("Power Container")
 onready var radar = get_node("Radar")
+onready var sensors_bar = get_node("Damage Bars Panel/Damage Bars Grid/Sensors Bar")
+onready var sensors_bar_label = get_node("Damage Bars Panel/Damage Bars Grid/Sensors Label")
 onready var settings = get_node("/root/GlobalSettings")
 onready var speed_indicator = get_node("Throttle Bar Container/Speed Indicator")
 onready var speed_units_label = get_node("Target View Container/Target View Rows/Target Distance Container/Speed Units")
@@ -28,6 +36,8 @@ onready var throttle_bar = get_node("Throttle Bar Container/Throttle Bar")
 onready var throttle_line = get_node("Throttle Bar Container/Throttle Line")
 onready var viewport = get_viewport()
 onready var weapon_battery_bar = get_node("Weapon Battery Bar")
+onready var weapons_bar = get_node("Damage Bars Panel/Damage Bars Grid/Weapons Bar")
+onready var weapons_bar_label = get_node("Damage Bars Panel/Damage Bars Grid/Weapons Label")
 
 var camera
 var energy_hardpoint_count: int
@@ -125,6 +135,20 @@ func _on_mission_ready():
 	player.connect("throttle_changed", self, "_on_player_throttle_changed")
 	player.connect("energy_weapon_changed", self, "_on_player_energy_weapon_changed")
 	player.connect("missile_weapon_changed", self, "_on_player_missile_weapon_changed")
+	player.connect("subsystem_damaged", self, "_on_subsystem_damaged")
+
+	for subsystem_name in player.subsystems.keys():
+		match subsystem_name:
+			"communications":
+				communications_bar.set_value(100 * player.subsystems[subsystem_name].get_hitpoints_percent())
+			"engines":
+				engines_bar.set_value(100 * player.subsystems[subsystem_name].get_hitpoints_percent())
+			"navigation":
+				navigation_bar.set_value(100 * player.subsystems[subsystem_name].get_hitpoints_percent())
+			"sensors":
+				sensors_bar.set_value(100 * player.subsystems[subsystem_name].get_hitpoints_percent())
+			"weapons":
+				weapons_bar.set_value(100 * player.subsystems[subsystem_name].get_hitpoints_percent())
 
 	power_container.set_power_bars(player.power_distribution)
 
@@ -335,6 +359,42 @@ func _on_player_throttle_changed():
 	var line_pos: Vector2 = Vector2(0, throttle_bar.rect_size.y) + player.throttle * throttle_bar.rect_size.y * Vector2.UP
 	line_pos.y = min(line_pos.y, throttle_bar.rect_size.y - 1)
 	throttle_line.set_position(line_pos)
+
+
+func _on_subsystem_damaged(subsystem_category: int, hitpoint_percent: float):
+	var show_bars: bool = hitpoint_percent < 1
+
+	match subsystem_category:
+		Subsystem.Category.COMMUNICATIONS:
+			if show_bars and not communications_bar.visible:
+				communications_bar.show()
+				communications_bar_label.show()
+
+			communications_bar.set_value(100 * hitpoint_percent)
+		Subsystem.Category.ENGINES:
+			if show_bars and not engines_bar.visible:
+				engines_bar.show()
+				engines_bar_label.show()
+
+			engines_bar.set_value(100 * hitpoint_percent)
+		Subsystem.Category.NAVIGATION:
+			if show_bars and not navigation_bar.visible:
+				navigation_bar.show()
+				navigation_bar_label.show()
+
+			navigation_bar.set_value(100 * hitpoint_percent)
+		Subsystem.Category.SENSORS:
+			if show_bars and not sensors_bar.visible:
+				sensors_bar.show()
+				sensors_bar_label.show()
+
+			sensors_bar.set_value(100 * hitpoint_percent)
+		Subsystem.Category.WEAPONS:
+			if show_bars and not weapons_bar.visible:
+				weapons_bar.show()
+				weapons_bar_label.show()
+
+			weapons_bar.set_value(100 * hitpoint_percent)
 
 
 func _on_target_damaged():
@@ -578,6 +638,7 @@ const EdgeTargetIcon = preload("EdgeTargetIcon.gd")
 const InteractiveHUD = preload("InteractiveHUD.gd")
 const MathHelper = preload("MathHelper.gd")
 const ShipIcon = preload("ShipIcon.gd")
+const Subsystem = preload("Subsystem.gd")
 
 const OBJECTIVE_LABEL = preload("res://icons/objective_label.tscn")
 const RADAR_ICON = preload("res://icons/radar_icon.tscn")

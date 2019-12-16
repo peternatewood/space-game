@@ -35,9 +35,22 @@ content_margin_bottom = 2.0
 bg_color = Color( 0, 0, 0, 0.501961 )
 
 [sub_resource type="StyleBoxFlat" id=2]
-bg_color = Color( 0.501961, 0.501961, 0.501961, 1 )
+content_margin_left = 4.0
+content_margin_right = 4.0
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+bg_color = Color( 0, 0, 0, 0.501961 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 1, 1, 1, 1 )
+corner_detail = 2
 
 [sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.501961, 0.501961, 0.501961, 1 )
+
+[sub_resource type="StyleBoxFlat" id=4]
 bg_color = Color( 0, 0, 0, 1 )
 border_width_left = 1
 border_width_top = 1
@@ -45,7 +58,7 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color( 1, 1, 1, 1 )
 
-[sub_resource type="StyleBoxFlat" id=4]
+[sub_resource type="StyleBoxFlat" id=5]
 content_margin_left = 4.0
 content_margin_right = 4.0
 content_margin_top = 2.0
@@ -58,7 +71,7 @@ border_width_bottom = 1
 border_color = Color( 1, 1, 1, 1 )
 corner_detail = 2
 
-[sub_resource type="StyleBoxFlat" id=5]
+[sub_resource type="StyleBoxFlat" id=6]
 bg_color = Color( 0, 0, 0, 0.498039 )
 border_width_left = 1
 border_width_top = 1
@@ -69,19 +82,6 @@ expand_margin_left = 4.0
 expand_margin_right = 4.0
 expand_margin_top = 2.0
 expand_margin_bottom = 2.0
-
-[sub_resource type="StyleBoxFlat" id=6]
-content_margin_left = 4.0
-content_margin_right = 4.0
-content_margin_top = 4.0
-content_margin_bottom = 4.0
-bg_color = Color( 0, 0, 0, 0.501961 )
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color( 1, 1, 1, 1 )
-corner_detail = 2
 
 [sub_resource type="StyleBoxLine" id=7]
 color = Color( 1, 1, 1, 1 )
@@ -158,16 +158,145 @@ margin_right = 42.0
 margin_bottom = 18.0
 text = "00"
 
-[node name="Hull Bar" type="ProgressBar" parent="."]
+[node name="Damage Bars Panel" type="PanelContainer" parent="."]
 modulate = Color( 0.501961, 0.752941, 1, 1 )
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -37.5
-margin_top = 32.0
-margin_right = 37.5
-margin_bottom = 48.0
-custom_styles/fg = SubResource( 2 )
-custom_styles/bg = SubResource( 3 )
+margin_left = -109.0
+margin_top = 16.0
+margin_right = 109.0
+margin_bottom = 44.0
+size_flags_vertical = 4
+custom_styles/panel = SubResource( 2 )
+
+[node name="Damage Bars Grid" type="GridContainer" parent="Damage Bars Panel"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 214.0
+margin_bottom = 24.0
+size_flags_vertical = 0
+columns = 2
+
+[node name="Hull Label" type="Label" parent="Damage Bars Panel/Damage Bars Grid"]
+margin_top = 1.0
+margin_right = 56.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+text = "Hull"
+
+[node name="Hull Bar" type="ProgressBar" parent="Damage Bars Panel/Damage Bars Grid"]
+margin_left = 60.0
+margin_right = 210.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 150, 0 )
+size_flags_horizontal = 0
+custom_styles/fg = SubResource( 3 )
+custom_styles/bg = SubResource( 4 )
+step = 1.0
+value = 50.0
+
+[node name="Communications Label" type="Label" parent="Damage Bars Panel/Damage Bars Grid"]
+visible = false
+margin_top = 24.0
+margin_right = 56.0
+margin_bottom = 42.0
+size_flags_horizontal = 3
+text = "Comms"
+
+[node name="Communications Bar" type="ProgressBar" parent="Damage Bars Panel/Damage Bars Grid"]
+visible = false
+margin_left = 60.0
+margin_top = 24.0
+margin_right = 210.0
+margin_bottom = 44.0
+rect_min_size = Vector2( 150, 0 )
+size_flags_horizontal = 0
+custom_styles/fg = SubResource( 3 )
+custom_styles/bg = SubResource( 4 )
+step = 1.0
+value = 50.0
+
+[node name="Engines Label" type="Label" parent="Damage Bars Panel/Damage Bars Grid"]
+visible = false
+margin_top = 24.0
+margin_right = 56.0
+margin_bottom = 42.0
+size_flags_horizontal = 3
+text = "Engines"
+
+[node name="Engines Bar" type="ProgressBar" parent="Damage Bars Panel/Damage Bars Grid"]
+visible = false
+margin_left = 60.0
+margin_top = 48.0
+margin_right = 210.0
+margin_bottom = 68.0
+rect_min_size = Vector2( 150, 0 )
+size_flags_horizontal = 0
+custom_styles/fg = SubResource( 3 )
+custom_styles/bg = SubResource( 4 )
+step = 1.0
+value = 50.0
+
+[node name="Navigation Label" type="Label" parent="Damage Bars Panel/Damage Bars Grid"]
+visible = false
+margin_top = 24.0
+margin_right = 56.0
+margin_bottom = 42.0
+size_flags_horizontal = 3
+text = "Nav"
+
+[node name="Navigation Bar" type="ProgressBar" parent="Damage Bars Panel/Damage Bars Grid"]
+visible = false
+margin_left = 60.0
+margin_top = 72.0
+margin_right = 210.0
+margin_bottom = 92.0
+rect_min_size = Vector2( 150, 0 )
+size_flags_horizontal = 0
+custom_styles/fg = SubResource( 3 )
+custom_styles/bg = SubResource( 4 )
+step = 1.0
+value = 50.0
+
+[node name="Sensors Label" type="Label" parent="Damage Bars Panel/Damage Bars Grid"]
+visible = false
+margin_top = 24.0
+margin_right = 56.0
+margin_bottom = 42.0
+size_flags_horizontal = 3
+text = "Sensors"
+
+[node name="Sensors Bar" type="ProgressBar" parent="Damage Bars Panel/Damage Bars Grid"]
+visible = false
+margin_left = 60.0
+margin_top = 96.0
+margin_right = 210.0
+margin_bottom = 116.0
+rect_min_size = Vector2( 150, 0 )
+size_flags_horizontal = 0
+custom_styles/fg = SubResource( 3 )
+custom_styles/bg = SubResource( 4 )
+step = 1.0
+value = 50.0
+
+[node name="Weapons Label" type="Label" parent="Damage Bars Panel/Damage Bars Grid"]
+visible = false
+margin_top = 24.0
+margin_right = 56.0
+margin_bottom = 42.0
+size_flags_horizontal = 3
+text = "Weapons"
+
+[node name="Weapons Bar" type="ProgressBar" parent="Damage Bars Panel/Damage Bars Grid"]
+visible = false
+margin_left = 60.0
+margin_top = 120.0
+margin_right = 210.0
+margin_bottom = 140.0
+rect_min_size = Vector2( 150, 0 )
+size_flags_horizontal = 0
+custom_styles/fg = SubResource( 3 )
+custom_styles/bg = SubResource( 4 )
 step = 1.0
 value = 50.0
 
@@ -181,36 +310,36 @@ margin_left = -244.0
 margin_top = 16.0
 margin_right = -100.0
 margin_bottom = 104.0
-custom_styles/panel = SubResource( 4 )
+custom_styles/panel = SubResource( 5 )
 script = ExtResource( 5 )
 
 [node name="Root Commands" type="VBoxContainer" parent="Communications Menu"]
 editor/display_folded = true
 margin_left = 4.0
 margin_top = 2.0
-margin_right = 164.0
-margin_bottom = 152.0
+margin_right = 140.0
+margin_bottom = 86.0
 
 [node name="All Ships Label" type="Label" parent="Communications Menu/Root Commands"]
-margin_right = 160.0
+margin_right = 136.0
 margin_bottom = 18.0
 text = "1. All Ships"
 
 [node name="Wings Label" type="Label" parent="Communications Menu/Root Commands"]
 margin_top = 22.0
-margin_right = 160.0
+margin_right = 136.0
 margin_bottom = 40.0
 text = "2. Wings"
 
 [node name="Ships Label" type="Label" parent="Communications Menu/Root Commands"]
 margin_top = 44.0
-margin_right = 160.0
+margin_right = 136.0
 margin_bottom = 62.0
 text = "3. Ships"
 
 [node name="Reinforcements Label" type="Label" parent="Communications Menu/Root Commands"]
 margin_top = 66.0
-margin_right = 160.0
+margin_right = 136.0
 margin_bottom = 84.0
 text = "4. Reinforcements"
 
@@ -286,13 +415,13 @@ anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-margin_left = -14.0
-margin_top = -10.0
+margin_left = -194.0
+margin_top = -32.0
 margin_right = -32.0
-margin_bottom = 10.0
+margin_bottom = 32.0
 grow_horizontal = 0
 size_flags_vertical = 4
-custom_styles/panel = SubResource( 5 )
+custom_styles/panel = SubResource( 6 )
 
 [node name="Objective Rows" type="VBoxContainer" parent="Objectives Container"]
 margin_left = 1.0
@@ -480,6 +609,7 @@ texture_progress = ExtResource( 15 )
 fill_mode = 3
 
 [node name="Weapons Container" type="PanelContainer" parent="."]
+editor/display_folded = true
 modulate = Color( 0.501961, 0.752941, 1, 1 )
 anchor_top = 0.5
 anchor_bottom = 0.5
@@ -489,7 +619,7 @@ margin_right = 134.0
 margin_bottom = 39.0
 size_flags_horizontal = 0
 size_flags_vertical = 4
-custom_styles/panel = SubResource( 6 )
+custom_styles/panel = SubResource( 2 )
 
 [node name="Weapons Rows" type="VBoxContainer" parent="Weapons Container"]
 margin_left = 4.0
@@ -704,6 +834,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="Target View Container" type="MarginContainer" parent="."]
+editor/display_folded = true
 visible = false
 anchor_top = 1.0
 anchor_bottom = 1.0
@@ -1041,6 +1172,7 @@ margin_right = 726.0
 margin_bottom = 14.0
 
 [node name="Target Viewport" type="Viewport" parent="."]
+editor/display_folded = true
 size = Vector2( 160, 160 )
 own_world = true
 transparent_bg = true

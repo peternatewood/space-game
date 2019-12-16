@@ -125,7 +125,7 @@ signal colorable_node_clicked
 const COLORABLE_NODE_PATHS: Array = [
 	"HUD Bars",
 	"Mission Timer",
-	"Hull Bar",
+	"Damage Bars Panel",
 	"Communications Menu",
 	"Objectives Container",
 	"Player Overhead",
