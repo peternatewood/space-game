@@ -3,9 +3,10 @@ extends Area
 export (float) var hitpoints = -1
 
 onready var max_hitpoints = get_meta("hitpoints")
-onready var mission_controller = get_node_or_null("/root/MissionController")
+onready var mission_controller = get_node_or_null("/root/Mission Controller")
 
 var operative: bool = true
+var owner_ship
 
 
 func _ready():
@@ -19,7 +20,7 @@ func _ready():
 
 func _deal_damage(amount: int):
 	hitpoints -= amount
-	emit_signal("damaged", max(0, hitpoints / max_hitpoints))
+	emit_signal("damaged", get_hitpoints_percent())
 
 	if hitpoints <= 0:
 		_destroy()
@@ -32,7 +33,7 @@ func _destroy():
 
 
 func _on_body_entered(body):
-	if operative:
+	if operative and body != owner_ship:
 		if body is WeaponBase:
 			_deal_damage(body.damage_hull)
 			body.destroy()
@@ -45,6 +46,13 @@ func _on_mission_ready():
 		hitpoints = max_hitpoints
 
 	set_process(true)
+
+
+# PUBLIC
+
+
+func get_hitpoints_percent():
+	return max(0, hitpoints / max_hitpoints)
 
 
 signal damaged
