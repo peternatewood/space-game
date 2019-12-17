@@ -5,8 +5,8 @@
 		<author>Anonymous</author>
 		<authoring_tool>Collada Exporter for Blender 2.6+, by Juan Linietsky (juan@codenix.com)</authoring_tool>
 	</contributor>
-	<created>2019-12-13T13:01:39Z</created>
-	<modified>2019-12-13T13:01:39Z</modified>
+	<created>2019-12-17T10:47:10Z</created>
+	<modified>2019-12-17T10:47:10Z</modified>
 	<unit meter="1.0" name="meter"/>
 	<up_axis>Z_UP</up_axis>
 </asset>
@@ -2479,7 +2479,7 @@
 				</instance_geometry>
 			</node>
 			<node id="Sub Sensors-convcolonly" name="Sub Sensors-convcolonly" type="NODE">
-				<matrix sid="transform"> 1.0 0.0 0.0 2.980232238769531e-07 0.0 1.390548586845398 -0.1669200211763382 1.3050298690795898 0.0 0.23541313409805298 0.9859704375267029 0.041126225143671036 0.0 0.0 0.0 1.0  </matrix>
+				<matrix sid="transform"> 1.0 0.0 0.0 2.980232238769531e-07 0.0 1.4103349447250366 0.0 0.6241267323493958 0.0 0.0 1.0 0.010606762021780014 0.0 0.0 0.0 1.0  </matrix>
 				<instance_geometry url="#id-mesh-53">
 				</instance_geometry>
 			</node>
