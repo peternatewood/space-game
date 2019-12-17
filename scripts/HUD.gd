@@ -551,6 +551,9 @@ func _process(delta):
 			target_icon.update_icon(icon_pos, bounding_box, target_dist)
 
 			if player.current_subsystem_index != -1:
+				if not subsystem_target_icon.visible:
+					subsystem_target_icon.show()
+
 				var subsystem_position = camera.unproject_position(player.current_subsystem.global_transform.origin)
 				subsystem_target_icon.set_position(subsystem_position)
 
@@ -576,6 +579,9 @@ func _process(delta):
 			if not edge_target_icon.visible:
 				edge_target_icon.show()
 			_update_edge_icon()
+
+			if subsystem_target_icon.visible:
+				subsystem_target_icon.hide()
 
 		target_view_cam.transform.origin = -20 * to_target.normalized()
 		target_view_cam.look_at(Vector3.ZERO, player.transform.basis.y)
