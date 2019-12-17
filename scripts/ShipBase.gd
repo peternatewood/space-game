@@ -103,7 +103,7 @@ func _ready():
 			communications_node.owner_ship = self
 			communications_node.connect("damaged", self, "_on_communications_damaged")
 			communications_node.connect("destroyed", self, "_on_communications_destroyed")
-			subsystems["communications"] = communications_node
+			subsystems["Communications"] = communications_node
 
 		var engines_node = subsystems_container.get_node_or_null("Engines")
 		if engines_node == null:
@@ -112,7 +112,7 @@ func _ready():
 			engines_node.owner_ship = self
 			engines_node.connect("damaged", self, "_on_engines_damaged")
 			engines_node.connect("destroyed", self, "_on_engines_destroyed")
-			subsystems["engines"] = engines_node
+			subsystems["Engines"] = engines_node
 
 		var navigation_node = subsystems_container.get_node_or_null("Navigation")
 		if navigation_node == null:
@@ -121,7 +121,7 @@ func _ready():
 			navigation_node.owner_ship = self
 			navigation_node.connect("damaged", self, "_on_navigation_damaged")
 			navigation_node.connect("destroyed", self, "_on_navigation_destroyed")
-			subsystems["navigation"] = navigation_node
+			subsystems["Navigation"] = navigation_node
 
 		var sensors_node = subsystems_container.get_node_or_null("Sensors")
 		if sensors_node == null:
@@ -130,7 +130,7 @@ func _ready():
 			sensors_node.owner_ship = self
 			sensors_node.connect("damaged", self, "_on_sensors_damaged")
 			sensors_node.connect("destroyed", self, "_on_sensors_destroyed")
-			subsystems["sensors"] = sensors_node
+			subsystems["Sensors"] = sensors_node
 
 		var weapons_node = subsystems_container.get_node_or_null("Weapons")
 		if weapons_node == null:
@@ -139,7 +139,7 @@ func _ready():
 			weapons_node.owner_ship = self
 			weapons_node.connect("damaged", self, "_on_weapons_damaged")
 			weapons_node.connect("destroyed", self, "_on_weapons_destroyed")
-			subsystems["weapons"] = weapons_node
+			subsystems["Weapons"] = weapons_node
 
 	destruction_delay = 2.0
 
@@ -362,6 +362,7 @@ func _on_target_destroyed():
 	has_target = false
 	current_target = null
 	target_index = 0
+	current_subsystem_index = -1
 
 
 func _on_targeting_ship_destroyed(destroyed_ship):

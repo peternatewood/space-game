@@ -963,6 +963,48 @@ margin_right = 32.0
 margin_bottom = 18.0
 text = "%"
 
+[node name="Target Subsystem Container" type="HBoxContainer" parent="Target View Container/Target View Rows/Target View Panel Container"]
+visible = false
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -4.0
+margin_bottom = -4.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 8
+
+[node name="Subsystem Name Label" type="Label" parent="Target View Container/Target View Rows/Target View Panel Container/Target Subsystem Container"]
+margin_right = 48.0
+margin_bottom = 18.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 8
+text = "System"
+align = 2
+
+[node name="Subsystem Hitpoints Label" type="Label" parent="Target View Container/Target View Rows/Target View Panel Container/Target Subsystem Container"]
+margin_left = 52.0
+margin_right = 76.0
+margin_bottom = 18.0
+grow_horizontal = 0
+grow_vertical = 0
+rect_min_size = Vector2( 24, 0 )
+size_flags_horizontal = 8
+text = "100"
+align = 2
+
+[node name="Subsystem Percent Label" type="Label" parent="Target View Container/Target View Rows/Target View Panel Container/Target Subsystem Container"]
+margin_left = 80.0
+margin_right = 88.0
+margin_bottom = 18.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 8
+text = "%"
+align = 2
+
 [node name="Subsystem Target Icon" type="Control" parent="Target View Container/Target View Rows/Target View Panel Container"]
 editor/display_folded = true
 visible = false

@@ -51,6 +51,9 @@ var target_distance
 var target_hull
 var target_name
 var target_speed
+var target_subsystem_container
+var target_subsystem_hitpoints
+var target_subsystem_name
 var target_view_cam
 var target_view_model
 var target_view_subsystem
@@ -63,6 +66,9 @@ func _ready():
 	target_hull = target_view_container.get_node("Target View Rows/Target View Panel Container/Target Hull Container/Target Hull")
 	target_name = target_view_container.get_node("Target View Rows/Target Name")
 	target_speed = target_view_container.get_node("Target View Rows/Target Distance Container/Target Speed")
+	target_subsystem_container = target_view_container.get_node("Target View Rows/Target View Panel Container/Target Subsystem Container")
+	target_subsystem_hitpoints = target_view_container.get_node("Target View Rows/Target View Panel Container/Target Subsystem Container/Subsystem Hitpoints Label")
+	target_subsystem_name = target_view_container.get_node("Target View Rows/Target View Panel Container/Target Subsystem Container/Subsystem Name Label")
 	target_view_cam = target_viewport.get_node("Camera")
 	target_view_model = target_viewport.get_node("Frog Fighter")
 
@@ -88,6 +94,7 @@ func _ready():
 func _disconnect_target_signals(target):
 	target.disconnect("damaged", self, "_on_target_damaged")
 	target.disconnect("destroyed", self, "_on_target_destroyed")
+	target.disconnect("subsystem_damaged", self, "_on_target_subsystem_damaged")
 	target.disconnect("warped_out", self, "_on_target_destroyed")
 
 	if not target.is_capital_ship:
@@ -144,15 +151,15 @@ func _on_mission_ready():
 
 	for subsystem_name in player.subsystems.keys():
 		match subsystem_name:
-			"communications":
+			"Communications":
 				communications_bar.set_value(100 * player.subsystems[subsystem_name].get_hitpoints_percent())
-			"engines":
+			"Engines":
 				engines_bar.set_value(100 * player.subsystems[subsystem_name].get_hitpoints_percent())
-			"navigation":
+			"Navigation":
 				navigation_bar.set_value(100 * player.subsystems[subsystem_name].get_hitpoints_percent())
-			"sensors":
+			"Sensors":
 				sensors_bar.set_value(100 * player.subsystems[subsystem_name].get_hitpoints_percent())
-			"weapons":
+			"Weapons":
 				weapons_bar.set_value(100 * player.subsystems[subsystem_name].get_hitpoints_percent())
 
 	power_container.set_power_bars(player.power_distribution)
@@ -291,6 +298,7 @@ func _on_player_target_changed(last_target):
 
 		player.current_target.connect("damaged", self, "_on_target_damaged")
 		player.current_target.connect("destroyed", self, "_on_target_destroyed", [ player.current_target ])
+		player.current_target.connect("subsystem_damaged", self, "_on_target_subsystem_damaged")
 		player.current_target.connect("warped_out", self, "_on_target_destroyed", [ player.current_target ])
 
 		for index in range(4):
@@ -367,8 +375,8 @@ func _on_player_throttle_changed():
 	throttle_line.set_position(line_pos)
 
 
-func _on_subsystem_damaged(subsystem_category: int, hitpoint_percent: float):
-	var show_bars: bool = hitpoint_percent < 1
+func _on_subsystem_damaged(subsystem_category: int, hitpoints_percent: float):
+	var show_bars: bool = hitpoints_percent < 1
 
 	match subsystem_category:
 		Subsystem.Category.COMMUNICATIONS:
@@ -376,43 +384,49 @@ func _on_subsystem_damaged(subsystem_category: int, hitpoint_percent: float):
 				communications_bar.show()
 				communications_bar_label.show()
 
-			communications_bar.set_value(100 * hitpoint_percent)
+			communications_bar.set_value(100 * hitpoints_percent)
 		Subsystem.Category.ENGINES:
 			if show_bars and not engines_bar.visible:
 				engines_bar.show()
 				engines_bar_label.show()
 
-			engines_bar.set_value(100 * hitpoint_percent)
+			engines_bar.set_value(100 * hitpoints_percent)
 		Subsystem.Category.NAVIGATION:
 			if show_bars and not navigation_bar.visible:
 				navigation_bar.show()
 				navigation_bar_label.show()
 
-			navigation_bar.set_value(100 * hitpoint_percent)
+			navigation_bar.set_value(100 * hitpoints_percent)
 		Subsystem.Category.SENSORS:
 			if show_bars and not sensors_bar.visible:
 				sensors_bar.show()
 				sensors_bar_label.show()
 
-			sensors_bar.set_value(100 * hitpoint_percent)
+			sensors_bar.set_value(100 * hitpoints_percent)
 		Subsystem.Category.WEAPONS:
 			if show_bars and not weapons_bar.visible:
 				weapons_bar.show()
 				weapons_bar_label.show()
 
-			weapons_bar.set_value(100 * hitpoint_percent)
+			weapons_bar.set_value(100 * hitpoints_percent)
 
 
 func _on_subsystem_deselected():
 	subsystem_target_icon.hide()
+	target_subsystem_container.hide()
 	target_view_subsystem_icon.hide()
 
 
 func _on_subsystem_targeted():
-	subsystem_target_icon.show()
-	target_view_subsystem_icon.show()
 	var target_view_subsystem_name: String = target_view_model.subsystems.keys()[player.current_subsystem_index]
 	target_view_subsystem = target_view_model.subsystems[target_view_subsystem_name]
+
+	target_subsystem_hitpoints.set_text(str(round(100 * player.current_subsystem.get_hitpoints_percent())))
+	target_subsystem_name.set_text(target_view_subsystem_name)
+
+	subsystem_target_icon.show()
+	target_subsystem_container.show()
+	target_view_subsystem_icon.show()
 
 
 func _on_target_damaged():
@@ -458,6 +472,11 @@ func _on_ui_colors_changed():
 			target_class.set_modulate(Color.white)
 			edge_target_icon.set_modulate(Color.white)
 			target_icon.set_modulate(Color.white)
+
+
+func _on_target_subsystem_damaged(subsystem_category: int, hitpoints_percent: float):
+	if player.current_subsystem_index == subsystem_category:
+		target_subsystem_hitpoints.set_text(str(round(100 * hitpoints_percent)))
 
 
 func _on_units_changed(units: int):
