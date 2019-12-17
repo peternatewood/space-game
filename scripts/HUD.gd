@@ -32,6 +32,7 @@ onready var target_overhead = get_node("Target Overhead")
 onready var target_reticule = get_node("Target Reticule")
 onready var target_reticule_outer = get_node("Target Reticule Outer")
 onready var target_view_container = get_node("Target View Container")
+onready var target_view_subsystem_icon = get_node("Target View Container/Target View Rows/Target View Panel Container/Subsystem Target Icon")
 onready var target_viewport = get_node("Target Viewport")
 onready var throttle_bar = get_node("Throttle Bar Container/Throttle Bar")
 onready var throttle_line = get_node("Throttle Bar Container/Throttle Line")
@@ -52,6 +53,7 @@ var target_name
 var target_speed
 var target_view_cam
 var target_view_model
+var target_view_subsystem
 
 
 func _ready():
@@ -285,6 +287,7 @@ func _on_player_target_changed(last_target):
 		target_viewport.remove_child(target_view_model)
 		# Duplicating the target node turns out to be much faster than trying to load a new model, though the viewport is blank for a second or two
 		target_view_model = player.current_target.duplicate(Node.DUPLICATE_USE_INSTANCING)
+		target_view_model.set_script(ShipBase)
 
 		player.current_target.connect("damaged", self, "_on_target_damaged")
 		player.current_target.connect("destroyed", self, "_on_target_destroyed", [ player.current_target ])
@@ -402,10 +405,14 @@ func _on_subsystem_damaged(subsystem_category: int, hitpoint_percent: float):
 
 func _on_subsystem_deselected():
 	subsystem_target_icon.hide()
+	target_view_subsystem_icon.hide()
 
 
 func _on_subsystem_targeted():
 	subsystem_target_icon.show()
+	target_view_subsystem_icon.show()
+	var target_view_subsystem_name: String = target_view_model.subsystems.keys()[player.current_subsystem_index]
+	target_view_subsystem = target_view_model.subsystems[target_view_subsystem_name]
 
 
 func _on_target_damaged():
@@ -558,6 +565,23 @@ func _process(delta):
 
 		target_distance.set_text(str(round(target_dist)))
 		target_speed.set_text(str(round(MathHelper.units_to_speed(player.current_target.linear_velocity.length(), settings.get_units()))))
+
+		if player.current_subsystem_index != -1:
+			var subsystem_position = target_view_cam.unproject_position(target_view_subsystem.global_transform.origin)
+			target_view_subsystem_icon.set_position(subsystem_position)
+
+			var icon_size: Vector2 = Vector2.ONE
+			for point in target_view_subsystem.get_points_global():
+				var unprojected: Vector2 = target_view_cam.unproject_position(point)
+				var x_pos: float = abs(unprojected.x - subsystem_position.x)
+				var y_pos: float = abs(unprojected.y - subsystem_position.y)
+
+				if x_pos > icon_size.x:
+					icon_size.x = x_pos
+				if y_pos > icon_size.y:
+					icon_size.y = y_pos
+
+			target_view_subsystem_icon.set_icon_size(icon_size)
 	else:
 		if target_icon.visible:
 			target_icon.hide()
@@ -665,6 +689,7 @@ func update_hud_colors():
 const EdgeTargetIcon = preload("EdgeTargetIcon.gd")
 const InteractiveHUD = preload("InteractiveHUD.gd")
 const MathHelper = preload("MathHelper.gd")
+const ShipBase = preload("ShipBase.gd")
 const ShipIcon = preload("ShipIcon.gd")
 const Subsystem = preload("Subsystem.gd")
 

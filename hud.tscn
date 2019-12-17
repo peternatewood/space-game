@@ -23,9 +23,9 @@
 [ext_resource path="res://images/shield_left_small.png" type="Texture" id=21]
 [ext_resource path="res://images/shield_right_small.png" type="Texture" id=22]
 [ext_resource path="res://images/radar_bg.svg" type="Texture" id=23]
-[ext_resource path="res://scripts/EdgeTargetIcon.gd" type="Script" id=24]
-[ext_resource path="res://scripts/TargetIcon.gd" type="Script" id=25]
-[ext_resource path="res://scripts/SubsystemTargetIcon.gd" type="Script" id=26]
+[ext_resource path="res://scripts/SubsystemTargetIcon.gd" type="Script" id=24]
+[ext_resource path="res://scripts/EdgeTargetIcon.gd" type="Script" id=25]
+[ext_resource path="res://scripts/TargetIcon.gd" type="Script" id=26]
 [ext_resource path="res://models/ships/frog_fighter/model.dae" type="PackedScene" id=27]
 
 [sub_resource type="StyleBoxFlat" id=1]
@@ -963,10 +963,47 @@ margin_right = 32.0
 margin_bottom = 18.0
 text = "%"
 
+[node name="Subsystem Target Icon" type="Control" parent="Target View Container/Target View Rows/Target View Panel Container"]
+editor/display_folded = true
+visible = false
+margin_left = -16.0
+margin_top = -420.0
+margin_right = -16.0
+margin_bottom = -420.0
+script = ExtResource( 24 )
+
+[node name="Top Left" type="Line2D" parent="Target View Container/Target View Rows/Target View Panel Container/Subsystem Target Icon"]
+position = Vector2( -8, -8 )
+points = PoolVector2Array( 0, 4, 0, 0, 4, 0 )
+width = 1.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = 2105495040
+
+[node name="Top Right" type="Line2D" parent="Target View Container/Target View Rows/Target View Panel Container/Subsystem Target Icon"]
+position = Vector2( 8, -8 )
+points = PoolVector2Array( -4, 0, 0, 0, 0, 4 )
+width = 1.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = 2105495040
+
+[node name="Bottom Right" type="Line2D" parent="Target View Container/Target View Rows/Target View Panel Container/Subsystem Target Icon"]
+position = Vector2( 8, 8 )
+points = PoolVector2Array( 0, -4, 0, 0, -4, 0 )
+width = 1.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = 2105495040
+
+[node name="Bottom Left" type="Line2D" parent="Target View Container/Target View Rows/Target View Panel Container/Subsystem Target Icon"]
+position = Vector2( -8, 8 )
+points = PoolVector2Array( 4, 0, 0, 0, 0, -4 )
+width = 1.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = 2105495040
+
 [node name="Edge Target Icon" type="Control" parent="."]
 editor/display_folded = true
 visible = false
-script = ExtResource( 24 )
+script = ExtResource( 25 )
 
 [node name="Arrow Up" type="Control" parent="Edge Target Icon"]
 editor/display_folded = true
@@ -1126,7 +1163,7 @@ margin_left = 400.0
 margin_top = 240.0
 margin_right = 400.0
 margin_bottom = 240.0
-script = ExtResource( 25 )
+script = ExtResource( 26 )
 
 [node name="Top Left" type="Line2D" parent="Target Icon"]
 position = Vector2( -12, -12 )
@@ -1172,7 +1209,7 @@ valign = 1
 [node name="Subsystem Target Icon" type="Control" parent="."]
 editor/display_folded = true
 visible = false
-script = ExtResource( 26 )
+script = ExtResource( 24 )
 
 [node name="Top Left" type="Line2D" parent="Subsystem Target Icon"]
 position = Vector2( -8, -8 )
