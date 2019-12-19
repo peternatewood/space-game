@@ -68,7 +68,6 @@ tab_align = 0
 
 [node name="Video" type="VBoxContainer" parent="Options Rows/TabContainer"]
 editor/display_folded = true
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 8.0
@@ -378,6 +377,7 @@ margin_bottom = 124.0
 text = "Mute"
 
 [node name="Controls" type="VBoxContainer" parent="Options Rows/TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 8.0
@@ -472,8 +472,7 @@ size_flags_vertical = 3
 scroll_horizontal_enabled = false
 
 [node name="Controls Grid" type="GridContainer" parent="Options Rows/TabContainer/Controls/Controls Tabs/Movement/Movement Scroll"]
-margin_right = 964.0
-margin_bottom = 536.0
+margin_right = 976.0
 size_flags_horizontal = 3
 columns = 2
 
@@ -1194,7 +1193,6 @@ margin_bottom = 506.0
 action = "equalize_shields"
 
 [node name="Other" type="VBoxContainer" parent="Options Rows/TabContainer/Controls/Controls Tabs"]
-editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -1300,7 +1298,7 @@ margin_left = 196.0
 margin_top = 30.0
 margin_right = 992.0
 margin_bottom = 56.0
-action = "toggle_communcations_menu"
+action = "toggle_communications_menu"
 
 [node name="Warp Out Label" type="Label" parent="Options Rows/TabContainer/Controls/Controls Tabs/Other/Other Scroll/Controls Grid"]
 margin_top = 64.0

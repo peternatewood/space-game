@@ -140,7 +140,7 @@ func _handle_number_press(number: int):
 
 func _input(event):
 	if allow_input:
-		if event.is_action("toggle_communcations_menu") and event.pressed:
+		if event.is_action("toggle_communications_menu") and event.pressed:
 			if visible:
 				hide()
 			else:
