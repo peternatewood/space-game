@@ -6,7 +6,7 @@
 [ext_resource path="res://scripts/Player.gd" type="Script" id=4]
 [ext_resource path="res://scripts/NPCShip.gd" type="Script" id=5]
 [ext_resource path="res://models/ships/hawk_fighter/model.dae" type="PackedScene" id=6]
-[ext_resource path="res://models/ships/spider_bomber/model.dae" type="PackedScene" id=7]
+[ext_resource path="res://models/ships/spider_attacker/model.dae" type="PackedScene" id=7]
 [ext_resource path="res://models/ships/spider_interceptor/model.dae" type="PackedScene" id=8]
 [ext_resource path="res://scripts/MovementDebris.gd" type="Script" id=9]
 [ext_resource path="res://hud.tscn" type="PackedScene" id=10]
@@ -24,7 +24,7 @@ __meta__ = {
 "armory": {
 "energy_weapons": [ "Energy Bolt", "Disintigrator" ],
 "missile_weapons": [ "Heat Seeker" ],
-"ships": [ "Spider Fighter", "Spider Interceptor", "Spider Bomber" ]
+"ships": [ "Spider Fighter", "Spider Interceptor", "Spider Attacker" ]
 },
 "briefing": [ "Example mission made with the editor." ],
 "default_loadouts": [ [ {

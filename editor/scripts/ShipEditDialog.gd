@@ -90,6 +90,8 @@ func _ready():
 
 			file_name = dir.get_next()
 
+	warped_in_checkbox.connect("toggled", self, "_on_warped_in_toggled")
+
 	# Grab weapon labels and slots
 	var ship_edit_grid = get_node("Ship Edit Rows/Ship Edit Scroll/Ship Edit Scroll Rows/Ship Edit Grid")
 	for index in range(6):
@@ -248,6 +250,11 @@ func _on_update_pressed():
 	emit_signal("update_pressed")
 
 
+func _on_warped_in_toggled(button_pressed: bool):
+	for order in orders:
+		order.toggle_depart_order(button_pressed)
+
+
 # PUBLIC
 
 
@@ -359,6 +366,7 @@ func fill_ship_info(ship, loadout: Dictionary = {}):
 		npc_settings.hide()
 	else:
 		warped_in_checkbox.set_pressed(ship.is_warped_in)
+		_on_warped_in_toggled(ship.is_warped_in)
 
 		for index in range(orders.size()):
 			orders[index].set_order(ship.initial_orders[index])

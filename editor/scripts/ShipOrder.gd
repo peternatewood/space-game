@@ -116,4 +116,9 @@ func set_waypoint_groups(waypoint_groups: Array):
 			waypoint_options.set_item_text(index + 1, waypoint_groups[index].name)
 
 
+func toggle_depart_order(toggle_on: bool):
+	type_options.set_item_disabled(NPCShip.ORDER_TYPE.DEPART, not toggle_on)
+	type_options.set_item_disabled(NPCShip.ORDER_TYPE.ARRIVE, toggle_on)
+
+
 const NPCShip = preload("res://scripts/NPCShip.gd")

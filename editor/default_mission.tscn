@@ -15,7 +15,7 @@ __meta__ = {
 "armory": {
 "energy_weapons": [ "Energy Bolt", "Disintigrator" ],
 "missile_weapons": [ "Heat Seeker" ],
-"ships": [ "Spider Fighter", "Spider Interceptor", "Spider Bomber" ]
+"ships": [ "Spider Fighter", "Spider Interceptor", "Spider Attacker" ]
 },
 "briefing": [ "Test everything to do with individual missions." ],
 "default_loadouts": [ [ {
