@@ -359,7 +359,6 @@ func _on_player_target_changed(last_target):
 
 		if not target_view_container.visible:
 			target_view_container.show()
-			target_overhead.show()
 	else:
 		# No target selected
 		target_details_minimal.hide()
