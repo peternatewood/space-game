@@ -14,6 +14,7 @@ func post_import(scene):
 		"ammo_cost": 2.0,
 		"damage_hull": 10.0,
 		"damage_shield": 5.0,
+		"damage_subsystem": 1.5,
 	  "fire_delay": 1.5,
 	  "life": 10.0,
 		"max_speed": 100.0,

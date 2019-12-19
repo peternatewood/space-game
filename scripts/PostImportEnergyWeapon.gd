@@ -22,6 +22,7 @@ func post_import(scene):
 		"cost": 1.0,
 		"damage_hull": 10.0,
 		"damage_shield": 5.0,
+		"damage_subsystem": 2.0,
 		"fire_delay": 1.0,
 		"life": 4.0,
 		"speed": 40.0,

@@ -1,34 +1,19 @@
 extends Area
 
+onready var damage_hull: float = get_meta("damage_hull")
+onready var damage_shield: float = get_meta("damage_shield")
+onready var damage_subsystem: float = get_meta("damage_subsystem")
+onready var fire_delay: float = get_meta("fire_delay")
+onready var firing_range: float = get_meta("firing_range")
+onready var life: float = get_meta("life")
 onready var mission_controller = get_node("/root/Mission Controller")
+onready var speed: float = get_meta("speed")
+onready var weapon_name: float = get_meta("weapon_name")
 
-var damage_hull: float = 15
-var damage_shield: float = 10
-var fire_delay: float = 0.3 # In seconds
-var firing_force: float = 1.0
-var firing_range: float = 10.0
-var life: float = 5.0 # In seconds
 var owner_ship
-var speed: float = 15.0
-var weapon_name: String = "weapon"
 
 
 func _ready():
-	if has_meta("damage_hull"):
-		damage_hull = get_meta("damage_hull")
-	if has_meta("damage_shield"):
-		damage_shield = get_meta("damage_shield")
-	if has_meta("fire_delay"):
-		fire_delay = get_meta("fire_delay")
-	if has_meta("life"):
-		life = get_meta("life")
-	if has_meta("weapon_name"):
-		weapon_name = get_meta("weapon_name")
-	if has_meta("firing_range"):
-		firing_range = get_meta("firing_range")
-	if has_meta("speed"):
-		speed = get_meta("speed")
-
 	connect("body_entered", self, "_on_body_entered")
 
 

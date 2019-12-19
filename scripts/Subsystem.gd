@@ -54,7 +54,7 @@ func _destroy():
 func _on_area_entered(area):
 	if operative:
 		if area is WeaponBase:
-			_deal_damage(area.damage_hull)
+			_deal_damage(area.damage_subsystem)
 			area.destroy()
 
 

@@ -108,7 +108,7 @@ func set_weapon(weapon_scene):
 		weapon = weapon_scene
 
 		var weapon_instance = weapon.instance()
-		firing_range = weapon_instance.firing_range
+		firing_range = weapon_instance.get_meta("firing_range")
 		weapon_instance.free()
 
 
