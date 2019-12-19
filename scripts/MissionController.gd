@@ -145,7 +145,7 @@ func get_commandable_ships(include_warped_out: bool = false):
 
 	for target in get_targets(include_warped_out):
 		# TODO: also check some other property like rank or ship class to determine whether player can command or not
-		if target != player and target is NPCShip and get_alignment(player.faction, target.faction) == FRIENDLY:
+		if target is NPCShip and get_alignment(player.faction, target.faction) == FRIENDLY and target.wing_name != "":
 			commandable_ships.append(target)
 
 	return commandable_ships
