@@ -71,16 +71,16 @@ func _process(delta):
 			if target_raycast.is_colliding():
 				var collider = target_raycast.get_collider()
 
-				if collider is ActorBase:
-					collider._deal_damage(delta * hull_damage)
+				if collider is ShipBase:
+					collider.deal_damage(delta * hull_damage)
 				elif collider is ShieldQuadrant:
 					var collider_parent = collider.get_parent()
 
 					if collider.hitpoints <= 0:
-						if collider_parent is ActorBase:
-							collider_parent._deal_damage(delta * hull_damage)
+						if collider_parent is ShipBase:
+							collider_parent.deal_damage(delta * hull_damage)
 					else:
-						collider._damage(delta * shield_damage)
+						collider.deal_damage(delta * shield_damage)
 
 			# TODO: Resize the beam in case another ship crosses it
 
@@ -144,7 +144,7 @@ func set_target(target_node):
 	current_target = target_node
 
 
-const ActorBase = preload("ActorBase.gd")
+const ShipBase = preload("ShipBase.gd")
 const ShieldQuadrant = preload("ShieldQuadrant.gd")
 
 const LOOK_FOR_TARGETS_COUNTDOWN: float = 2.0

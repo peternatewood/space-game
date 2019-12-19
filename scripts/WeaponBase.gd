@@ -19,7 +19,7 @@ func _ready():
 
 func _on_body_entered(body):
 	if body != owner_ship:
-		if body is ShipBase or body is TurretBase or body is Debris:
+		if body is ShipBase or body is Debris or (body is TurretBase and body.capital_ship != owner_ship):
 			body.deal_damage(damage_hull)
 			destroy()
 

@@ -15,18 +15,11 @@ func _ready():
 	self.connect("area_entered", self, "_on_area_entered")
 
 
-func _deal_damage(amount: float):
-	hitpoints = max(0, hitpoints - amount)
-	flicker_countdown = FLICKER_DELAY
-	mesh.show()
-	emit_signal("hitpoints_changed", hitpoints / max_hitpoints)
-
-
 func _on_area_entered(area):
 	# Only handle collisions if this shield quadrant is still up
 	if hitpoints > 0:
 		if area is WeaponBase and area.owner_ship != get_parent():
-			_deal_damage(area.damage_shield)
+			deal_damage(area.damage_shield)
 			area.destroy()
 
 
@@ -57,6 +50,13 @@ func _process(delta):
 
 
 # PUBLIC
+
+
+func deal_damage(amount: float):
+	hitpoints = max(0, hitpoints - amount)
+	flicker_countdown = FLICKER_DELAY
+	mesh.show()
+	emit_signal("hitpoints_changed", hitpoints / max_hitpoints)
 
 
 func get_hitpoints_fraction():
