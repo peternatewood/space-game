@@ -31,7 +31,7 @@ Here I'll be keeping track of the all the features I want to implement, and chec
 - [ ] User Interface Sounds
 - [x] Ship/Weapon Sound Effects
 - [ ] Ship Subsystems
-- [ ] Lead Indicator
+- [x] Lead Indicator
 - [ ] Gallery/Library
 - [ ] Music
 
