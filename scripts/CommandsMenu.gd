@@ -18,6 +18,7 @@ var number_command_map: Array = [
 	4, # Attack Any
 	5  # Depart
 ]
+var menus_enabled: bool = true
 var reinforcements_list
 var ship_commands
 var ships_menu
@@ -146,7 +147,7 @@ func _input(event):
 			else:
 				show()
 				timeout_countdown = TIMEOUT_DELAY
-		elif event is InputEventKey and event.pressed:
+		elif menus_enabled and event is InputEventKey and event.pressed:
 			# Handle number inputs
 			match event.scancode:
 				KEY_1, KEY_KP_1:
@@ -232,6 +233,13 @@ func _on_mission_ready():
 			reinforcements_list.add_child(comm_label)
 			index += 1
 
+	mission_controller.player.connect("subsystem_destroyed", self, "_on_subsystem_destroyed")
+
+
+func _on_subsystem_destroyed(subsystem_category: int):
+	if subsystem_category == 0:
+		toggle_enabled(false)
+
 
 func _process(delta):
 	if timeout_countdown > 0:
@@ -261,6 +269,15 @@ func hide():
 	reinforcements_list.hide()
 
 	.hide()
+
+
+func toggle_enabled(toggle_on: bool):
+	menus_enabled = toggle_on
+
+	if toggle_on:
+		root_menu.set_modulate(Color.white)
+	else:
+		root_menu.set_modulate(Color(0.5, 0.5, 0.5))
 
 
 const COMMUNICATIONS_LABEL = preload("res://icons/communications_label.tscn")

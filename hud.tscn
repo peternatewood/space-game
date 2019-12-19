@@ -1284,6 +1284,7 @@ default_color = Color( 1, 1, 1, 1 )
 texture_mode = 2105495040
 
 [node name="Lead Indicator" type="Control" parent="."]
+editor/display_folded = true
 visible = false
 margin_left = 480.0
 margin_top = 240.0
@@ -1319,6 +1320,7 @@ default_color = Color( 1, 1, 1, 1 )
 texture_mode = 0
 
 [node name="Debug" type="Label" parent="."]
+visible = false
 margin_right = 726.0
 margin_bottom = 14.0
 
