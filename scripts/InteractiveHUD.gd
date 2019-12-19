@@ -34,10 +34,13 @@ func _ready():
 			set_icon_color(path)
 
 	# Show normally hidden nodes
-	get_node("Communications Menu").show()
 	get_node("Target Overhead").show()
 	get_node("Target Details Minimal").show()
 	get_node("Target View Container").show()
+
+	var communications_menu = get_node("Communications Menu")
+	communications_menu.show()
+	communications_menu.set_script(null)
 
 	edge_target_icon.show()
 	target_icon.show()
