@@ -2,6 +2,7 @@ extends Control
 
 onready var edge_target_icon = get_node("Edge Target Icon")
 onready var settings = get_node("/root/GlobalSettings")
+onready var lead_indicator = get_node("Lead Indicator")
 onready var target_class = get_node("Target View Container/Target View Rows/Target Class")
 onready var target_details_minimal = get_node("Target Details Minimal")
 onready var target_icon = get_node("Target Icon")
@@ -34,6 +35,7 @@ func _ready():
 			set_icon_color(path)
 
 	# Show normally hidden nodes
+	lead_indicator.show()
 	get_node("Target Overhead").show()
 	get_node("Target Details Minimal").show()
 	get_node("Target View Container").show()
@@ -117,6 +119,7 @@ func update_colored_icons():
 	var target_color = settings.get_interface_color(2)
 
 	edge_target_icon.set_modulate(target_color)
+	lead_indicator.set_modulate(target_color)
 	target_details_minimal.set_modulate(target_color)
 	target_class.set_modulate(target_color)
 	target_icon.set_modulate(target_color)

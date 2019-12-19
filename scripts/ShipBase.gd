@@ -534,6 +534,10 @@ func deal_damage(amount: float):
 			_start_destruction()
 
 
+func get_armed_energy_weapon_speed():
+	return energy_weapon_hardpoints[energy_weapon_index].weapon_data.get("speed", 0)
+
+
 func get_bounding_box():
 	var vertices: Array = []
 	for vertex in bounding_box_extents:

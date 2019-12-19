@@ -85,5 +85,6 @@ const WEAPON_DATA_NAMES: Array = [
 	"ammo_cost",
 	"cost",
 	"firing_range",
+	"speed",
 	"weapon_name"
 ]

@@ -107,6 +107,8 @@ ambient_light_sky_contribution = 0.5
 [node name="HUD" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = -0.196999
+margin_right = -0.197021
 theme = ExtResource( 1 )
 script = ExtResource( 2 )
 
@@ -1280,6 +1282,41 @@ points = PoolVector2Array( 4, 0, 0, 0, 0, -4 )
 width = 1.0
 default_color = Color( 1, 1, 1, 1 )
 texture_mode = 2105495040
+
+[node name="Lead Indicator" type="Control" parent="."]
+visible = false
+margin_left = 480.0
+margin_top = 240.0
+margin_right = 480.0
+margin_bottom = 240.0
+
+[node name="Top" type="Line2D" parent="Lead Indicator"]
+position = Vector2( 0, -12 )
+points = PoolVector2Array( -4, 3, 0, 0, 4, 3 )
+width = 2.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = 0
+
+[node name="Right" type="Line2D" parent="Lead Indicator"]
+position = Vector2( 12, 0 )
+points = PoolVector2Array( -4, -6, 0, -3, 0, 3, -4, 6 )
+width = 2.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = 0
+
+[node name="Bottom" type="Line2D" parent="Lead Indicator"]
+position = Vector2( 0, 12 )
+points = PoolVector2Array( 4, -3, 0, 0, -4, -3 )
+width = 2.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = 0
+
+[node name="Left" type="Line2D" parent="Lead Indicator"]
+position = Vector2( -12, 0 )
+points = PoolVector2Array( 4, 6, 0, 3, 0, -3, 4, -6 )
+width = 2.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = 0
 
 [node name="Debug" type="Label" parent="."]
 margin_right = 726.0

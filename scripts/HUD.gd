@@ -10,6 +10,7 @@ onready var engines_bar = get_node("Damage Bars Panel/Damage Bars Grid/Engines B
 onready var engines_bar_label = get_node("Damage Bars Panel/Damage Bars Grid/Engines Label")
 onready var hud_bars = get_node("HUD Bars")
 onready var in_range_icon = get_node("Target Reticule/In Range Indicator")
+onready var lead_indicator = get_node("Lead Indicator")
 onready var missile_weapon_rows = get_node("Weapons Container/Weapons Rows/Missile Weapons").get_children()
 onready var mission_controller = get_node("/root/Mission Controller")
 onready var mission_timer = get_node("Mission Timer")
@@ -333,11 +334,13 @@ func _on_player_target_changed(last_target):
 			target_class.set_modulate(settings.get_interface_color(alignment))
 			edge_target_icon.set_modulate(settings.get_interface_color(alignment))
 			target_icon.set_modulate(settings.get_interface_color(alignment))
+			lead_indicator.set_modulate(settings.get_interface_color(alignment))
 		else:
 			target_name.set_modulate(Color.white)
 			target_class.set_modulate(Color.white)
 			edge_target_icon.set_modulate(Color.white)
 			target_icon.set_modulate(Color.white)
+			lead_indicator.set_modulate(Color.white)
 
 		if not target_details_minimal.visible:
 			target_details_minimal.show()
@@ -606,9 +609,14 @@ func _process(delta):
 					icon_size.y = y_pos
 
 			target_view_subsystem_icon.set_icon_size(icon_size)
+
+		_update_lead_indicator()
 	else:
 		if target_icon.visible:
 			target_icon.hide()
+
+		if lead_indicator.visible:
+			lead_indicator.hide()
 
 	_update_speed_indicator()
 
@@ -665,6 +673,28 @@ func _update_edge_icon():
 
 	var angle_to = (-player.transform.basis.z).angle_to(player.current_target.transform.origin - player.transform.origin)
 	edge_target_icon.update_angle_label(angle_to)
+
+
+func _update_lead_indicator():
+	var target_position: Vector3
+
+	if player.current_subsystem_index != -1:
+		target_position = player.current_subsystem.global_transform.origin
+	else:
+		target_position = player.current_target.global_transform.origin
+
+	var velocity_diff = player.current_target.linear_velocity.length() - player.get_armed_energy_weapon_speed()
+	var lead_position: Vector3 = target_position - ((player.transform.origin - target_position).length() / velocity_diff) * player.current_target.linear_velocity
+
+	if camera.is_position_in_view(lead_position):
+		var unprojected_position: Vector2 = camera.unproject_position(lead_position)
+
+		lead_indicator.set_position(unprojected_position)
+
+		if not lead_indicator.visible:
+			lead_indicator.show()
+	elif lead_indicator.visible:
+		lead_indicator.hide()
 
 
 func _update_speed_indicator():
