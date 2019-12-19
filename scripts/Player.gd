@@ -35,16 +35,16 @@ func _input(event):
 			if warping == NONE:
 				warp_out()
 		elif event.is_action("throttle_up") and event.pressed:
-			throttle = min(MAX_THROTTLE, throttle + ACCELERATION)
+			self.throttle = min(MAX_THROTTLE, throttle + ACCELERATION)
 			emit_signal("throttle_changed")
 		elif event.is_action("throttle_down") and event.pressed:
-			throttle = max(0, throttle - ACCELERATION)
+			self.throttle = max(0, throttle - ACCELERATION)
 			emit_signal("throttle_changed")
 		elif event.is_action("set_throttle_zero") and event.pressed:
-			throttle = 0
+			self.throttle = 0
 			emit_signal("throttle_changed")
 		elif event.is_action("set_throttle_full") and event.pressed:
-			throttle = MAX_THROTTLE
+			self.throttle = MAX_THROTTLE
 			emit_signal("throttle_changed")
 		# Targeting
 		elif event.is_action("deselect_target") and event.pressed:
@@ -191,11 +191,10 @@ func _process(delta):
 	match warping:
 		NONE:
 			if is_alive:
-				input_velocity.x = Input.get_action_strength("pitch_up") - Input.get_action_strength("pitch_down")
-				input_velocity.y = Input.get_action_strength("yaw_left") - Input.get_action_strength("yaw_right")
-				input_velocity.z = Input.get_action_strength("roll_left") - Input.get_action_strength("roll_right")
-
-				torque_vector = transform.basis.x * input_velocity.x + transform.basis.y * input_velocity.y + transform.basis.z * input_velocity.z
+				if subsystems["Engines"].operative:
+					input_velocity.x = Input.get_action_strength("pitch_up") - Input.get_action_strength("pitch_down")
+					input_velocity.y = Input.get_action_strength("yaw_left") - Input.get_action_strength("yaw_right")
+					input_velocity.z = Input.get_action_strength("roll_left") - Input.get_action_strength("roll_right")
 
 				if Input.is_action_pressed("fire_energy_weapon"):
 					_fire_energy_weapon()
@@ -252,7 +251,7 @@ func _toggle_ship_mesh(show_meshes: bool):
 
 func warp_out():
 	# Allow physics to bring player to a full stop
-	torque_vector = Vector3.ZERO
+	input_velocity = Vector3.ZERO
 
 	# Move camera to a roughly random position behind the player
 	_toggle_ship_mesh(true)

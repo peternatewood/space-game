@@ -61,8 +61,7 @@ var source_folder = get_meta("source_folder")
 var subsystems: Dictionary = {}
 var target_index: int = 0
 var targeting_ships: Array = []
-var throttle: float
-var torque_vector: Vector3
+var throttle: float = 0.0 setget set_throttle
 var turn_speed: Vector3 = get_meta("turn_speed")
 var warp_destination: Vector3
 var warp_origin: Vector3
@@ -367,7 +366,13 @@ func _on_subsystem_damaged(category: int, hitpoints_percent: float):
 
 
 func _on_subsystem_destroyed(category: int):
-	print("Subsystem destroyed: ", category)
+	match category:
+		1:
+			print(name, " engines destroyed")
+			self.throttle = 0
+			input_velocity = Vector3.ZERO
+
+	emit_signal("subsystem_destroyed", category)
 
 
 func _on_target_destroyed():
@@ -611,6 +616,11 @@ func is_a_target_in_range():
 	return target_raycast.get_collider() is PhysicsBody
 
 
+func set_throttle(amount: float):
+	if subsystems["Engines"].operative:
+		throttle = amount
+
+
 func set_weapon_hardpoints(energy_weapons: Array, missile_weapons: Array):
 	for index in range(energy_weapons.size()):
 		if index < energy_weapon_hardpoints.size():
@@ -696,6 +706,7 @@ signal missile_weapon_changed
 signal speed_changed
 signal subsystem_damaged
 signal subsystem_deselected
+signal subsystem_destroyed
 signal subsystem_targeted
 signal warped_in
 signal warped_out

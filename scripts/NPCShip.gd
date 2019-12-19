@@ -23,24 +23,25 @@ func _attack_current_target():
 		# TODO: move close enough to fire on target?
 		pass
 	else:
-		_turn_towards_target(current_target.transform.origin)
+		if subsystems["Engines"].operative:
+			_turn_towards_target(current_target.transform.origin)
 
-		var to_target: Vector3 = current_target.transform.origin - transform.origin
-		var target_dist_squared: float = to_target.length_squared()
-		if is_flying_at_target:
-			if target_dist_squared < MIN_TARGET_DIST_SQ:
-				is_flying_at_target = false
-			else:
-				var desired_throttle: float = _get_throttle_to_match_target_speed()
-				if target_dist_squared < MIN_FULL_SPEED_DIST_SQ:
-					throttle = max(desired_throttle, 0.5)
+			var to_target: Vector3 = current_target.transform.origin - transform.origin
+			var target_dist_squared: float = to_target.length_squared()
+			if is_flying_at_target:
+				if target_dist_squared < MIN_TARGET_DIST_SQ:
+					is_flying_at_target = false
 				else:
-					throttle = 1.0
-		else:
-			if target_dist_squared > MAX_TARGET_DIST_SQ:
-				is_flying_at_target = true
+					var desired_throttle: float = _get_throttle_to_match_target_speed()
+					if target_dist_squared < MIN_FULL_SPEED_DIST_SQ:
+						self.throttle = max(desired_throttle, 0.5)
+					else:
+						self.throttle = 1.0
 			else:
-				throttle = (-transform.basis.z).angle_to(to_target) / PI
+				if target_dist_squared > MAX_TARGET_DIST_SQ:
+					is_flying_at_target = true
+				else:
+					self.throttle = (-transform.basis.z).angle_to(to_target) / PI
 
 		var raycast_collider = target_raycast.get_collider()
 		if raycast_collider == current_target:
@@ -105,7 +106,7 @@ func _process(delta):
 							_turn_towards_target(waypoint_pos)
 
 						if throttle != PATROL_THROTTLE:
-							throttle = PATROL_THROTTLE
+							self.throttle = PATROL_THROTTLE
 				ORDER_TYPE.ATTACK:
 					if has_target:
 						_attack_current_target()
@@ -141,27 +142,28 @@ func _process(delta):
 
 
 func _turn_towards_target(target_pos: Vector3):
-	var to_target: Vector3 = (target_pos - transform.origin).normalized()
+	if subsystems["Engines"].operative:
+		var to_target: Vector3 = (target_pos - transform.origin).normalized()
 
-	var x_dot = transform.basis.x.dot(to_target)
-	var y_dot = transform.basis.y.dot(to_target)
+		var x_dot = transform.basis.x.dot(to_target)
+		var y_dot = transform.basis.y.dot(to_target)
 
-	if is_flying_at_target:
-		# Stop turning if angular vel is high enough
-		var angle_to_target: float = (-transform.basis.z).angle_to(to_target)
-		if angular_velocity.y != 0:
-			x_dot * min(1, abs(angle_to_target / angular_velocity.y))
-		if angular_velocity.x != 0:
-			y_dot * min(1, abs(angle_to_target / angular_velocity.x))
+		if is_flying_at_target:
+			# Stop turning if angular vel is high enough
+			var angle_to_target: float = (-transform.basis.z).angle_to(to_target)
+			if angular_velocity.y != 0:
+				x_dot * min(1, abs(angle_to_target / angular_velocity.y))
+			if angular_velocity.x != 0:
+				y_dot * min(1, abs(angle_to_target / angular_velocity.x))
 
-		#torque_vector = transform.basis.x * y_dot - transform.basis.y * x_dot
-		input_velocity.x = y_dot
-		input_velocity.y = -x_dot
-	else:
-		# Turn away to put distance between self and target
-		#torque_vector = -transform.basis.x * y_dot + transform.basis.y * x_dot
-		input_velocity.x = -y_dot
-		input_velocity.y = x_dot
+			#torque_vector = transform.basis.x * y_dot - transform.basis.y * x_dot
+			input_velocity.x = y_dot
+			input_velocity.y = -x_dot
+		else:
+			# Turn away to put distance between self and target
+			#torque_vector = -transform.basis.x * y_dot + transform.basis.y * x_dot
+			input_velocity.x = -y_dot
+			input_velocity.y = x_dot
 
 
 # PUBLIC
