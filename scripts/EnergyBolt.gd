@@ -1,13 +1,15 @@
-extends "res://scripts/EnergyWeaponBase.gd"
+extends "res://scripts/WeaponBase.gd"
+
+var cost: float = 1.0
 
 
 func _ready():
-	firing_force = get_meta("firing_force")
+	if has_meta("cost"):
+		cost = get_meta("cost")
 
 
 # PUBLIC
 
 
 func add_speed(amount: float):
-	firing_force += amount
-	add_central_force(firing_force * -transform.basis.z)
+	speed += amount

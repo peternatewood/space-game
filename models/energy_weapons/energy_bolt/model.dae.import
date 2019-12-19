@@ -11,7 +11,7 @@ dest_files=[ "res://.import/model.dae-387502bc3bc97b8b19a041cc16b27082.scn" ]
 
 [params]
 
-nodes/root_type="RigidBody"
+nodes/root_type="Area"
 nodes/root_name="Energy Bolt"
 nodes/root_scale=1.0
 nodes/custom_script="res://scripts/PostImportEnergyWeapon.gd"

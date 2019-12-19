@@ -1,19 +1,21 @@
 tool
-extends "PostImportActor.gd"
+extends "res://scripts/PostImportCollision.gd"
 
 
 func post_import(scene):
-	# Change shield collision meshes to Area nodes
+	# Change shield collision meshes to KinematicBody nodes
+	var shields: Array = []
+
 	for child in scene.get_children():
 		if child.name.begins_with("Shield"):
 			var shield_name = child.name
 			child.set_name(shield_name + " Container")
 
-			# Add the area node to the scene
-			var area_node: Area = Area.new()
-			scene.add_child(area_node)
-			area_node.set_owner(scene)
-			area_node.set_name(shield_name)
+			# Add the kinematic body node to the scene
+			var shield_area: Area = Area.new()
+			scene.add_child(shield_area)
+			shield_area.set_owner(scene)
+			shield_area.set_name(shield_name)
 
 			# Get the collision shape and shield mesh
 			var shield_static: StaticBody
@@ -38,18 +40,19 @@ func post_import(scene):
 					break
 
 			# Add the shield mesh (note: set_owner must be the Scene, not the node's parent)
-			area_node.add_child(shield_mesh)
+			shield_area.add_child(shield_mesh)
 			shield_mesh.set_owner(scene)
 			shield_mesh.set_name("mesh")
 			shield_mesh.set_surface_material(0, BLUE_SHIELD_MATERIAL)
 			shield_mesh.hide()
 
 			# Add the collision shape
-			area_node.add_child(collision_shape)
+			shield_area.add_child(collision_shape)
 			collision_shape.set_name("shape")
 			collision_shape.set_owner(scene)
 
-			area_node.set_script(ShieldQuadrant)
+			shields.append(shield_area)
+			shield_area.set_script(ShieldQuadrant)
 
 			# Remove the static node and original shield mesh
 			shield_static.queue_free()
@@ -150,10 +153,10 @@ func post_import(scene):
 	if has_beam_weapons:
 		var turrets_container = scene.get_node("Beam Weapon Turrets")
 		for turret in turrets_container.get_children():
-			var turret_area: Area = Area.new()
-			turrets_container.add_child(turret_area)
-			turret_area.set_owner(scene)
-			turret_area.transform = turret.transform
+			var turret_body: KinematicBody = KinematicBody.new()
+			turrets_container.add_child(turret_body)
+			turret_body.set_owner(scene)
+			turret_body.transform = turret.transform
 
 			var hardpoint: Spatial
 
@@ -164,20 +167,20 @@ func post_import(scene):
 						if static_body_child is CollisionShape:
 							# Copy collision shape to turret root
 							var collision_shape = static_body_child.duplicate(Node.DUPLICATE_USE_INSTANCING)
-							turret_area.add_child(collision_shape)
+							turret_body.add_child(collision_shape)
 							collision_shape.transform = child.transform
 							collision_shape.set_owner(scene)
 
 				elif child.name.begins_with("Hardpoint"):
 					hardpoint = child.duplicate(Node.DUPLICATE_USE_INSTANCING)
-					turret_area.add_child(hardpoint)
+					turret_body.add_child(hardpoint)
 					hardpoint.transform = child.transform
 					hardpoint.set_owner(scene)
 					hardpoint.set_name("Hardpoint")
 
 				elif child is MeshInstance:
 					var mesh_instance = child.duplicate(Node.DUPLICATE_USE_INSTANCING)
-					turret_area.add_child(mesh_instance)
+					turret_body.add_child(mesh_instance)
 					mesh_instance.transform = child.transform
 					mesh_instance.set_owner(scene)
 
@@ -187,16 +190,16 @@ func post_import(scene):
 			# Remove turret spatial
 			turret.free()
 
-			turret_area.set_meta("hull_hitpoints", 100.0)
-			turret_area.set_script(BeamWeaponTurret)
+			turret_body.set_meta("hull_hitpoints", 100.0)
+			turret_body.set_script(BeamWeaponTurret)
 
 	if has_energy_weapons:
 		var turrets_container = scene.get_node("Energy Weapon Turrets")
 		for turret in turrets_container.get_children():
-			var turret_area: Area = Area.new()
-			turrets_container.add_child(turret_area)
-			turret_area.set_owner(scene)
-			turret_area.transform = turret.transform
+			var turret_body: KinematicBody = KinematicBody.new()
+			turrets_container.add_child(turret_body)
+			turret_body.set_owner(scene)
+			turret_body.transform = turret.transform
 
 			var barrels: MeshInstance
 
@@ -207,13 +210,13 @@ func post_import(scene):
 						if static_body_child is CollisionShape:
 							# Copy collision shape to turret root
 							var collision_shape = static_body_child.duplicate(Node.DUPLICATE_USE_INSTANCING)
-							turret_area.add_child(collision_shape)
+							turret_body.add_child(collision_shape)
 							collision_shape.transform = child.transform
 							collision_shape.set_owner(scene)
 
 				elif child is MeshInstance:
 					var mesh_instance = child.duplicate(Node.DUPLICATE_USE_INSTANCING)
-					turret_area.add_child(mesh_instance)
+					turret_body.add_child(mesh_instance)
 					mesh_instance.transform = child.transform
 					mesh_instance.set_owner(scene)
 
@@ -242,16 +245,16 @@ func post_import(scene):
 			target_raycast.set_cast_to(raycast_start + 200 * Vector3.FORWARD)
 			target_raycast.set_enabled(true)
 
-			turret_area.set_meta("hull_hitpoints", 100.0)
-			turret_area.set_script(EnergyWeaponTurret)
+			turret_body.set_meta("hull_hitpoints", 100.0)
+			turret_body.set_script(EnergyWeaponTurret)
 
 	if has_missile_weapons:
 		var turrets_container = scene.get_node("Missile Weapon Turrets")
 		for turret in turrets_container.get_children():
-			var turret_area: Area = Area.new()
-			turrets_container.add_child(turret_area)
-			turret_area.set_owner(scene)
-			turret_area.transform = turret.transform
+			var turret_body: KinematicBody = KinematicBody.new()
+			turrets_container.add_child(turret_body)
+			turret_body.set_owner(scene)
+			turret_body.transform = turret.transform
 
 			var missile_rack: MeshInstance
 
@@ -262,13 +265,13 @@ func post_import(scene):
 						if static_body_child is CollisionShape:
 							# Copy collision shape to turret root
 							var collision_shape = static_body_child.duplicate(Node.DUPLICATE_USE_INSTANCING)
-							turret_area.add_child(collision_shape)
+							turret_body.add_child(collision_shape)
 							collision_shape.transform = child.transform
 							collision_shape.set_owner(scene)
 
 				elif child is MeshInstance:
 					var mesh_instance = child.duplicate(Node.DUPLICATE_USE_INSTANCING)
-					turret_area.add_child(mesh_instance)
+					turret_body.add_child(mesh_instance)
 					mesh_instance.transform = child.transform
 					mesh_instance.set_owner(scene)
 
@@ -297,12 +300,8 @@ func post_import(scene):
 			target_raycast.set_cast_to(raycast_start + 200 * Vector3.FORWARD)
 			target_raycast.set_enabled(true)
 
-			turret_area.set_meta("hull_hitpoints", 100.0)
-			turret_area.set_script(MissileWeaponTurret)
-
-	# Some common physics settings
-	scene.set_angular_damp(0.85)
-	scene.set_linear_damp(0.85)
+			turret_body.set_meta("hull_hitpoints", 100.0)
+			turret_body.set_script(MissileWeaponTurret)
 
 	# Add raycast for targeting
 	var raycast_start: Vector3
@@ -351,11 +350,12 @@ func post_import(scene):
 	var ship_data: Dictionary = {
 		"is_capital_ship": false,
 		"hull_hitpoints": 100.0,
+		"mass": 10.0, # Use mass to push stuff?
 		"missile_capacity": 55.0,
 		"shield_hitpoints": 100.0,
 		"ship_class": "ship",
-		"turn_speed": 25
 	}
+	var turn_speed: Vector3 = Vector3(TAU / 2.0, TAU / 3.0, TAU / 2.5) # Radians per second
 
 	if data_file.file_exists(data_file_name):
 		data_file.open(data_file_name, File.READ)
@@ -366,10 +366,6 @@ func post_import(scene):
 				var property = data_parsed.result.get(key)
 				if property != null and typeof(property) == typeof(ship_data[key]):
 					ship_data[key] = property
-
-			var mass = data_parsed.result.get("mass")
-			if mass != null and typeof(mass) == TYPE_REAL:
-				scene.set_mass(mass)
 
 			var subsystem_hitpoints = data_parsed.result.get("subsystem_hitpoints")
 			if subsystem_hitpoints != null and subsystems_container != null:
@@ -384,6 +380,18 @@ func post_import(scene):
 			var parsed_max_speed = data_parsed.result.get("max_speed")
 			if parsed_max_speed != null and typeof(parsed_max_speed) == TYPE_REAL:
 				max_speed = parsed_max_speed / 10
+
+			var pitch_speed = data_parsed.result.get("pitch_speed")
+			if pitch_speed != null and typeof(pitch_speed) == TYPE_REAL and pitch_speed >= 0:
+				turn_speed.x = pitch_speed
+
+			var yaw_speed = data_parsed.result.get("yaw_speed")
+			if yaw_speed != null and typeof(yaw_speed) == TYPE_REAL and yaw_speed >= 0:
+				turn_speed.y = yaw_speed
+
+			var roll_speed = data_parsed.result.get("roll_speed")
+			if roll_speed != null and typeof(roll_speed) == TYPE_REAL and roll_speed >= 0:
+				turn_speed.z = roll_speed
 		else:
 			print("Error while parsing data file: ", data_file_name + " " + data_parsed.error_string)
 
@@ -395,9 +403,38 @@ func post_import(scene):
 		scene.set_meta(key, ship_data[key])
 
 	scene.set_meta("max_speed", max_speed)
-	scene.set_meta("propulsion_force", MathHelper.get_propulsion_force_from_mass_and_speed(max_speed, scene.mass))
+	scene.set_meta("turn_speed", turn_speed)
+
 	scene.set_meta("source_file", get_source_file())
 	scene.set_meta("source_folder", source_folder)
+
+	var max_mesh_size: Vector3
+
+	for child in scene.get_children():
+		if child is MeshInstance:
+			for vertex in child.mesh.get_faces():
+				var adjusted_vertex = vertex - child.transform.origin
+				if adjusted_vertex.x > max_mesh_size.x:
+					max_mesh_size.x = vertex.x
+				if adjusted_vertex.y > max_mesh_size.y:
+					max_mesh_size.y = vertex.y
+				if adjusted_vertex.z > max_mesh_size.z:
+					max_mesh_size.z = vertex.z
+
+	var cube_mesh = CubeMesh.new()
+	cube_mesh.set_size(2 * max_mesh_size)
+	var bounding_box_extents = [
+		max_mesh_size,
+		Vector3(-max_mesh_size.x, max_mesh_size.y, max_mesh_size.z),
+		Vector3(-max_mesh_size.x,-max_mesh_size.y, max_mesh_size.z),
+		Vector3(-max_mesh_size.x, max_mesh_size.y,-max_mesh_size.z),
+		Vector3(-max_mesh_size.x,-max_mesh_size.y,-max_mesh_size.z),
+		Vector3( max_mesh_size.x,-max_mesh_size.y, max_mesh_size.z),
+		Vector3( max_mesh_size.x, max_mesh_size.y,-max_mesh_size.z),
+		Vector3( max_mesh_size.x,-max_mesh_size.y,-max_mesh_size.z)
+	]
+	scene.set_meta("bounding_box_extents", bounding_box_extents)
+	scene.set_meta("cam_distance", max_mesh_size.length())
 
 	return .post_import(scene)
 

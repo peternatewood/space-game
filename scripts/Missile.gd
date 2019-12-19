@@ -40,6 +40,4 @@ func _process(delta):
 	if speed < max_speed:
 		speed = min(max_speed, speed + delta * acceleration)
 
-	translate(delta * speed * Vector3.FORWARD)
-
 	._process(delta)

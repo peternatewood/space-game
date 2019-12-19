@@ -5,6 +5,5 @@
   "cost": 1.5,
   "fire_delay": 0.25,
   "life": 5.0,
-  "mass": 0.01,
-  "speed": 200
+  "speed": 18
 }

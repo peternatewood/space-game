@@ -154,10 +154,14 @@ func _turn_towards_target(target_pos: Vector3):
 		if angular_velocity.x != 0:
 			y_dot * min(1, abs(angle_to_target / angular_velocity.x))
 
-		torque_vector = transform.basis.x * y_dot - transform.basis.y * x_dot
+		#torque_vector = transform.basis.x * y_dot - transform.basis.y * x_dot
+		input_velocity.x = y_dot
+		input_velocity.y = -x_dot
 	else:
 		# Turn away to put distance between self and target
-		torque_vector = -transform.basis.x * y_dot + transform.basis.y * x_dot
+		#torque_vector = -transform.basis.x * y_dot + transform.basis.y * x_dot
+		input_velocity.x = -y_dot
+		input_velocity.y = x_dot
 
 
 # PUBLIC

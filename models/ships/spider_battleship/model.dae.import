@@ -11,7 +11,7 @@ dest_files=[ "res://.import/model.dae-edeb91e5ea3eabee5ae71d947344293c.scn" ]
 
 [params]
 
-nodes/root_type="RigidBody"
+nodes/root_type="KinematicBody"
 nodes/root_name="Spider Battleship"
 nodes/root_scale=1.0
 nodes/custom_script="res://scripts/PostImportShip.gd"

@@ -11,8 +11,8 @@ dest_files=[ "res://.import/model.dae-6cdb2fc01ae6740e381faca50071849d.scn" ]
 
 [params]
 
-nodes/root_type="RigidBody"
-nodes/root_name="Missile"
+nodes/root_type="Area"
+nodes/root_name="Heat Seeker"
 nodes/root_scale=1.0
 nodes/custom_script="res://scripts/PostImportMissile.gd"
 nodes/storage=0

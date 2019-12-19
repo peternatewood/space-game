@@ -1,4 +1,4 @@
-extends RigidBody
+extends Area
 
 onready var mission_controller = get_node("/root/Mission Controller")
 
@@ -9,7 +9,7 @@ var firing_force: float = 1.0
 var firing_range: float = 10.0
 var life: float = 5.0 # In seconds
 var owner_ship
-var speed: float = 80.0
+var speed: float = 15.0
 var weapon_name: String = "weapon"
 
 
@@ -26,12 +26,25 @@ func _ready():
 		weapon_name = get_meta("weapon_name")
 	if has_meta("firing_range"):
 		firing_range = get_meta("firing_range")
+	if has_meta("speed"):
+		speed = get_meta("speed")
+
+	connect("body_entered", self, "_on_body_entered")
+
+
+func _on_body_entered(body):
+	if body != owner_ship:
+		if body is ShipBase or body is TurretBase or body is Debris:
+			body.deal_damage(damage_hull)
+			destroy()
 
 
 func _process(delta):
 	life -= delta
 	if life <= 0:
 		queue_free()
+
+	translate(delta * speed * Vector3.FORWARD)
 
 
 # PUBLIC
@@ -77,5 +90,9 @@ static func get_damage_strength(damage: float):
 
 	return "Very High"
 
+
+const Debris = preload("Debris.gd")
+const ShipBase = preload("ShipBase.gd")
+const TurretBase = preload("TurretBase.gd")
 
 const IMPACT_PREFAB = preload("res://prefabs/weapon_impact.tscn")

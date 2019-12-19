@@ -11,7 +11,7 @@ dest_files=[ "res://.import/model.dae-ccdd4777a6b3dd36eab1bf6b141cc473.scn" ]
 
 [params]
 
-nodes/root_type="RigidBody"
+nodes/root_type="Area"
 nodes/root_name="Disintigrator"
 nodes/root_scale=1.0
 nodes/custom_script="res://scripts/PostImportEnergyWeapon.gd"

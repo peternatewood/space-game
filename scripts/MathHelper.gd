@@ -113,4 +113,13 @@ Damping: 0.95 | Mass: 1.0 | Max Speed:  20.532631
 
 max_speed = factor * 32.129448 / mass
 factor = max_speed * mass / 32.129448
+
+Mass:  1 | turn speed: 10 | start theta: 49.909172 | rotation_degrees.x: 50.173042 | turn time: 0.750000
+Mass:  1 | turn speed:  1 | start theta:  1.084776 | rotation_degrees.x:  1.481611 | turn time: 7.585120
+Mass:  1 | turn speed:  1 | start theta:  1.481611 | rotation_degrees.x:  1.878318 | turn time: 7.588124
+
+Mass: 10 | turn speed: 10 | start theta:  1.084776 | rotation_degrees.x:  1.481611 | turn time: 7.586450
+Mass: 10 | turn speed: 10 | start theta:  4.642991 | rotation_degrees.x:  5.039694 | turn time: 7.585080
+
+turn speed = turn time / 7.585 * mass
 """

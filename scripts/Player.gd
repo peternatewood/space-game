@@ -7,8 +7,6 @@ var cam_dist: float
 var cam_mode: int
 var cam_offset: Vector3
 var camera
-var input_velocity: Vector3
-
 
 func _ready():
 	if has_warp_ramp_up:
@@ -116,30 +114,30 @@ func _input(event):
 			_cycle_target_subsystems()
 		# Shield Boosting/Redirecting
 		elif event.is_action("boost_shield_front") and event.pressed:
-			ShieldQuadrant.boost_shield_quadrant(shields, FRONT)
+			shields[0].boost_shield_quadrant(shields, FRONT)
 			emit_signal("shield_boost_changed")
 		elif event.is_action("boost_shield_rear") and event.pressed:
-			ShieldQuadrant.boost_shield_quadrant(shields, REAR)
+			shields[0].boost_shield_quadrant(shields, REAR)
 			emit_signal("shield_boost_changed")
 		elif event.is_action("boost_shield_left") and event.pressed:
-			ShieldQuadrant.boost_shield_quadrant(shields, LEFT)
+			shields[0].boost_shield_quadrant(shields, LEFT)
 			emit_signal("shield_boost_changed")
 		elif event.is_action("boost_shield_right") and event.pressed:
-			ShieldQuadrant.boost_shield_quadrant(shields, RIGHT)
+			shields[0].boost_shield_quadrant(shields, RIGHT)
 			emit_signal("shield_boost_changed")
 		elif event.is_action("clear_shield_boost") and event.pressed:
-			ShieldQuadrant.boost_shield_quadrant(shields, -1)
+			shields[0].boost_shield_quadrant(shields, -1)
 			emit_signal("shield_boost_changed")
 		elif event.is_action("redirect_shield_to_front") and event.pressed:
-			ShieldQuadrant.redirect_hitpoints_to_quadrant(shields, FRONT)
+			shields[0].redirect_hitpoints_to_quadrant(shields, FRONT)
 		elif event.is_action("redirect_shield_to_rear") and event.pressed:
-			ShieldQuadrant.redirect_hitpoints_to_quadrant(shields, REAR)
+			shields[0].redirect_hitpoints_to_quadrant(shields, REAR)
 		elif event.is_action("redirect_shield_to_left") and event.pressed:
-			ShieldQuadrant.redirect_hitpoints_to_quadrant(shields, LEFT)
+			shields[0].redirect_hitpoints_to_quadrant(shields, LEFT)
 		elif event.is_action("redirect_shield_to_right") and event.pressed:
-			ShieldQuadrant.redirect_hitpoints_to_quadrant(shields, RIGHT)
+			shields[0].redirect_hitpoints_to_quadrant(shields, RIGHT)
 		elif event.is_action("equalize_shields") and event.pressed:
-			ShieldQuadrant.equalize_shields(shields)
+			shields[0].equalize_shields(shields)
 		# System power distribution
 		elif event.is_action("increment_weapon_power") and event.pressed:
 			_increment_power_level(WEAPON, 1)
@@ -276,8 +274,6 @@ signal shield_boost_changed
 signal target_changed
 signal throttle_changed
 signal began_warp_out
-
-#const ShipBase = preload("ShipBase.gd")
 
 const CAM_ROLL_MOD: float = 0.25
 const CAM_THROTTLE_MOD: float = 1.5

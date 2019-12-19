@@ -12,22 +12,22 @@ var recovery_rate: float # Hitpoints per second
 
 func _ready():
 	hitpoints = max_hitpoints
-	self.connect("body_entered", self, "_on_body_entered")
+	self.connect("area_entered", self, "_on_area_entered")
 
 
-func _damage(amount: int):
+func _deal_damage(amount: float):
 	hitpoints = max(0, hitpoints - amount)
 	flicker_countdown = FLICKER_DELAY
 	mesh.show()
 	emit_signal("hitpoints_changed", hitpoints / max_hitpoints)
 
 
-func _on_body_entered(body):
+func _on_area_entered(area):
 	# Only handle collisions if this shield quadrant is still up
 	if hitpoints > 0:
-		if body is WeaponBase and body.owner_ship != get_parent():
-			_damage(body.damage_shield)
-			body.destroy()
+		if area is WeaponBase and area.owner_ship != get_parent():
+			_deal_damage(area.damage_shield)
+			area.destroy()
 
 
 func _process(delta):

@@ -40,14 +40,13 @@ func fire_missile_weapon(ship, target = null):
 func fire_weapon(ship):
 	# Instance weapon and make it ignore the ship that fired it
 	var weapon_instance = weapon.instance()
-	weapon_instance.add_collision_exception_with(ship)
 	weapon_instance.owner_ship = ship
 
 	get_tree().get_root().add_child(weapon_instance)
 	weapon_instance.transform.origin = hardpoints[hardpoint_index].global_transform.origin
 
 	weapon_instance.look_at(ship.get_targeting_endpoint(), ship.transform.basis.y)
-	weapon_instance.add_speed(ship.get_linear_velocity().length())
+	weapon_instance.add_speed(ship.linear_velocity.length())
 
 	countdown = weapon_instance.fire_delay
 	hardpoint_index = (hardpoint_index + 1) % hardpoint_count

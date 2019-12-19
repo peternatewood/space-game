@@ -1,5 +1,5 @@
 tool
-extends "res://scripts/PostImportActor.gd"
+extends "res://scripts/PostImportCollision.gd"
 
 
 func post_import(scene):
@@ -66,7 +66,6 @@ func post_import(scene):
 	else:
 		print("sound.wav file not found at " + source_folder)
 
-	scene.set_mass(0.2)
 	scene.set_script(Missile)
 
 	return .post_import(scene)

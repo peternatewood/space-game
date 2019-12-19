@@ -7,6 +7,7 @@ export (float) var hitpoints = -1
 onready var max_hitpoints = get_meta("hitpoints")
 onready var mission_controller = get_node_or_null("/root/Mission Controller")
 
+var category: int
 var collision_shape: CollisionShape
 var operative: bool = true
 var owner_ship
@@ -21,12 +22,24 @@ func _ready():
 			collision_shape = child
 			break
 
+	match name:
+		"Communications":
+			category = Category.COMMUNICATIONS
+		"Engines":
+			category = Category.ENGINES
+		"Navigation":
+			category = Category.NAVIGATION
+		"Sensors":
+			category = Category.SENSORS
+		"Weapons":
+			category = Category.WEAPONS
+
 	set_process(false)
 
 
-func _deal_damage(amount: int):
+func _deal_damage(amount: float):
 	hitpoints -= amount
-	emit_signal("damaged", get_hitpoints_percent())
+	emit_signal("damaged", category, get_hitpoints_percent())
 
 	if hitpoints <= 0:
 		_destroy()
@@ -34,24 +47,22 @@ func _deal_damage(amount: int):
 
 # TODO: Allow a destroyed system to be repaired or no?
 func _destroy():
-	emit_signal("destroyed")
+	emit_signal("destroyed", category)
 	operative = false
 
 
-func _on_body_entered(body):
-	if operative and body != owner_ship:
-		if body is WeaponBase:
-			_deal_damage(body.damage_hull)
-			body.destroy()
-		else:
-			_deal_damage(1)
+func _on_area_entered(area):
+	if operative:
+		if area is WeaponBase:
+			_deal_damage(area.damage_hull)
+			area.destroy()
 
 
 func _on_mission_ready():
 	if hitpoints < 0:
 		hitpoints = max_hitpoints
 
-	self.connect("body_entered", self, "_on_body_entered")
+	self.connect("area_entered", self, "_on_area_entered")
 
 	set_process(true)
 

@@ -5,6 +5,9 @@
   "shield_hitpoints": 85.0,
   "mass": 8,
   "max_speed": 74.0,
+  "pitch_speed": 3.5,
+  "yaw_speed": 2.5,
+  "roll_speed": 3.0,
   "missile_capacity": 40.0,
   "subsystem_hitpoints": {
     "Communications": 40.0,
@@ -12,6 +15,5 @@
     "Navigation": 40.0,
     "Sensors": 60.0,
     "Weapons": 85.0
-  },
-  "turn_speed": 55
+  }
 }

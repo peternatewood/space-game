@@ -3,13 +3,15 @@
   "ship_class": "Spider Destroyer",
   "hull_hitpoints": 800.0,
   "mass": 100,
-  "max_speed": 30.0,
+  "max_speed": 20.0,
+  "pitch_speed": 0.25,
+  "yaw_speed": 0.15,
+  "roll_speed": 0.2,
   "subsystem_hitpoints": {
     "Communications": 40.0,
     "Engines": 80.0,
     "Navigation": 40.0,
     "Sensors": 60.0,
     "Weapons": 85.0
-  },
-  "turn_speed": 1.5
+  }
 }

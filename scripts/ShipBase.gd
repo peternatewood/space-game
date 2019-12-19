@@ -1,38 +1,50 @@
-extends "res://scripts/ActorBase.gd"
+extends KinematicBody
 
 enum { NONE, WARP_IN, WARP_OUT }
 enum { WEAPON, SHIELD, ENGINE, TOTAL_POWER_LEVELS }
 enum { FRONT, REAR, LEFT, RIGHT }
 
 export (String) var faction
+export (float) var hull_hitpoints = -1
 export (bool) var is_warped_in = true
 export (String) var wing_name
 
 onready var chase_view = get_node("Chase View")
 onready var cockpit_view = get_node("Cockpit View")
+onready var collision_sound_player = get_node_or_null("Collision Sound Player")
 onready var engine_loop_player = get_node_or_null("Engine Loop")
 onready var exhaust = get_node("Exhaust")
-onready var is_capital_ship: bool = get_meta("is_capital_ship")
-onready var ship_class: String = get_meta("ship_class")
-onready var source_folder = get_meta("source_folder")
+onready var mission_controller = get_tree().get_root().get_node_or_null("Mission Controller")
+onready var settings = get_node("/root/GlobalSettings")
 onready var target_raycast = get_node("Target Raycast")
 onready var warp_boom_player = get_node("Warp Boom Player")
 onready var warp_ramp_up_player = get_node("Warp Ramp Up Player")
 
+var angular_velocity: Vector3
 var beam_weapon_turrets: Array = []
+var bounding_box_extents = get_meta("bounding_box_extents")
+var cam_distance: float = get_meta("cam_distance")
 var current_subsystem
 var current_subsystem_index: int = -1
 var current_target
+var destruction_delay: float = 0.0
 var energy_weapon_hardpoints: Array = []
 var energy_weapon_index: int = 0
 var energy_weapon_turrets: Array = []
 var engines_operative: bool = true
+var has_collision_sound: bool = false
 var has_engine_loop: bool = false
 var has_target: bool = false
 var has_warp_boom: bool = false
 var has_warp_ramp_up: bool = false
+var input_velocity: Vector3
+var is_alive: bool = true
+var is_capital_ship: bool = get_meta("is_capital_ship")
 var last_speed: float = 0.0
 var last_speed_sq: float = 0.0
+var linear_velocity: Vector3
+var mass = get_meta("mass")
+var max_hull_hitpoints: float = get_meta("hull_hitpoints")
 var max_speed: float = get_meta("max_speed")
 var missile_weapon_hardpoints
 var missile_weapon_index: int = 0
@@ -44,12 +56,14 @@ var power_distribution: Array = [
 ]
 var propulsion_force: float = get_meta("propulsion_force")
 var shields: Array = []
+var ship_class: String = get_meta("ship_class")
+var source_folder = get_meta("source_folder")
 var subsystems: Dictionary = {}
 var target_index: int = 0
 var targeting_ships: Array = []
 var throttle: float
 var torque_vector: Vector3
-var turn_speed: float = get_meta("turn_speed")
+var turn_speed: Vector3 = get_meta("turn_speed")
 var warp_destination: Vector3
 var warp_origin: Vector3
 var warp_speed: float
@@ -68,12 +82,18 @@ func _ready():
 
 	for turret in beam_weapon_turrets:
 		turret.hull_hitpoints = turret.max_hull_hitpoints
+		turret.add_collision_exception_with(self)
+		self.add_collision_exception_with(turret)
 
 	for turret in energy_weapon_turrets:
 		turret.hull_hitpoints = turret.max_hull_hitpoints
+		turret.add_collision_exception_with(self)
+		self.add_collision_exception_with(turret)
 
 	for turret in missile_weapon_turrets:
 		turret.hull_hitpoints = turret.max_hull_hitpoints
+		turret.add_collision_exception_with(self)
+		self.add_collision_exception_with(turret)
 
 	if not is_capital_ship:
 		energy_weapon_hardpoints = get_node("Energy Weapon Groups").get_children()
@@ -101,8 +121,8 @@ func _ready():
 			print(name, " missing communications subsystem node!")
 		else:
 			communications_node.owner_ship = self
-			communications_node.connect("damaged", self, "_on_communications_damaged")
-			communications_node.connect("destroyed", self, "_on_communications_destroyed")
+			communications_node.connect("damaged", self, "_on_subsystem_damaged")
+			communications_node.connect("destroyed", self, "_on_subsystem_destroyed")
 			subsystems["Communications"] = communications_node
 
 		var engines_node = subsystems_container.get_node_or_null("Engines")
@@ -110,8 +130,8 @@ func _ready():
 			print(name, " missing engines subsystem node!")
 		else:
 			engines_node.owner_ship = self
-			engines_node.connect("damaged", self, "_on_engines_damaged")
-			engines_node.connect("destroyed", self, "_on_engines_destroyed")
+			engines_node.connect("damaged", self, "_on_subsystem_damaged")
+			engines_node.connect("destroyed", self, "_on_subsystem_destroyed")
 			subsystems["Engines"] = engines_node
 
 		var navigation_node = subsystems_container.get_node_or_null("Navigation")
@@ -119,8 +139,8 @@ func _ready():
 			print(name, " missing navigation subsystem node!")
 		else:
 			navigation_node.owner_ship = self
-			navigation_node.connect("damaged", self, "_on_navigation_damaged")
-			navigation_node.connect("destroyed", self, "_on_navigation_destroyed")
+			navigation_node.connect("damaged", self, "_on_subsystem_damaged")
+			navigation_node.connect("destroyed", self, "_on_subsystem_destroyed")
 			subsystems["Navigation"] = navigation_node
 
 		var sensors_node = subsystems_container.get_node_or_null("Sensors")
@@ -128,8 +148,8 @@ func _ready():
 			print(name, " missing sensors subsystem node!")
 		else:
 			sensors_node.owner_ship = self
-			sensors_node.connect("damaged", self, "_on_sensors_damaged")
-			sensors_node.connect("destroyed", self, "_on_sensors_destroyed")
+			sensors_node.connect("damaged", self, "_on_subsystem_damaged")
+			sensors_node.connect("destroyed", self, "_on_subsystem_destroyed")
 			subsystems["Sensors"] = sensors_node
 
 		var weapons_node = subsystems_container.get_node_or_null("Weapons")
@@ -137,8 +157,8 @@ func _ready():
 			print(name, " missing weapons subsystem node!")
 		else:
 			weapons_node.owner_ship = self
-			weapons_node.connect("damaged", self, "_on_weapons_damaged")
-			weapons_node.connect("destroyed", self, "_on_weapons_destroyed")
+			weapons_node.connect("damaged", self, "_on_subsystem_damaged")
+			weapons_node.connect("destroyed", self, "_on_subsystem_destroyed")
 			subsystems["Weapons"] = weapons_node
 
 	destruction_delay = 2.0
@@ -146,6 +166,13 @@ func _ready():
 	has_engine_loop = engine_loop_player != null
 	has_warp_boom = warp_boom_player != null
 	has_warp_ramp_up = warp_ramp_up_player != null
+
+	if mission_controller != null:
+		mission_controller.connect("mission_ready", self, "_on_mission_ready")
+
+		has_collision_sound = collision_sound_player != null
+
+	set_process(false)
 
 
 func _cycle_energy_weapon(direction: int):
@@ -181,6 +208,12 @@ func _cycle_target_subsystems():
 			current_subsystem = current_target.subsystems[current_target.subsystems.keys()[current_subsystem_index]]
 
 			emit_signal("subsystem_targeted")
+
+
+func _disable_shapes(disable: bool):
+	for child in get_children():
+		if child is CollisionShape:
+			child.set_disabled(disable)
 
 
 func _deselect_current_target():
@@ -229,7 +262,7 @@ func _destroy():
 	explosion.transform.origin = transform.origin
 	mission_controller.add_child(explosion)
 
-	._destroy()
+	queue_free()
 
 
 func _fire_energy_weapon():
@@ -298,22 +331,6 @@ func _increment_power_level(system: int, direction: int):
 				quadrant.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
 
 
-func _on_communications_damaged(hitpoint_percent: float):
-	emit_signal("subsystem_damaged", Subsystem.Category.COMMUNICATIONS, hitpoint_percent)
-
-
-func _on_communications_destroyed():
-	pass
-
-
-func _on_engines_damaged(hitpoint_percent: float):
-	emit_signal("subsystem_damaged", Subsystem.Category.ENGINES, hitpoint_percent)
-
-
-func _on_engines_destroyed():
-	pass
-
-
 func _on_mission_ready():
 	if has_engine_loop:
 		connect("speed_changed", self, "_on_speed_changed")
@@ -329,26 +346,13 @@ func _on_mission_ready():
 	for turret in missile_weapon_turrets:
 		turret._on_mission_ready()
 
-	._on_mission_ready()
+	if hull_hitpoints < 0:
+		hull_hitpoints = max_hull_hitpoints
+
+	set_process(true)
 
 	if not is_warped_in:
 		hide_and_disable()
-
-
-func _on_navigation_damaged(hitpoint_percent: float):
-	emit_signal("subsystem_damaged", Subsystem.Category.NAVIGATION, hitpoint_percent)
-
-
-func _on_navigation_destroyed():
-	pass
-
-
-func _on_sensors_damaged(hitpoint_percent: float):
-	emit_signal("subsystem_damaged", Subsystem.Category.SENSORS, hitpoint_percent)
-
-
-func _on_sensors_destroyed():
-	pass
 
 
 func _on_speed_changed(speed: float):
@@ -356,6 +360,14 @@ func _on_speed_changed(speed: float):
 		var speed_percent = 100 * speed / get_max_speed()
 
 		engine_loop_player.set_unit_db(MathHelper.percent_to_db(speed_percent))
+
+
+func _on_subsystem_damaged(category: int, hitpoints_percent: float):
+	emit_signal("subsystem_damaged", category, hitpoints_percent)
+
+
+func _on_subsystem_destroyed(category: int):
+	print("Subsystem destroyed: ", category)
 
 
 func _on_target_destroyed():
@@ -374,18 +386,17 @@ func _on_targeting_ship_destroyed(destroyed_ship):
 		index += 1
 
 
-func _on_weapons_damaged(hitpoint_percent: float):
-	emit_signal("subsystem_damaged", Subsystem.Category.WEAPONS, hitpoint_percent)
-
-
-func _on_weapons_destroyed():
-	pass
-
-
 func _physics_process(delta):
 	if warping == NONE:
-		add_torque(turn_speed * torque_vector)
-		apply_central_impulse(throttle * propulsion_force * _get_engine_factor() * -transform.basis.z)
+		var collision = move_and_collide(delta * linear_velocity)
+		rotate(transform.basis.x, delta * angular_velocity.x)
+		rotate(transform.basis.y, delta * angular_velocity.y)
+		rotate(transform.basis.z, delta * angular_velocity.z)
+
+		if collision != null:
+			collision.collider.deal_damage(1)
+			deal_damage(1)
+			linear_velocity = collision.normal
 
 
 func _process(delta):
@@ -395,6 +406,11 @@ func _process(delta):
 				# Ranges from half recovery rate to full recovery rate (0.5 - 1.0)
 				var battery_recovery_rate: float = WEAPON_BATTERY_RECOVERY_RATE * (0.5 + 0.5 * power_distribution[WEAPON] / MAX_SYSTEM_POWER)
 				weapon_battery = min(MAX_WEAPON_BATTERY, weapon_battery + delta * battery_recovery_rate)
+
+			linear_velocity = linear_velocity.linear_interpolate(-transform.basis.z * throttle * get_max_speed(), delta)
+			angular_velocity.x = lerp(angular_velocity.x, turn_speed.x * input_velocity.x, delta)
+			angular_velocity.y = lerp(angular_velocity.y, turn_speed.y * input_velocity.y, delta)
+			angular_velocity.z = lerp(angular_velocity.z, turn_speed.z * input_velocity.z, delta)
 
 			# Update thruster exhaust scale
 			if exhaust.scale.z != throttle:
@@ -471,7 +487,17 @@ func _start_destruction():
 	var smoke = DESTRUCTION_SMOKE.instance()
 	add_child(smoke)
 
-	._start_destruction()
+	is_alive = false
+	set_process(false)
+
+	var destruction_timer = Timer.new()
+	destruction_timer.set_one_shot(true)
+	destruction_timer.set_autostart(true)
+	destruction_timer.set_wait_time(destruction_delay)
+	destruction_timer.connect("timeout", self, "_destroy")
+	mission_controller.add_child(destruction_timer)
+
+	emit_signal("destroyed")
 
 
 # Loops through the given array of possible targets; if one is found, set it as the current target and return true, otherwise do nothing and return false
@@ -499,8 +525,29 @@ func _target_next_of_alignment(alignment: int):
 # PUBLIC
 
 
+func deal_damage(amount: float):
+	if hull_hitpoints > 0:
+		hull_hitpoints -= amount
+		emit_signal("damaged")
+
+		if hull_hitpoints <= 0:
+			_start_destruction()
+
+
+func get_bounding_box():
+	var vertices: Array = []
+	for vertex in bounding_box_extents:
+		vertices.append(global_transform.xform(vertex))
+
+	return vertices
+
+
 func get_energy_weapon_range():
 	return energy_weapon_hardpoints[energy_weapon_index].weapon_data("firing_range", 10)
+
+
+func get_hull_percent():
+	return 100 * float(hull_hitpoints) / float(max_hull_hitpoints)
 
 
 func get_max_speed():
@@ -557,7 +604,7 @@ func hide_and_disable():
 
 
 func is_a_target_in_range():
-	return target_raycast.get_collider() is ActorBase
+	return target_raycast.get_collider() is PhysicsBody
 
 
 func set_weapon_hardpoints(energy_weapons: Array, missile_weapons: Array):
@@ -638,6 +685,8 @@ static func get_weapon_capacity_level(capacity: float):
 	return "Very High"
 
 
+signal damaged
+signal destroyed
 signal energy_weapon_changed
 signal missile_weapon_changed
 signal speed_changed
@@ -649,9 +698,7 @@ signal warped_out
 signal warping_in
 signal warping_ramped_up
 
-const ActorBase = preload("ActorBase.gd")
-const ShieldQuadrant = preload("ShieldQuadrant.gd")
-const Subsystem = preload("Subsystem.gd")
+const MathHelper = preload("MathHelper.gd")
 
 const ACCELERATION: float = 0.1
 const DESTRUCTION_SMOKE = preload("res://models/Destruction_Smoke.tscn")
