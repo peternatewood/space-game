@@ -275,6 +275,11 @@ func fill_ship_info(ship, loadout: Dictionary = {}):
 	rotation_spinboxes.y.set_value(ship.rotation_degrees.y)
 	rotation_spinboxes.z.set_value(ship.rotation_degrees.z)
 
+	for ship_option_index in range(ship_class_options.get_item_count()):
+		if ship_class_options.get_item_text(ship_option_index) == ship.ship_class:
+			ship_class_options.select(ship_option_index)
+			break
+
 	faction_options.select(0)
 	for index in range(faction_options.get_item_count()):
 		if faction_options.get_item_text(index) == ship.faction:
@@ -306,11 +311,6 @@ func fill_ship_info(ship, loadout: Dictionary = {}):
 		for index in range(wing_options.get_item_count()):
 			if wing_options.get_item_text(index) == ship.wing_name:
 				wing_options.select(index)
-				break
-
-		for ship_option_index in range(ship_class_options.get_item_count()):
-			if ship_class_options.get_item_text(ship_option_index) == ship.ship_class:
-				ship_class_options.select(ship_option_index)
 				break
 
 			energy_weapon_slot_count = ship.energy_weapon_hardpoints.size()
