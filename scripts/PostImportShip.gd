@@ -88,6 +88,11 @@ func post_import(scene):
 
 				subsystem_area.add_child(collision_shape)
 				collision_shape.set_owner(scene)
+				var explosion_instance = SUBSYSTEM_EXPLOSION.instance()
+				subsystem_area.add_child(explosion_instance)
+				explosion_instance.set_owner(scene)
+				explosion_instance.set_name("Explosion")
+
 				subsystem_area.set_script(Subsystem)
 
 	var exhaust_mesh = scene.get_node("Exhaust")
@@ -453,5 +458,6 @@ const BLUE_SHIELD_MATERIAL = preload("res://materials/blue_shield.tres")
 const COLLISION_SOUND = preload("res://sounds/collision.wav")
 const ENGINE_LOOP = preload("res://sounds/engine_loop.wav")
 const EXHAUST_LIGHT_MATERIAL = preload("res://materials/exhaust_light.tres")
+const SUBSYSTEM_EXPLOSION = preload("res://prefabs/subsystem_explosion.tscn")
 const WARP_BOOM = preload("res://sounds/warp_boom.wav")
 const WARP_RAMP_UP = preload("res://sounds/warp_ramp_up.wav")

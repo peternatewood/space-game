@@ -4,6 +4,7 @@ enum Category { COMMUNICATIONS, ENGINES, NAVIGATION, SENSORS, WEAPONS }
 
 export (float) var hitpoints = -1
 
+onready var explosion = get_node("Explosion")
 onready var max_hitpoints = get_meta("hitpoints")
 onready var mission_controller = get_node_or_null("/root/Mission Controller")
 
@@ -49,6 +50,7 @@ func _deal_damage(amount: float):
 func _destroy():
 	emit_signal("destroyed", category)
 	operative = false
+	explosion.set_emitting(true)
 
 
 func _on_area_entered(area):
