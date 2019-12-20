@@ -368,9 +368,12 @@ func _on_subsystem_damaged(category: int, hitpoints_percent: float):
 func _on_subsystem_destroyed(category: int):
 	match category:
 		1:
-			print(name, " engines destroyed")
 			self.throttle = 0
 			input_velocity = Vector3.ZERO
+		3:
+			has_target = false
+			emit_signal("target_changed", current_target)
+			current_target = null
 
 	emit_signal("subsystem_destroyed", category)
 
@@ -473,7 +476,7 @@ func _set_current_target(node):
 		current_target.disconnect("warped_out", self, "_on_target_destroyed")
 		current_target.handle_target_deselected(self)
 
-	if node.is_alive:
+	if subsystems["Sensors"].operative and node.is_alive:
 		has_target = true
 		current_target = node
 		current_target.connect("destroyed", self, "_on_target_destroyed")

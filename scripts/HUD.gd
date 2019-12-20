@@ -46,6 +46,8 @@ var camera
 var energy_hardpoint_count: int
 var missile_hardpoint_count: int
 var player
+var radar_background: Control
+var radar_enabled: bool = true
 var radar_icons_container: Control
 var target_class
 var target_distance
@@ -61,7 +63,9 @@ var target_view_subsystem
 
 
 func _ready():
+	radar_background = radar.get_node("Radar Background")
 	radar_icons_container = radar.get_node("Radar Icons Container")
+
 	target_class = target_view_container.get_node("Target View Rows/Target Class")
 	target_distance = target_view_container.get_node("Target View Rows/Target Distance Container/Target Distance")
 	target_hull = target_view_container.get_node("Target View Rows/Target View Panel Container/Target Hull Container/Target Hull")
@@ -147,6 +151,7 @@ func _on_mission_ready():
 	player.connect("energy_weapon_changed", self, "_on_player_energy_weapon_changed")
 	player.connect("missile_weapon_changed", self, "_on_player_missile_weapon_changed")
 	player.connect("subsystem_damaged", self, "_on_subsystem_damaged")
+	player.connect("subsystem_destroyed", self, "_on_subsystem_destroyed")
 	player.connect("subsystem_deselected", self, "_on_subsystem_deselected")
 	player.connect("subsystem_targeted", self, "_on_subsystem_targeted")
 
@@ -419,6 +424,12 @@ func _on_subsystem_deselected():
 	target_view_subsystem_icon.hide()
 
 
+func _on_subsystem_destroyed(subsystem_category: int):
+	match subsystem_category:
+		Subsystem.Category.SENSORS:
+			_toggle_radar(false)
+
+
 func _on_subsystem_targeted():
 	var target_view_subsystem_name: String = target_view_model.subsystems.keys()[player.current_subsystem_index]
 	target_view_subsystem = target_view_model.subsystems[target_view_subsystem_name]
@@ -494,34 +505,36 @@ func _on_units_changed(units: int):
 
 
 func _process(delta):
-	# Update radar icons
 	var viewport_rect: Rect2 = viewport.get_visible_rect()
-	var radar_position
-	for icon in radar_icons_container.get_children():
-		if icon.has_target and icon.target_warped_in:
-			var target_dist_sq = (icon.target.transform.origin - player.transform.origin).length_squared()
-			if icon.target == player.current_target or target_dist_sq < RADAR_RANGE_SQ:
-				if not icon.visible:
-					icon.show()
 
-				var to_target = (icon.target.transform.origin - player.transform.origin).normalized()
-				var unprojected = Vector2(to_target.dot(player.transform.basis.x), -to_target.dot(player.transform.basis.y))
+	if radar_enabled:
+		# Update radar icons
+		var radar_position
+		for icon in radar_icons_container.get_children():
+			if icon.has_target and icon.target_warped_in:
+				var target_dist_sq = (icon.target.transform.origin - player.transform.origin).length_squared()
+				if icon.target == player.current_target or target_dist_sq < RADAR_RANGE_SQ:
+					if not icon.visible:
+						icon.show()
 
-				# Get the radius at this angle so we can project onto the ellipse properly
-				var theta = unprojected.angle_to(Vector2.RIGHT)
-				var radius = radar.rect_size.x / 2 * radar.rect_size.y / 2 / sqrt(pow(radar.rect_size.x / 2, 2) * pow(sin(theta), 2) + pow(radar.rect_size.y / 2, 2) * pow(cos(theta), 2))
+					var to_target = (icon.target.transform.origin - player.transform.origin).normalized()
+					var unprojected = Vector2(to_target.dot(player.transform.basis.x), -to_target.dot(player.transform.basis.y))
 
-				var center_distance = unprojected.length()
-				unprojected = unprojected.normalized() * radius
+					# Get the radius at this angle so we can project onto the ellipse properly
+					var theta = unprojected.angle_to(Vector2.RIGHT)
+					var radius = radar.rect_size.x / 2 * radar.rect_size.y / 2 / sqrt(pow(radar.rect_size.x / 2, 2) * pow(sin(theta), 2) + pow(radar.rect_size.y / 2, 2) * pow(cos(theta), 2))
 
-				if camera.is_position_behind(icon.target.transform.origin):
-					radar_position = unprojected - (unprojected * center_distance / 2)
-				else:
-					radar_position = unprojected * center_distance / 2
+					var center_distance = unprojected.length()
+					unprojected = unprojected.normalized() * radius
 
-				icon.set_position(radar.rect_size / 2 + radar_position)
-			elif icon.visible:
-				icon.hide()
+					if camera.is_position_behind(icon.target.transform.origin):
+						radar_position = unprojected - (unprojected * center_distance / 2)
+					else:
+						radar_position = unprojected * center_distance / 2
+
+					icon.set_position(radar.rect_size / 2 + radar_position)
+				elif icon.visible:
+					icon.hide()
 
 	# Update target view
 	if player.has_target:
@@ -636,6 +649,20 @@ func _process(delta):
 		target_reticule.set_position(camera.unproject_position(reticule_pos_3))
 		var reticule_half_pos_3: Vector3 = player.transform.origin + (reticule_pos_3 - player.transform.origin) / 2
 		target_reticule_outer.set_position(camera.unproject_position(reticule_half_pos_3))
+
+
+func _toggle_radar(toggle_on: bool):
+	var radar_color: Color = radar_background.modulate
+	radar_enabled = toggle_on
+
+	if toggle_on:
+		radar_icons_container.show()
+		var normal_color: Color = Color(radar_color.r, radar_color.g, radar_color.b, 1.0)
+		radar_background.set_modulate(normal_color)
+	else:
+		radar_icons_container.hide()
+		var faded_color: Color = Color(radar_color.r, radar_color.g, radar_color.b, 0.5)
+		radar_background.set_modulate(faded_color)
 
 
 func _update_edge_icon():

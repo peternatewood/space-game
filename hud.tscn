@@ -584,7 +584,6 @@ position = Vector2( 0, 32 )
 points = PoolVector2Array( 0, 0, 32, 0 )
 width = 1.0
 default_color = Color( 0.454902, 0.454902, 0.454902, 1 )
-texture_mode = 1065353216
 
 [node name="Speed Indicator" type="Label" parent="Throttle Bar Container"]
 anchor_left = 1.0
@@ -811,7 +810,6 @@ text = "100"
 align = 1
 
 [node name="Radar" type="Control" parent="."]
-editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
