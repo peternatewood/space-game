@@ -97,7 +97,8 @@ func post_import(scene):
 	# Set exhaust billboard material
 	var exhaust_points = scene.get_node("Exhaust Points")
 	if exhaust_points != null:
-		exhaust_points.set_surface_material(0, EXHAUST_LIGHT_MATERIAL)
+		for quad in exhaust_points.get_children():
+			quad.set_surface_material(0, EXHAUST_LIGHT_MATERIAL)
 
 	# Add engine effect sound at exhaust points center
 	var engine_sound = AudioStreamPlayer3D.new()
