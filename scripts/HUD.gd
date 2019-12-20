@@ -41,13 +41,13 @@ onready var viewport = get_viewport()
 onready var weapon_battery_bar = get_node("Weapon Battery Bar")
 onready var weapons_bar = get_node("Damage Bars Panel/Damage Bars Grid/Weapons Bar")
 onready var weapons_bar_label = get_node("Damage Bars Panel/Damage Bars Grid/Weapons Label")
+onready var weapons_container = get_node("Weapons Container")
 
 var camera
 var energy_hardpoint_count: int
 var missile_hardpoint_count: int
 var player
 var radar_background: Control
-var radar_enabled: bool = true
 var radar_icons_container: Control
 var target_class
 var target_distance
@@ -428,6 +428,8 @@ func _on_subsystem_destroyed(subsystem_category: int):
 	match subsystem_category:
 		Subsystem.Category.SENSORS:
 			_toggle_radar(false)
+		Subsystem.Category.WEAPONS:
+			_toggle_weapons(false)
 
 
 func _on_subsystem_targeted():
@@ -507,7 +509,7 @@ func _on_units_changed(units: int):
 func _process(delta):
 	var viewport_rect: Rect2 = viewport.get_visible_rect()
 
-	if radar_enabled:
+	if player.subsystems["Sensors"].operative:
 		# Update radar icons
 		var radar_position
 		for icon in radar_icons_container.get_children():
@@ -653,7 +655,6 @@ func _process(delta):
 
 func _toggle_radar(toggle_on: bool):
 	var radar_color: Color = radar_background.modulate
-	radar_enabled = toggle_on
 
 	if toggle_on:
 		radar_icons_container.show()
@@ -663,6 +664,21 @@ func _toggle_radar(toggle_on: bool):
 		radar_icons_container.hide()
 		var faded_color: Color = Color(radar_color.r, radar_color.g, radar_color.b, 0.5)
 		radar_background.set_modulate(faded_color)
+
+
+func _toggle_weapons(toggle_on: bool):
+	var weapons_color: Color = weapons_container.modulate
+	var new_color: Color
+
+	if toggle_on:
+		new_color = Color(weapons_color.r, weapons_color.g, weapons_color.b, 1.0)
+	else:
+		new_color = Color(weapons_color.r, weapons_color.g, weapons_color.b, 0.5)
+
+	weapons_container.set_modulate(new_color)
+
+	energy_weapon_rows[player.energy_weapon_index].toggle_arrow(toggle_on)
+	missile_weapon_rows[player.missile_weapon_index].toggle_arrow(toggle_on)
 
 
 func _update_edge_icon():

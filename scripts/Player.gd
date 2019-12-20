@@ -166,10 +166,8 @@ func _input(event):
 		# Weapons stuff
 		elif event.is_action("cycle_energy_weapon") and event.pressed:
 			_cycle_energy_weapon(1)
-			emit_signal("energy_weapon_changed")
 		elif event.is_action("cycle_missile_weapon") and event.pressed:
 			_cycle_missile_weapon(1)
-			emit_signal("missile_weapon_changed")
 
 
 func _on_fov_changed(value: int):

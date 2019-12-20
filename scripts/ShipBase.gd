@@ -175,27 +175,29 @@ func _ready():
 
 
 func _cycle_energy_weapon(direction: int):
-	energy_weapon_index = (energy_weapon_index + direction) % energy_weapon_hardpoints.size()
-
-	# Skip any weapon slot that has no weapon loaded
-	var index: int = 0
-	while not energy_weapon_hardpoints[energy_weapon_index].is_weapon_loaded and index < energy_weapon_hardpoints.size():
+	if subsystems["Weapons"].operative:
 		energy_weapon_index = (energy_weapon_index + direction) % energy_weapon_hardpoints.size()
-		index += 1
 
-	emit_signal("energy_weapon_changed")
+		# Skip any weapon slot that has no weapon loaded
+		var index: int = 0
+		while not energy_weapon_hardpoints[energy_weapon_index].is_weapon_loaded and index < energy_weapon_hardpoints.size():
+			energy_weapon_index = (energy_weapon_index + direction) % energy_weapon_hardpoints.size()
+			index += 1
+
+		emit_signal("energy_weapon_changed")
 
 
 func _cycle_missile_weapon(direction: int):
-	missile_weapon_index = (missile_weapon_index + direction) % missile_weapon_hardpoints.size()
-
-	# Skip any weapon slot that has no weapon loaded
-	var index: int = 0
-	while not missile_weapon_hardpoints[missile_weapon_index].is_weapon_loaded and index < missile_weapon_hardpoints.size():
+	if subsystems["Weapons"].operative:
 		missile_weapon_index = (missile_weapon_index + direction) % missile_weapon_hardpoints.size()
-		index += 1
 
-	emit_signal("missile_weapon_changed")
+		# Skip any weapon slot that has no weapon loaded
+		var index: int = 0
+		while not missile_weapon_hardpoints[missile_weapon_index].is_weapon_loaded and index < missile_weapon_hardpoints.size():
+			missile_weapon_index = (missile_weapon_index + direction) % missile_weapon_hardpoints.size()
+			index += 1
+
+		emit_signal("missile_weapon_changed")
 
 
 func _cycle_target_subsystems():
@@ -265,18 +267,19 @@ func _destroy():
 
 
 func _fire_energy_weapon():
-	var weapon_cost = energy_weapon_hardpoints[energy_weapon_index].weapon_data.get("cost", 1.0)
-	if energy_weapon_hardpoints[energy_weapon_index].countdown == 0 and weapon_battery >= weapon_cost:
-		energy_weapon_hardpoints[energy_weapon_index].fire_weapon(self)
-		weapon_battery -= weapon_cost
+	if subsystems["Weapons"].operative:
+		var weapon_cost = energy_weapon_hardpoints[energy_weapon_index].weapon_data.get("cost", 1.0)
+		if energy_weapon_hardpoints[energy_weapon_index].countdown == 0 and weapon_battery >= weapon_cost:
+			energy_weapon_hardpoints[energy_weapon_index].fire_weapon(self)
+			weapon_battery -= weapon_cost
 
-		return true
+			return true
 
 	return false
 
 
 func _fire_missile_weapon(target = null):
-	if missile_weapon_hardpoints[missile_weapon_index].countdown == 0 and missile_weapon_hardpoints[missile_weapon_index].ammo_count > 0:
+	if subsystems["Weapons"].operative and missile_weapon_hardpoints[missile_weapon_index].countdown == 0 and missile_weapon_hardpoints[missile_weapon_index].ammo_count > 0:
 		missile_weapon_hardpoints[missile_weapon_index].fire_missile_weapon(self, target)
 		# TODO: subtract from missile weapon ammo
 
@@ -410,7 +413,7 @@ func _physics_process(delta):
 func _process(delta):
 	match warping:
 		NONE:
-			if weapon_battery < MAX_WEAPON_BATTERY:
+			if subsystems["Weapons"].operative and weapon_battery < MAX_WEAPON_BATTERY:
 				# Ranges from half recovery rate to full recovery rate (0.5 - 1.0)
 				var battery_recovery_rate: float = WEAPON_BATTERY_RECOVERY_RATE * (0.5 + 0.5 * power_distribution[WEAPON] / MAX_SYSTEM_POWER)
 				weapon_battery = min(MAX_WEAPON_BATTERY, weapon_battery + delta * battery_recovery_rate)
