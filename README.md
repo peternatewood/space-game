@@ -30,7 +30,7 @@ Here I'll be keeping track of the all the features I want to implement, and chec
 - [ ] Carrier Ships
 - [ ] User Interface Sounds
 - [x] Ship/Weapon Sound Effects
-- [ ] Ship Subsystems
+- [x] Ship Subsystems
 - [x] Lead Indicator
 - [ ] Gallery/Library
 - [ ] Music
