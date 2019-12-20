@@ -108,13 +108,14 @@ func set_mission(path: String):
 
 
 func unlock_mission(path: String):
-	var profile_file: ConfigFile = ConfigFile.new()
-	profile_file.load(USER_PROFILE_PATH)
+	if not current_profile.unlocked_missions.has(path):
+		var profile_file: ConfigFile = ConfigFile.new()
+		profile_file.load(USER_PROFILE_PATH)
 
-	current_profile.unlocked_missions.append(path)
-	profile_file.set_value(profile_section_map[current_profile.name], "unlocked_missions", current_profile.unlocked_missions)
+		current_profile.unlocked_missions.append(path)
+		profile_file.set_value(profile_section_map[current_profile.name], "unlocked_missions", current_profile.unlocked_missions)
 
-	profile_file.save(USER_PROFILE_PATH)
+		profile_file.save(USER_PROFILE_PATH)
 
 
 const USER_PROFILE_PATH: String = "user://profiles.cfg"
