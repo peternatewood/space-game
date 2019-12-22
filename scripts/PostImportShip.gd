@@ -422,33 +422,15 @@ func post_import(scene):
 	scene.set_meta("source_file", get_source_file())
 	scene.set_meta("source_folder", source_folder)
 
-	var max_mesh_size: Vector3
+	var fuselage_extents: PoolVector3Array
+	var fuselage_extents_mesh = scene.get_node_or_null("Fuselage Extents")
+	if fuselage_extents_mesh == null:
+		print("Missing Fuselage Extents mesh!")
+	else:
+		fuselage_extents = fuselage_extents_mesh.mesh.get_faces()
+		fuselage_extents_mesh.free()
 
-	for child in scene.get_children():
-		if child is MeshInstance:
-			for vertex in child.mesh.get_faces():
-				var adjusted_vertex = vertex - child.transform.origin
-				if adjusted_vertex.x > max_mesh_size.x:
-					max_mesh_size.x = vertex.x
-				if adjusted_vertex.y > max_mesh_size.y:
-					max_mesh_size.y = vertex.y
-				if adjusted_vertex.z > max_mesh_size.z:
-					max_mesh_size.z = vertex.z
-
-	var cube_mesh = CubeMesh.new()
-	cube_mesh.set_size(2 * max_mesh_size)
-	var bounding_box_extents = [
-		max_mesh_size,
-		Vector3(-max_mesh_size.x, max_mesh_size.y, max_mesh_size.z),
-		Vector3(-max_mesh_size.x,-max_mesh_size.y, max_mesh_size.z),
-		Vector3(-max_mesh_size.x, max_mesh_size.y,-max_mesh_size.z),
-		Vector3(-max_mesh_size.x,-max_mesh_size.y,-max_mesh_size.z),
-		Vector3( max_mesh_size.x,-max_mesh_size.y, max_mesh_size.z),
-		Vector3( max_mesh_size.x, max_mesh_size.y,-max_mesh_size.z),
-		Vector3( max_mesh_size.x,-max_mesh_size.y,-max_mesh_size.z)
-	]
-	scene.set_meta("bounding_box_extents", bounding_box_extents)
-	scene.set_meta("cam_distance", max_mesh_size.length())
+	scene.set_meta("fuselage_extents", fuselage_extents)
 
 	return .post_import(scene)
 

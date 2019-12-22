@@ -22,8 +22,7 @@ onready var warp_ramp_up_player = get_node("Warp Ramp Up Player")
 
 var angular_velocity: Vector3
 var beam_weapon_turrets: Array = []
-var bounding_box_extents = get_meta("bounding_box_extents")
-var cam_distance: float = get_meta("cam_distance")
+var cam_distance: float
 var current_subsystem
 var current_subsystem_index: int = -1
 var current_target
@@ -32,6 +31,7 @@ var energy_weapon_hardpoints: Array = []
 var energy_weapon_index: int = 0
 var energy_weapon_turrets: Array = []
 var engines_operative: bool = true
+var fuselage_extents = get_meta("fuselage_extents")
 var has_collision_sound: bool = false
 var has_engine_loop: bool = false
 var has_target: bool = false
@@ -109,6 +109,8 @@ func _ready():
 		for quadrant in shields:
 			quadrant.set_max_hitpoints(shield_hitpoints)
 			quadrant.set_recovery_rate(power_distribution[SHIELD] / MAX_SYSTEM_POWER)
+
+	cam_distance = chase_view.transform.origin.length() / 2
 
 	# Get subsystem nodes
 	var subsystems_container = get_node_or_null("Subsystems")
@@ -551,8 +553,9 @@ func get_armed_energy_weapon_speed():
 
 func get_bounding_box():
 	var vertices: Array = []
-	for vertex in bounding_box_extents:
-		vertices.append(global_transform.xform(vertex))
+
+	for vertex in fuselage_extents:
+		vertices.append(transform.xform(vertex))
 
 	return vertices
 

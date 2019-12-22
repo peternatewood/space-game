@@ -23,7 +23,7 @@ func update_icon(pos: Vector2, bounding_box: Rect2, distance: float):
 
 	bottom_left.set_position(Vector2(true_box.position.x, true_box.end.y))
 	bottom_right.set_position(true_box.end)
-	distance_label.set_position(Vector2(true_box.position.x - (distance_label.rect_size.x + 4), true_box.position.y - distance_label.rect_size.y / 2))
+	distance_label.set_position(DISTANCE_LABEL_OFFSET + Vector2(true_box.position.x - (distance_label.rect_size.x + 4), true_box.position.y - distance_label.rect_size.y / 2))
 	top_left.set_position(true_box.position)
 	top_right.set_position(Vector2(true_box.end.x, true_box.position.y))
 
@@ -43,4 +43,5 @@ func update_icon(pos: Vector2, bounding_box: Rect2, distance: float):
 	set_position(pos)
 
 
+const DISTANCE_LABEL_OFFSET: Vector2 = -2 * Vector2.ONE
 const LINE_ENDING_SCALE: float = 0.25
