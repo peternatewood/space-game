@@ -3,6 +3,8 @@ extends "res://scripts/PostImportCollision.gd"
 
 
 func post_import(scene):
+	scene.set_script(Missile)
+
 	# This is used for loading the data file and other resources
 	var source_folder = get_source_folder()
 	var data_file = File.new()
@@ -44,7 +46,7 @@ func post_import(scene):
 		print("No such file: " + data_file_name)
 
 	for key in missile_data.keys():
-		scene.set_meta(key, missile_data[key])
+		scene.set(key, missile_data[key])
 
 	scene.set_meta("source_folder", get_source_folder())
 
@@ -53,7 +55,8 @@ func post_import(scene):
 	# 40 * 5 + 100 * (12 - 5)
 	var seconds_to_max: float = missile_data["max_speed"] / missile_data["acceleration"]
 	var firing_range: float = ((missile_data["max_speed"] - missile_data["acceleration"]) / 2) * seconds_to_max + missile_data["max_speed"] * (missile_data["life"] - seconds_to_max)
-	scene.set_meta("firing_range", firing_range)
+
+	scene.firing_range = firing_range
 
 	var sound_file = File.new()
 	if sound_file.file_exists(source_folder + "/sound.wav"):
@@ -66,8 +69,6 @@ func post_import(scene):
 		audio_player.set_owner(scene)
 	else:
 		print("sound.wav file not found at " + source_folder)
-
-	scene.set_script(Missile)
 
 	return .post_import(scene)
 

@@ -3,14 +3,7 @@ extends "res://scripts/PostImportCollision.gd"
 
 
 func post_import(scene):
-	# TODO: This doesn't actually change the materials on import. Not sure why
-#	var shell = scene.get_node("Shell")
-#	shell.mesh.surface_get_material(0).set_blend_mode(SpatialMaterial.BLEND_MODE_ADD)
-#	shell.mesh.surface_get_material(0).set_flag(SpatialMaterial.FLAG_DONT_RECEIVE_SHADOWS, true)
-#
-#	var core = scene.get_node("Core")
-#	core.mesh.surface_get_material(0).set_flag(SpatialMaterial.FLAG_DONT_RECEIVE_SHADOWS, true)
-#	core.mesh.surface_get_material(0).set_flag(SpatialMaterial.FLAG_DISABLE_AMBIENT_LIGHT, true)
+	scene.set_script(EnergyBolt)
 
 	# This is used for loading the data file and other resources
 	var source_folder = get_source_folder()
@@ -50,11 +43,11 @@ func post_import(scene):
 		print("No such file: " + data_file_name)
 
 	for key in energy_data.keys():
-		scene.set_meta(key, energy_data[key])
+		scene.set(key, energy_data[key])
 
-	scene.set_meta("weapon_name", weapon_name)
+	scene.weapon_name = weapon_name
 	# From testing it seems like (desired_speed * life) + 1 = firing_range
-	scene.set_meta("firing_range", (energy_data["speed"] / 10) * energy_data["life"] + 1)
+	scene.firing_range = (energy_data["speed"] / 10) * energy_data["life"] + 1
 
 	scene.set_meta("source_folder", get_source_folder())
 
@@ -69,8 +62,6 @@ func post_import(scene):
 		audio_player.set_owner(scene)
 	else:
 		print("sound.wav file not found at " + source_folder)
-
-	scene.set_script(EnergyBolt)
 
 	return .post_import(scene)
 

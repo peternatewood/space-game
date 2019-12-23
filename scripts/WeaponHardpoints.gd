@@ -67,11 +67,16 @@ func set_weapon(weapon_scene, missile_capacity = null):
 		weapon = weapon_scene
 
 		var weapon_instance = weapon.instance()
-		for name in WEAPON_DATA_NAMES:
-			if weapon_instance.has_meta(name):
-				weapon_data[name] = weapon_instance.get_meta(name)
 
-		if weapon_data.has("ammo_cost") and missile_capacity != null:
+		weapon_data["firing_range"] = weapon_instance.firing_range
+		weapon_data["speed"] = weapon_instance.speed
+		weapon_data["weapon_name"] = weapon_instance.weapon_name
+
+		if weapon_instance is EnergyBolt:
+			weapon_data["cost"] = weapon_instance.cost
+		elif weapon_instance is Missile:
+			weapon_data["ammo_cost"] = weapon_instance.ammo_cost
+
 			ammo_capacity = round(missile_capacity / weapon_data["ammo_cost"])
 			ammo_count = ammo_capacity
 
@@ -80,6 +85,9 @@ func set_weapon(weapon_scene, missile_capacity = null):
 
 signal countdown_completed
 signal ammo_count_changed
+
+const EnergyBolt = preload("EnergyBolt.gd")
+const Missile = preload("Missile.gd")
 
 const WEAPON_DATA_NAMES: Array = [
 	"ammo_cost",

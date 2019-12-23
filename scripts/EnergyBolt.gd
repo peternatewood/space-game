@@ -1,14 +1,6 @@
 extends "res://scripts/WeaponBase.gd"
 
-var cost: float = 1.0
-
-
-func _ready():
-	if has_meta("cost"):
-		cost = get_meta("cost")
-
-
-# PUBLIC
+export (float) var cost = 0.0
 
 
 func add_speed(amount: float):

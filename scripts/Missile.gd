@@ -1,6 +1,19 @@
-extends "res://scripts/MissileBase.gd"
+extends "res://scripts/WeaponBase.gd"
 
+export (float) var acceleration = 0.0
+export (float) var ammo_cost = 0.0
+export (float) var max_speed = 0.0
+export (float) var search_radius = 0.0
+export (float) var turn_speed = 0.0
+
+var has_target: bool = false
 var searched_for_target: bool = false
+var target
+
+
+func _on_target_destroyed():
+	has_target = false
+	target = null
 
 
 func _process(delta):
@@ -41,3 +54,17 @@ func _process(delta):
 		speed = min(max_speed, speed + delta * acceleration)
 
 	._process(delta)
+
+
+# PUBLIC
+
+
+func add_speed(amount: float):
+	speed += amount
+
+
+func set_target(node):
+	has_target = true
+	target = node
+	target.connect("destroyed", self, "_on_target_destroyed")
+	target.connect("warped_out", self, "_on_target_destroyed")

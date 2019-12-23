@@ -1,14 +1,15 @@
 extends Area
 
-onready var damage_hull: float = get_meta("damage_hull")
-onready var damage_shield: float = get_meta("damage_shield")
-onready var damage_subsystem: float = get_meta("damage_subsystem")
-onready var fire_delay: float = get_meta("fire_delay")
-onready var firing_range: float = get_meta("firing_range")
-onready var life: float = get_meta("life")
+export (float) var damage_hull = 0.0
+export (float) var damage_shield = 0.0
+export (float) var damage_subsystem = 0.0
+export (float) var fire_delay = 0.0
+export (float) var firing_range = 0.0
+export (float) var life = 0.0
+export (float) var speed = 0.0
+export (String) var weapon_name = "weapon"
+
 onready var mission_controller = get_node("/root/Mission Controller")
-onready var speed: float = get_meta("speed")
-onready var weapon_name: float = get_meta("weapon_name")
 
 var owner_ship
 

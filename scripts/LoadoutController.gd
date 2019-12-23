@@ -87,12 +87,12 @@ func _ready():
 			var energy_weapon_video = load(source_folder + "/video.ogv")
 
 			energy_weapon_data[energy_weapon_name] = {
-				"cost": energy_weapon_instance.get_meta("cost"),
-				"fire_delay": energy_weapon_instance.get_meta("fire_delay"),
-				"hull_damage": WeaponBase.get_damage_strength(energy_weapon_instance.get_meta("damage_hull")),
+				"cost": energy_weapon_instance.cost,
+				"fire_delay": energy_weapon_instance.fire_delay,
+				"hull_damage": WeaponBase.get_damage_strength(energy_weapon_instance.damage_hull),
 				"icon": icon,
 				"model": model,
-				"shield_damage": WeaponBase.get_damage_strength(energy_weapon_instance.get_meta("damage_shield")),
+				"shield_damage": WeaponBase.get_damage_strength(energy_weapon_instance.damage_shield),
 				"video": energy_weapon_video
 			}
 
@@ -121,12 +121,12 @@ func _ready():
 			var missile_weapon_video = load(source_folder + "/video.ogv")
 
 			missile_weapon_data[missile_weapon_name] = {
-				"fire_delay": missile_weapon_instance.get_meta("fire_delay"),
-				"hull_damage": WeaponBase.get_damage_strength(missile_weapon_instance.get_meta("damage_hull")),
+				"fire_delay": missile_weapon_instance.fire_delay,
+				"hull_damage": WeaponBase.get_damage_strength(missile_weapon_instance.damage_hull),
 				"icon": icon,
 				"model": model,
-				"shield_damage": WeaponBase.get_damage_strength(missile_weapon_instance.get_meta("damage_shield")),
-				"weight": WeaponBase.get_ammo_cost_description(missile_weapon_instance.get_meta("ammo_cost")),
+				"shield_damage": WeaponBase.get_damage_strength(missile_weapon_instance.damage_shield),
+				"weight": WeaponBase.get_ammo_cost_description(missile_weapon_instance.ammo_cost),
 				"video": missile_weapon_video
 			}
 
