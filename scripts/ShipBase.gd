@@ -726,7 +726,7 @@ signal warping_ramped_up
 const MathHelper = preload("MathHelper.gd")
 
 const ACCELERATION: float = 0.1
-const DESTRUCTION_SMOKE = preload("res://models/Destruction_Smoke.tscn")
+const DESTRUCTION_SMOKE = preload("res://prefabs/Destruction_Smoke.tscn")
 const DEBRIS_PREFAB = preload("res://prefabs/ship_debris.tscn")
 const EXPLOSION_PREFAB = preload("res://prefabs/ship_explosion.tscn")
 const LARGE_EXPLOSION_PREFAB = preload("res://prefabs/capital_ship_explosion.tscn")
