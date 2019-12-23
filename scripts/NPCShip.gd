@@ -11,8 +11,9 @@ export (Array) var initial_orders = [
 	{ "type": ORDER_TYPE.PASSIVE, "target": "", "priority": 50 }
 ]
 
+var away_from_target: Vector3
 var defend_target
-var is_flying_at_target: bool = true
+var is_flying_at_target: bool = true setget set_is_flying_at_target
 var orders: Array = []
 var waypoint_pos: Vector3
 var waypoint_index: int = -1
@@ -30,7 +31,7 @@ func _attack_current_target():
 			var target_dist_squared: float = to_target.length_squared()
 			if is_flying_at_target:
 				if target_dist_squared < MIN_TARGET_DIST_SQ:
-					is_flying_at_target = false
+					self.is_flying_at_target = false
 				else:
 					var desired_throttle: float = _get_throttle_to_match_target_speed()
 					if target_dist_squared < MIN_FULL_SPEED_DIST_SQ:
@@ -39,7 +40,7 @@ func _attack_current_target():
 						self.throttle = 1.0
 			else:
 				if target_dist_squared > MAX_TARGET_DIST_SQ:
-					is_flying_at_target = true
+					self.is_flying_at_target = true
 				else:
 					self.throttle = (-transform.basis.z).angle_to(to_target) / PI
 
@@ -143,27 +144,38 @@ func _process(delta):
 
 func _turn_towards_target(target_pos: Vector3):
 	if subsystems["Engines"].operative:
-		var to_target: Vector3 = (target_pos - transform.origin).normalized()
+		var to_target: Vector3
+		if is_flying_at_target:
+			to_target = (target_pos - transform.origin).normalized()
+		else:
+			to_target = away_from_target
 
 		var x_dot = transform.basis.x.dot(to_target)
 		var y_dot = transform.basis.y.dot(to_target)
 
-		if is_flying_at_target:
-			# Stop turning if angular vel is high enough
-			var angle_to_target: float = (-transform.basis.z).angle_to(to_target)
-			if angular_velocity.y != 0:
-				x_dot * min(1, abs(angle_to_target / angular_velocity.y))
-			if angular_velocity.x != 0:
-				y_dot * min(1, abs(angle_to_target / angular_velocity.x))
+		# Calculate remaining angle to target along ship's x- and y- basises
+		var pitch_angle_to: float = (to_target - to_target.project(transform.basis.x)).angle_to(-transform.basis.z)
+		var yaw_angle_to: float = (to_target - to_target.project(transform.basis.y)).angle_to(-transform.basis.z)
 
-			#torque_vector = transform.basis.x * y_dot - transform.basis.y * x_dot
-			input_velocity.x = y_dot
-			input_velocity.y = -x_dot
-		else:
-			# Turn away to put distance between self and target
-			#torque_vector = -transform.basis.x * y_dot + transform.basis.y * x_dot
-			input_velocity.x = -y_dot
-			input_velocity.y = x_dot
+		var pitch_overshoot = abs(angular_velocity.x) - pitch_angle_to
+		var yaw_overshoot = abs(angular_velocity.y) - yaw_angle_to
+
+		# Reduce turning if we're set to overshoot the turn
+		if pitch_overshoot > 0:
+			if y_dot > 0:
+				y_dot -= pitch_overshoot
+			else:
+				y_dot += pitch_overshoot
+
+		if yaw_overshoot > 0:
+			if x_dot > 0:
+				x_dot -= yaw_overshoot
+			else:
+				x_dot += yaw_overshoot
+
+		input_velocity.x = y_dot
+		input_velocity.y = -x_dot
+		input_velocity.z = -x_dot
 
 
 # PUBLIC
@@ -213,6 +225,13 @@ func set_command(command: int, commander):
 
 	orders[0] = new_order
 	return true
+
+
+func set_is_flying_at_target(at_target: bool):
+	is_flying_at_target = at_target
+
+	if not at_target:
+		away_from_target = transform.basis.x
 
 
 const LINE_OF_FIRE_SQ: float = 4.0 # Squared to make processing faster

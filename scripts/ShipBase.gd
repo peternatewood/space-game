@@ -401,10 +401,11 @@ func _on_targeting_ship_destroyed(destroyed_ship):
 
 func _physics_process(delta):
 	if warping == NONE:
-		var collision = move_and_collide(delta * linear_velocity)
 		rotate(transform.basis.x, delta * angular_velocity.x)
 		rotate(transform.basis.y, delta * angular_velocity.y)
 		rotate(transform.basis.z, delta * angular_velocity.z)
+
+		var collision = move_and_collide(delta * linear_velocity)
 
 		if collision != null:
 			collision.collider.deal_damage(1)
