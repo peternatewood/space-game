@@ -73,6 +73,7 @@ func _on_back_pressed():
 
 func _on_mission_button_pressed(mission_path: String):
 	mission_data.load_mission_data(mission_path)
+	mission_data.is_in_campaign = false
 	loader.load_scene("res://briefing.tscn")
 
 

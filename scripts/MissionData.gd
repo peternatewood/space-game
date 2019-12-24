@@ -9,6 +9,7 @@ var campaign_data: Dictionary
 var custom_campaign_list: Array = []
 var default_campaign_list: Array = []
 var energy_weapon_data: Dictionary = {}
+var is_in_campaign: bool = false
 var missile_weapon_data: Dictionary = {}
 var mission_name: String
 var mission_scene_path: String
@@ -157,6 +158,7 @@ func load_campaign_data(path: String, save_to_profile: bool = false):
 
 
 func load_current_profile_mission():
+	is_in_campaign = true
 	load_campaign_data(profiles_data.current_profile.campaign)
 	load_mission_data(profiles_data.current_profile.mission)
 

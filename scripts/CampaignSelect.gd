@@ -22,4 +22,5 @@ func _on_campaign_button_pressed(campaign_path: String):
 	mission_data.load_campaign_data(campaign_path, true)
 	# Load first mission in campaign and save first mission path to current profile
 	mission_data.load_mission_data(mission_data.campaign_data.missions[0].path, true)
+	mission_data.is_in_campaign = true
 	loader.load_scene("res://briefing.tscn")
