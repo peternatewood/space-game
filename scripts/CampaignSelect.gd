@@ -16,6 +16,13 @@ func _ready():
 		campaign_button.set_text(campaign_data.name + ": " + campaign_data.description)
 		campaign_button.connect("pressed", self, "_on_campaign_button_pressed", [ campaign_data.path ])
 
+	var back_button = get_node("MarginContainer/Campaign Rows/Back Button")
+	back_button.connect("pressed", self, "_on_back_pressed")
+
+
+func _on_back_pressed():
+	loader.load_scene("res://title.tscn")
+
 
 func _on_campaign_button_pressed(campaign_path: String):
 	# Load campaign data and save campaign path to current profile
