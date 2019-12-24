@@ -21,40 +21,17 @@ var wing_names: Array = []
 
 func _ready():
 	# Map ship and weapon models by name
+	var ships_config: ConfigFile = ConfigFile.new()
+	ships_config.load("res://configs/ships.cfg")
+
+	for section in ships_config.get_sections():
+		var model_dir = "res://models/ships/" + section + "/"
+		var model_file = load(model_dir + "model.dae")
+
+		var ship_class = ships_config.get_value(section, "ship_class")
+		ship_models[ship_class] = model_file
+
 	var dir = Directory.new()
-	if dir.open("res://models/ships") != OK:
-		print("Unable to open res://models/ships directory")
-	else:
-		dir.list_dir_begin()
-		var file_name = dir.get_next()
-		while file_name != "":
-			if dir.current_is_dir() and file_name != "." and file_name != "..":
-				var model_dir = dir.get_current_dir() + "/" + file_name + "/"
-				var model_file = load(model_dir + "model.dae")
-
-				var data_file = File.new()
-				var data_file_error = data_file.open(model_dir + "data.json", File.READ)
-
-				if data_file_error != OK:
-					print("Unable to open data file in " + model_dir)
-				else:
-					var data_parsed = JSON.parse(data_file.get_as_text())
-
-					if data_parsed.error != OK:
-						print("Error parsing data file at " + model_dir + ": " + data_parsed.error_string)
-					elif model_file == null:
-						print("Unable to load model file at " + model_dir)
-					else:
-						if data_parsed.result.has("ship_class"):
-							var ship_class: String = data_parsed.result["ship_class"]
-							ship_models[ship_class] = model_file
-						else:
-							print("Ship data file missing ship_class: ", model_dir)
-
-				data_file.close()
-
-			file_name = dir.get_next()
-
 	if dir.open("res://models/beam_weapons") != OK:
 		print("Unable to open res://models/beam_weapons directory")
 	else:

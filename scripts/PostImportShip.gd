@@ -29,7 +29,6 @@ func post_import(scene):
 
 					node.queue_free()
 
-			#var collision_shape: CollisionShape = shield_static.get_node("shape").duplicate(Node.DUPLICATE_USE_INSTANCING)
 			var collision_shape: CollisionShape
 			for static_child in shield_static.get_children():
 				if static_child is CollisionShape:
@@ -57,51 +56,6 @@ func post_import(scene):
 			# Remove the static node and original shield mesh
 			shield_static.queue_free()
 			child.queue_free()
-
-	# Handle Subsystem collision shapes
-	var subsystems_container = scene.get_node_or_null("Subsystems")
-	if subsystems_container == null:
-		print("Subsystems container missing!")
-	else:
-		var subsystem_name_regex: RegEx = RegEx.new()
-		subsystem_name_regex.compile("Sub (\\w+)")
-
-		for child in subsystems_container.get_children():
-			var subsystem_name_match = subsystem_name_regex.search(child.name)
-			if subsystem_name_match.strings.size() < 2:
-				print("Invalid subsystem name: ", child.name)
-			else:
-				var subsystem_area: Area = Area.new()
-				subsystems_container.add_child(subsystem_area)
-				subsystem_area.set_owner(scene)
-
-				subsystem_area.transform = child.transform
-				subsystem_area.set_name(subsystem_name_match.strings[1])
-
-				var collision_shape
-				for static_child in child.get_children():
-					if static_child is CollisionShape:
-						collision_shape = static_child.duplicate(Node.DUPLICATE_USE_INSTANCING)
-						break
-
-				child.queue_free()
-
-				subsystem_area.add_child(collision_shape)
-				collision_shape.set_owner(scene)
-
-				var explosion_instance = SUBSYSTEM_EXPLOSION.instance()
-				subsystem_area.add_child(explosion_instance)
-				explosion_instance.set_owner(scene)
-				explosion_instance.set_name("Explosion")
-
-				var subsystem_explosion_player: AudioStreamPlayer3D = AudioStreamPlayer3D.new()
-				subsystem_area.add_child(subsystem_explosion_player)
-				subsystem_explosion_player.set_owner(scene)
-				subsystem_explosion_player.set_stream(SUBSYSTEM_EXPLOSION_SOUND)
-				subsystem_explosion_player.set_bus("Sound Effects")
-				subsystem_explosion_player.set_name("Explosion Sound")
-
-				subsystem_area.set_script(Subsystem)
 
 	var exhaust_mesh = scene.get_node("Exhaust")
 	exhaust_mesh.set_surface_material(0, BLUE_EXHAUST_MATERIAL)
@@ -354,74 +308,6 @@ func post_import(scene):
 
 			node.hide()
 
-	# This is used for loading the data file and other resources
-	var source_folder = get_source_folder()
-	var data_file = File.new()
-	var data_file_name: String = source_folder + "/data.json"
-
-	# Set defaults to be overridden by data file
-	var max_speed: float = 7.0
-	var ship_data: Dictionary = {
-		"is_capital_ship": false,
-		"hull_hitpoints": 100.0,
-		"mass": 10.0, # Use mass to push stuff?
-		"missile_capacity": 55.0,
-		"shield_hitpoints": 100.0,
-		"ship_class": "ship",
-	}
-	var turn_speed: Vector3 = Vector3(TAU / 2.0, TAU / 3.0, TAU / 2.5) # Radians per second
-
-	if data_file.file_exists(data_file_name):
-		data_file.open(data_file_name, File.READ)
-
-		var data_parsed = JSON.parse(data_file.get_as_text())
-		if data_parsed.error == OK:
-			for key in ship_data.keys():
-				var property = data_parsed.result.get(key)
-				if property != null and typeof(property) == typeof(ship_data[key]):
-					ship_data[key] = property
-
-			var subsystem_hitpoints = data_parsed.result.get("subsystem_hitpoints")
-			if subsystem_hitpoints != null and subsystems_container != null:
-				for subsystem_name in subsystem_hitpoints.keys():
-					var subsystem_node = subsystems_container.get_node_or_null(subsystem_name)
-					if subsystem_node == null:
-						print("Unable to find subsystem node: ", subsystem_name)
-					else:
-						subsystem_node.set_meta("hitpoints", subsystem_hitpoints[subsystem_name])
-
-			# Speed in data file is in m/s, so we have to divide by 10 to get actual value
-			var parsed_max_speed = data_parsed.result.get("max_speed")
-			if parsed_max_speed != null and typeof(parsed_max_speed) == TYPE_REAL:
-				max_speed = parsed_max_speed / 10
-
-			var pitch_speed = data_parsed.result.get("pitch_speed")
-			if pitch_speed != null and typeof(pitch_speed) == TYPE_REAL and pitch_speed >= 0:
-				turn_speed.x = pitch_speed
-
-			var yaw_speed = data_parsed.result.get("yaw_speed")
-			if yaw_speed != null and typeof(yaw_speed) == TYPE_REAL and yaw_speed >= 0:
-				turn_speed.y = yaw_speed
-
-			var roll_speed = data_parsed.result.get("roll_speed")
-			if roll_speed != null and typeof(roll_speed) == TYPE_REAL and roll_speed >= 0:
-				turn_speed.z = roll_speed
-		else:
-			print("Error while parsing data file: ", data_file_name + " " + data_parsed.error_string)
-
-		data_file.close()
-	else:
-		print("No such file: " + data_file_name)
-
-	for key in ship_data.keys():
-		scene.set_meta(key, ship_data[key])
-
-	scene.set_meta("max_speed", max_speed)
-	scene.set_meta("turn_speed", turn_speed)
-
-	scene.set_meta("source_file", get_source_file())
-	scene.set_meta("source_folder", source_folder)
-
 	var fuselage_extents: PoolVector3Array
 	var fuselage_extents_mesh = scene.get_node_or_null("Fuselage Extents")
 	if fuselage_extents_mesh == null:
@@ -431,6 +317,131 @@ func post_import(scene):
 		fuselage_extents_mesh.free()
 
 	scene.set_meta("fuselage_extents", fuselage_extents)
+
+	# This is used for loading the data file and other resources
+	var source_folder = get_source_folder()
+	var ships_config: ConfigFile = ConfigFile.new()
+	ships_config.load("res://configs/ships.cfg")
+
+	# TODO: validate these properties more strictly to allow for foolproof user models
+	# Set defaults to be overridden by config file
+	var is_capital_ship: bool = false
+	var max_hull_hitpoints: float = 75.0
+	var max_speed: float = 7.0
+	var missile_capacity: float = 55.0
+	var shield_hitpoints: float = 100.0
+
+	# All the properties that can be imported with just a type check
+	var ship_data: Dictionary = {
+		"hull_hitpoints": 100.0,
+		"mass": 10.0, # Use mass to push stuff?
+		"ship_class": "ship",
+		"subsystem_hitpoints": {
+			"Communications": 40.0,
+			"Engines": 80.0,
+			"Navigation": 40.0,
+			"Sensors": 60.0,
+			"Weapons": 85.0
+		},
+		"turn_speed": Vector3(TAU / 2.0, TAU / 3.0, TAU / 2.5) # Radians per second
+	}
+
+	# Load ship data from config file
+	for section in ships_config.get_sections():
+		if source_folder.ends_with(section):
+			for key in ship_data.keys():
+				if ships_config.has_section_key(section, key):
+					var property = ships_config.get_value(section, key)
+
+					if typeof(ship_data[key]) == typeof(property):
+						ship_data[key] = property
+					else:
+						print("Invalid type, ", typeof(property), ", for ", key, " of type ", typeof(scene.get(key)))
+				else:
+					print("Missing ship property: ", key)
+
+			var config_is_capital_ship = ships_config.get_value(section, "is_capital_ship")
+			if typeof(config_is_capital_ship) == typeof(is_capital_ship):
+				is_capital_ship = config_is_capital_ship
+
+			if not is_capital_ship:
+				var config_missile_capacity = ships_config.get_value(section, "missile_capacity")
+				if typeof(config_missile_capacity) == typeof(missile_capacity):
+					missile_capacity = config_missile_capacity
+
+				var config_shield_hitpoints = ships_config.get_value(section, "shield_hitpoints")
+				if typeof(config_shield_hitpoints) == typeof(shield_hitpoints):
+					shield_hitpoints = config_shield_hitpoints
+
+			var config_max_hull_hitpoints = ships_config.get_value(section, "hull_hitpoints")
+			if typeof(config_max_hull_hitpoints) == typeof(max_hull_hitpoints):
+				max_hull_hitpoints = config_max_hull_hitpoints
+
+			var config_max_speed = ships_config.get_value(section, "max_speed")
+			if typeof(config_max_speed) == typeof(max_speed):
+				max_speed = config_max_speed / 10
+
+			scene.set_meta("ship_class", section)
+			break
+
+	for key in ship_data.keys():
+		scene.set_meta(key, ship_data[key])
+
+	scene.set_meta("is_capital_ship", is_capital_ship)
+	scene.set_meta("max_hull_hitpoints", max_hull_hitpoints)
+	scene.set_meta("max_speed", max_speed)
+	scene.set_meta("missile_capacity", missile_capacity)
+	scene.set_meta("shield_hitpoints", shield_hitpoints)
+
+	# Handle Subsystem collision shapes
+	var subsystems_container = scene.get_node_or_null("Subsystems")
+	if subsystems_container == null:
+		print("Subsystems container missing!")
+	else:
+		var subsystem_name_regex: RegEx = RegEx.new()
+		subsystem_name_regex.compile("Sub (\\w+)")
+
+		for child in subsystems_container.get_children():
+			var subsystem_name_match = subsystem_name_regex.search(child.name)
+			if subsystem_name_match.strings.size() < 2:
+				print("Invalid subsystem name: ", child.name)
+			else:
+				var subsystem_area: Area = Area.new()
+				subsystems_container.add_child(subsystem_area)
+				subsystem_area.set_owner(scene)
+
+				subsystem_area.transform = child.transform
+				subsystem_area.set_name(subsystem_name_match.strings[1])
+
+				var collision_shape
+				for static_child in child.get_children():
+					if static_child is CollisionShape:
+						collision_shape = static_child.duplicate(Node.DUPLICATE_USE_INSTANCING)
+						break
+
+				child.queue_free()
+
+				subsystem_area.add_child(collision_shape)
+				collision_shape.set_owner(scene)
+
+				var explosion_instance = SUBSYSTEM_EXPLOSION.instance()
+				subsystem_area.add_child(explosion_instance)
+				explosion_instance.set_owner(scene)
+				explosion_instance.set_name("Explosion")
+
+				var subsystem_explosion_player: AudioStreamPlayer3D = AudioStreamPlayer3D.new()
+				subsystem_area.add_child(subsystem_explosion_player)
+				subsystem_explosion_player.set_owner(scene)
+				subsystem_explosion_player.set_stream(SUBSYSTEM_EXPLOSION_SOUND)
+				subsystem_explosion_player.set_bus("Sound Effects")
+				subsystem_explosion_player.set_name("Explosion Sound")
+
+				subsystem_area.set_meta("hitpoints", ship_data.subsystem_hitpoints.get(subsystem_area.name, 50.0))
+
+				subsystem_area.set_script(Subsystem)
+
+	scene.set_meta("source_file", get_source_file())
+	scene.set_meta("source_folder", source_folder)
 
 	return .post_import(scene)
 
