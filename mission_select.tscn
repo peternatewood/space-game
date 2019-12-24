@@ -71,10 +71,9 @@ margin_bottom = 241.0
 [node name="User Missions" type="VBoxContainer" parent="MarginContainer/Mission Select Rows/User Missions Panel/User Missions Scroll"]
 
 [node name="Back Button" type="Button" parent="MarginContainer/Mission Select Rows"]
-margin_left = 944.0
 margin_top = 542.0
-margin_right = 992.0
+margin_right = 48.0
 margin_bottom = 568.0
-size_flags_horizontal = 8
+size_flags_horizontal = 0
 size_flags_vertical = 8
 text = "Back"
