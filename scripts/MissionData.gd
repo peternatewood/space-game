@@ -8,8 +8,8 @@ var briefing: Array
 var campaign_data: Dictionary
 var custom_campaign_list: Array = []
 var default_campaign_list: Array = []
-var energy_weapon_models: Dictionary
-var missile_weapon_models: Dictionary
+var energy_weapon_data: Dictionary = {}
+var missile_weapon_data: Dictionary = {}
 var mission_name: String
 var mission_scene_path: String
 var non_player_loadouts: Dictionary
@@ -26,8 +26,6 @@ func _ready():
 
 	for section in ships_config.get_sections():
 		var model_dir: String = "res://models/ships/" + section + "/"
-		var model_file = load(model_dir + "model.dae")
-
 		var ship_class: String = ships_config.get_value(section, "ship_class")
 
 		ship_data[ship_class] = {
@@ -60,19 +58,26 @@ func _ready():
 	for section in weapons_config.get_sections():
 		var weapon_name = weapons_config.get_value(section, "name")
 		var model_dir: String
-		var model_file
 
 		match weapons_config.get_value(section, "type"):
 			"energy_weapon":
 				model_dir = "res://models/energy_weapons/" + section + "/"
-				model_file = load(model_dir + "model.dae")
 
-				energy_weapon_models[weapon_name] = model_file
+				energy_weapon_data[weapon_name] = {
+					"model_path": model_dir + "model.dae"
+				}
+
+				for key in weapons_config.get_section_keys(section):
+					energy_weapon_data[weapon_name][key] = weapons_config.get_value(section, key)
 			"missile_weapon":
 				model_dir = "res://models/missile_weapons/" + section + "/"
-				model_file = load(model_dir + "model.dae")
 
-				missile_weapon_models[weapon_name] = model_file
+				missile_weapon_data[weapon_name] = {
+					"model_path": model_dir + "model.dae"
+				}
+
+				for key in weapons_config.get_section_keys(section):
+					missile_weapon_data[weapon_name][key] = weapons_config.get_value(section, key)
 
 	# Build campaign list
 	if dir.open("res://campaigns") != OK:
@@ -213,8 +218,9 @@ func load_mission_data(path: String, save_to_profile: bool = false):
 
 				var energy_weapon_index: int = 0
 				for energy_weapon_name in loadout[index].get("energy_weapons", []):
-					if energy_weapon_name != "none" and energy_weapon_models.has(energy_weapon_name) and armory.energy_weapons.has(energy_weapon_name):
-						ship_loadout["energy_weapons"][energy_weapon_index] = { "name": energy_weapon_name, "model": energy_weapon_models[energy_weapon_name] }
+					if energy_weapon_name != "none" and energy_weapon_data.has(energy_weapon_name) and armory.energy_weapons.has(energy_weapon_name):
+						var energy_weapon_model = load(energy_weapon_data[energy_weapon_name].model_path)
+						ship_loadout["energy_weapons"][energy_weapon_index] = { "name": energy_weapon_name, "model": energy_weapon_model }
 
 					energy_weapon_index += 1
 					if energy_weapon_index >= ship_loadout["energy_weapons"].size():
@@ -222,8 +228,9 @@ func load_mission_data(path: String, save_to_profile: bool = false):
 
 				var missile_weapon_index: int = 0
 				for missile_weapon_name in loadout[index].get("missile_weapons", []):
-					if missile_weapon_name != "none" and missile_weapon_models.has(missile_weapon_name) and armory.missile_weapons.has(missile_weapon_name):
-						ship_loadout["missile_weapons"][missile_weapon_index] = { "name": missile_weapon_name, "model": missile_weapon_models[missile_weapon_name] }
+					if missile_weapon_name != "none" and missile_weapon_data.has(missile_weapon_name) and armory.missile_weapons.has(missile_weapon_name):
+						var missile_weapon_model = load(missile_weapon_data[missile_weapon_name].model_path)
+						ship_loadout["missile_weapons"][missile_weapon_index] = { "name": missile_weapon_name, "model": missile_weapon_model }
 
 					missile_weapon_index += 1
 					if missile_weapon_index >= ship_loadout["missile_weapons"].size():
@@ -248,12 +255,14 @@ func load_mission_data(path: String, save_to_profile: bool = false):
 					non_player_loadouts[ship_name].beam_weapons.append(beam_weapon_models[beam_weapon_name])
 
 			for energy_weapon_name in meta_loadouts[ship_name].get("energy_weapons", []):
-				if energy_weapon_models.has(energy_weapon_name):
-					non_player_loadouts[ship_name].energy_weapons.append(energy_weapon_models[energy_weapon_name])
+				if energy_weapon_data.has(energy_weapon_name):
+					var energy_weapon_model = load(energy_weapon_data[energy_weapon_name].model_path)
+					non_player_loadouts[ship_name].energy_weapons.append(energy_weapon_model)
 
 			for missile_weapon_name in meta_loadouts[ship_name].get("missile_weapons", []):
-				if missile_weapon_models.has(missile_weapon_name):
-					non_player_loadouts[ship_name].missile_weapons.append(missile_weapon_models[missile_weapon_name])
+				if missile_weapon_data.has(missile_weapon_name):
+					var missile_weapon_model = load(missile_weapon_data[missile_weapon_name].model_path)
+					non_player_loadouts[ship_name].missile_weapons.append(missile_weapon_model)
 
 		# Get mission objectives
 		objectives = [ [], [], [] ]

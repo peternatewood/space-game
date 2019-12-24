@@ -51,7 +51,7 @@ func _ready():
 
 	scene_file_regex.compile("^[\\w\\_\\-]+\\.tscn$")
 
-	armory_dialog.populate_items(mission_data.ship_data.keys(), mission_data.energy_weapon_models.keys(), mission_data.missile_weapon_models.keys())
+	armory_dialog.populate_items(mission_data.ship_data.keys(), mission_data.energy_weapon_data.keys(), mission_data.missile_weapon_data.keys())
 
 	load_mission_info()
 
@@ -81,10 +81,10 @@ func _ready():
 	for beam_weapon_name in mission_data.beam_weapon_models.keys():
 		ship_edit_dialog.beam_weapon_index_name_map.append(beam_weapon_name)
 
-	for energy_weapon_name in mission_data.energy_weapon_models.keys():
+	for energy_weapon_name in mission_data.energy_weapon_data.keys():
 		ship_edit_dialog.energy_weapon_index_name_map.append(energy_weapon_name)
 
-	for missile_weapon_name in mission_data.missile_weapon_models.keys():
+	for missile_weapon_name in mission_data.missile_weapon_data.keys():
 		ship_edit_dialog.missile_weapon_index_name_map.append(missile_weapon_name)
 
 	# TODO: update manipulator viewport if window size changes

@@ -471,14 +471,14 @@ func prepare_options(mission_data, mission_node):
 
 	# Start at one since the first option "none" is at index 0
 	var energy_weapon_index: int = 1
-	for name in mission_data.energy_weapon_models.keys():
+	for name in mission_data.energy_weapon_data.keys():
 		for option in energy_weapon_options:
 			option.add_item(name, energy_weapon_index)
 		energy_weapon_index += 1
 
 	# Start at one since the first option "none" is at index 0
 	var missile_weapon_index: int = 1
-	for name in mission_data.missile_weapon_models.keys():
+	for name in mission_data.missile_weapon_data.keys():
 		for option in missile_weapon_options:
 			option.add_item(name, missile_weapon_index)
 		missile_weapon_index += 1

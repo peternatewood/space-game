@@ -69,9 +69,9 @@ func _ready():
 			}
 
 	var energy_weapons_container = get_node("Left Rows/Energy Weapons Panel/Energy Weapons Container")
-	for energy_weapon_name in mission_data.energy_weapon_models.keys():
+	for energy_weapon_name in mission_data.energy_weapon_data.keys():
 		if mission_data.armory.energy_weapons.has(energy_weapon_name):
-			var model = mission_data.energy_weapon_models[energy_weapon_name]
+			var model = load(mission_data.energy_weapon_data[energy_weapon_name].model_path)
 			var energy_weapon_instance = model.instance()
 			var source_folder = energy_weapon_instance.get_meta("source_folder")
 
@@ -103,9 +103,9 @@ func _ready():
 		energy_weapon_slots[index].connect("icon_pressed", self, "_on_energy_weapon_slot_pressed", [ index ])
 
 	var missile_weapons_container = get_node("Left Rows/Missile Weapons Panel/Missile Weapons Container")
-	for missile_weapon_name in mission_data.missile_weapon_models.keys():
+	for missile_weapon_name in mission_data.missile_weapon_data.keys():
 		if mission_data.armory.missile_weapons.has(missile_weapon_name):
-			var model = mission_data.missile_weapon_models[missile_weapon_name]
+			var model = load(mission_data.missile_weapon_data[missile_weapon_name].model_path)
 			var missile_weapon_instance = model.instance()
 			var source_folder = missile_weapon_instance.get_meta("source_folder")
 
