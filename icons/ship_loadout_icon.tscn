@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scripts/LoadoutShipIcon.gd" type="Script" id=1]
-[ext_resource path="res://models/ships/frog_fighter/overhead.png" type="Texture" id=2]
+[ext_resource path="res://models/ships/frog_fighter/icon.png" type="Texture" id=2]
 
 
 [sub_resource type="CircleShape2D" id=1]

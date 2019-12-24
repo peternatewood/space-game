@@ -575,7 +575,7 @@ func get_max_speed():
 
 func get_overhead_icon():
 	if source_folder != null:
-		return load(source_folder + "/overhead.png")
+		return load(source_folder + "/icon.png")
 
 	return null
 
