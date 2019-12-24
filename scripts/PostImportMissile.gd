@@ -7,8 +7,8 @@ func post_import(scene):
 
 	# This is used for loading the data file and other resources
 	var source_folder = get_source_folder()
-	var data_file = File.new()
-	var data_file_name: String = source_folder + "/data.json"
+	var weapons_config: ConfigFile = ConfigFile.new()
+	weapons_config.load("res://configs/weapons.cfg")
 
 	# Set defaults to be overridden by data file
 	var missile_data: Dictionary = {
@@ -25,25 +25,16 @@ func post_import(scene):
 		"weapon_name": "missile"
 	}
 
-	if data_file.file_exists(data_file_name):
-		data_file.open(data_file_name, File.READ)
+	for section in weapons_config.get_sections():
+		if source_folder.ends_with(section):
+			for key in weapons_config.get_section_keys(section):
+				if missile_data.has(key):
+					var property = weapons_config.get_value(section, key)
+					if typeof(property) == typeof(missile_data[key]):
+						missile_data[key] = property
 
-		var data_parsed = JSON.parse(data_file.get_as_text())
-		if data_parsed.error == OK:
-			for key in missile_data.keys():
-				var property = data_parsed.result.get(key)
-				if property != null and typeof(property) == typeof(missile_data[key]):
-					missile_data[key] = property
-
-			var weapon_name = data_parsed.result.get("name")
-			if weapon_name != null and typeof(weapon_name) == TYPE_STRING:
-				missile_data["weapon_name"] = weapon_name
-		else:
-			print("Error while parsing data file: ", data_file_name + " " + data_parsed.error_string)
-
-		data_file.close()
-	else:
-		print("No such file: " + data_file_name)
+			missile_data["weapon_name"] = weapons_config.get_value(section, "name")
+			break
 
 	for key in missile_data.keys():
 		scene.set(key, missile_data[key])

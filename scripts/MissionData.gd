@@ -25,10 +25,10 @@ func _ready():
 	ships_config.load("res://configs/ships.cfg")
 
 	for section in ships_config.get_sections():
-		var model_dir = "res://models/ships/" + section + "/"
+		var model_dir: String = "res://models/ships/" + section + "/"
 		var model_file = load(model_dir + "model.dae")
 
-		var ship_class = ships_config.get_value(section, "ship_class")
+		var ship_class: String = ships_config.get_value(section, "ship_class")
 
 		ship_data[ship_class] = {
 			"model_path": model_dir + "model.dae"
@@ -45,7 +45,7 @@ func _ready():
 		var file_name = dir.get_next()
 		while file_name != "":
 			if dir.current_is_dir() and file_name != "." and file_name != "..":
-				var model_dir = dir.get_current_dir() + "/" + file_name + "/"
+				var model_dir: String = dir.get_current_dir() + "/" + file_name + "/"
 				var model_file = load(model_dir + "model.tscn")
 
 				var weapon_instance = model_file.instance()
@@ -54,63 +54,25 @@ func _ready():
 
 			file_name = dir.get_next()
 
-	if dir.open("res://models/energy_weapons") != OK:
-		print("Unable to open res://models/energy_weapons directory")
-	else:
-		dir.list_dir_begin()
-		var file_name = dir.get_next()
-		while file_name != "":
-			if dir.current_is_dir() and file_name != "." and file_name != "..":
-				var model_dir = dir.get_current_dir() + "/" + file_name + "/"
-				var model_file = load(model_dir + "model.dae")
+	var weapons_config: ConfigFile = ConfigFile.new()
+	weapons_config.load("res://configs/weapons.cfg")
 
-				var data_file = File.new()
-				var data_file_error = data_file.open(model_dir + "data.json", File.READ)
+	for section in weapons_config.get_sections():
+		var weapon_name = weapons_config.get_value(section, "name")
+		var model_dir: String
+		var model_file
 
-				if data_file_error != OK:
-					print("Unable to open data file in " + model_dir)
-				else:
-					var data_parsed = JSON.parse(data_file.get_as_text())
+		match weapons_config.get_value(section, "type"):
+			"energy_weapon":
+				model_dir = "res://models/energy_weapons/" + section + "/"
+				model_file = load(model_dir + "model.dae")
 
-					if data_parsed.error != OK:
-						print("Error parsing data file at " + model_dir + ": " + data_parsed.error_string)
-					elif model_file == null:
-						print("Unable to load model file at " + model_file)
-					else:
-						energy_weapon_models[data_parsed.result.get("name", "energy weapon")] = model_file
+				energy_weapon_models[weapon_name] = model_file
+			"missile_weapon":
+				model_dir = "res://models/missile_weapons/" + section + "/"
+				model_file = load(model_dir + "model.dae")
 
-				data_file.close()
-
-			file_name = dir.get_next()
-
-	if dir.open("res://models/missile_weapons") != OK:
-		print("Unable to open res://models/missile_weapons directory")
-	else:
-		dir.list_dir_begin()
-		var file_name = dir.get_next()
-		while file_name != "":
-			if dir.current_is_dir() and file_name != "." and file_name != "..":
-				var model_dir = dir.get_current_dir() + "/" + file_name + "/"
-				var model_file = load(model_dir + "model.dae")
-
-				var data_file = File.new()
-				var data_file_error = data_file.open(model_dir + "data.json", File.READ)
-
-				if data_file_error != OK:
-					print("Unable to open data file in " + model_dir)
-				else:
-					var data_parsed = JSON.parse(data_file.get_as_text())
-
-					if data_parsed.error != OK:
-						print("Error parsing data file at " + model_dir + ": " + data_parsed.error_string)
-					elif model_file == null:
-						print("Unable to load model file at " + model_file)
-					else:
-						missile_weapon_models[data_parsed.result.get("name", "missile weapon")] = model_file
-
-				data_file.close()
-
-			file_name = dir.get_next()
+				missile_weapon_models[weapon_name] = model_file
 
 	# Build campaign list
 	if dir.open("res://campaigns") != OK:
