@@ -191,6 +191,11 @@ func load_mission_data(path: String, save_to_profile: bool = false):
 		# Get loadout for each ship by wing
 		wing_loadouts = []
 
+		# These are so we only load each model we need once
+		var ship_models: Dictionary = {}
+		var energy_weapon_models: Dictionary = {}
+		var missile_weapon_models: Dictionary = {}
+
 		var default_loadouts = mission_instance.get_meta("default_loadouts")
 		var wing_index: int = 0
 		for loadout in default_loadouts:
@@ -200,9 +205,12 @@ func load_mission_data(path: String, save_to_profile: bool = false):
 				var ship = mission_instance.get_node("Targets Container/" + loadout[index].name)
 				var ship_class = ship.get_meta("ship_class")
 
+				if not ship_models.has(ship_class):
+					ship_models[ship_class] = load(ship_data[ship_class].model_path)
+
 				var ship_loadout: Dictionary = {
 					"ship_class": ship_class,
-					"model": load(ship_data[ship_class].model_path),
+					"model": ship_models[ship_class],
 					"energy_weapons": [
 						{ "name": "none", "model": null },
 						{ "name": "none", "model": null },
@@ -219,8 +227,10 @@ func load_mission_data(path: String, save_to_profile: bool = false):
 				var energy_weapon_index: int = 0
 				for energy_weapon_name in loadout[index].get("energy_weapons", []):
 					if energy_weapon_name != "none" and energy_weapon_data.has(energy_weapon_name) and armory.energy_weapons.has(energy_weapon_name):
-						var energy_weapon_model = load(energy_weapon_data[energy_weapon_name].model_path)
-						ship_loadout["energy_weapons"][energy_weapon_index] = { "name": energy_weapon_name, "model": energy_weapon_model }
+						if not energy_weapon_models.has(energy_weapon_name):
+							energy_weapon_models[energy_weapon_name] = load(energy_weapon_data[energy_weapon_name].model_path)
+
+						ship_loadout["energy_weapons"][energy_weapon_index] = { "name": energy_weapon_name, "model": energy_weapon_models[energy_weapon_name] }
 
 					energy_weapon_index += 1
 					if energy_weapon_index >= ship_loadout["energy_weapons"].size():
@@ -229,8 +239,10 @@ func load_mission_data(path: String, save_to_profile: bool = false):
 				var missile_weapon_index: int = 0
 				for missile_weapon_name in loadout[index].get("missile_weapons", []):
 					if missile_weapon_name != "none" and missile_weapon_data.has(missile_weapon_name) and armory.missile_weapons.has(missile_weapon_name):
-						var missile_weapon_model = load(missile_weapon_data[missile_weapon_name].model_path)
-						ship_loadout["missile_weapons"][missile_weapon_index] = { "name": missile_weapon_name, "model": missile_weapon_model }
+						if not missile_weapon_models.has(missile_weapon_name):
+							missile_weapon_models[missile_weapon_name] = load(missile_weapon_data[missile_weapon_name].model_path)
+
+						ship_loadout["missile_weapons"][missile_weapon_index] = { "name": missile_weapon_name, "model": missile_weapon_models[missile_weapon_name] }
 
 					missile_weapon_index += 1
 					if missile_weapon_index >= ship_loadout["missile_weapons"].size():
