@@ -294,5 +294,3 @@ const WeaponBase = preload("WeaponBase.gd")
 const WeaponSlot = preload("WeaponSlot.gd")
 
 const RADIAL_ICON = preload("res://prefabs/radial_icon.tscn")
-const SHIP_LOADOUT_ICON = preload("res://icons/ship_loadout_icon.tscn")
-const WEAPON_LOADOUT_ICON = preload("res://icons/weapon_loadout_icon.tscn")
