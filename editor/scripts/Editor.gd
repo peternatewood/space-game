@@ -51,7 +51,7 @@ func _ready():
 
 	scene_file_regex.compile("^[\\w\\_\\-]+\\.tscn$")
 
-	armory_dialog.populate_items(mission_data.ship_models.keys(), mission_data.energy_weapon_models.keys(), mission_data.missile_weapon_models.keys())
+	armory_dialog.populate_items(mission_data.ship_data.keys(), mission_data.energy_weapon_models.keys(), mission_data.missile_weapon_models.keys())
 
 	load_mission_info()
 
@@ -72,7 +72,7 @@ func _ready():
 	open_file_dialog.connect("file_selected", self, "_on_open_file_selected")
 
 	# Get model data from mission_data
-	for ship_class in mission_data.ship_models.keys():
+	for ship_class in mission_data.ship_data.keys():
 		ship_index_name_map.append(ship_class)
 
 	add_ship_dialog.populate_ship_options(ship_index_name_map)
@@ -139,7 +139,9 @@ func _on_add_ship_confirmed():
 	var ship_instance
 
 	ship_class = ship_index_name_map[add_ship_dialog.ship_options.get_selected_id()]
-	ship_instance = mission_data.ship_models[ship_class].instance()
+
+	var ship_model = load(mission_data.ship_data[ship_class].model_path)
+	ship_instance = ship_model.instance()
 	ship_instance.set_script(NPCShip)
 
 	ship_instance.set_name(ship_name)
@@ -444,7 +446,9 @@ func _on_edit_dialog_update_pressed():
 
 	# Update ship class
 	if old_ship_class != new_ship_class:
-		var ship_instance = mission_data.ship_models[new_ship_class].instance()
+		var ship_model = load(mission_data.ship_data[new_ship_class].model_path)
+		var ship_instance = ship_model.instance()
+
 		# Copy over all properties from existing ship
 		ship_instance.set_script(ship_edit_dialog.edit_ship.get_script())
 		ship_instance.hull_hitpoints = ship_edit_dialog.edit_ship.hull_hitpoints

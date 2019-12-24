@@ -458,7 +458,7 @@ func populate_wing_options(wing_names: Array):
 
 func prepare_options(mission_data, mission_node):
 	var ship_index: int = 0
-	for name in mission_data.ship_models.keys():
+	for name in mission_data.ship_data.keys():
 		ship_class_options.add_item(name, ship_index)
 		ship_index += 1
 

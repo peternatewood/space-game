@@ -30,9 +30,11 @@ var wing_ship_over
 
 func _ready():
 	var ship_selection_container = get_node("Left Rows/Ships Panel/Ship Selection Container")
-	for ship_class in mission_data.ship_models.keys():
+	for section in mission_data.ship_data.keys():
+		var ship_class = mission_data.ship_data[section].get("ship_class", "")
+
 		if mission_data.armory.ships.has(ship_class):
-			var model = mission_data.ship_models[ship_class]
+			var model = load(mission_data.ship_data[section].model_path)
 			var ship_instance = model.instance()
 			var source_folder = ship_instance.get_meta("source_folder")
 			var energy_weapon_slot_count = ship_instance.get_node("Energy Weapon Groups").get_child_count()

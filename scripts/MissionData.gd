@@ -14,7 +14,7 @@ var mission_name: String
 var mission_scene_path: String
 var non_player_loadouts: Dictionary
 var objectives: Array
-var ship_models: Dictionary
+var ship_data: Dictionary = {}
 var wing_loadouts: Array = []
 var wing_names: Array = []
 
@@ -29,7 +29,13 @@ func _ready():
 		var model_file = load(model_dir + "model.dae")
 
 		var ship_class = ships_config.get_value(section, "ship_class")
-		ship_models[ship_class] = model_file
+
+		ship_data[ship_class] = {
+			"model_path": model_dir + "model.dae"
+		}
+
+		for key in ships_config.get_section_keys(section):
+			ship_data[ship_class][key] = ships_config.get_value(section, key)
 
 	var dir = Directory.new()
 	if dir.open("res://models/beam_weapons") != OK:
@@ -229,7 +235,7 @@ func load_mission_data(path: String, save_to_profile: bool = false):
 
 				var ship_loadout: Dictionary = {
 					"ship_class": ship_class,
-					"model": ship_models[ship_class],
+					"model": load(ship_data[ship_class].model_path),
 					"energy_weapons": [
 						{ "name": "none", "model": null },
 						{ "name": "none", "model": null },
