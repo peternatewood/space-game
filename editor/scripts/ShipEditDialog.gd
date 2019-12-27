@@ -325,9 +325,13 @@ func fill_ship_info(ship, loadout: Dictionary = {}):
 
 	for index in range(beam_weapon_options.size()):
 		if index < beam_weapon_slot_count:
-			var beam_weapon_options_index = beam_weapon_index_name_map.find(beam_weapons[index])
-			# Add one since the first item is "none" and the index will be "-1" if the item isn't found
-			beam_weapon_options[index].select(beam_weapon_options_index + 1)
+			if index < beam_weapons.size():
+				beam_weapons.append("")
+				beam_weapon_options[index].select(0)
+			else:
+				var beam_weapon_options_index = beam_weapon_index_name_map.find(beam_weapons[index])
+				# Add one since the first item is "none" and the index will be "-1" if the item isn't found
+				beam_weapon_options[index].select(beam_weapon_options_index + 1)
 
 			beam_weapon_options[index].show()
 			beam_weapon_labels[index].show()
@@ -337,9 +341,13 @@ func fill_ship_info(ship, loadout: Dictionary = {}):
 
 	for index in range(energy_weapon_options.size()):
 		if index < energy_weapon_slot_count:
-			var energy_weapon_options_index = energy_weapon_index_name_map.find(energy_weapons[index])
-			# Add one since the first item is "none" and the index will be "-1" if the item isn't found
-			energy_weapon_options[index].select(energy_weapon_options_index + 1)
+			if index < energy_weapons.size():
+				energy_weapons.append("")
+				energy_weapon_options[index].select(0)
+			else:
+				var energy_weapon_options_index = energy_weapon_index_name_map.find(energy_weapons[index])
+				# Add one since the first item is "none" and the index will be "-1" if the item isn't found
+				energy_weapon_options[index].select(energy_weapon_options_index + 1)
 
 			energy_weapon_options[index].show()
 			energy_weapon_labels[index].show()
@@ -349,9 +357,13 @@ func fill_ship_info(ship, loadout: Dictionary = {}):
 
 	for index in range(missile_weapon_options.size()):
 		if index < missile_weapon_slot_count:
-			var missile_weapon_options_index = missile_weapon_index_name_map.find(missile_weapons[index])
-			# Add one since the first item is "none" and the index will be "-1" if the item isn't found
-			missile_weapon_options[index].select(missile_weapon_options_index + 1)
+			if index < missile_weapons.size():
+				missile_weapons.append("")
+				missile_weapon_options[index].select(0)
+			else:
+				var missile_weapon_options_index = missile_weapon_index_name_map.find(missile_weapons[index])
+				# Add one since the first item is "none" and the index will be "-1" if the item isn't found
+				missile_weapon_options[index].select(missile_weapon_options_index + 1)
 
 			missile_weapon_options[index].show()
 			missile_weapon_labels[index].show()
