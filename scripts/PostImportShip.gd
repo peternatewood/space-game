@@ -56,6 +56,22 @@ func post_import(scene):
 			# Remove the static node and original shield mesh
 			shield_static.queue_free()
 			child.queue_free()
+		elif child.name == "Hangar" and child is StaticBody:
+			child.set_name("Hangar StaticBody")
+
+			var hangar_area: Area = Area.new()
+			scene.add_child(hangar_area)
+			hangar_area.set_owner(scene)
+			hangar_area.set_transform(child.transform)
+			hangar_area.set_name("Hangar")
+
+			for hangar_child in child.get_children():
+				if hangar_child is CollisionShape:
+					var hangar_collider: CollisionShape = hangar_child.duplicate(Node.DUPLICATE_USE_INSTANCING)
+					hangar_area.add_child(hangar_collider)
+					hangar_collider.set_owner(scene)
+
+			child.free()
 
 	var exhaust_mesh = scene.get_node("Exhaust")
 	exhaust_mesh.set_surface_material(0, BLUE_EXHAUST_MATERIAL)
