@@ -841,6 +841,8 @@ func get_wing_index(ship):
 
 
 func load_mission_info():
+	mission_node.set_pause_mode(Node.PAUSE_MODE_STOP)
+
 	# Reset all other stuff
 	ship_edit_dialog.edit_ship = null
 	ship_edit_dialog.hide()
