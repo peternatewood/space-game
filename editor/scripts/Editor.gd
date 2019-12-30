@@ -148,32 +148,19 @@ func _on_add_ship_confirmed():
 	targets_container.add_child(ship_instance)
 	ship_instance.set_owner(mission_node)
 
-	var beam_weapon_count: int = 0
-	var energy_weapon_count: int = 0
-	var missile_weapon_count: int = 0
-
-	if ship_instance.is_capital_ship:
-		beam_weapon_count = ship_instance.beam_weapon_turrets.size()
-		energy_weapon_count = ship_instance.energy_weapon_turrets.size()
-		missile_weapon_count = ship_instance.missile_weapon_turrets.size()
-	else:
-		energy_weapon_count = ship_instance.energy_weapon_hardpoints.size()
-		missile_weapon_count = ship_instance.missile_weapon_hardpoints.size()
-
 	non_player_loadouts[ship_instance.name] = {
 		"beam_weapons": [],
 		"energy_weapons": [],
 		"missile_weapons": []
 	}
 
-	for index in range(beam_weapon_count):
-		non_player_loadouts[ship_instance.name].beam_weapons.append("")
-
-	for index in range(energy_weapon_count):
-		non_player_loadouts[ship_instance.name].energy_weapons.append("")
-
-	for index in range(missile_weapon_count):
-		non_player_loadouts[ship_instance.name].missile_weapons.append("")
+	if ship_instance.is_capital_ship:
+		non_player_loadouts[ship_instance.name].beam_weapons = mission_data.ship_data[ship_class].default_loadout.get("beam_weapon_turrets", [])
+		non_player_loadouts[ship_instance.name].energy_weapons = mission_data.ship_data[ship_class].default_loadout.get("energy_weapon_turrets", [])
+		non_player_loadouts[ship_instance.name].missile_weapons = mission_data.ship_data[ship_class].default_loadout.get("missile_weapon_turrets", [])
+	else:
+		non_player_loadouts[ship_instance.name].energy_weapons = mission_data.ship_data[ship_class].default_loadout.get("energy_weapons", [])
+		non_player_loadouts[ship_instance.name].missile_weapons = mission_data.ship_data[ship_class].default_loadout.get("missile_weapons", [])
 
 	mission_node.set_meta("non_player_loadouts", non_player_loadouts)
 
@@ -184,7 +171,7 @@ func _on_add_ship_confirmed():
 
 		var ship_loadout = get_ship_loadout(selected_node)
 		ship_edit_dialog.fill_ship_info(selected_node, ship_loadout)
-		ship_edit_dialog.add_order_target(ship_instance.name)
+		ship_edit_dialog.add_order_target(ship_instance)
 
 	# Add an icon
 	icons_container.add_icon(ship_instance)
