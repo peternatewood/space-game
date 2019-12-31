@@ -51,8 +51,6 @@ func _ready():
 
 	scene_file_regex.compile("^[\\w\\_\\-]+\\.tscn$")
 
-	armory_dialog.populate_items(mission_data.ship_data.keys(), mission_data.energy_weapon_data.keys(), mission_data.missile_weapon_data.keys())
-
 	load_mission_info()
 
 	var file_menu = get_node("Controls Container/PanelContainer/Toolbar/File Menu")

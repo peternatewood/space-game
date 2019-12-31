@@ -2,7 +2,21 @@ extends AcceptDialog
 
 onready var energy_weapon_items = get_node("Scroll Rows/Energy Weapons Scroll/Energy Weapon Items")
 onready var missile_weapon_items = get_node("Scroll Rows/Missile Weapons Scroll/Missile Weapon Items")
+onready var mission_data = get_node("/root/MissionData")
 onready var ship_items = get_node("Scroll Rows/Ships Scroll/Ship Items")
+
+
+func _ready():
+	var non_capital_ship_names: Array = []
+
+	for ship_name in mission_data.ship_data.keys():
+		if not mission_data.ship_data[ship_name].is_capital_ship:
+			non_capital_ship_names.append(ship_name)
+
+	populate_items(non_capital_ship_names, mission_data.energy_weapon_data.keys(), mission_data.missile_weapon_data.keys())
+
+
+# PUBLIC
 
 
 func get_armory():
