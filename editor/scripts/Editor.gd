@@ -530,12 +530,13 @@ func _on_edit_dialog_update_pressed():
 					ship_index += 1
 
 	# Update ship loadout
-	var beam_weapons = ship_edit_dialog.get_beam_weapon_selections()
-	for slot_index in range(beam_weapons.size()):
-		if ship_loadout.beam_weapons.size() <= slot_index:
-			ship_loadout.beam_weapons.append(beam_weapons[slot_index])
-		else:
-			ship_loadout.beam_weapons[slot_index] = beam_weapons[slot_index]
+	if selected_node.is_capital_ship:
+		var beam_weapons = ship_edit_dialog.get_beam_weapon_selections()
+		for slot_index in range(beam_weapons.size()):
+			if ship_loadout.beam_weapons.size() <= slot_index:
+				ship_loadout.beam_weapons.append(beam_weapons[slot_index])
+			else:
+				ship_loadout.beam_weapons[slot_index] = beam_weapons[slot_index]
 
 	var energy_weapons = ship_edit_dialog.get_energy_weapon_selections()
 	for slot_index in range(energy_weapons.size()):
