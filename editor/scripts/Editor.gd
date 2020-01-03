@@ -627,7 +627,7 @@ func _on_help_menu_id_pressed(item_id: int):
 		0:
 			about_window.popup_centered()
 		1:
-			manual_window.popup_centered()
+			manual_window.show()
 
 
 func _on_mission_menu_id_pressed(item_id: int):

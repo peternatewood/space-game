@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://editor/scripts/Editor.gd" type="Script" id=1]
 [ext_resource path="res://editor/default_mission.tscn" type="PackedScene" id=2]
@@ -11,18 +11,19 @@
 [ext_resource path="res://editor/scripts/WaypointEditPanel.gd" type="Script" id=9]
 [ext_resource path="res://editor/scripts/ObjectivesWindow.gd" type="Script" id=10]
 [ext_resource path="res://editor/scripts/AddShipDialog.gd" type="Script" id=11]
-[ext_resource path="res://editor/scripts/WingsDialog.gd" type="Script" id=12]
-[ext_resource path="res://editor/scripts/ObjectivesDialog.gd" type="Script" id=13]
-[ext_resource path="res://editor/scripts/DetailsDialog.gd" type="Script" id=14]
-[ext_resource path="res://editor/scripts/AddWaypointDialog.gd" type="Script" id=15]
-[ext_resource path="res://editor/scripts/WaypointGroupsDialog.gd" type="Script" id=16]
-[ext_resource path="res://editor/scripts/ArmoryDialog.gd" type="Script" id=17]
-[ext_resource path="res://editor/scripts/FactionsDialog.gd" type="Script" id=18]
-[ext_resource path="res://editor/scripts/ManipulatorViewport.gd" type="Script" id=19]
-[ext_resource path="res://editor/scripts/TransformControls.gd" type="Script" id=20]
-[ext_resource path="res://editor/models/translate_arrow_x.dae" type="PackedScene" id=21]
-[ext_resource path="res://editor/models/translate_arrow_y.dae" type="PackedScene" id=22]
-[ext_resource path="res://editor/models/translate_arrow_z.dae" type="PackedScene" id=23]
+[ext_resource path="res://editor/scripts/Manual.gd" type="Script" id=12]
+[ext_resource path="res://editor/scripts/WingsDialog.gd" type="Script" id=13]
+[ext_resource path="res://editor/scripts/ObjectivesDialog.gd" type="Script" id=14]
+[ext_resource path="res://editor/scripts/DetailsDialog.gd" type="Script" id=15]
+[ext_resource path="res://editor/scripts/AddWaypointDialog.gd" type="Script" id=16]
+[ext_resource path="res://editor/scripts/WaypointGroupsDialog.gd" type="Script" id=17]
+[ext_resource path="res://editor/scripts/ArmoryDialog.gd" type="Script" id=18]
+[ext_resource path="res://editor/scripts/FactionsDialog.gd" type="Script" id=19]
+[ext_resource path="res://editor/scripts/ManipulatorViewport.gd" type="Script" id=20]
+[ext_resource path="res://editor/scripts/TransformControls.gd" type="Script" id=21]
+[ext_resource path="res://editor/models/translate_arrow_x.dae" type="PackedScene" id=22]
+[ext_resource path="res://editor/models/translate_arrow_y.dae" type="PackedScene" id=23]
+[ext_resource path="res://editor/models/translate_arrow_z.dae" type="PackedScene" id=24]
 
 [sub_resource type="ViewportTexture" id=1]
 viewport_path = NodePath("Manipulator Viewport")
@@ -33,6 +34,19 @@ content_margin_right = 4.0
 content_margin_top = 2.0
 content_margin_bottom = 2.0
 bg_color = Color( 0.439216, 0.262745, 0.203922, 1 )
+
+[sub_resource type="StyleBoxFlat" id=3]
+content_margin_left = 4.0
+content_margin_right = 4.0
+content_margin_top = 2.0
+content_margin_bottom = 2.0
+bg_color = Color( 0.184314, 0.184314, 0.247059, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.466667, 0.466667, 0.466667, 1 )
+corner_detail = 2
 
 [node name="Editor" type="Spatial"]
 pause_mode = 2
@@ -949,8 +963,8 @@ script = ExtResource( 11 )
 [node name="Add Ship Rows" type="VBoxContainer" parent="Controls Container/Add Ship Dialog"]
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 104.0
-margin_bottom = 26.0
+margin_right = 198.0
+margin_bottom = 62.0
 
 [node name="Warnings Label" type="Label" parent="Controls Container/Add Ship Dialog/Add Ship Rows"]
 visible = false
@@ -1006,29 +1020,54 @@ v0.2.0"
 align = 1
 valign = 1
 
-[node name="Manual Window" type="WindowDialog" parent="Controls Container"]
+[node name="Manual Window" type="ScrollContainer" parent="Controls Container"]
 editor/display_folded = true
-margin_right = 48.0
-margin_bottom = 40.0
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
 rect_min_size = Vector2( 400, 300 )
-window_title = "Manual"
-resizable = true
+custom_styles/bg = SubResource( 3 )
+scroll_horizontal_enabled = false
+script = ExtResource( 12 )
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Controls Container/Manual Window"]
-margin_right = 400.0
-margin_bottom = 300.0
+[node name="VBoxContainer" type="VBoxContainer" parent="Controls Container/Manual Window"]
+margin_left = 4.0
+margin_top = 2.0
+margin_right = 1020.0
+margin_bottom = 598.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-text = "Welcome!
 
-This manual is currently a work in progress. In future updates, it will provide directions for using the mission editor, as well as several help topics"
+[node name="HBoxContainer" type="HBoxContainer" parent="Controls Container/Manual Window/VBoxContainer"]
+margin_right = 1016.0
+margin_bottom = 22.0
+
+[node name="Label" type="Label" parent="Controls Container/Manual Window/VBoxContainer/HBoxContainer"]
+margin_top = 2.0
+margin_right = 996.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Manual"
+
+[node name="Close Button" type="Button" parent="Controls Container/Manual Window/VBoxContainer/HBoxContainer"]
+margin_left = 1000.0
+margin_right = 1016.0
+margin_bottom = 22.0
+text = "x"
+
+[node name="Tree" type="Tree" parent="Controls Container/Manual Window/VBoxContainer"]
+margin_top = 26.0
+margin_right = 1016.0
+margin_bottom = 596.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="Wings Dialog" type="AcceptDialog" parent="Controls Container"]
 editor/display_folded = true
 margin_right = 96.0
 margin_bottom = 64.0
 window_title = "Loadout Wings"
-script = ExtResource( 12 )
+script = ExtResource( 13 )
 
 [node name="Wings Dialog Rows" type="VBoxContainer" parent="Controls Container/Wings Dialog"]
 margin_left = 8.0
@@ -1133,7 +1172,7 @@ margin_right = 256.0
 margin_bottom = 366.0
 window_title = "Edit Objective"
 resizable = true
-script = ExtResource( 13 )
+script = ExtResource( 14 )
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Controls Container/Objective Edit Dialog"]
 margin_left = 8.0
@@ -1258,7 +1297,7 @@ margin_right = 96.0
 margin_bottom = 64.0
 window_title = "Mission Details"
 resizable = true
-script = ExtResource( 14 )
+script = ExtResource( 15 )
 
 [node name="Details Rows" type="VBoxContainer" parent="Controls Container/Details Dialog"]
 margin_left = 8.0
@@ -1308,7 +1347,7 @@ margin_right = 96.0
 margin_bottom = 64.0
 window_title = "Add Waypoint"
 resizable = true
-script = ExtResource( 15 )
+script = ExtResource( 16 )
 
 [node name="Add Waypoint Columns" type="HBoxContainer" parent="Controls Container/Add Waypoint Dialog"]
 margin_left = 8.0
@@ -1336,7 +1375,7 @@ margin_right = 96.0
 margin_bottom = 64.0
 window_title = "Waypoint Groups"
 resizable = true
-script = ExtResource( 16 )
+script = ExtResource( 17 )
 
 [node name="Waypoint Group Rows" type="VBoxContainer" parent="Controls Container/Waypoint Groups Dialog"]
 margin_left = 8.0
@@ -1385,7 +1424,7 @@ margin_bottom = 200.0
 rect_min_size = Vector2( 320, 400 )
 window_title = "Armory"
 resizable = true
-script = ExtResource( 17 )
+script = ExtResource( 18 )
 
 [node name="Scroll Rows" type="VBoxContainer" parent="Controls Container/Armory Dialog"]
 anchor_right = 1.0
@@ -1461,7 +1500,7 @@ margin_bottom = 207.0
 rect_min_size = Vector2( 240, 240 )
 window_title = "Factions"
 resizable = true
-script = ExtResource( 18 )
+script = ExtResource( 19 )
 
 [node name="Rows" type="VBoxContainer" parent="Controls Container/Factions Dialog"]
 margin_left = 8.0
@@ -1497,25 +1536,26 @@ text = "Add Faction"
 
 [node name="Manipulator Viewport" type="Viewport" parent="."]
 pause_mode = 2
+editor/display_folded = true
 size = Vector2( 1920, 1080 )
 own_world = true
 transparent_bg = true
 render_target_v_flip = true
-script = ExtResource( 19 )
-
-[node name="Transform Controls" type="Spatial" parent="Manipulator Viewport"]
 script = ExtResource( 20 )
 
-[node name="Arrow X" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 21 )]
+[node name="Transform Controls" type="Spatial" parent="Manipulator Viewport"]
+script = ExtResource( 21 )
+
+[node name="Arrow X" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 22 )]
 transform = Transform( -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0 )
 monitoring = false
 monitorable = false
 
-[node name="Arrow Y" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 22 )]
+[node name="Arrow Y" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 23 )]
 monitoring = false
 monitorable = false
 
-[node name="Arrow Z" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 23 )]
+[node name="Arrow Z" parent="Manipulator Viewport/Transform Controls" instance=ExtResource( 24 )]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0 )
 monitoring = false
 monitorable = false
