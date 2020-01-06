@@ -28,7 +28,7 @@ texture = ExtResource( 3 )
 expand = true
 stretch_mode = 7
 
-[node name="Tabs" type="TabContainer" parent="."]
+[node name="Database Rows" type="VBoxContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 16.0
@@ -36,7 +36,13 @@ margin_top = 16.0
 margin_right = -16.0
 margin_bottom = -16.0
 
-[node name="Ships" type="HBoxContainer" parent="Tabs"]
+[node name="Tabs" type="TabContainer" parent="Database Rows"]
+margin_right = 992.0
+margin_bottom = 538.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Ships" type="HBoxContainer" parent="Database Rows/Tabs"]
 editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -47,30 +53,30 @@ margin_bottom = -8.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Ship List Scroll Container" type="ScrollContainer" parent="Tabs/Ships"]
+[node name="Ship List Scroll Container" type="ScrollContainer" parent="Database Rows/Tabs/Ships"]
 margin_right = 572.0
-margin_bottom = 524.0
+margin_bottom = 494.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 scroll_horizontal_enabled = false
 
-[node name="Ship List" type="VBoxContainer" parent="Tabs/Ships/Ship List Scroll Container"]
+[node name="Ship List" type="VBoxContainer" parent="Database Rows/Tabs/Ships/Ship List Scroll Container"]
 margin_right = 572.0
-margin_bottom = 524.0
+margin_bottom = 494.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Ship Preview Rows" type="VBoxContainer" parent="Tabs/Ships"]
+[node name="Ship Preview Rows" type="VBoxContainer" parent="Database Rows/Tabs/Ships"]
 margin_left = 576.0
 margin_right = 976.0
-margin_bottom = 524.0
+margin_bottom = 494.0
 
-[node name="Ship Preview Label" type="Label" parent="Tabs/Ships/Ship Preview Rows"]
+[node name="Ship Preview Label" type="Label" parent="Database Rows/Tabs/Ships/Ship Preview Rows"]
 margin_right = 400.0
 margin_bottom = 18.0
 text = "ship"
 
-[node name="Ship Preview" type="TextureRect" parent="Tabs/Ships/Ship Preview Rows"]
+[node name="Ship Preview" type="TextureRect" parent="Database Rows/Tabs/Ships/Ship Preview Rows"]
 margin_top = 22.0
 margin_right = 400.0
 margin_bottom = 322.0
@@ -79,12 +85,12 @@ texture = SubResource( 1 )
 expand = true
 stretch_mode = 5
 
-[node name="Ship Description" type="RichTextLabel" parent="Tabs/Ships/Ship Preview Rows"]
+[node name="Ship Description" type="RichTextLabel" parent="Database Rows/Tabs/Ships/Ship Preview Rows"]
 margin_top = 326.0
 margin_right = 400.0
 margin_bottom = 326.0
 
-[node name="Weapons" type="HBoxContainer" parent="Tabs"]
+[node name="Weapons" type="HBoxContainer" parent="Database Rows/Tabs"]
 editor/display_folded = true
 visible = false
 anchor_right = 1.0
@@ -94,40 +100,47 @@ margin_top = 36.0
 margin_right = -8.0
 margin_bottom = -8.0
 
-[node name="Weapon List Scroll Container" type="ScrollContainer" parent="Tabs/Weapons"]
+[node name="Weapon List Scroll Container" type="ScrollContainer" parent="Database Rows/Tabs/Weapons"]
 margin_right = 772.0
 margin_bottom = 524.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 scroll_horizontal_enabled = false
 
-[node name="Weapon List" type="VBoxContainer" parent="Tabs/Weapons/Weapon List Scroll Container"]
+[node name="Weapon List" type="VBoxContainer" parent="Database Rows/Tabs/Weapons/Weapon List Scroll Container"]
 margin_right = 772.0
 margin_bottom = 524.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Weapon Preview Rows" type="VBoxContainer" parent="Tabs/Weapons"]
+[node name="Weapon Preview Rows" type="VBoxContainer" parent="Database Rows/Tabs/Weapons"]
 margin_left = 776.0
 margin_right = 976.0
 margin_bottom = 524.0
 
-[node name="Weapon Preview Label" type="Label" parent="Tabs/Weapons/Weapon Preview Rows"]
+[node name="Weapon Preview Label" type="Label" parent="Database Rows/Tabs/Weapons/Weapon Preview Rows"]
 margin_right = 200.0
 margin_bottom = 18.0
 text = "weapon"
 
-[node name="Weapon Preview" type="VideoPlayer" parent="Tabs/Weapons/Weapon Preview Rows"]
+[node name="Weapon Preview" type="VideoPlayer" parent="Database Rows/Tabs/Weapons/Weapon Preview Rows"]
 margin_top = 22.0
 margin_right = 200.0
 margin_bottom = 172.0
 rect_min_size = Vector2( 200, 150 )
 stream = ExtResource( 4 )
 
-[node name="Weapon Description" type="RichTextLabel" parent="Tabs/Weapons/Weapon Preview Rows"]
+[node name="Weapon Description" type="RichTextLabel" parent="Database Rows/Tabs/Weapons/Weapon Preview Rows"]
 margin_top = 176.0
 margin_right = 200.0
 margin_bottom = 176.0
+
+[node name="Back Button" type="Button" parent="Database Rows"]
+margin_top = 542.0
+margin_right = 48.0
+margin_bottom = 568.0
+size_flags_horizontal = 0
+text = "Back"
 
 [node name="Ship Preview Viewport" type="Viewport" parent="."]
 size = Vector2( 800, 600 )
