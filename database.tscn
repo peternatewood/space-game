@@ -92,7 +92,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Weapons" type="HBoxContainer" parent="Database Rows/Tabs"]
-editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -135,6 +134,7 @@ stream = ExtResource( 4 )
 margin_top = 176.0
 margin_right = 200.0
 margin_bottom = 176.0
+size_flags_vertical = 3
 
 [node name="Back Button" type="Button" parent="Database Rows"]
 margin_top = 542.0

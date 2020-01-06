@@ -5,6 +5,7 @@ onready var mission_data = get_node("/root/MissionData")
 onready var preview_viewport = get_node("Ship Preview Viewport")
 onready var ship_description = get_node("Database Rows/Tabs/Ships/Ship Preview Rows/Ship Description")
 onready var ship_label = get_node("Database Rows/Tabs/Ships/Ship Preview Rows/Ship Preview Label")
+onready var weapon_description = get_node("Database Rows/Tabs/Weapons/Weapon Preview Rows/Weapon Description")
 onready var weapon_label = get_node("Database Rows/Tabs/Weapons/Weapon Preview Rows/Weapon Preview Label")
 onready var weapon_preview = get_node("Database Rows/Tabs/Weapons/Weapon Preview Rows/Weapon Preview")
 
@@ -58,6 +59,7 @@ func _on_energy_weapon_button_pressed(energy_weapon_name: String):
 	weapon_preview.play()
 
 	weapon_label.set_text(energy_weapon_name)
+	weapon_description.set_text(mission_data.energy_weapon_data[energy_weapon_name].get("description", "*no description provided*"))
 
 
 func _on_missile_weapon_button_pressed(missile_weapon_name: String):
@@ -67,6 +69,7 @@ func _on_missile_weapon_button_pressed(missile_weapon_name: String):
 	weapon_preview.play()
 
 	weapon_label.set_text(missile_weapon_name)
+	weapon_description.set_text(mission_data.missile_weapon_data[missile_weapon_name].get("description", "*no description provided*"))
 
 
 func _on_ship_button_pressed(ship_name: String):
@@ -77,7 +80,7 @@ func _on_ship_button_pressed(ship_name: String):
 	preview_viewport.set_ship(ship_instance)
 
 	ship_label.set_text(ship_name)
-	ship_description.set_text(mission_data.ship_data[ship_name].description)
+	ship_description.set_text(mission_data.ship_data[ship_name].get("description", "*no description provided*"))
 
 
 const ShipBase = preload("ShipBase.gd")
