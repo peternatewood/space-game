@@ -2,6 +2,8 @@ extends Node
 
 enum { NEUTRAL, FRIENDLY, HOSTILE }
 
+export (bool) var is_eyecatch = false
+
 onready var factions = get_meta("factions")
 onready var loader = get_node("/root/SceneLoader")
 onready var mission_data = get_node("/root/MissionData")
@@ -13,7 +15,6 @@ var player
 var targets_container
 var waypoints: Array = []
 var waypoints_container
-# TODO: Multiple groups of waypoints that we can assign to npc ships
 
 
 func _ready():
@@ -22,7 +23,10 @@ func _ready():
 
 
 func _input(event):
-	if event.is_action("pause") and event.pressed:
+	if is_eyecatch:
+		if (event is InputEventKey or event is InputEventMouseButton or event is InputEventJoypadButton) and event.pressed:
+			loader.load_scene("res://title.tscn")
+	elif event.is_action_pressed("pause"):
 		var tree = get_tree()
 		if not tree.paused:
 			tree.set_pause(true)
@@ -89,20 +93,21 @@ func _on_scene_loaded():
 			else:
 				print("Invalid node in targets container: " + ship.name)
 
-	player = get_node(player_path)
-	player.connect("warped_out", self, "_on_player_warped_out")
+	if not is_eyecatch:
+		player = get_node(player_path)
+		player.connect("warped_out", self, "_on_player_warped_out")
 
-	# Prepare mission objectives
-	for index in range(mission_data.objectives.size()):
-		for objective in mission_data.objectives[index]:
-			objective.connect_targets_to_requirements(targets_container)
+		# Prepare mission objectives
+		for index in range(mission_data.objectives.size()):
+			for objective in mission_data.objectives[index]:
+				objective.connect_targets_to_requirements(targets_container)
 
-	pause_menu.connect("main_menu_confirmed", self, "_on_main_menu_confirmed")
+		pause_menu.connect("main_menu_confirmed", self, "_on_main_menu_confirmed")
+
+		get_tree().set_pause(true)
 
 	set_process(true)
 	emit_signal("mission_ready")
-
-	get_tree().set_pause(true)
 
 
 # PUBLIC
