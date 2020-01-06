@@ -41,6 +41,14 @@ func _ready():
 		missile_weapon_button.set_text_align(Button.ALIGN_LEFT)
 		missile_weapon_button.connect("pressed", self, "_on_missile_weapon_button_pressed", [ missile_weapon_name ])
 
+	for beam_weapon_name in mission_data.beam_weapon_data.keys():
+		var beam_weapon_button = Button.new()
+		weapon_list.add_child(beam_weapon_button)
+
+		beam_weapon_button.set_text(beam_weapon_name)
+		beam_weapon_button.set_text_align(Button.ALIGN_LEFT)
+		beam_weapon_button.connect("pressed", self, "_on_beam_weapon_button_pressed", [ beam_weapon_name ])
+
 	weapon_preview.connect("finished", weapon_preview, "play")
 	_on_energy_weapon_button_pressed("Energy Bolt")
 
@@ -50,6 +58,16 @@ func _ready():
 
 func _on_back_pressed():
 	loader.change_scene("res://title.tscn")
+
+
+func _on_beam_weapon_button_pressed(beam_weapon_name: String):
+	var video_path = mission_data.beam_weapon_data[beam_weapon_name].model_dir + "video.ogv"
+	var video_stream = load(video_path)
+	weapon_preview.set_stream(video_stream)
+	weapon_preview.play()
+
+	weapon_label.set_text(beam_weapon_name)
+	weapon_description.set_text(mission_data.beam_weapon_data[beam_weapon_name].get("description", "*no description provided*"))
 
 
 func _on_energy_weapon_button_pressed(energy_weapon_name: String):

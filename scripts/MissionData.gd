@@ -3,6 +3,7 @@ extends Node
 onready var profiles_data = get_node("/root/ProfilesData")
 
 var armory: Dictionary
+var beam_weapon_data: Dictionary = {}
 var beam_weapon_models: Dictionary
 var briefing: Array
 var campaign_data: Dictionary
@@ -81,6 +82,16 @@ func _ready():
 
 				for key in weapons_config.get_section_keys(section):
 					missile_weapon_data[weapon_name][key] = weapons_config.get_value(section, key)
+			"beam_weapon":
+				model_dir = "res://models/beam_weapons/" + section + "/"
+
+				beam_weapon_data[weapon_name] = {
+					"model_path": model_dir + "model.dae",
+					"model_dir": model_dir
+				}
+
+				for key in weapons_config.get_section_keys(section):
+					beam_weapon_data[weapon_name][key] = weapons_config.get_value(section, key)
 
 	# Build campaign list
 	if dir.open("res://campaigns") != OK:
