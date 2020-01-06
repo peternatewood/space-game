@@ -65,7 +65,8 @@ func _ready():
 				model_dir = "res://models/energy_weapons/" + section + "/"
 
 				energy_weapon_data[weapon_name] = {
-					"model_path": model_dir + "model.dae"
+					"model_path": model_dir + "model.dae",
+					"model_dir": model_dir
 				}
 
 				for key in weapons_config.get_section_keys(section):
@@ -74,7 +75,8 @@ func _ready():
 				model_dir = "res://models/missile_weapons/" + section + "/"
 
 				missile_weapon_data[weapon_name] = {
-					"model_path": model_dir + "model.dae"
+					"model_path": model_dir + "model.dae",
+					"model_dir": model_dir
 				}
 
 				for key in weapons_config.get_section_keys(section):
