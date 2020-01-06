@@ -2843,7 +2843,7 @@
 			</instance_geometry>
 		</node>
 		<node id="Chase View" name="Chase View" type="NODE">
-			<matrix sid="transform"> 1.0 0.0 0.0 0.0 0.0 1.0 0.0 -36.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 1.0  </matrix>
+			<matrix sid="transform"> 1.0 0.0 0.0 0.0 0.0 1.0 0.0 -40.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 1.0  </matrix>
 				<extra>
 					<technique profile="GODOT">
 						<empty_draw_type>PLAIN_AXES</empty_draw_type>
