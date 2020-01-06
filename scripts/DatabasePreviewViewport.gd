@@ -4,11 +4,6 @@ onready var camera = get_node("Camera")
 onready var ship = get_node("Preview Ship")
 
 
-func _ready():
-	toggle_ship_exhaust(false)
-	set_cam_position()
-
-
 func _process(delta):
 	ship.rotate_y(delta * RADIANS_PER_SECOND)
 
