@@ -67,9 +67,22 @@ margin_top = 446.0
 margin_right = 896.0
 margin_bottom = 472.0
 
-[node name="New Profile Button" type="Button" parent="Profiles Container/Profile Options"]
-margin_right = 104.0
+[node name="Exit Button" type="Button" parent="Profiles Container/Profile Options"]
+margin_right = 48.0
 margin_bottom = 26.0
+text = "Exit"
+
+[node name="Dummy Separator" type="Control" parent="Profiles Container/Profile Options"]
+margin_left = 52.0
+margin_right = 788.0
+margin_bottom = 26.0
+size_flags_horizontal = 3
+
+[node name="New Profile Button" type="Button" parent="Profiles Container/Profile Options"]
+margin_left = 792.0
+margin_right = 896.0
+margin_bottom = 26.0
+size_flags_horizontal = 8
 text = "New Profile"
 
 [node name="New Profile Dialog" type="ConfirmationDialog" parent="."]

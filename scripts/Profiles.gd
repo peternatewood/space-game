@@ -14,7 +14,10 @@ func _ready():
 	delete_profile_dialog.connect("confirmed", self, "_on_delete_profile_confirmed")
 	new_profile_dialog.connect("confirmed", self, "_on_new_profile_confirmed")
 
+	var exit_button = get_node("Profiles Container/Profile Options/Exit Button")
 	var new_profile_button = get_node("Profiles Container/Profile Options/New Profile Button")
+
+	exit_button.connect("pressed", self, "_on_exit_pressed")
 	new_profile_button.connect("pressed", new_profile_dialog, "popup_centered")
 
 	for profile_name in profiles_data.profile_section_map.keys():
@@ -29,6 +32,10 @@ func _on_delete_profile_confirmed():
 			break
 
 	profile_to_delete = ""
+
+
+func _on_exit_pressed():
+	get_tree().quit()
 
 
 func _on_new_profile_confirmed():
