@@ -100,3 +100,6 @@ text = "Exit"
 
 [node name="Options Menu" parent="." instance=ExtResource( 6 )]
 visible = false
+
+[node name="Eyecatch Timer" type="Timer" parent="."]
+wait_time = 12.0

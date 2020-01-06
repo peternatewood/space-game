@@ -1,5 +1,6 @@
 extends Control
 
+onready var eyecatch_timer = get_node("Eyecatch Timer")
 onready var loader = get_node("/root/SceneLoader")
 onready var mission_data = get_node("/root/MissionData")
 onready var options_menu = get_node("Options Menu")
@@ -34,6 +35,13 @@ func _ready():
 	toggle_dyslexia(settings.get_dyslexia())
 	settings.connect("dyslexia_toggled", self, "toggle_dyslexia")
 
+	eyecatch_timer.connect("timeout", self, "_on_eyecatch_timeout")
+	eyecatch_timer.start()
+
+
+func _input(event):
+	eyecatch_timer.start()
+
 
 func _on_back_button_pressed():
 	options_menu.hide()
@@ -50,6 +58,11 @@ func _on_continue_campaign_pressed():
 
 func _on_exit_pressed():
 	get_tree().quit()
+
+
+func _on_eyecatch_timeout():
+	mission_data.load_mission_data("res://eyecatch.tscn")
+	loader.load_scene("res://eyecatch.tscn")
 
 
 func _on_mission_editor_pressed():
