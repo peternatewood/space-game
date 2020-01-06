@@ -68,7 +68,7 @@ func _ready():
 
 
 func _on_back_pressed():
-	loader.load_scene("res://title.tscn")
+	loader.change_scene("res://title.tscn")
 
 
 func _on_mission_button_pressed(mission_path: String):

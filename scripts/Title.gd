@@ -50,7 +50,7 @@ func _on_back_button_pressed():
 
 
 func _on_change_profile_pressed():
-	loader.load_scene("res://profiles.tscn")
+	loader.change_scene("res://profiles.tscn")
 
 
 func _on_continue_campaign_pressed():
@@ -59,7 +59,7 @@ func _on_continue_campaign_pressed():
 
 
 func _on_database_pressed():
-	loader.load_scene("res://database.tscn")
+	loader.change_scene("res://database.tscn")
 
 
 func _on_exit_pressed():
@@ -76,11 +76,11 @@ func _on_mission_editor_pressed():
 
 
 func _on_mission_select_pressed():
-	loader.load_scene("res://mission_select.tscn")
+	loader.change_scene("res://mission_select.tscn")
 
 
 func _on_new_campaign_pressed():
-	loader.load_scene("res://campaign_select.tscn")
+	loader.change_scene("res://campaign_select.tscn")
 
 
 func _on_options_pressed():

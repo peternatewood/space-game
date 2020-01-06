@@ -45,7 +45,7 @@ func _on_profile_delete_pressed(profile_name: String):
 
 func _on_profile_name_pressed(profile_name: String):
 	if profiles_data.load_profile(profile_name):
-		loader.load_scene("res://title.tscn")
+		loader.change_scene("res://title.tscn")
 	else:
 		print("Unable to load profile: " + profile_name)
 

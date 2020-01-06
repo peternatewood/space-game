@@ -47,7 +47,7 @@ func _ready():
 
 
 func _on_back_pressed():
-	loader.load_scene("res://title.tscn")
+	loader.change_scene("res://title.tscn")
 
 
 func _on_energy_weapon_button_pressed(energy_weapon_name: String):

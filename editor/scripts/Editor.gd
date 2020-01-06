@@ -617,7 +617,7 @@ func _on_file_menu_id_pressed(item_id: int):
 		2:
 			save_file_dialog.popup_centered()
 		3:
-			loader.load_scene("res://title.tscn")
+			loader.change_scene("res://title.tscn")
 		4:
 			get_tree().quit()
 

@@ -25,7 +25,7 @@ func _ready():
 func _input(event):
 	if is_eyecatch:
 		if (event is InputEventKey or event is InputEventMouseButton or event is InputEventJoypadButton) and event.pressed:
-			loader.load_scene("res://title.tscn")
+			loader.change_scene("res://title.tscn")
 	elif event.is_action_pressed("pause"):
 		var tree = get_tree()
 		if not tree.paused:
@@ -34,11 +34,11 @@ func _input(event):
 
 
 func _on_main_menu_confirmed():
-	loader.load_scene("res://title.tscn")
+	loader.change_scene("res://title.tscn")
 
 
 func _on_player_warped_out():
-	loader.load_scene("res://debriefing.tscn")
+	loader.change_scene("res://debriefing.tscn")
 
 
 func _on_scene_loaded():

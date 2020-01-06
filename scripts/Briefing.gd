@@ -47,9 +47,9 @@ func _ready():
 
 func _on_back_button_pressed():
 	if mission_data.is_in_campaign:
-		loader.load_scene("res://title.tscn")
+		loader.change_scene("res://title.tscn")
 	else:
-		loader.load_scene("res://mission_select.tscn")
+		loader.change_scene("res://mission_select.tscn")
 
 
 func _on_briefing_button_pressed():

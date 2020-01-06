@@ -44,12 +44,12 @@ func _on_next_pressed():
 		var next_mission_path = mission_data.get_next_mission_path()
 
 		if next_mission_path == null:
-			loader.load_scene("res://title.tscn")
+			loader.change_scene("res://title.tscn")
 		else:
 			mission_data.load_mission_data(next_mission_path, true)
 			loader.load_scene("res://briefing.tscn")
 	else:
-		loader.load_scene("res://mission_select.tscn")
+		loader.change_scene("res://mission_select.tscn")
 
 
 func _on_retry_pressed():
