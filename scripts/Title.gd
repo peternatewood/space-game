@@ -10,6 +10,7 @@ onready var settings = get_node("/root/GlobalSettings")
 func _ready():
 	var change_profile_button = get_node("Container/Change Profile")
 	var continue_campaign_button = get_node("Container/Continue Campaign")
+	var database_button = get_node("Container/Database")
 	var exit_button = get_node("Container/Exit")
 	var mission_editor_button = get_node("Container/Mission Editor")
 	var mission_select_button = get_node("Container/Mission Select")
@@ -24,6 +25,7 @@ func _ready():
 		new_campaign_button.grab_focus()
 
 	change_profile_button.connect("pressed", self, "_on_change_profile_pressed")
+	database_button.connect("pressed", self, "_on_database_pressed")
 	exit_button.connect("pressed", self, "_on_exit_pressed")
 	mission_editor_button.connect("pressed", self, "_on_mission_editor_pressed")
 	mission_select_button.connect("pressed", self, "_on_mission_select_pressed")
@@ -54,6 +56,10 @@ func _on_change_profile_pressed():
 func _on_continue_campaign_pressed():
 	mission_data.load_current_profile_mission()
 	loader.load_scene("res://briefing.tscn")
+
+
+func _on_database_pressed():
+	loader.load_scene("res://database.tscn")
 
 
 func _on_exit_pressed():

@@ -47,13 +47,17 @@ margin_bottom = 113.0
 rect_min_size = Vector2( 0, 12 )
 size_flags_horizontal = 3
 
-[node name="New Campaign" type="Button" parent="Container"]
+[node name="New Campaign" type="Button" parent="Container" groups=[
+"audible_hover",
+]]
 margin_top = 117.0
 margin_right = 364.0
 margin_bottom = 135.0
 text = "New Campaign"
 
-[node name="Continue Campaign" type="Button" parent="Container"]
+[node name="Continue Campaign" type="Button" parent="Container" groups=[
+"audible_hover",
+]]
 margin_top = 139.0
 margin_right = 364.0
 margin_bottom = 157.0
@@ -76,26 +80,36 @@ margin_right = 364.0
 margin_bottom = 201.0
 text = "Mission Editor"
 
-[node name="Options" type="Button" parent="Container" groups=[
+[node name="Database" type="Button" parent="Container" groups=[
 "audible_hover",
 ]]
 margin_top = 205.0
 margin_right = 364.0
 margin_bottom = 223.0
-text = "Options"
+text = "Database"
 
-[node name="Change Profile" type="Button" parent="Container"]
+[node name="Options" type="Button" parent="Container" groups=[
+"audible_hover",
+]]
 margin_top = 227.0
 margin_right = 364.0
 margin_bottom = 245.0
-text = "Change Profile"
+text = "Options"
 
-[node name="Exit" type="Button" parent="Container" groups=[
+[node name="Change Profile" type="Button" parent="Container" groups=[
 "audible_hover",
 ]]
 margin_top = 249.0
 margin_right = 364.0
 margin_bottom = 267.0
+text = "Change Profile"
+
+[node name="Exit" type="Button" parent="Container" groups=[
+"audible_hover",
+]]
+margin_top = 271.0
+margin_right = 364.0
+margin_bottom = 289.0
 text = "Exit"
 
 [node name="Options Menu" parent="." instance=ExtResource( 6 )]
