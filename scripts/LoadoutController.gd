@@ -14,8 +14,8 @@ onready var wing_containers = get_node("Wing Ships Container").get_children()
 var current_ship_class: String
 var editing_ship_index: int = -1
 var editing_wing_index: int = -1
-var energy_weapon_data: Dictionary = {}
-var missile_weapon_data: Dictionary = {}
+var energy_weapon_resources: Dictionary = {}
+var missile_weapon_resources: Dictionary = {}
 var ship_resources: Dictionary = {}
 var wing_ship_over
 
@@ -54,11 +54,9 @@ func _ready():
 	for energy_weapon_name in mission_data.energy_weapon_data.keys():
 		if mission_data.armory.energy_weapons.has(energy_weapon_name):
 			var model = load(mission_data.energy_weapon_data[energy_weapon_name].model_path)
-			var energy_weapon_instance = model.instance()
-			var source_folder = energy_weapon_instance.get_meta("source_folder")
 
 			var icon = ImageTexture.new()
-			var icon_stream_texture = load(source_folder + "/icon.png")
+			var icon_stream_texture = load(mission_data.energy_weapon_data[energy_weapon_name].model_dir + "/icon.png")
 			var icon_texture = icon_stream_texture.get_data()
 			icon.create_from_image(icon_texture, 0)
 
@@ -68,31 +66,25 @@ func _ready():
 			energy_weapon_icon.set_h_size_flags(SIZE_SHRINK_CENTER)
 			energy_weapon_icon.connect("pressed", self, "_update_weapon_preview", [ "energy_weapon", energy_weapon_name ])
 
-			var energy_weapon_video = load(source_folder + "/video.ogv")
+			var energy_weapon_video = load(mission_data.energy_weapon_data[energy_weapon_name].model_dir + "/video.ogv")
 
-			energy_weapon_data[energy_weapon_name] = {
-				"cost": energy_weapon_instance.cost,
-				"fire_delay": energy_weapon_instance.fire_delay,
-				"hull_damage": WeaponBase.get_damage_strength(energy_weapon_instance.damage_hull),
+			energy_weapon_resources[energy_weapon_name] = {
 				"icon": icon,
 				"model": model,
-				"shield_damage": WeaponBase.get_damage_strength(energy_weapon_instance.damage_shield),
 				"video": energy_weapon_video
 			}
 
 	for index in range(energy_weapon_slots.size()):
-		energy_weapon_slots[index].set_options(energy_weapon_data)
+		energy_weapon_slots[index].set_options(energy_weapon_resources)
 		energy_weapon_slots[index].connect("icon_pressed", self, "_on_energy_weapon_slot_pressed", [ index ])
 
 	var missile_weapons_container = get_node("Left Rows/Missile Weapons Panel/Missile Weapons Container")
 	for missile_weapon_name in mission_data.missile_weapon_data.keys():
 		if mission_data.armory.missile_weapons.has(missile_weapon_name):
 			var model = load(mission_data.missile_weapon_data[missile_weapon_name].model_path)
-			var missile_weapon_instance = model.instance()
-			var source_folder = missile_weapon_instance.get_meta("source_folder")
 
 			var icon = ImageTexture.new()
-			var icon_stream_texture = load(source_folder + "/icon.png")
+			var icon_stream_texture = load(mission_data.missile_weapon_data[missile_weapon_name].model_dir + "/icon.png")
 			var icon_texture = icon_stream_texture.get_data()
 			icon.create_from_image(icon_texture, 0)
 
@@ -102,20 +94,16 @@ func _ready():
 			missile_weapon_icon.set_h_size_flags(SIZE_SHRINK_CENTER)
 			missile_weapon_icon.connect("pressed", self, "_update_weapon_preview", [ "missile_weapon", missile_weapon_name ])
 
-			var missile_weapon_video = load(source_folder + "/video.ogv")
+			var missile_weapon_video = load(mission_data.missile_weapon_data[missile_weapon_name].model_dir + "/video.ogv")
 
-			missile_weapon_data[missile_weapon_name] = {
-				"fire_delay": missile_weapon_instance.fire_delay,
-				"hull_damage": WeaponBase.get_damage_strength(missile_weapon_instance.damage_hull),
+			missile_weapon_resources[missile_weapon_name] = {
 				"icon": icon,
 				"model": model,
-				"shield_damage": WeaponBase.get_damage_strength(missile_weapon_instance.damage_shield),
-				"weight": WeaponBase.get_ammo_cost_description(missile_weapon_instance.ammo_cost),
 				"video": missile_weapon_video
 			}
 
 	for index in range(missile_weapon_slots.size()):
-		missile_weapon_slots[index].set_options(missile_weapon_data)
+		missile_weapon_slots[index].set_options(missile_weapon_resources)
 		missile_weapon_slots[index].connect("icon_pressed", self, "_on_missile_weapon_slot_pressed", [ index ])
 
 	# Create wing checkboxes
@@ -159,7 +147,7 @@ func _on_energy_weapon_slot_pressed(weapon_name: String, slot_index: int):
 	if editing_wing_index == -1 or editing_ship_index == -1:
 		print("Something went wrong!")
 	elif weapon_name != mission_data.wing_loadouts[editing_wing_index][editing_ship_index].energy_weapons[slot_index].name:
-		mission_data.wing_loadouts[editing_wing_index][editing_ship_index].energy_weapons[slot_index].model = energy_weapon_data[weapon_name].model
+		mission_data.wing_loadouts[editing_wing_index][editing_ship_index].energy_weapons[slot_index].model = energy_weapon_resources[weapon_name].model
 		mission_data.wing_loadouts[editing_wing_index][editing_ship_index].energy_weapons[slot_index].name = weapon_name
 
 
@@ -167,7 +155,7 @@ func _on_missile_weapon_slot_pressed(weapon_name: String, slot_index: int):
 	if editing_wing_index == -1 or editing_ship_index == -1:
 		print("Something went wrong!")
 	elif weapon_name != mission_data.wing_loadouts[editing_wing_index][editing_ship_index].missile_weapons[slot_index].name:
-		mission_data.wing_loadouts[editing_wing_index][editing_ship_index].missile_weapons[slot_index].model = missile_weapon_data[weapon_name].model
+		mission_data.wing_loadouts[editing_wing_index][editing_ship_index].missile_weapons[slot_index].model = missile_weapon_resources[weapon_name].model
 		mission_data.wing_loadouts[editing_wing_index][editing_ship_index].missile_weapons[slot_index].name = weapon_name
 
 
@@ -210,7 +198,7 @@ func _set_editing_ship(ship_class: String, wing_index: int, ship_index: int):
 			if energy_weapon_name == "none":
 				energy_weapon_slots[index].hide_current_icon()
 			else:
-				energy_weapon_slots[index].set_current_icon(energy_weapon_data[energy_weapon_name].icon)
+				energy_weapon_slots[index].set_current_icon(energy_weapon_resources[energy_weapon_name].icon)
 		else:
 			energy_weapon_slots[index].hide()
 
@@ -222,7 +210,7 @@ func _set_editing_ship(ship_class: String, wing_index: int, ship_index: int):
 			if missile_weapon_name == "none":
 				missile_weapon_slots[index].hide_current_icon()
 			else:
-				missile_weapon_slots[index].set_current_icon(missile_weapon_data[missile_weapon_name].icon)
+				missile_weapon_slots[index].set_current_icon(missile_weapon_resources[missile_weapon_name].icon)
 		else:
 			missile_weapon_slots[index].hide()
 
@@ -259,10 +247,10 @@ func _update_weapon_preview(weapon_type: String, weapon_name: String):
 	match weapon_type:
 		"energy_weapon":
 			data = mission_data.energy_weapon_data[weapon_name]
-			video_stream = energy_weapon_data[weapon_name].video
+			video_stream = energy_weapon_resources[weapon_name].video
 		"missile_weapon":
 			data = mission_data.missile_weapon_data[weapon_name]
-			video_stream = missile_weapon_data[weapon_name].video
+			video_stream = missile_weapon_resources[weapon_name].video
 
 	if data != null:
 		weapon_preview_container.set_weapon(weapon_name, data, video_stream)
