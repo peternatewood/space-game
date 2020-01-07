@@ -16,7 +16,7 @@ var editing_ship_index: int = -1
 var editing_wing_index: int = -1
 var energy_weapon_data: Dictionary = {}
 var missile_weapon_data: Dictionary = {}
-var ship_data: Dictionary = {}
+var ship_resources: Dictionary = {}
 var wing_ship_over
 
 
@@ -27,18 +27,14 @@ func _ready():
 
 		if mission_data.armory.ships.has(ship_class):
 			var model = load(mission_data.ship_data[section].model_path)
-			var ship_instance = model.instance()
-			var source_folder = ship_instance.get_meta("source_folder")
-			var energy_weapon_slot_count = ship_instance.get_node("Energy Weapon Groups").get_child_count()
-			var missile_weapon_slot_count = ship_instance.get_node("Missile Weapon Groups").get_child_count()
 
 			var icon = ImageTexture.new()
-			var icon_stream_texture = load(source_folder + "/icon.png")
+			var icon_stream_texture = load(mission_data.ship_data[ship_class].model_dir + "/icon.png")
 			var icon_texture = icon_stream_texture.get_data()
 			icon.create_from_image(icon_texture, 0)
 
 			var overhead = ImageTexture.new()
-			var overhead_stream_texture = load(source_folder + "/loadout_overhead.png")
+			var overhead_stream_texture = load(mission_data.ship_data[ship_class].model_dir + "/loadout_overhead.png")
 			var overhead_texture = overhead_stream_texture.get_data()
 			overhead.create_from_image(overhead_texture, 0)
 
@@ -48,16 +44,10 @@ func _ready():
 			radial_icon.set_h_size_flags(SIZE_SHRINK_CENTER)
 			radial_icon.connect("pressed", self, "_update_ship_preview", [ ship_class ])
 
-			ship_data[ship_class] = {
+			ship_resources[ship_class] = {
 				"model": model,
 				"icon": icon,
-				"overhead": overhead,
-				"max_speed": ship_instance.get_meta("max_speed"),
-				"hull_hitpoints": ship_instance.get_meta("hull_hitpoints"),
-				"shield_hitpoints": ship_instance.get_meta("shield_hitpoints"),
-				"energy_weapon_slots": energy_weapon_slot_count,
-				"missile_weapon_slots": missile_weapon_slot_count,
-				"missile_capacity": ship_instance.get_meta("missile_capacity")
+				"overhead": overhead
 			}
 
 	var energy_weapons_container = get_node("Left Rows/Energy Weapons Panel/Energy Weapons Container")
@@ -152,8 +142,8 @@ func _ready():
 				if ship_index < ship_count:
 					var ship_class: String = mission_data.wing_loadouts[wing_index][ship_index].get("ship_class", "")
 
-					wing_containers[wing_index].get_child(ship_index).set_options(ship_data)
-					wing_containers[wing_index].get_child(ship_index).set_current_icon(ship_data[ship_class].icon)
+					wing_containers[wing_index].get_child(ship_index).set_options(ship_resources)
+					wing_containers[wing_index].get_child(ship_index).set_current_icon(ship_resources[ship_class].icon)
 					wing_containers[wing_index].get_child(ship_index).connect("radial_pressed", self, "_on_wing_radial_pressed", [ wing_index, ship_index ])
 					wing_containers[wing_index].get_child(ship_index).connect("icon_pressed", self, "_on_wing_icon_pressed")
 				else:
@@ -194,7 +184,7 @@ func _on_wing_icon_pressed(ship_class: String):
 		print("Something went wrong!")
 	elif ship_class != mission_data.wing_loadouts[editing_wing_index][editing_ship_index].ship_class:
 		mission_data.wing_loadouts[editing_wing_index][editing_ship_index].ship_class = ship_class
-		mission_data.wing_loadouts[editing_wing_index][editing_ship_index].model = ship_data[ship_class].model
+		mission_data.wing_loadouts[editing_wing_index][editing_ship_index].model = ship_resources[ship_class].model
 
 		_set_editing_ship(ship_class, editing_wing_index, editing_ship_index)
 
@@ -207,13 +197,13 @@ func _set_editing_ship(ship_class: String, wing_index: int, ship_index: int):
 	var wing_name: String = mission_data.wing_names[wing_index]
 
 	_update_ship_preview(ship_class)
-	ship_overhead.set_texture(ship_data[ship_class].overhead)
+	ship_overhead.set_texture(ship_resources[ship_class].overhead)
 	ship_wing_name.set_text(wing_name + " " + str(ship_index + 1))
 
 	# Update weapon slot icons
 	var ship_loadout = mission_data.wing_loadouts[wing_index][ship_index]
 	for index in range(energy_weapon_slots.size()):
-		if index < ship_data[ship_loadout.ship_class].energy_weapon_slots:
+		if index < mission_data.ship_data[ship_loadout.ship_class].energy_weapon_slots:
 			energy_weapon_slots[index].show()
 
 			var energy_weapon_name = ship_loadout.energy_weapons[index].name
@@ -225,7 +215,7 @@ func _set_editing_ship(ship_class: String, wing_index: int, ship_index: int):
 			energy_weapon_slots[index].hide()
 
 	for index in range(missile_weapon_slots.size()):
-		if index < ship_data[ship_loadout.ship_class].missile_weapon_slots:
+		if index < mission_data.ship_data[ship_loadout.ship_class].missile_weapon_slots:
 			missile_weapon_slots[index].show()
 
 			var missile_weapon_name = ship_loadout.missile_weapons[index].name
@@ -254,7 +244,7 @@ func _update_ship_preview(ship_class: String):
 
 		ship_preview_container.show()
 
-		var ship_instance = ship_data[current_ship_class].model.instance()
+		var ship_instance = ship_resources[current_ship_class].model.instance()
 		ship_preview_container.set_ship(current_ship_class, mission_data.ship_data[current_ship_class], ship_instance)
 
 		return true
