@@ -32,6 +32,7 @@ func _ready():
 		var model_path: String = model_dir + "model.dae"
 
 		ship_data[ship_class] = {
+			"model_dir": model_dir,
 			"model_path": model_path,
 			"energy_weapon_slots": 0,
 			"missile_weapon_slots": 0,
