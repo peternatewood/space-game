@@ -8,7 +8,7 @@ onready var ship_overhead = get_node("Ship Overhead")
 onready var ship_preview_container = get_node("Ship Preview Container")
 onready var ship_wing_name = get_node("Weapon Slots Rows/Ship Wing Name")
 onready var weapon_slots_rows = get_node("Weapon Slots Rows")
-onready var weapon_preview = get_node("Weapon Preview Container")
+onready var weapon_preview_container = get_node("Weapon Preview Container")
 onready var wing_containers = get_node("Wing Ships Container").get_children()
 
 var current_ship_class: String
@@ -264,15 +264,18 @@ func _update_ship_preview(ship_class: String):
 
 func _update_weapon_preview(weapon_type: String, weapon_name: String):
 	var data
+	var video_stream
 
 	match weapon_type:
 		"energy_weapon":
-			data = energy_weapon_data[weapon_name]
+			data = mission_data.energy_weapon_data[weapon_name]
+			video_stream = energy_weapon_data[weapon_name].video
 		"missile_weapon":
-			data = missile_weapon_data[weapon_name]
+			data = mission_data.missile_weapon_data[weapon_name]
+			video_stream = missile_weapon_data[weapon_name].video
 
 	if data != null:
-		weapon_preview.set_weapon(weapon_type, weapon_name, data)
+		weapon_preview_container.set_weapon(weapon_name, data, video_stream)
 
 
 const ShipBase = preload("ShipBase.gd")

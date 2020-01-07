@@ -4,7 +4,7 @@
 [ext_resource path="res://scripts/Database.gd" type="Script" id=2]
 [ext_resource path="res://images/background_blue.png" type="Texture" id=3]
 [ext_resource path="res://prefabs/ship_preview_container.tscn" type="PackedScene" id=4]
-[ext_resource path="res://models/energy_weapons/energy_bolt/video.ogv" type="VideoStream" id=5]
+[ext_resource path="res://prefabs/weapon_preview_container.tscn" type="PackedScene" id=5]
 
 [node name="Database" type="Control"]
 anchor_right = 1.0
@@ -73,39 +73,19 @@ margin_bottom = -8.0
 
 [node name="Weapon List Scroll Container" type="ScrollContainer" parent="Database Rows/Tabs/Weapons"]
 margin_right = 772.0
-margin_bottom = 524.0
+margin_bottom = 494.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 scroll_horizontal_enabled = false
 
 [node name="Weapon List" type="VBoxContainer" parent="Database Rows/Tabs/Weapons/Weapon List Scroll Container"]
 margin_right = 772.0
-margin_bottom = 524.0
+margin_bottom = 494.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Weapon Preview Rows" type="VBoxContainer" parent="Database Rows/Tabs/Weapons"]
-margin_left = 776.0
-margin_right = 976.0
-margin_bottom = 524.0
-
-[node name="Weapon Preview Label" type="Label" parent="Database Rows/Tabs/Weapons/Weapon Preview Rows"]
-margin_right = 200.0
-margin_bottom = 18.0
-text = "weapon"
-
-[node name="Weapon Preview" type="VideoPlayer" parent="Database Rows/Tabs/Weapons/Weapon Preview Rows"]
-margin_top = 22.0
-margin_right = 200.0
-margin_bottom = 172.0
-rect_min_size = Vector2( 200, 150 )
-stream = ExtResource( 5 )
-
-[node name="Weapon Description" type="RichTextLabel" parent="Database Rows/Tabs/Weapons/Weapon Preview Rows"]
-margin_top = 176.0
-margin_right = 200.0
-margin_bottom = 176.0
-size_flags_vertical = 3
+[node name="Weapon Preview Container" parent="Database Rows/Tabs/Weapons" instance=ExtResource( 5 )]
+show_description = true
 
 [node name="Back Button" type="Button" parent="Database Rows"]
 margin_top = 542.0
