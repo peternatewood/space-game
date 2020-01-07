@@ -84,6 +84,25 @@ func _ready():
 		var model_dir: String
 
 		match weapons_config.get_value(section, "type"):
+			"beam_weapon":
+				model_dir = "res://models/beam_weapons/" + section + "/"
+
+				beam_weapon_data[weapon_name] = {
+					"model_path": model_dir + "model.dae",
+					"model_dir": model_dir
+				}
+
+				for key in weapons_config.get_section_keys(section):
+					beam_weapon_data[weapon_name][key] = weapons_config.get_value(section, key)
+
+				var beam_instance = beam_weapon_models[weapon_name].instance()
+
+				beam_weapon_data[weapon_name]["fire_delay"] = beam_instance.fire_delay
+				beam_weapon_data[weapon_name]["fire_duration"] = beam_instance.fire_duration
+				beam_weapon_data[weapon_name]["damage_hull"] = beam_instance.hull_damage
+				beam_weapon_data[weapon_name]["damage_shield"] = beam_instance.shield_damage
+
+				beam_instance.free()
 			"energy_weapon":
 				model_dir = "res://models/energy_weapons/" + section + "/"
 
@@ -104,16 +123,6 @@ func _ready():
 
 				for key in weapons_config.get_section_keys(section):
 					missile_weapon_data[weapon_name][key] = weapons_config.get_value(section, key)
-			"beam_weapon":
-				model_dir = "res://models/beam_weapons/" + section + "/"
-
-				beam_weapon_data[weapon_name] = {
-					"model_path": model_dir + "model.dae",
-					"model_dir": model_dir
-				}
-
-				for key in weapons_config.get_section_keys(section):
-					beam_weapon_data[weapon_name][key] = weapons_config.get_value(section, key)
 
 	# Build campaign list
 	if dir.open("res://campaigns") != OK:
