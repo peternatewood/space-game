@@ -29,10 +29,32 @@ func _ready():
 	for section in ships_config.get_sections():
 		var model_dir: String = "res://models/ships/" + section + "/"
 		var ship_class: String = ships_config.get_value(section, "ship_class")
+		var model_path: String = model_dir + "model.dae"
 
 		ship_data[ship_class] = {
-			"model_path": model_dir + "model.dae"
+			"model_path": model_path,
+			"energy_weapon_slots": 0,
+			"missile_weapon_slots": 0,
+			"beam_weapon_turrets": 0,
+			"energy_weapon_turrets": 0,
+			"missile_weapon_turrets": 0
 		}
+
+		var model = load(model_path)
+		var ship_instance = model.instance()
+
+		if ship_instance.get_meta("is_capital_ship"):
+			if ship_instance.has_node("Beam Weapon Turrets"):
+				ship_data[ship_class].beam_weapon_turrets = ship_instance.get_node("Beam Weapon Turrets").get_child_count()
+			if ship_instance.has_node("Energy Weapon Turrets"):
+				ship_data[ship_class].energy_weapon_turrets = ship_instance.get_node("Energy Weapon Turrets").get_child_count()
+			if ship_instance.has_node("Missile Weapon Turrets"):
+				ship_data[ship_class].missile_weapon_turrets = ship_instance.get_node("Missile Weapon Turrets").get_child_count()
+		else:
+			ship_data[ship_class].energy_weapon_slots = ship_instance.get_node("Energy Weapon Groups").get_child_count()
+			ship_data[ship_class].missile_weapon_slots = ship_instance.get_node("Missile Weapon Groups").get_child_count()
+
+		ship_instance.free()
 
 		for key in ships_config.get_section_keys(section):
 			ship_data[ship_class][key] = ships_config.get_value(section, key)
