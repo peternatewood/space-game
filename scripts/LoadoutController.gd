@@ -21,7 +21,7 @@ var wing_ship_over
 
 
 func _ready():
-	var ship_selection_container = get_node("Left Rows/Ships Panel/Ship Selection Container")
+	var ship_selection_container = get_node("Left Rows/Ships Panel/Ships Scroll/Ship Selection Container")
 	for section in mission_data.ship_data.keys():
 		var ship_class = mission_data.ship_data[section].get("ship_class", "")
 
@@ -50,7 +50,7 @@ func _ready():
 				"overhead": overhead
 			}
 
-	var energy_weapons_container = get_node("Left Rows/Energy Weapons Panel/Energy Weapons Container")
+	var energy_weapons_container = get_node("Left Rows/Energy Weapons Panel/Energy Weapons Scroll/Energy Weapons Container")
 	for energy_weapon_name in mission_data.energy_weapon_data.keys():
 		if mission_data.armory.energy_weapons.has(energy_weapon_name):
 			var model = load(mission_data.energy_weapon_data[energy_weapon_name].model_path)
@@ -78,7 +78,7 @@ func _ready():
 		energy_weapon_slots[index].set_options(energy_weapon_resources)
 		energy_weapon_slots[index].connect("icon_pressed", self, "_on_energy_weapon_slot_pressed", [ index ])
 
-	var missile_weapons_container = get_node("Left Rows/Missile Weapons Panel/Missile Weapons Container")
+	var missile_weapons_container = get_node("Left Rows/Missile Weapons Panel/Missile Weapons Scroll/Missile Weapons Container")
 	for missile_weapon_name in mission_data.missile_weapon_data.keys():
 		if mission_data.armory.missile_weapons.has(missile_weapon_name):
 			var model = load(mission_data.missile_weapon_data[missile_weapon_name].model_path)

@@ -82,6 +82,7 @@ size_flags_vertical = 3
 [node name="Briefing Container" type="Control" parent="Columns/Menus Container"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_bottom = -32.0
 
 [node name="Briefing Panel" type="PanelContainer" parent="Columns/Menus Container/Briefing Container"]
 anchor_right = 1.0
@@ -96,12 +97,13 @@ custom_styles/panel = SubResource( 1 )
 margin_left = 1.0
 margin_top = 1.0
 margin_right = 792.0
-margin_bottom = 488.0
+margin_bottom = 456.0
 
 [node name="Loadout" type="Control" parent="Columns/Menus Container"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_bottom = -32.0
 script = ExtResource( 5 )
 
 [node name="Ship Overhead" type="TextureRect" parent="Columns/Menus Container/Loadout"]
@@ -136,9 +138,9 @@ margin_right = 0.0
 margin_bottom = 88.0
 
 [node name="Left Rows" type="VBoxContainer" parent="Columns/Menus Container/Loadout"]
-editor/display_folded = true
-margin_right = 51.0
-margin_bottom = 40.0
+anchor_bottom = 1.0
+margin_right = 120.0
+size_flags_vertical = 3
 
 [node name="Ships Panel Label" type="Label" parent="Columns/Menus Container/Loadout/Left Rows"]
 margin_right = 120.0
@@ -148,61 +150,88 @@ text = "Ships"
 [node name="Ships Panel" type="PanelContainer" parent="Columns/Menus Container/Loadout/Left Rows"]
 margin_top = 22.0
 margin_right = 120.0
-margin_bottom = 30.0
+margin_bottom = 106.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="Ship Selection Container" type="VBoxContainer" parent="Columns/Menus Container/Loadout/Left Rows/Ships Panel"]
+[node name="Ships Scroll" type="ScrollContainer" parent="Columns/Menus Container/Loadout/Left Rows/Ships Panel"]
 margin_left = 8.0
 margin_top = 4.0
 margin_right = 112.0
-margin_bottom = 4.0
+margin_bottom = 80.0
+size_flags_vertical = 3
+scroll_horizontal_enabled = false
+
+[node name="Ship Selection Container" type="VBoxContainer" parent="Columns/Menus Container/Loadout/Left Rows/Ships Panel/Ships Scroll"]
+margin_right = 104.0
+margin_bottom = 76.0
 size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="Energy Weapons Label" type="Label" parent="Columns/Menus Container/Loadout/Left Rows"]
-margin_top = 34.0
+margin_top = 110.0
 margin_right = 120.0
-margin_bottom = 52.0
+margin_bottom = 128.0
 text = "Energy Weapons"
 
 [node name="Energy Weapons Panel" type="PanelContainer" parent="Columns/Menus Container/Loadout/Left Rows"]
-margin_top = 56.0
+margin_top = 132.0
 margin_right = 120.0
-margin_bottom = 64.0
+margin_bottom = 216.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="Energy Weapons Container" type="VBoxContainer" parent="Columns/Menus Container/Loadout/Left Rows/Energy Weapons Panel"]
+[node name="Energy Weapons Scroll" type="ScrollContainer" parent="Columns/Menus Container/Loadout/Left Rows/Energy Weapons Panel"]
 margin_left = 8.0
 margin_top = 4.0
 margin_right = 112.0
-margin_bottom = 4.0
+margin_bottom = 80.0
+size_flags_vertical = 3
+scroll_horizontal_enabled = false
+
+[node name="Energy Weapons Container" type="VBoxContainer" parent="Columns/Menus Container/Loadout/Left Rows/Energy Weapons Panel/Energy Weapons Scroll"]
+margin_right = 104.0
+margin_bottom = 76.0
 size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="Missile Weapons Label" type="Label" parent="Columns/Menus Container/Loadout/Left Rows"]
-margin_top = 68.0
+margin_top = 220.0
 margin_right = 120.0
-margin_bottom = 86.0
+margin_bottom = 238.0
 text = "Missile Weapons"
 
 [node name="Missile Weapons Panel" type="PanelContainer" parent="Columns/Menus Container/Loadout/Left Rows"]
-margin_top = 90.0
+margin_top = 242.0
 margin_right = 120.0
-margin_bottom = 98.0
+margin_bottom = 326.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="Missile Weapons Container" type="VBoxContainer" parent="Columns/Menus Container/Loadout/Left Rows/Missile Weapons Panel"]
+[node name="Missile Weapons Scroll" type="ScrollContainer" parent="Columns/Menus Container/Loadout/Left Rows/Missile Weapons Panel"]
 margin_left = 8.0
 margin_top = 4.0
 margin_right = 112.0
-margin_bottom = 4.0
+margin_bottom = 80.0
+size_flags_vertical = 3
+scroll_horizontal_enabled = false
+
+[node name="Missile Weapons Container" type="VBoxContainer" parent="Columns/Menus Container/Loadout/Left Rows/Missile Weapons Panel/Missile Weapons Scroll"]
+margin_right = 104.0
+margin_bottom = 76.0
 size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="Wings Label" type="Label" parent="Columns/Menus Container/Loadout/Left Rows"]
-margin_top = 102.0
+margin_top = 330.0
 margin_right = 120.0
-margin_bottom = 120.0
+margin_bottom = 348.0
 text = "Wings"
 
 [node name="Wings Panel" type="PanelContainer" parent="Columns/Menus Container/Loadout/Left Rows"]
-margin_top = 124.0
+margin_top = 352.0
 margin_right = 120.0
-margin_bottom = 308.0
+margin_bottom = 536.0
 
 [node name="Wing Selection Container" type="VBoxContainer" parent="Columns/Menus Container/Loadout/Left Rows/Wings Panel"]
 margin_left = 8.0
@@ -637,8 +666,8 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -41.0
-margin_top = -20.0
+margin_left = -56.0
+margin_top = -26.0
 text = "Start"
 
 [node name="Back Button" type="Button" parent="Columns/Menus Container"]
