@@ -4,16 +4,8 @@ onready var draggable_icon = get_node("Draggable Icon")
 onready var energy_weapon_slots = get_node("Weapon Slots Rows/Energy Weapon Rows").get_children()
 onready var missile_weapon_slots = get_node("Weapon Slots Rows/Missile Weapon Rows").get_children()
 onready var mission_data = get_node("/root/MissionData")
-onready var ship_class_label = get_node("Ship Preview Container/Ship Details/Ship Class")
-onready var ship_hull_label = get_node("Ship Preview Container/Ship Details/Hull Strength")
 onready var ship_overhead = get_node("Ship Overhead")
-onready var ship_preview = get_node("Ship Preview Viewport")
 onready var ship_preview_container = get_node("Ship Preview Container")
-onready var ship_shield_label = get_node("Ship Preview Container/Ship Details/Shield Strength")
-onready var ship_speed_label = get_node("Ship Preview Container/Ship Details/Ship Speed")
-onready var ship_energy_slots_label = get_node("Ship Preview Container/Ship Details/Energy Weapon Slots")
-onready var ship_missile_slots_label = get_node("Ship Preview Container/Ship Details/Missile Weapon Slots")
-onready var ship_weapon_capacity_label = get_node("Ship Preview Container/Ship Details/Weapon Capacity")
 onready var ship_wing_name = get_node("Weapon Slots Rows/Ship Wing Name")
 onready var weapon_slots_rows = get_node("Weapon Slots Rows")
 onready var weapon_preview = get_node("Weapon Preview Container")
@@ -261,14 +253,9 @@ func _update_ship_preview(ship_class: String):
 		current_ship_class = ship_class
 
 		ship_preview_container.show()
-		ship_class_label.set_text(current_ship_class)
-		ship_hull_label.set_text(ShipBase.get_hitpoints_strength(ship_data[current_ship_class].hull_hitpoints))
-		ship_shield_label.set_text(ShipBase.get_hitpoints_strength(ship_data[current_ship_class].shield_hitpoints))
-		ship_speed_label.set_text(str(10 * ship_data[current_ship_class].max_speed) + " m/s")
-		ship_energy_slots_label.set_text(str(ship_data[current_ship_class].energy_weapon_slots))
-		ship_missile_slots_label.set_text(str(ship_data[current_ship_class].missile_weapon_slots))
-		ship_weapon_capacity_label.set_text(ShipBase.get_weapon_capacity_level(ship_data[current_ship_class].missile_capacity))
-		ship_preview.show_ship(ship_data[current_ship_class].model)
+
+		var ship_instance = ship_data[current_ship_class].model.instance()
+		ship_preview_container.set_ship(current_ship_class, mission_data.ship_data[current_ship_class], ship_instance)
 
 		return true
 

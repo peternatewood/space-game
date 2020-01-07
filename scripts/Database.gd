@@ -3,8 +3,7 @@ extends Control
 onready var loader = get_node("/root/SceneLoader")
 onready var mission_data = get_node("/root/MissionData")
 onready var preview_viewport = get_node("Ship Preview Viewport")
-onready var ship_description = get_node("Database Rows/Tabs/Ships/Ship Preview Rows/Ship Description")
-onready var ship_label = get_node("Database Rows/Tabs/Ships/Ship Preview Rows/Ship Preview Label")
+onready var ship_preview = get_node("Database Rows/Tabs/Ships/Ship Preview Container")
 onready var weapon_description = get_node("Database Rows/Tabs/Weapons/Weapon Preview Rows/Weapon Description")
 onready var weapon_label = get_node("Database Rows/Tabs/Weapons/Weapon Preview Rows/Weapon Preview Label")
 onready var weapon_preview = get_node("Database Rows/Tabs/Weapons/Weapon Preview Rows/Weapon Preview")
@@ -93,12 +92,5 @@ func _on_missile_weapon_button_pressed(missile_weapon_name: String):
 func _on_ship_button_pressed(ship_name: String):
 	var ship_model = load(mission_data.ship_data[ship_name].model_path)
 	var ship_instance = ship_model.instance()
-	ship_instance.set_script(ShipBase)
 
-	preview_viewport.set_ship(ship_instance)
-
-	ship_label.set_text(ship_name)
-	ship_description.set_text(mission_data.ship_data[ship_name].get("description", "*no description provided*"))
-
-
-const ShipBase = preload("ShipBase.gd")
+	ship_preview.set_ship(ship_name, mission_data.ship_data[ship_name], ship_instance)
