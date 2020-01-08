@@ -173,7 +173,7 @@ func get_ships_in_wing(wing_name: String, exclude_ship = null, include_warped_ou
 func get_targets(include_warped_out: bool = false):
 	var warped_in_targets: Array = []
 	for child in targets_container.get_children():
-		if include_warped_out or child.is_warped_in:
+		if child.is_alive and (include_warped_out or child.is_warped_in):
 			warped_in_targets.append(child)
 
 	return warped_in_targets
