@@ -258,6 +258,9 @@ func _on_player_damaged():
 
 
 func _on_player_destroyed():
+	if player.has_target:
+		_disconnect_target_signals(player.current_target)
+
 	hide()
 	set_process(false)
 
