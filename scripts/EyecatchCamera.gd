@@ -4,6 +4,7 @@ enum { TRACK, CHASE, COCKPIT, MODE_COUNT }
 
 onready var mission_controller = get_tree().get_root().get_node_or_null("Mission Controller")
 
+var has_target_ship: bool = false
 var mode = -1
 var mode_timer: Timer
 var target_ship
@@ -27,32 +28,38 @@ func _on_mission_ready():
 	set_process(true)
 
 
-func _on_target_exiting_tree():
+func _on_target_destroyed():
+	has_target_ship = false
 	target_ship = null
+
 	_on_timer_timeout()
 	mode_timer.start()
 
 
 func _on_timer_timeout():
-	if target_ship != null:
-		target_ship.disconnect("tree_exiting", self, "_on_target_exiting_tree")
+	if has_target_ship:
+		target_ship.disconnect("destroyed", self, "_on_target_destroyed")
 
 		if mode == COCKPIT:
 			target_ship.show()
 
 	var ships = mission_controller.get_targets()
-	target_ship = ships[randi() % ships.size()]
-	target_ship.connect("tree_exiting", self, "_on_target_exiting_tree")
-
-	if target_ship.is_capital_ship:
-		mode = TRACK
+	if ships.size() == 0:
+		print("No more ships in the scene!")
 	else:
-		var new_mode = randi() % MODE_COUNT
+		target_ship = ships[randi() % ships.size()]
+		has_target_ship = true
+		target_ship.connect("destroyed", self, "_on_target_destroyed")
 
-		if new_mode == mode:
-			new_mode = (mode + 1) % MODE_COUNT
+		if target_ship.is_capital_ship:
+			mode = TRACK
+		else:
+			var new_mode = randi() % MODE_COUNT
 
-		mode = new_mode
+			if new_mode == mode:
+				new_mode = (mode + 1) % MODE_COUNT
+
+			mode = new_mode
 
 	match mode:
 		TRACK:
@@ -63,12 +70,13 @@ func _on_timer_timeout():
 
 
 func _process(delta):
-	match mode:
-		TRACK:
-			look_at(target_ship.transform.origin, Vector3.UP)
-		CHASE:
-			transform.origin = target_ship.chase_view.global_transform.origin
-			look_at(transform.origin - target_ship.transform.basis.z, target_ship.transform.basis.y)
-		COCKPIT:
-			transform.origin = target_ship.transform.origin
-			look_at(transform.origin - target_ship.transform.basis.z, target_ship.transform.basis.y)
+	if has_target_ship:
+		match mode:
+			TRACK:
+				look_at(target_ship.transform.origin, Vector3.UP)
+			CHASE:
+				transform.origin = target_ship.chase_view.global_transform.origin
+				look_at(transform.origin - target_ship.transform.basis.z, target_ship.transform.basis.y)
+			COCKPIT:
+				transform.origin = target_ship.transform.origin
+				look_at(transform.origin - target_ship.transform.basis.z, target_ship.transform.basis.y)
