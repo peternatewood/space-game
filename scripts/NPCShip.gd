@@ -163,15 +163,15 @@ func _turn_towards_target(target_pos: Vector3):
 		# Reduce turning if we're set to overshoot the turn
 		if pitch_overshoot > 0:
 			if y_dot > 0:
-				y_dot -= pitch_overshoot
-			else:
-				y_dot += pitch_overshoot
+				y_dot -= pitch_overshoot / TAU
+			elif y_dot < 0:
+				y_dot += pitch_overshoot / TAU
 
 		if yaw_overshoot > 0:
 			if x_dot > 0:
-				x_dot -= yaw_overshoot
-			else:
-				x_dot += yaw_overshoot
+				x_dot -= yaw_overshoot / TAU
+			elif x_dot < 0:
+				x_dot += yaw_overshoot / TAU
 
 		input_velocity.x = y_dot
 		input_velocity.y = -x_dot
@@ -235,9 +235,9 @@ func set_is_flying_at_target(at_target: bool):
 
 
 const LINE_OF_FIRE_SQ: float = 4.0 # Squared to make processing faster
-const MAX_TARGET_DIST_SQ: float = pow(15, 2)
-const MIN_FULL_SPEED_DIST_SQ: float = pow(10, 2)
-const MIN_TARGET_DIST_SQ: float = pow(8, 2)
+const MAX_TARGET_DIST_SQ: float = pow(18, 2)
+const MIN_FULL_SPEED_DIST_SQ: float = pow(14, 2)
+const MIN_TARGET_DIST_SQ: float = pow(12, 2)
 const PATROL_THROTTLE: float = 0.7
 
 
