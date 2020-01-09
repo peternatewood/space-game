@@ -130,12 +130,22 @@ func _process(delta):
 					if has_target:
 						_attack_current_target()
 					else:
-						# Get closest hostile target
-						var closest_target = mission_controller.get_closest_target(self, mission_controller.get_targets(), mission_controller.HOSTILE)
-						if closest_target != null:
-							_set_current_target(closest_target)
-						else:
+						# Get closest hostile target, preferring ships that aren't already targeted by someone else
+
+						var closest_target = null
+						var targets_by_distance = mission_controller.get_targets_by_distance(self, mission_controller.get_targets(), mission_controller.HOSTILE)
+						if targets_by_distance.size() == 0:
 							o.type = ORDER_TYPE.PASSIVE
+						else:
+							for target in targets_by_distance:
+								if target.targeting_ships.size() == 0:
+									closest_target = target
+									break
+
+							if closest_target == null:
+								closest_target = targets_by_distance[0]
+
+							_set_current_target(closest_target)
 				ORDER_TYPE.DEPART:
 					warp(false)
 
