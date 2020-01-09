@@ -2,6 +2,7 @@ extends Spatial
 
 onready var mission_controller = get_node_or_null("/root/Mission Controller")
 
+var camera: Camera
 var debris_particles: Array = []
 
 
@@ -13,25 +14,26 @@ func _ready():
 
 
 func _on_mission_ready():
+	camera = get_viewport().get_camera()
+
 	var debris_prefab = load("res://prefabs/movement_debris.tscn")
 	for index in range(DEBRIS_COUNT):
 		var debris_instance = debris_prefab.instance()
 		add_child(debris_instance)
 		var direction: Vector3 = Vector3(2 * randf() - 1, 2 * randf() - 1, 2 * randf() - 1)
-		debris_instance.transform.origin = MAX_DISTANCE * direction
+		debris_instance.transform.origin = camera.transform.origin + MAX_DISTANCE * direction
 		debris_particles.append(debris_instance)
-
-	mission_controller.player.connect("destroyed", self, "queue_free")
 
 	set_process(true)
 
 
 func _process(delta):
-	var to_player: Vector3
+	var to_camera: Vector3
 	for debris in debris_particles:
-		to_player = mission_controller.player.transform.origin - debris.transform.origin
-		if to_player.length_squared() > MAX_DISTANCE_SQ:
-			debris.transform.origin += 2 * MAX_DISTANCE * to_player.normalized()
+		to_camera = camera.transform.origin - debris.transform.origin
+		if to_camera.length_squared() > MAX_DISTANCE_SQ:
+			var direction: Vector3 = Vector3(2 * randf() - 1, 2 * randf() - 1, 2 * randf() - 1)
+			debris.transform.origin = camera.transform.origin + MAX_DISTANCE * direction
 
 
 const DEBRIS_COUNT: int = 32
