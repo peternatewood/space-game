@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://scripts/MissionController.gd" type="Script" id=1]
 [ext_resource path="res://scripts/PlayerCamera.gd" type="Script" id=2]
@@ -14,17 +14,18 @@
 [ext_resource path="res://models/ships/frog_destroyer/model.dae" type="PackedScene" id=12]
 [ext_resource path="res://models/ships/frog_interceptor/model.dae" type="PackedScene" id=13]
 [ext_resource path="res://models/ships/frog_battleship/model.dae" type="PackedScene" id=14]
-[ext_resource path="res://models/asteroid/asteroid.dae" type="PackedScene" id=15]
-[ext_resource path="res://scripts/ActorBase.gd" type="Script" id=16]
-[ext_resource path="res://scripts/MovementDebris.gd" type="Script" id=17]
-[ext_resource path="res://hud.tscn" type="PackedScene" id=18]
-[ext_resource path="res://themes/default_inconsolata.tres" type="Theme" id=19]
-[ext_resource path="res://scripts/HUD.gd" type="Script" id=20]
-[ext_resource path="res://mission_start_overlay.tscn" type="PackedScene" id=21]
-[ext_resource path="res://scripts/MissionStartOverlay.gd" type="Script" id=22]
-[ext_resource path="res://pause_menu.tscn" type="PackedScene" id=23]
-[ext_resource path="res://themes/interface_blue.tres" type="Theme" id=24]
-[ext_resource path="res://scripts/PauseMenu.gd" type="Script" id=25]
+[ext_resource path="res://models/ships/frog_carrier/model.dae" type="PackedScene" id=15]
+[ext_resource path="res://models/asteroid/asteroid.dae" type="PackedScene" id=16]
+[ext_resource path="res://scripts/ActorBase.gd" type="Script" id=17]
+[ext_resource path="res://scripts/MovementDebris.gd" type="Script" id=18]
+[ext_resource path="res://hud.tscn" type="PackedScene" id=19]
+[ext_resource path="res://themes/default_inconsolata.tres" type="Theme" id=20]
+[ext_resource path="res://scripts/HUD.gd" type="Script" id=21]
+[ext_resource path="res://mission_start_overlay.tscn" type="PackedScene" id=22]
+[ext_resource path="res://scripts/MissionStartOverlay.gd" type="Script" id=23]
+[ext_resource path="res://pause_menu.tscn" type="PackedScene" id=24]
+[ext_resource path="res://themes/interface_blue.tres" type="Theme" id=25]
+[ext_resource path="res://scripts/PauseMenu.gd" type="Script" id=26]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.498039 )
@@ -95,10 +96,15 @@ __meta__ = {
 "energy_weapons": [ "Energy Bolt", "Energy Bolt", "Energy Bolt", "Disintigrator", "Disintigrator", "none", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ],
 "missile_weapons": [ "Heat Seeker", "Heat Seeker", "none", "none", "none", "none", "", "", "", "" ]
 },
+"Frog Carrier": {
+"beam_weapons": [ "none", "none", "none", "none", "none", "none" ],
+"energy_weapons": [ "Energy Bolt", "Energy Bolt", "Disintigrator", "Disintigrator", "none", "none", "", "" ],
+"missile_weapons": [ "Heat Seeker", "Heat Seeker", "none", "none", "none", "none" ]
+},
 "Frog Destroyer": {
 "beam_weapons": [ "none", "none", "none", "none", "none", "none" ],
-"energy_weapons": [ "Disintigrator", "Energy Bolt", "Energy Bolt", "none", "none", "none", "", "", "", "", "", "" ],
-"missile_weapons": [ "Heat Seeker", "Heat Seeker", "none", "none", "none", "none", "", "", "", "" ]
+"energy_weapons": [ "Disintigrator", "Energy Bolt", "Energy Bolt", "none", "none", "none", "", "", "", "", "", "", "", "", "" ],
+"missile_weapons": [ "Heat Seeker", "Heat Seeker", "none", "none", "none", "none", "", "", "", "", "", "" ]
 },
 "Hyla 1": {
 "energy_weapons": [ "Energy Bolt", "", "", "" ],
@@ -165,6 +171,7 @@ __meta__ = {
 "waypoint_groups": [ "waypoints" ],
 "wing_names": [ "Alpha", "Beta", "", "", "", "" ]
 }
+is_eyecatch = false
 
 [node name="Sun Light" type="DirectionalLight" parent="."]
 transform = Transform( 0.866025, 0.482963, -0.12941, 0, 0.258819, 0.965926, 0.5, -0.836516, 0.224144, 0, 8, 2 )
@@ -776,7 +783,7 @@ initial_orders = [ {
 } ]
 
 [node name="Frog Destroyer" type="KinematicBody" parent="Targets Container" instance=ExtResource( 12 )]
-transform = Transform( 0.739942, -0.198267, 0.642788, 0.258819, 0.965926, 0, -0.620885, 0.166366, 0.766044, 0, -10, 6 )
+transform = Transform( 0.739942, -0.198267, 0.642788, 0.258819, 0.965926, 0, -0.620885, 0.166366, 0.766044, 0, -13, 6 )
 script = ExtResource( 5 )
 __meta__ = {
 "fuselage_extents": PoolVector3Array( 2.3255, 0.9197, -4.2069, 0.8211, 1.2631, -7.6435, 0, 0.3141, -8.5557, -2, 1.5033, 8.4443, -3.2783, 0.8337, 4.0433, -2.5086, 2.2034, 4.0433, -1.9252, 2.6572, -4.2069, -2.5159, 1.9947, -4.2069, -0.8211, 1.2631, -7.6435, 1, -1.6481, -6.4702, 2.3255, 0.9197, -4.2069, 0, 0.3141, -8.5557, 3.2783, 0.8337, 4.0433, 2, 1.5033, 8.4443, 2.5086, 2.2034, 4.0433, 0, 0.3141, -8.5557, 0.3432, 1.7376, -7.6435, -0.3432, 1.7376, -7.6435, -1.3259, -3.045, 0.6441, -2.3778, -2.4538, 3.0172, -1.3721, -3.1249, 3.0172, 2.5159, 1.9947, -4.2069, 3.2783, 0.8337, 4.0433, 2.5086, 2.2034, 4.0433, -1.0516, 3.1209, -4.2069, -1.1858, 2.7011, 5.424, -2.5086, 2.2034, 4.0433, 2.3778, -2.4538, 3.0173, 2.3255, 0.9197, -4.2069, 1, -1.6481, -6.4702, 1.3259, -3.045, 0.6441, 2.3778, -2.4538, 3.0173, 1, -1.6481, -6.4702, -0.6707, 1.6001, -7.6435, -0.3432, 1.7376, -7.6435, -1.0516, 3.1209, -4.2069, 0.8211, 1.2631, -7.6435, 2.5159, 1.9947, -4.2069, 1.9252, 2.6572, -4.2069, -2.5086, 2.2034, 4.0433, -3.2783, 0.8337, 4.0433, -2.5159, 1.9947, -4.2069, -1.1858, 2.7011, 5.424, -2, 1.5033, 8.4443, -2.5086, 2.2034, 4.0433, 1.1858, 2.7011, 5.424, 2, 1.5033, 8.4443, -2, 1.5033, 8.4443, 2.5086, 2.2034, 4.0433, 2, 1.5033, 8.4443, 1.1858, 2.7011, 5.424, 0.6707, 1.6001, -7.6435, 1.9252, 2.6572, -4.2069, 1.0516, 3.1209, -4.2069, 0.3432, 1.7376, -7.6435, 1.0516, 3.1209, -4.2069, -1.0516, 3.1209, -4.2069, 1.0516, 3.1209, -4.2069, 1.9252, 2.6572, -4.2069, 2.5086, 2.2034, 4.0433, 1.0516, 3.1209, -4.2069, 1.1858, 2.7011, 5.424, -1.1858, 2.7011, 5.424, 2.3778, -2.4538, 3.0173, 1.3259, -3.045, 0.6441, 1.3721, -3.1249, 3.0172, 1.3721, -3.1249, 3.0172, 1.3259, -3.045, 0.6441, -1.3259, -3.045, 0.6441, -2.3778, -2.4538, 3.0172, -2, -2.5259, 8.4443, -1.3721, -3.1249, 3.0172, 1.3721, -3.1249, 3.0172, -1.3721, -3.1249, 3.0172, -2, -2.5259, 8.4443, -2.3778, -2.4538, 3.0172, -2.3255, 0.9197, -4.2069, -3.0302, -0.9486, 4.0433, -3.2783, 0.8337, 4.0433, -3.0302, -0.9486, 4.0433, -2.3255, 0.9197, -4.2069, 2.3255, 0.9197, -4.2069, 2.5159, 1.9947, -4.2069, 0.8211, 1.2631, -7.6435, 2.3778, -2.4538, 3.0173, 3.0302, -0.9486, 4.0433, 2.3255, 0.9197, -4.2069, 2.3255, 0.9197, -4.2069, 3.0302, -0.9486, 4.0433, 3.2783, 0.8337, 4.0433, 2, -2.5259, 8.4443, 2, 1.5033, 8.4443, 3.0302, -0.9486, 4.0433, 3.0302, -0.9486, 4.0433, 2, 1.5033, 8.4443, 3.2783, 0.8337, 4.0433, 2.3778, -2.4538, 3.0173, 2, -2.5259, 8.4443, 3.0302, -0.9486, 4.0433, -2.3255, 0.9197, -4.2069, -0.8211, 1.2631, -7.6435, -2.5159, 1.9947, -4.2069, -2, -2.5259, 8.4443, -3.0302, -0.9486, 4.0433, -2, 1.5033, 8.4443, -2, 1.5033, 8.4443, -3.0302, -0.9486, 4.0433, -3.2783, 0.8337, 4.0433, -2, -2.5259, 8.4443, -2.3778, -2.4538, 3.0172, -3.0302, -0.9486, 4.0433, 0.6707, 1.6001, -7.6435, 0.3432, 1.7376, -7.6435, 0, 0.3141, -8.5557, 0, 0.3141, -8.5557, -0.3432, 1.7376, -7.6435, -0.6707, 1.6001, -7.6435, 0, 0.3141, -8.5557, 0.8211, 1.2631, -7.6435, 0.6707, 1.6001, -7.6435, -1, -1.6481, -6.4702, 0, 0.3141, -8.5557, -2.3255, 0.9197, -4.2069, -2.3255, 0.9197, -4.2069, 0, 0.3141, -8.5557, -0.8211, 1.2631, -7.6435, 0, 0.3141, -8.5557, -0.6707, 1.6001, -7.6435, -0.8211, 1.2631, -7.6435, 1, -1.6481, -6.4702, 0, 0.3141, -8.5557, -1, -1.6481, -6.4702, -2.3778, -2.4538, 3.0172, -1.3259, -3.045, 0.6441, -1, -1.6481, -6.4702, 2.3778, -2.4538, 3.0173, 1.3721, -3.1249, 3.0172, 2, -2.5259, 8.4443, -2.3255, 0.9197, -4.2069, -2.3778, -2.4538, 3.0172, -1, -1.6481, -6.4702, 1, -1.6481, -6.4702, -1, -1.6481, -6.4702, -1.3259, -3.045, 0.6441, -2, -2.5259, 8.4443, -2, 1.5033, 8.4443, 2, 1.5033, 8.4443, -1.9252, 2.6572, -4.2069, -0.8211, 1.2631, -7.6435, -0.6707, 1.6001, -7.6435, 2.5159, 1.9947, -4.2069, 2.5086, 2.2034, 4.0433, 1.9252, 2.6572, -4.2069, -1.0516, 3.1209, -4.2069, -2.5086, 2.2034, 4.0433, -1.9252, 2.6572, -4.2069, -0.6707, 1.6001, -7.6435, -1.0516, 3.1209, -4.2069, -1.9252, 2.6572, -4.2069, 0.8211, 1.2631, -7.6435, 1.9252, 2.6572, -4.2069, 0.6707, 1.6001, -7.6435, -2.5086, 2.2034, 4.0433, -2.5159, 1.9947, -4.2069, -1.9252, 2.6572, -4.2069, 1.1858, 2.7011, 5.424, -2, 1.5033, 8.4443, -1.1858, 2.7011, 5.424, 0.6707, 1.6001, -7.6435, 1.0516, 3.1209, -4.2069, 0.3432, 1.7376, -7.6435, 0.3432, 1.7376, -7.6435, -1.0516, 3.1209, -4.2069, -0.3432, 1.7376, -7.6435, 1.0516, 3.1209, -4.2069, 2.5086, 2.2034, 4.0433, 1.1858, 2.7011, 5.424, 1.0516, 3.1209, -4.2069, -1.1858, 2.7011, 5.424, -1.0516, 3.1209, -4.2069, 1.3721, -3.1249, 3.0172, -1.3259, -3.045, 0.6441, -1.3721, -3.1249, 3.0172, 1.3721, -3.1249, 3.0172, -2, -2.5259, 8.4443, 2, -2.5259, 8.4443, -3.2783, 0.8337, 4.0433, -2.3255, 0.9197, -4.2069, -2.5159, 1.9947, -4.2069, 2.3255, 0.9197, -4.2069, 3.2783, 0.8337, 4.0433, 2.5159, 1.9947, -4.2069, 1, -1.6481, -6.4702, -1.3259, -3.045, 0.6441, 1.3259, -3.045, 0.6441, -2, -2.5259, 8.4443, 2, 1.5033, 8.4443, 2, -2.5259, 8.4443 ),
@@ -946,13 +953,70 @@ initial_orders = [ {
 "type": 0
 } ]
 
+[node name="Frog Carrier" type="KinematicBody" parent="Targets Container" instance=ExtResource( 15 )]
+transform = Transform( 0.843493, -0.418412, -0.336824, 0.492404, 0.852868, 0.173648, 0.21461, -0.312325, 0.925417, -40, 30, 0 )
+script = ExtResource( 5 )
+__meta__ = {
+"fuselage_extents": PoolVector3Array( 9.9698, 0.0802, 7.2116, 8.7924, 2.9735, 8.2411, 8.7924, 3.7629, -10.4406, 8.7924, -3.0311, 6.8016, 3.4389, -5.8152, 6.8694, 3.2211, -5.968, 14.7487, 9.9698, 0.0802, 7.2116, 9.9698, 1.1946, -11.1212, 8.7924, -1.5451, -9.6125, 5.9066, 5.4163, 8.7298, 7.7838, 6.0609, -16.841, 8.7924, 3.7629, -10.4406, 3.6371, 2.118, 19.3292, 9.9698, 0.0802, 7.2116, 3.6371, -4.3267, 19.3292, -7.7838, 6.0609, -16.841, -9.9698, 1.1946, -11.1212, -5.9427, -0.886, -12.8288, 9.9698, 0.0802, 7.2116, 8.7924, -3.0311, 6.8016, 3.6371, -4.3267, 19.3292, -9.9698, 0.0802, 7.2116, -8.7924, 2.9735, 8.2411, -5.6648, 2.977, 14.1442, 5.6648, 2.977, 14.1442, 9.9698, 0.0802, 7.2116, 3.6371, 2.118, 19.3292, 5.9066, 5.4163, 8.7298, 8.7924, 2.9735, 8.2411, 5.6648, 2.977, 14.1442, -5.9427, -0.886, -12.8288, -9.9698, 1.1946, -11.1212, -8.7924, -1.5451, -9.6125, -8.7924, 3.7629, -10.4406, -9.9698, 1.1946, -11.1212, -7.7838, 6.0609, -16.841, -5.9427, -0.886, -12.8288, 5.9427, -0.886, -12.8288, 7.7838, 6.0609, -16.841, -3.4389, -5.8152, 6.8694, -3.2211, -5.968, 14.7487, 3.2211, -5.968, 14.7487, 5.6648, 2.977, 14.1442, -5.6648, 2.977, 14.1442, -5.9066, 5.4163, 8.7298, -5.9066, 5.4163, 8.7298, -5.6648, 2.977, 14.1442, -8.7924, 2.9735, 8.2411, -5.6648, 2.977, 14.1442, -3.6371, 2.118, 19.3292, -9.9698, 0.0802, 7.2116, -5.9066, 5.4163, 8.7298, -7.7838, 6.0609, -16.841, 7.7838, 6.0609, -16.841, -9.9698, 0.0802, 7.2116, -3.6371, -4.3267, 19.3292, -8.7924, -3.0311, 6.8016, -3.6371, 2.118, 19.3292, -3.6371, -4.3267, 19.3292, -9.9698, 0.0802, 7.2116, -9.9698, 0.0802, 7.2116, -9.9698, 1.1946, -11.1212, -8.7924, 3.7629, -10.4406, -8.7924, -1.5451, -9.6125, -9.9698, 1.1946, -11.1212, -9.9698, 0.0802, 7.2116, 8.7924, -3.0311, 6.8016, 8.7924, -1.5451, -9.6125, 4.2473, -6.004, -8.7321, 5.9427, -0.886, -12.8288, 8.7924, -1.5451, -9.6125, 9.9698, 1.1946, -11.1212, 5.9427, -0.886, -12.8288, 4.2473, -6.004, -8.7321, 8.7924, -1.5451, -9.6125, 8.7924, 3.7629, -10.4406, 7.7838, 6.0609, -16.841, 9.9698, 1.1946, -11.1212, 9.9698, 0.0802, 7.2116, 5.6648, 2.977, 14.1442, 8.7924, 2.9735, 8.2411, 9.9698, 1.1946, -11.1212, 7.7838, 6.0609, -16.841, 5.9427, -0.886, -12.8288, 3.2211, -5.968, 14.7487, -3.2211, -5.968, 14.7487, -3.6371, -4.3267, 19.3292, -5.9066, 5.4163, 8.7298, -8.7924, 2.9735, 8.2411, -8.7924, 3.7629, -10.4406, -4.2473, -6.004, -8.7321, -5.9427, -0.886, -12.8288, -8.7924, -1.5451, -9.6125, -3.6371, 2.118, 19.3292, 3.6371, 2.118, 19.3292, 3.6371, -4.3267, 19.3292, -8.7924, -3.0311, 6.8016, -3.6371, -4.3267, 19.3292, -3.2211, -5.968, 14.7487, -5.6648, 2.977, 14.1442, 5.6648, 2.977, 14.1442, 3.6371, 2.118, 19.3292, -3.4389, -5.8152, 6.8694, 3.4389, -5.8152, 6.8694, 4.2473, -6.004, -8.7321, -4.2473, -6.004, -8.7321, -8.7924, -1.5451, -9.6125, -8.7924, -3.0311, 6.8016, 4.2473, -6.004, -8.7321, 5.9427, -0.886, -12.8288, -5.9427, -0.886, -12.8288, 9.9698, 0.0802, 7.2116, 8.7924, 3.7629, -10.4406, 9.9698, 1.1946, -11.1212, 8.7924, -3.0311, 6.8016, 3.2211, -5.968, 14.7487, 3.6371, -4.3267, 19.3292, 9.9698, 0.0802, 7.2116, 8.7924, -1.5451, -9.6125, 8.7924, -3.0311, 6.8016, 5.9066, 5.4163, 8.7298, 8.7924, 3.7629, -10.4406, 8.7924, 2.9735, 8.2411, -5.9427, -0.886, -12.8288, 7.7838, 6.0609, -16.841, -7.7838, 6.0609, -16.841, -3.4389, -5.8152, 6.8694, 3.2211, -5.968, 14.7487, 3.4389, -5.8152, 6.8694, 5.6648, 2.977, 14.1442, -5.9066, 5.4163, 8.7298, 5.9066, 5.4163, 8.7298, -5.9066, 5.4163, 8.7298, 7.7838, 6.0609, -16.841, 5.9066, 5.4163, 8.7298, -9.9698, 0.0802, 7.2116, -8.7924, 3.7629, -10.4406, -8.7924, 2.9735, 8.2411, -8.7924, -1.5451, -9.6125, -9.9698, 0.0802, 7.2116, -8.7924, -3.0311, 6.8016, 8.7924, -3.0311, 6.8016, 4.2473, -6.004, -8.7321, 3.4389, -5.8152, 6.8694, 3.2211, -5.968, 14.7487, -3.6371, -4.3267, 19.3292, 3.6371, -4.3267, 19.3292, -5.9066, 5.4163, 8.7298, -8.7924, 3.7629, -10.4406, -7.7838, 6.0609, -16.841, -3.6371, 2.118, 19.3292, 3.6371, -4.3267, 19.3292, -3.6371, -4.3267, 19.3292, -8.7924, -3.0311, 6.8016, -3.2211, -5.968, 14.7487, -3.4389, -5.8152, 6.8694, -5.6648, 2.977, 14.1442, 3.6371, 2.118, 19.3292, -3.6371, 2.118, 19.3292, -3.4389, -5.8152, 6.8694, 4.2473, -6.004, -8.7321, -4.2473, -6.004, -8.7321, -4.2473, -6.004, -8.7321, -8.7924, -3.0311, 6.8016, -3.4389, -5.8152, 6.8694, 4.2473, -6.004, -8.7321, -5.9427, -0.886, -12.8288, -4.2473, -6.004, -8.7321 ),
+"has_beam_weapon_turrets": false,
+"has_energy_weapon_turrets": true,
+"has_missile_weapon_turrets": true,
+"hull_hitpoints": 1900.0,
+"is_capital_ship": true,
+"mass": 310.0,
+"max_hull_hitpoints": 1900.0,
+"max_speed": 1.0,
+"missile_capacity": 55.0,
+"shield_hitpoints": 100.0,
+"ship_class": "Frog Carrier",
+"source_file": "res://models/ships/frog_carrier/model.dae",
+"source_folder": "res://models/ships/frog_carrier",
+"subsystem_hitpoints": {
+"Communications": 40.0,
+"Engines": 80.0,
+"Navigation": 40.0,
+"Sensors": 60.0,
+"Weapons": 85.0
+},
+"turn_speed": Vector3( 0.1, 0.03, 0.08 )
+}
+faction = "frog"
+hull_hitpoints = 1900.0
+is_warped_in = true
+wing_name = ""
+initial_orders = [ {
+"priority": 50.0,
+"target": "",
+"type": 0
+}, {
+"priority": 50.0,
+"target": "",
+"type": 0
+}, {
+"priority": 50.0,
+"target": "",
+"type": 0
+}, {
+"priority": 50.0,
+"target": "",
+"type": 0
+}, {
+"priority": 50.0,
+"target": "",
+"type": 0
+}, {
+"priority": 50.0,
+"target": "",
+"type": 0
+} ]
+
 [node name="Asteroids Container" type="Node" parent="."]
 
-[node name="Asteroid" type="RigidBody" parent="Asteroids Container" instance=ExtResource( 15 )]
+[node name="Asteroid" type="RigidBody" parent="Asteroids Container" instance=ExtResource( 16 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11.9108, 5.04699, -8.19799 )
 contacts_reported = 4
 contact_monitor = true
-script = ExtResource( 16 )
+script = ExtResource( 17 )
 __meta__ = {
 "bounding_box_extents": [ Vector3( 0.5298, 0.4987, 0.759 ), Vector3( -0.5298, 0.4987, 0.759 ), Vector3( -0.5298, -0.4987, 0.759 ), Vector3( -0.5298, 0.4987, -0.759 ), Vector3( -0.5298, -0.4987, -0.759 ), Vector3( 0.5298, -0.4987, 0.759 ), Vector3( 0.5298, 0.4987, -0.759 ), Vector3( 0.5298, -0.4987, -0.759 ) ],
 "cam_distance": 1.05141,
@@ -960,11 +1024,11 @@ __meta__ = {
 }
 hull_hitpoints = -1.0
 
-[node name="Asteroid2" type="RigidBody" parent="Asteroids Container" instance=ExtResource( 15 )]
+[node name="Asteroid2" type="RigidBody" parent="Asteroids Container" instance=ExtResource( 16 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.89396, -6.71257, 7.66448 )
 contacts_reported = 4
 contact_monitor = true
-script = ExtResource( 16 )
+script = ExtResource( 17 )
 __meta__ = {
 "bounding_box_extents": [ Vector3( 0.5298, 0.4987, 0.759 ), Vector3( -0.5298, 0.4987, 0.759 ), Vector3( -0.5298, -0.4987, 0.759 ), Vector3( -0.5298, 0.4987, -0.759 ), Vector3( -0.5298, -0.4987, -0.759 ), Vector3( 0.5298, -0.4987, 0.759 ), Vector3( 0.5298, 0.4987, -0.759 ), Vector3( 0.5298, -0.4987, -0.759 ) ],
 "cam_distance": 1.05141,
@@ -972,11 +1036,11 @@ __meta__ = {
 }
 hull_hitpoints = -1.0
 
-[node name="Asteroid3" type="RigidBody" parent="Asteroids Container" instance=ExtResource( 15 )]
+[node name="Asteroid3" type="RigidBody" parent="Asteroids Container" instance=ExtResource( 16 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.10207, -3.187, 4.12244 )
 contacts_reported = 4
 contact_monitor = true
-script = ExtResource( 16 )
+script = ExtResource( 17 )
 __meta__ = {
 "bounding_box_extents": [ Vector3( 0.5298, 0.4987, 0.759 ), Vector3( -0.5298, 0.4987, 0.759 ), Vector3( -0.5298, -0.4987, 0.759 ), Vector3( -0.5298, 0.4987, -0.759 ), Vector3( -0.5298, -0.4987, -0.759 ), Vector3( 0.5298, -0.4987, 0.759 ), Vector3( 0.5298, 0.4987, -0.759 ), Vector3( 0.5298, -0.4987, -0.759 ) ],
 "cam_distance": 1.05141,
@@ -984,11 +1048,11 @@ __meta__ = {
 }
 hull_hitpoints = -1.0
 
-[node name="Asteroid4" type="RigidBody" parent="Asteroids Container" instance=ExtResource( 15 )]
+[node name="Asteroid4" type="RigidBody" parent="Asteroids Container" instance=ExtResource( 16 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15.0285, 9.41962, -26.4233 )
 contacts_reported = 4
 contact_monitor = true
-script = ExtResource( 16 )
+script = ExtResource( 17 )
 __meta__ = {
 "bounding_box_extents": [ Vector3( 0.5298, 0.4987, 0.759 ), Vector3( -0.5298, 0.4987, 0.759 ), Vector3( -0.5298, -0.4987, 0.759 ), Vector3( -0.5298, 0.4987, -0.759 ), Vector3( -0.5298, -0.4987, -0.759 ), Vector3( 0.5298, -0.4987, 0.759 ), Vector3( 0.5298, 0.4987, -0.759 ), Vector3( 0.5298, -0.4987, -0.759 ) ],
 "cam_distance": 1.05141,
@@ -996,11 +1060,11 @@ __meta__ = {
 }
 hull_hitpoints = -1.0
 
-[node name="Asteroid5" type="RigidBody" parent="Asteroids Container" instance=ExtResource( 15 )]
+[node name="Asteroid5" type="RigidBody" parent="Asteroids Container" instance=ExtResource( 16 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.18502, 5.07815, -14.7815 )
 contacts_reported = 4
 contact_monitor = true
-script = ExtResource( 16 )
+script = ExtResource( 17 )
 __meta__ = {
 "bounding_box_extents": [ Vector3( 0.5298, 0.4987, 0.759 ), Vector3( -0.5298, 0.4987, 0.759 ), Vector3( -0.5298, -0.4987, 0.759 ), Vector3( -0.5298, 0.4987, -0.759 ), Vector3( -0.5298, -0.4987, -0.759 ), Vector3( 0.5298, -0.4987, 0.759 ), Vector3( 0.5298, 0.4987, -0.759 ), Vector3( 0.5298, -0.4987, -0.759 ) ],
 "cam_distance": 1.05141,
@@ -1031,29 +1095,29 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.69, 0, 11.33 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -22.89, -5.29, 1.11 )
 
 [node name="Player Movement Debris" type="Spatial" parent="."]
-script = ExtResource( 17 )
+script = ExtResource( 18 )
 
-[node name="HUD" type="Control" parent="." instance=ExtResource( 18 )]
+[node name="HUD" type="Control" parent="." instance=ExtResource( 19 )]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -0.196999
 margin_right = -0.197021
-theme = ExtResource( 19 )
-script = ExtResource( 20 )
+theme = ExtResource( 20 )
+script = ExtResource( 21 )
 
-[node name="Mission Start Overlay" type="PanelContainer" parent="." instance=ExtResource( 21 )]
+[node name="Mission Start Overlay" type="PanelContainer" parent="." instance=ExtResource( 22 )]
 pause_mode = 2
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/panel = SubResource( 1 )
-script = ExtResource( 22 )
+script = ExtResource( 23 )
 
-[node name="Pause Menu" type="Control" parent="." instance=ExtResource( 23 )]
+[node name="Pause Menu" type="Control" parent="." instance=ExtResource( 24 )]
 pause_mode = 2
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme = ExtResource( 24 )
-script = ExtResource( 25 )
+theme = ExtResource( 25 )
+script = ExtResource( 26 )
