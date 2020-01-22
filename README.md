@@ -33,7 +33,7 @@ Here I'll be keeping track of the all the features I want to implement, and chec
 - [x] Ship Subsystems
 - [x] Lead Indicator
 - [x] Eyecatch
-- [ ] Gallery/Library
+- [x] Gallery/Library
 - [ ] Music
 
 ### Accessibility Options
