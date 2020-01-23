@@ -26,6 +26,7 @@ onready var transform_controls = get_node("Manipulator Viewport/Transform Contro
 onready var waypoint_groups_dialog = get_node("Controls Container/Waypoint Groups Dialog")
 onready var wings_dialog = get_node("Controls Container/Wings Dialog")
 
+var active_filename: String = "untitled.tscn"
 var armory: Dictionary
 var current_mouse_button: int = -1
 var factions: Dictionary
@@ -35,6 +36,7 @@ var default_loadouts: Array = []
 var mouse_pos: Vector2
 var mouse_vel: Vector2
 var objectives: Array = []
+var original_title: String = ProjectSettings.get_setting("application/config/name")
 var non_player_loadouts: Dictionary
 var scene_file_regex = RegEx.new()
 var selected_node = null
@@ -117,6 +119,8 @@ func _ready():
 
 	armory_dialog.connect("confirmed", self, "_on_armory_confirmed")
 	factions_dialog.connect("confirmed", self, "_on_factions_dialog_confirmed")
+
+	set_title_with_filename()
 
 
 func _on_add_ship_confirmed():
@@ -612,11 +616,15 @@ func _on_file_menu_id_pressed(item_id: int):
 			add_child(mission_node)
 
 			load_mission_info()
+
+			active_filename = "untitled.tscn"
+			set_title_with_filename()
 		1:
 			open_file_dialog.popup_centered()
 		2:
 			save_file_dialog.popup_centered()
 		3:
+			OS.set_window_title(original_title)
 			loader.change_scene("res://title.tscn")
 		4:
 			get_tree().quit()
@@ -686,6 +694,10 @@ func _on_open_file_selected(path: String):
 		add_child(mission_node)
 
 		load_mission_info()
+
+		if active_filename != open_file_dialog.current_file:
+			active_filename = open_file_dialog.current_file
+			set_title_with_filename()
 
 
 func _on_save_dialog_file_selected(path: String):
@@ -936,6 +948,14 @@ func save_mission_to_file(path: String):
 
 	if player_movement_particles != null:
 		player_movement_particles.hide()
+
+	if active_filename != save_file_dialog.current_file:
+		active_filename = save_file_dialog.current_file
+		set_title_with_filename()
+
+
+func set_title_with_filename():
+	OS.set_window_title(original_title + " Editor: " + active_filename)
 
 
 const NPCShip = preload("res://scripts/NPCShip.gd")
