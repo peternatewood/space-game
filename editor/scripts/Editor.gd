@@ -58,6 +58,11 @@ func _ready():
 	var file_menu = get_node("Controls Container/PanelContainer/Toolbar/File Menu")
 	file_menu.get_popup().connect("id_pressed", self, "_on_file_menu_id_pressed")
 
+	# Popup the save dialog so it selects a default and we can then override it
+	save_file_dialog.popup_centered()
+	save_file_dialog.deselect_items()
+	save_file_dialog.get_line_edit().set_text(active_filename)
+	save_file_dialog.hide()
 	save_file_dialog.connect("file_selected", self, "_on_save_dialog_file_selected")
 
 	var edit_menu = get_node("Controls Container/PanelContainer/Toolbar/Edit Menu")
@@ -697,6 +702,7 @@ func _on_open_file_selected(path: String):
 
 		if active_filename != open_file_dialog.current_file:
 			active_filename = open_file_dialog.current_file
+			save_file_dialog.set_current_file(active_filename)
 			set_title_with_filename()
 
 
