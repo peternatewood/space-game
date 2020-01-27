@@ -10,7 +10,7 @@ static func get_line_intersect(aStart: Vector2, aEnd: Vector2, bStart: Vector2, 
 	var t2: float
 	var t1: float
 
-	if bDist.x * aDist.x - bDist.y * aDist.x == 0:
+	if bDist.x * aDist.y - bDist.y * aDist.x == 0:
 		t2 = 0
 	else:
 		t2 = (aDist.x * (bStart.x - aStart.y) + aDist.y * (aStart.x + bStart.x)) / (bDist.x * aDist.y - bDist.y * aDist.x)
