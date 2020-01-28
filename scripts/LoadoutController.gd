@@ -40,8 +40,7 @@ func _ready():
 
 			var radial_icon = RADIAL_ICON.instance()
 			ship_selection_container.add_child(radial_icon)
-			radial_icon.set_normal_texture(icon)
-			radial_icon.set_h_size_flags(SIZE_SHRINK_CENTER)
+			radial_icon.set_ship(ship_class, icon)
 			radial_icon.connect("pressed", self, "_update_ship_preview", [ ship_class ])
 
 			ship_resources[ship_class] = {
@@ -62,8 +61,7 @@ func _ready():
 
 			var energy_weapon_icon = RADIAL_ICON.instance()
 			energy_weapons_container.add_child(energy_weapon_icon)
-			energy_weapon_icon.set_normal_texture(icon)
-			energy_weapon_icon.set_h_size_flags(SIZE_SHRINK_CENTER)
+			energy_weapon_icon.set_weapon(energy_weapon_name, icon)
 			energy_weapon_icon.connect("pressed", self, "_update_weapon_preview", [ "energy_weapon", energy_weapon_name ])
 
 			var energy_weapon_video = load(mission_data.energy_weapon_data[energy_weapon_name].model_dir + "/video.ogv")
@@ -90,8 +88,7 @@ func _ready():
 
 			var missile_weapon_icon = RADIAL_ICON.instance()
 			missile_weapons_container.add_child(missile_weapon_icon)
-			missile_weapon_icon.set_normal_texture(icon)
-			missile_weapon_icon.set_h_size_flags(SIZE_SHRINK_CENTER)
+			missile_weapon_icon.set_weapon(missile_weapon_name, icon)
 			missile_weapon_icon.connect("pressed", self, "_update_weapon_preview", [ "missile_weapon", missile_weapon_name ])
 
 			var missile_weapon_video = load(mission_data.missile_weapon_data[missile_weapon_name].model_dir + "/video.ogv")
@@ -183,10 +180,11 @@ func _on_wing_radial_pressed(wing_index: int, ship_index: int):
 
 func _set_editing_ship(ship_class: String, wing_index: int, ship_index: int):
 	var wing_name: String = mission_data.wing_names[wing_index]
+	var ship_name: String = wing_name + " " + str(ship_index + 1)
 
 	_update_ship_preview(ship_class)
 	ship_overhead.set_texture(ship_resources[ship_class].overhead)
-	ship_wing_name.set_text(wing_name + " " + str(ship_index + 1))
+	ship_wing_name.set_text(ship_name)
 
 	# Update weapon slot icons
 	var ship_loadout = mission_data.wing_loadouts[wing_index][ship_index]
@@ -217,7 +215,8 @@ func _set_editing_ship(ship_class: String, wing_index: int, ship_index: int):
 	if editing_ship_index != -1:
 		wing_containers[editing_wing_index].get_child(editing_ship_index).toggle_border(false)
 
-	wing_containers[wing_index].get_child(ship_index).toggle_border(true)
+	var ship_icon = wing_containers[wing_index].get_child(ship_index)
+	ship_icon.toggle_border(true)
 
 	editing_wing_index = wing_index
 	editing_ship_index = ship_index

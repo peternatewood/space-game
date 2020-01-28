@@ -2,7 +2,7 @@ extends Control
 
 onready var border = get_node("Border")
 onready var current_icon = get_node("Current Icon")
-onready var radial_container = get_node("Radial Container")
+onready var popup = get_node("Popup")
 
 
 func _ready():
@@ -14,14 +14,14 @@ func _ready():
 
 
 func _on_current_icon_pressed():
-	if not radial_container.visible:
-		radial_container.popup_centered()
+	if not popup.visible:
+		popup.popup_centered()
 		emit_signal("radial_pressed")
 
 
 func _on_icon_pressed(icon_data: String, image_resource):
 	set_current_icon(image_resource)
-	radial_container.hide()
+	popup.hide()
 	emit_signal("icon_pressed", icon_data)
 
 

@@ -2,9 +2,11 @@
 
 [ext_resource path="res://scripts/RadialMenuShips.gd" type="Script" id=1]
 [ext_resource path="res://models/ships/frog_fighter/icon.png" type="Texture" id=2]
-[ext_resource path="res://images/radial_bg.png" type="Texture" id=3]
 
-[node name="Radial Menu" type="Control"]
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0, 0, 0, 0.752941 )
+
+[node name="Loadout Ships Menu" type="Control"]
 rect_min_size = Vector2( 38, 63 )
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -74,30 +76,44 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 texture_normal = ExtResource( 2 )
 
-[node name="Radial Container" type="Popup" parent="."]
+[node name="Popup" type="PopupPanel" parent="."]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-rect_min_size = Vector2( 322, 322 )
+margin_left = -19.0
+margin_top = -31.5
+margin_right = 301.0
+margin_bottom = 288.5
+rect_min_size = Vector2( 320, 320 )
 size_flags_horizontal = 4
 size_flags_vertical = 4
+custom_styles/panel = SubResource( 1 )
 
-[node name="Radial Background" type="TextureRect" parent="Radial Container"]
-self_modulate = Color( 0, 0, 0, 0.498039 )
-margin_right = 322.0
-margin_bottom = 322.0
-texture = ExtResource( 3 )
+[node name="Icons Scroll Container" type="ScrollContainer" parent="Popup"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+scroll_horizontal_enabled = false
 
-[node name="Icons Container" type="Control" parent="Radial Container"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_right = 322.0
-margin_bottom = 322.0
-size_flags_horizontal = 5
-size_flags_vertical = 5
+[node name="Icons Margin" type="MarginContainer" parent="Popup/Icons Scroll Container"]
+margin_right = 320.0
+margin_bottom = 320.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/margin_right = 12
+custom_constants/margin_top = 12
+custom_constants/margin_left = 12
+custom_constants/margin_bottom = 12
+
+[node name="Icons VBox" type="VBoxContainer" parent="Popup/Icons Scroll Container/Icons Margin"]
+margin_left = 12.0
+margin_top = 12.0
+margin_right = 308.0
+margin_bottom = 308.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="Cross Icon" type="Node2D" parent="."]
 visible = false
