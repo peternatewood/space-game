@@ -114,9 +114,6 @@ text = "Retry Mission"
 margin_left = 124.0
 margin_right = 236.0
 margin_bottom = 26.0
-hint_tooltip = "For the moment,
-just returns to the
-main menu"
 size_flags_horizontal = 8
 size_flags_vertical = 8
 text = "Next Mission"
