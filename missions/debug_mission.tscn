@@ -134,13 +134,13 @@ __meta__ = {
 "is_critical": true,
 "name": "Destroy All Enemies",
 "success_requirements": [ {
-"targets": [ "Buteo 1", "Buteo 2" ],
+"target_names": [ "Buteo 1", "Buteo 2" ],
 "type": 1
 } ]
 } ], [ {
 "description": "Protect all ships in Alpha wing.",
 "failure_requirements": [ {
-"targets": [ "Alpha 2", "Alpha 3" ],
+"target_names": [ "Alpha 2", "Alpha 3" ],
 "type": 1
 } ],
 "name": "Protect Friendly Ships",
@@ -150,13 +150,13 @@ __meta__ = {
 "type": 3
 } ],
 "trigger_requirements": [ {
-"targets": [ "Alpha 2", "Alpha 3" ],
+"target_names": [ "Alpha 2", "Alpha 3" ],
 "type": 4
 } ]
 } ], [ {
 "description": "Complete the mission without calling in Beta wing: your reinforcements.",
 "failure_requirements": [ {
-"targets": [ "Beta 1" ],
+"target_names": [ "Beta 1" ],
 "type": 4
 } ],
 "name": "Don't Call In Reinforcements",
