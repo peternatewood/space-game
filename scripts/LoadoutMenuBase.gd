@@ -6,7 +6,7 @@ onready var popup = get_node("Popup")
 
 
 func _ready():
-	current_icon.set_modulate(RadialIcon.NORMAL_COLOR)
+	current_icon.set_modulate(LoadoutIcon.NORMAL_COLOR)
 
 	current_icon.connect("mouse_entered", self, "_on_mouse_entered")
 	current_icon.connect("mouse_exited", self, "_on_mouse_exited")
@@ -16,7 +16,7 @@ func _ready():
 func _on_current_icon_pressed():
 	if not popup.visible:
 		popup.popup_centered()
-		emit_signal("radial_pressed")
+		emit_signal("selection_pressed")
 
 
 func _on_icon_pressed(icon_data: String, image_resource):
@@ -30,7 +30,7 @@ func _on_mouse_entered():
 
 
 func _on_mouse_exited():
-	current_icon.set_modulate(RadialIcon.NORMAL_COLOR)
+	current_icon.set_modulate(LoadoutIcon.NORMAL_COLOR)
 
 
 # PUBLIC
@@ -52,9 +52,9 @@ func toggle_border(toggle_on: bool):
 
 
 signal icon_pressed
-signal radial_pressed
+signal selection_pressed
 
-const RadialIcon = preload("RadialIcon.gd")
+const LoadoutIcon = preload("LoadoutIcon.gd")
 
 const HALF_RADIUS: float = 106.0
-const RADIAL_ICON = preload("res://prefabs/radial_icon.tscn")
+const LOADOUT_ICON = preload("res://prefabs/loadout_icon.tscn")

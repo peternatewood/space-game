@@ -1,4 +1,4 @@
-extends "res://scripts/RadialMenu.gd"
+extends "res://scripts/LoadoutMenuBase.gd"
 
 
 func set_options(weapon_resources: Dictionary):
@@ -8,7 +8,7 @@ func set_options(weapon_resources: Dictionary):
 		var weapon_name = weapon_resources.keys()[0]
 		var icon_size = weapon_resources[weapon_name].icon.get_size()
 
-		var icon = RADIAL_ICON.instance()
+		var icon = LOADOUT_ICON.instance()
 		icons_container.add_child(icon)
 		icon.weapon_name = weapon_name
 		icon.set_weapon(weapon_name, weapon_resources[weapon_name].icon)
@@ -19,7 +19,7 @@ func set_options(weapon_resources: Dictionary):
 		var radians: float = 0
 
 		for weapon_name in weapon_resources.keys():
-			var icon = RADIAL_ICON.instance()
+			var icon = LOADOUT_ICON.instance()
 			icons_container.add_child(icon)
 			icon.weapon_name = weapon_name
 			icon.set_weapon(weapon_name, weapon_resources[weapon_name].icon)

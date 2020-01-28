@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://scripts/RadialIcon.gd" type="Script" id=1]
+[ext_resource path="res://scripts/LoadoutIcon.gd" type="Script" id=1]
 [ext_resource path="res://models/ships/spider_fighter/icon.png" type="Texture" id=2]
 
 [node name="Loadout Icon" type="HBoxContainer"]

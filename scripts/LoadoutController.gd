@@ -38,10 +38,10 @@ func _ready():
 			var overhead_texture = overhead_stream_texture.get_data()
 			overhead.create_from_image(overhead_texture, 0)
 
-			var radial_icon = RADIAL_ICON.instance()
-			ship_selection_container.add_child(radial_icon)
-			radial_icon.set_ship(ship_class, icon)
-			radial_icon.connect("pressed", self, "_update_ship_preview", [ ship_class ])
+			var loadout_icon = LOADOUT_ICON.instance()
+			ship_selection_container.add_child(loadout_icon)
+			loadout_icon.set_ship(ship_class, icon)
+			loadout_icon.connect("pressed", self, "_update_ship_preview", [ ship_class ])
 
 			ship_resources[ship_class] = {
 				"model": model,
@@ -59,7 +59,7 @@ func _ready():
 			var icon_texture = icon_stream_texture.get_data()
 			icon.create_from_image(icon_texture, 0)
 
-			var energy_weapon_icon = RADIAL_ICON.instance()
+			var energy_weapon_icon = LOADOUT_ICON.instance()
 			energy_weapons_container.add_child(energy_weapon_icon)
 			energy_weapon_icon.set_weapon(energy_weapon_name, icon)
 			energy_weapon_icon.connect("pressed", self, "_update_weapon_preview", [ "energy_weapon", energy_weapon_name ])
@@ -86,7 +86,7 @@ func _ready():
 			var icon_texture = icon_stream_texture.get_data()
 			icon.create_from_image(icon_texture, 0)
 
-			var missile_weapon_icon = RADIAL_ICON.instance()
+			var missile_weapon_icon = LOADOUT_ICON.instance()
 			missile_weapons_container.add_child(missile_weapon_icon)
 			missile_weapon_icon.set_weapon(missile_weapon_name, icon)
 			missile_weapon_icon.connect("pressed", self, "_update_weapon_preview", [ "missile_weapon", missile_weapon_name ])
@@ -129,7 +129,7 @@ func _ready():
 
 					wing_containers[wing_index].get_child(ship_index).set_options(ship_resources)
 					wing_containers[wing_index].get_child(ship_index).set_current_icon(ship_resources[ship_class].icon)
-					wing_containers[wing_index].get_child(ship_index).connect("radial_pressed", self, "_on_wing_radial_pressed", [ wing_index, ship_index ])
+					wing_containers[wing_index].get_child(ship_index).connect("selection_pressed", self, "_on_wing_selection_pressed", [ wing_index, ship_index ])
 					wing_containers[wing_index].get_child(ship_index).connect("icon_pressed", self, "_on_wing_icon_pressed")
 				else:
 					wing_containers[wing_index].get_child(ship_index).disable()
@@ -137,7 +137,7 @@ func _ready():
 			wing_containers[wing_index].hide()
 
 	# Default to showing player/Alpha 1 loadout
-	_on_wing_radial_pressed(0, 0)
+	_on_wing_selection_pressed(0, 0)
 
 
 func _on_energy_weapon_slot_pressed(weapon_name: String, slot_index: int):
@@ -174,7 +174,7 @@ func _on_wing_icon_pressed(ship_class: String):
 		_set_editing_ship(ship_class, editing_wing_index, editing_ship_index)
 
 
-func _on_wing_radial_pressed(wing_index: int, ship_index: int):
+func _on_wing_selection_pressed(wing_index: int, ship_index: int):
 	_set_editing_ship(mission_data.wing_loadouts[wing_index][ship_index].ship_class, wing_index, ship_index)
 
 
@@ -260,4 +260,4 @@ const ShipSlot = preload("ShipSlot.gd")
 const WeaponBase = preload("WeaponBase.gd")
 const WeaponSlot = preload("WeaponSlot.gd")
 
-const RADIAL_ICON = preload("res://prefabs/radial_icon.tscn")
+const LOADOUT_ICON = preload("res://prefabs/loadout_icon.tscn")

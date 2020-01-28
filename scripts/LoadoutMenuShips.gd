@@ -1,4 +1,4 @@
-extends "res://scripts/RadialMenu.gd"
+extends "res://scripts/LoadoutMenuBase.gd"
 
 
 func disable():
@@ -13,7 +13,7 @@ func set_options(ship_resources: Dictionary):
 		var ship_class = ship_resources.keys()[0]
 		var icon_size = ship_resources[ship_class].icon.get_size()
 
-		var icon = RADIAL_ICON.instance()
+		var icon = LOADOUT_ICON.instance()
 		icons_container.add_child(icon)
 		icon.ship_class = ship_class
 		icon.set_ship(ship_class, ship_resources[ship_class].icon)
@@ -23,7 +23,7 @@ func set_options(ship_resources: Dictionary):
 		var radians: float = 0
 
 		for ship_class in ship_resources.keys():
-			var icon = RADIAL_ICON.instance()
+			var icon = LOADOUT_ICON.instance()
 			icons_container.add_child(icon)
 			icon.ship_class = ship_class
 			icon.set_ship(ship_class, ship_resources[ship_class].icon)
