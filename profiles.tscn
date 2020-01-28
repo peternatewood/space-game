@@ -104,3 +104,7 @@ margin_right = 200.0
 margin_bottom = 70.0
 window_title = "Delete Profile"
 dialog_text = "Delete"
+
+[node name="Alert Popup" type="AcceptDialog" parent="."]
+margin_right = 83.0
+margin_bottom = 58.0
