@@ -157,8 +157,26 @@ func get_next_mission_path():
 
 	for mission_data in campaign_data.missions:
 		if mission_data.path == mission_scene_path:
-			var next_mission_index = mission_data.get("next_mission", null)
-			if next_mission_index != null:
+			var next_mission_index: int = -1
+			var next_missions: Array = mission_data.get("next_missions", [])
+
+			for index in range(next_missions.size()):
+				# Assume this mission's requirements are met: if a mission's objectives array is empty or missing, it has no requirements
+				var requirements_met: bool = true
+				for objective in next_missions[index].get("objectives", []):
+					var objective_type: int = objective.get("objective_type", -1)
+					var objective_index: int = objective.get("objective_index", -1)
+
+					if objective_type != -1 and objective_index != -1:
+						if objectives[objective_type][objective_index].state != Objective.COMPLETED:
+							requirements_met = false
+							break
+
+				if requirements_met:
+					next_mission_index = next_missions[index].get("index", -1)
+					break
+
+			if next_mission_index != -1:
 				return campaign_data.missions[next_mission_index].path
 
 			return null
