@@ -16,7 +16,10 @@ func _ready():
 		profile_config.save(PROFILE_CONFIG_PATH)
 
 	profile_config.load(PROFILE_CONFIG_PATH)
-	name_path_map = profile_config.get_value("data", "name_path_map")
+	if profile_config.has_section("data") and profile_config.has_section_key("data", "name_path_map"):
+		name_path_map = profile_config.get_value("data", "name_path_map")
+	else:
+		profile_config.set_value("data", "name_path_map", name_path_map)
 
 
 # PUBLIC
