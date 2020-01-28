@@ -1,5 +1,6 @@
 extends Control
 
+onready var alert_popup = get_node("Alert Popup")
 onready var delete_profile_dialog = get_node("Delete Profile Dialog")
 onready var loader = get_node("/root/SceneLoader")
 onready var new_profile_dialog = get_node("New Profile Dialog")
@@ -20,7 +21,7 @@ func _ready():
 	exit_button.connect("pressed", self, "_on_exit_pressed")
 	new_profile_button.connect("pressed", new_profile_dialog, "popup_centered")
 
-	for profile_name in profiles_data.profile_section_map.keys():
+	for profile_name in profiles_data.get_profile_names():
 		add_profile_buttons(profile_name)
 
 
@@ -39,9 +40,11 @@ func _on_exit_pressed():
 
 
 func _on_new_profile_confirmed():
-	add_profile_buttons(new_profile_lineedit.text)
-
-	profiles_data.create_profile(new_profile_lineedit.text)
+	if profiles_data.create_profile(new_profile_lineedit.text):
+		add_profile_buttons(new_profile_lineedit.text)
+	else:
+		alert_popup.set_text("Profile name \"" + new_profile_lineedit.text + "\" already exists,\nor name is too similar to existing profile filename.")
+		alert_popup.popup_centered()
 
 
 func _on_profile_delete_pressed(profile_name: String):
