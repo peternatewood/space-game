@@ -933,12 +933,12 @@ margin_bottom = 34.0
 margin_right = 400.0
 margin_bottom = 300.0
 rect_min_size = Vector2( 400, 300 )
-window_title = "Open a File"
+window_title = "Open a Mission"
 resizable = true
 mode = 0
 access = 1
 filters = PoolStringArray( "*.tscn" )
-current_dir = "user://missions/"
+current_dir = "user://missions"
 current_path = "user://missions/"
 
 [node name="Save File Dialog" type="FileDialog" parent="Controls Container"]
