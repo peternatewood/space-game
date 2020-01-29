@@ -55,6 +55,12 @@ func _ready():
 
 	load_mission_info()
 
+	var missions_directory: Directory = Directory.new()
+	if not missions_directory.dir_exists(mission_data.USER_MISSIONS_DIR):
+		missions_directory.make_dir(mission_data.USER_MISSIONS_DIR)
+		open_file_dialog.set_current_dir(mission_data.USER_MISSIONS_DIR)
+		save_file_dialog.set_current_dir(mission_data.USER_MISSIONS_DIR)
+
 	var file_menu = get_node("Controls Container/PanelContainer/Toolbar/File Menu")
 	file_menu.get_popup().connect("id_pressed", self, "_on_file_menu_id_pressed")
 

@@ -32,8 +32,8 @@ func _ready():
 	var user_mission_count: int = 0
 	var dir = Directory.new()
 	dir = Directory.new()
-	if dir.open("user://") != OK:
-		print("Unable to open user:// directory")
+	if dir.open(mission_data.USER_MISSIONS_DIR) != OK:
+		print("Unable to open user://missions directory")
 	else:
 		dir.list_dir_begin()
 		var file_name = dir.get_next()

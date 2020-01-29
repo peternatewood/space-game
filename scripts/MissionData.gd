@@ -389,4 +389,5 @@ const REQUIRED_MISSION_META: Array = [
 	"reinforcement_wings",
 	"wing_names"
 ]
+const USER_MISSIONS_DIR: String = "user://missions"
 const VALID_WINGS: Array = [ "Alpha", "Beta", "Gamma", "Delta", "Epsilon" ]

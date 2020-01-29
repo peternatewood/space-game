@@ -938,8 +938,8 @@ resizable = true
 mode = 0
 access = 1
 filters = PoolStringArray( "*.tscn" )
-current_dir = "user://"
-current_path = "user://"
+current_dir = "user://missions/"
+current_path = "user://missions/"
 
 [node name="Save File Dialog" type="FileDialog" parent="Controls Container"]
 margin_right = 400.0
@@ -949,8 +949,8 @@ window_title = "Save Mission"
 resizable = true
 access = 1
 filters = PoolStringArray( "*.tscn" )
-current_dir = "user://"
-current_path = "user://"
+current_dir = "user://missions"
+current_path = "user://missions/"
 
 [node name="Add Ship Dialog" type="AcceptDialog" parent="Controls Container"]
 editor/display_folded = true
@@ -963,8 +963,8 @@ script = ExtResource( 11 )
 [node name="Add Ship Rows" type="VBoxContainer" parent="Controls Container/Add Ship Dialog"]
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 198.0
-margin_bottom = 62.0
+margin_right = 104.0
+margin_bottom = 26.0
 
 [node name="Warnings Label" type="Label" parent="Controls Container/Add Ship Dialog/Add Ship Rows"]
 visible = false
