@@ -1,0 +1,88 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://themes/interface_blue.tres" type="Theme" id=1]
+[ext_resource path="res://scripts/CampaignSelect.gd" type="Script" id=2]
+[ext_resource path="res://images/background_blue.png" type="Texture" id=3]
+
+[node name="Campaign Select" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
+
+[node name="Background" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 3 )
+expand = true
+stretch_mode = 7
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 16.0
+margin_top = 16.0
+margin_right = -16.0
+margin_bottom = -16.0
+
+[node name="Campaign Rows" type="VBoxContainer" parent="MarginContainer"]
+margin_right = 992.0
+margin_bottom = 568.0
+
+[node name="Default Campaigns Label" type="Label" parent="MarginContainer/Campaign Rows"]
+margin_right = 992.0
+margin_bottom = 18.0
+text = "Campaigns"
+
+[node name="Default Campaigns Panel" type="PanelContainer" parent="MarginContainer/Campaign Rows"]
+margin_top = 22.0
+margin_right = 992.0
+margin_bottom = 267.0
+size_flags_vertical = 3
+
+[node name="Default Campaigns Scroll" type="ScrollContainer" parent="MarginContainer/Campaign Rows/Default Campaigns Panel"]
+margin_left = 8.0
+margin_top = 4.0
+margin_right = 984.0
+margin_bottom = 241.0
+size_flags_vertical = 3
+scroll_horizontal_enabled = false
+
+[node name="Default Campaign Rows" type="VBoxContainer" parent="MarginContainer/Campaign Rows/Default Campaigns Panel/Default Campaigns Scroll"]
+margin_right = 976.0
+margin_bottom = 237.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Custom Campaigns Label" type="Label" parent="MarginContainer/Campaign Rows"]
+margin_top = 271.0
+margin_right = 992.0
+margin_bottom = 289.0
+text = "Custom Campaigns"
+
+[node name="Custom Campaigns Panel" type="PanelContainer" parent="MarginContainer/Campaign Rows"]
+margin_top = 293.0
+margin_right = 992.0
+margin_bottom = 538.0
+size_flags_vertical = 3
+
+[node name="Custom Campaigns Scroll" type="ScrollContainer" parent="MarginContainer/Campaign Rows/Custom Campaigns Panel"]
+margin_left = 8.0
+margin_top = 4.0
+margin_right = 984.0
+margin_bottom = 241.0
+size_flags_vertical = 3
+scroll_horizontal_enabled = false
+
+[node name="Custom Campaign Rows" type="VBoxContainer" parent="MarginContainer/Campaign Rows/Custom Campaigns Panel/Custom Campaigns Scroll"]
+margin_right = 976.0
+margin_bottom = 237.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Back Button" type="Button" parent="MarginContainer/Campaign Rows"]
+margin_top = 542.0
+margin_right = 48.0
+margin_bottom = 568.0
+size_flags_horizontal = 0
+text = "Back"

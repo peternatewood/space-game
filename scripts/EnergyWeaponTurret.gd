@@ -2,7 +2,6 @@ extends "res://scripts/TurretBase.gd"
 
 onready var barrels = get_node("Barrels")
 onready var target_raycast = get_node("Barrels/Target Raycast")
-onready var turret_base = get_node("Turret Base")
 
 var hardpoint_index: int = 0
 var hardpoint_count: int
@@ -47,8 +46,6 @@ func _process(delta):
 func fire_weapon():
 	if is_weapon_loaded and fire_countdown <= 0:
 		var bolt = weapon.instance()
-		bolt.add_collision_exception_with(self)
-		bolt.add_collision_exception_with(capital_ship)
 		bolt.owner_ship = capital_ship
 
 		get_tree().get_root().add_child(bolt)

@@ -1,11 +1,11 @@
 extends RigidBody
 
-export (int) var hull_hitpoints = -1
+export (float) var hull_hitpoints = -1
 
 onready var bounding_box_extents = get_meta("bounding_box_extents")
 onready var cam_distance: float = get_meta("cam_distance")
 onready var collision_sound_player = get_node_or_null("Collision Sound Player")
-onready var max_hull_hitpoints: int = get_meta("hull_hitpoints")
+onready var max_hull_hitpoints: float = get_meta("hull_hitpoints")
 onready var mission_controller = get_tree().get_root().get_node_or_null("Mission Controller")
 onready var settings = get_node("/root/GlobalSettings")
 
@@ -24,7 +24,7 @@ func _ready():
 	set_process(false)
 
 
-func _deal_damage(amount: int):
+func _deal_damage(amount: float):
 	if hull_hitpoints > 0:
 		hull_hitpoints -= amount
 		emit_signal("damaged")

@@ -11,7 +11,7 @@ dest_files=[ "res://.import/model.dae-642afe9b821ca080bed1f5eb76d4aa78.scn" ]
 
 [params]
 
-nodes/root_type="RigidBody"
+nodes/root_type="KinematicBody"
 nodes/root_name="Hawk Fighter"
 nodes/root_scale=1.0
 nodes/custom_script="res://scripts/PostImportShip.gd"

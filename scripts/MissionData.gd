@@ -1,142 +1,187 @@
 extends Node
 
+onready var profiles_data = get_node("/root/ProfilesData")
+
 var armory: Dictionary
+var beam_weapon_data: Dictionary = {}
 var beam_weapon_models: Dictionary
 var briefing: Array
-var capital_ship_models: Dictionary
-var energy_weapon_models: Dictionary
-var missile_weapon_models: Dictionary
+var campaign_data: Dictionary
+var custom_campaign_list: Array = []
+var default_campaign_list: Array = []
+var energy_weapon_data: Dictionary = {}
+var is_in_campaign: bool = false
+var missile_weapon_data: Dictionary = {}
 var mission_name: String
 var mission_scene_path: String
 var non_player_loadouts: Dictionary
 var objectives: Array
-var ship_models: Dictionary
+var ship_data: Dictionary = {}
 var wing_loadouts: Array = []
 var wing_names: Array = []
 
 
 func _ready():
 	# Map ship and weapon models by name
+	var ships_config: ConfigFile = ConfigFile.new()
+	ships_config.load("res://configs/ships.cfg")
+
+	for section in ships_config.get_sections():
+		var model_dir: String = "res://models/ships/" + section + "/"
+		var ship_class: String = ships_config.get_value(section, "ship_class")
+		var model_path: String = model_dir + "model.dae"
+
+		ship_data[ship_class] = {
+			"model_dir": model_dir,
+			"model_path": model_path,
+			"energy_weapon_slots": 0,
+			"missile_weapon_slots": 0,
+			"beam_weapon_turrets": 0,
+			"energy_weapon_turrets": 0,
+			"missile_weapon_turrets": 0
+		}
+
+		var model = load(model_path)
+		var ship_instance = model.instance()
+
+		if ship_instance.get_meta("is_capital_ship"):
+			if ship_instance.has_node("Beam Weapon Turrets"):
+				ship_data[ship_class].beam_weapon_turrets = ship_instance.get_node("Beam Weapon Turrets").get_child_count()
+			if ship_instance.has_node("Energy Weapon Turrets"):
+				ship_data[ship_class].energy_weapon_turrets = ship_instance.get_node("Energy Weapon Turrets").get_child_count()
+			if ship_instance.has_node("Missile Weapon Turrets"):
+				ship_data[ship_class].missile_weapon_turrets = ship_instance.get_node("Missile Weapon Turrets").get_child_count()
+		else:
+			ship_data[ship_class].energy_weapon_slots = ship_instance.get_node("Energy Weapon Groups").get_child_count()
+			ship_data[ship_class].missile_weapon_slots = ship_instance.get_node("Missile Weapon Groups").get_child_count()
+
+		ship_instance.free()
+
+		for key in ships_config.get_section_keys(section):
+			ship_data[ship_class][key] = ships_config.get_value(section, key)
+
 	var dir = Directory.new()
-	if dir.open("res://models/ships") != OK:
-		print("Unable to open res://models/ships directory")
+	if dir.open("res://models/beam_weapons") != OK:
+		print("Unable to open res://models/beam_weapons directory")
 	else:
 		dir.list_dir_begin()
 		var file_name = dir.get_next()
 		while file_name != "":
 			if dir.current_is_dir() and file_name != "." and file_name != "..":
-				var model_dir = dir.get_current_dir() + "/" + file_name + "/"
-				var model_file = load(model_dir + "model.dae")
+				var model_dir: String = dir.get_current_dir() + "/" + file_name + "/"
+				var model_file = load(model_dir + "model.tscn")
 
-				var data_file = File.new()
-				var data_file_error = data_file.open(model_dir + "data.json", File.READ)
+				var weapon_instance = model_file.instance()
 
-				if data_file_error != OK:
-					print("Unable to open data file in " + model_dir)
-				else:
-					var data_parsed = JSON.parse(data_file.get_as_text())
-
-					if data_parsed.error != OK:
-						print("Error parsing data file at " + model_dir + ": " + data_parsed.error_string)
-					elif model_file == null:
-						print("Unable to load model file at " + model_dir)
-					else:
-						ship_models[data_parsed.result.get("ship_class", "ship")] = model_file
-
-				data_file.close()
+				beam_weapon_models[weapon_instance.weapon_name] = model_file
 
 			file_name = dir.get_next()
 
-	# Also load capital ships
-	if dir.open("res://models/capital_ships") != OK:
-		print("Unable to open res://models/ships directory")
+	var weapons_config: ConfigFile = ConfigFile.new()
+	weapons_config.load("res://configs/weapons.cfg")
+
+	for section in weapons_config.get_sections():
+		var weapon_name = weapons_config.get_value(section, "name")
+		var model_dir: String
+
+		match weapons_config.get_value(section, "type"):
+			"beam_weapon":
+				model_dir = "res://models/beam_weapons/" + section + "/"
+
+				beam_weapon_data[weapon_name] = {
+					"model_path": model_dir + "model.dae",
+					"model_dir": model_dir
+				}
+
+				for key in weapons_config.get_section_keys(section):
+					beam_weapon_data[weapon_name][key] = weapons_config.get_value(section, key)
+
+				var beam_instance = beam_weapon_models[weapon_name].instance()
+
+				beam_weapon_data[weapon_name]["fire_delay"] = beam_instance.fire_delay
+				beam_weapon_data[weapon_name]["fire_duration"] = beam_instance.fire_duration
+				beam_weapon_data[weapon_name]["damage_hull"] = beam_instance.hull_damage
+				beam_weapon_data[weapon_name]["damage_shield"] = beam_instance.shield_damage
+
+				beam_instance.free()
+			"energy_weapon":
+				model_dir = "res://models/energy_weapons/" + section + "/"
+
+				energy_weapon_data[weapon_name] = {
+					"model_path": model_dir + "model.dae",
+					"model_dir": model_dir
+				}
+
+				for key in weapons_config.get_section_keys(section):
+					energy_weapon_data[weapon_name][key] = weapons_config.get_value(section, key)
+			"missile_weapon":
+				model_dir = "res://models/missile_weapons/" + section + "/"
+
+				missile_weapon_data[weapon_name] = {
+					"model_path": model_dir + "model.dae",
+					"model_dir": model_dir
+				}
+
+				for key in weapons_config.get_section_keys(section):
+					missile_weapon_data[weapon_name][key] = weapons_config.get_value(section, key)
+
+	# Build campaign list
+	if dir.open("res://campaigns") != OK:
+		print("Unable to open res://campaigns directory")
 	else:
+		var campaign_file: ConfigFile = ConfigFile.new()
+
 		dir.list_dir_begin()
 		var file_name = dir.get_next()
 		while file_name != "":
-			if dir.current_is_dir() and file_name != "." and file_name != "..":
-				var model_dir = dir.get_current_dir() + "/" + file_name + "/"
-				var model_file = load(model_dir + "model.dae")
+			if not dir.current_is_dir() and file_name.ends_with(".cfg"):
+				var campaign_path: String = dir.get_current_dir() + "/" + file_name
+				campaign_file.load(campaign_path)
 
-				var data_file = File.new()
-				var data_file_error = data_file.open(model_dir + "data.json", File.READ)
+				var default_campaign_data: Dictionary = {
+					"path": campaign_path,
+					"name": campaign_file.get_value("details", "name"),
+					"description": campaign_file.get_value("details", "description")
+				}
 
-				if data_file_error != OK:
-					print("Unable to open data file in " + model_dir)
-				else:
-					var data_parsed = JSON.parse(data_file.get_as_text())
-
-					if data_parsed.error != OK:
-						print("Error parsing data file at " + model_dir + ": " + data_parsed.error_string)
-					elif model_file == null:
-						print("Unable to load model file at " + model_dir)
-					else:
-						capital_ship_models[data_parsed.result.get("ship_class", "ship")] = model_file
-
-				data_file.close()
-
-			file_name = dir.get_next()
-
-	if dir.open("res://models/energy_weapons") != OK:
-		print("Unable to open res://models/energy_weapons directory")
-	else:
-		dir.list_dir_begin()
-		var file_name = dir.get_next()
-		while file_name != "":
-			if dir.current_is_dir() and file_name != "." and file_name != "..":
-				var model_dir = dir.get_current_dir() + "/" + file_name + "/"
-				var model_file = load(model_dir + "model.dae")
-
-				var data_file = File.new()
-				var data_file_error = data_file.open(model_dir + "data.json", File.READ)
-
-				if data_file_error != OK:
-					print("Unable to open data file in " + model_dir)
-				else:
-					var data_parsed = JSON.parse(data_file.get_as_text())
-
-					if data_parsed.error != OK:
-						print("Error parsing data file at " + model_dir + ": " + data_parsed.error_string)
-					elif model_file == null:
-						print("Unable to load model file at " + model_file)
-					else:
-						energy_weapon_models[data_parsed.result.get("name", "energy weapon")] = model_file
-
-				data_file.close()
-
-			file_name = dir.get_next()
-
-	if dir.open("res://models/missile_weapons") != OK:
-		print("Unable to open res://models/missile_weapons directory")
-	else:
-		dir.list_dir_begin()
-		var file_name = dir.get_next()
-		while file_name != "":
-			if dir.current_is_dir() and file_name != "." and file_name != "..":
-				var model_dir = dir.get_current_dir() + "/" + file_name + "/"
-				var model_file = load(model_dir + "model.dae")
-
-				var data_file = File.new()
-				var data_file_error = data_file.open(model_dir + "data.json", File.READ)
-
-				if data_file_error != OK:
-					print("Unable to open data file in " + model_dir)
-				else:
-					var data_parsed = JSON.parse(data_file.get_as_text())
-
-					if data_parsed.error != OK:
-						print("Error parsing data file at " + model_dir + ": " + data_parsed.error_string)
-					elif model_file == null:
-						print("Unable to load model file at " + model_file)
-					else:
-						missile_weapon_models[data_parsed.result.get("name", "missile weapon")] = model_file
-
-				data_file.close()
+				default_campaign_list.append(default_campaign_data)
 
 			file_name = dir.get_next()
 
 
 # PUBLIC
+
+
+func get_next_mission_path():
+	var next_mission_path
+
+	for mission_data in campaign_data.missions:
+		if mission_data.path == mission_scene_path:
+			var next_mission_index: int = -1
+			var next_missions: Array = mission_data.get("next_missions", [])
+
+			for index in range(next_missions.size()):
+				# Assume this mission's requirements are met: if a mission's objectives array is empty or missing, it has no requirements
+				var requirements_met: bool = true
+				for objective in next_missions[index].get("objectives", []):
+					var objective_type: int = objective.get("objective_type", -1)
+					var objective_index: int = objective.get("objective_index", -1)
+
+					if objective_type != -1 and objective_index != -1:
+						if objectives[objective_type][objective_index].state != Objective.COMPLETED:
+							requirements_met = false
+							break
+
+				if requirements_met:
+					next_mission_index = next_missions[index].get("index", -1)
+					break
+
+			if next_mission_index != -1:
+				return campaign_data.missions[next_mission_index].path
+
+			return null
+
+	return null
 
 
 func get_weapon_models(type: String, wing_index: int, ship_index: int):
@@ -147,13 +192,51 @@ func get_weapon_models(type: String, wing_index: int, ship_index: int):
 	return models
 
 
+func get_unlocked_missions():
+	return profiles_data.current_profile.unlocked_missions
+
+
+func has_profile_started_campaign():
+	return profiles_data.current_profile.campaign != ""
+
+
+func load_campaign_data(path: String, save_to_profile: bool = false):
+	var campaign_directory: Directory = Directory.new()
+	var campaign_file: ConfigFile = ConfigFile.new()
+
+	if campaign_directory.file_exists(path):
+		var load_error = campaign_file.load(path)
+
+		if load_error == OK:
+			campaign_data["name"] = campaign_file.get_value("details", "name")
+			campaign_data["description"] = campaign_file.get_value("details", "description")
+			campaign_data["missions"] = campaign_file.get_value("mission_tree", "missions")
+
+			if save_to_profile:
+				profiles_data.set_campaign(path)
+		else:
+			print("Error loading campaign file ", path, ": ", load_error)
+	else:
+		print("Unable to find campaign file at: ", path)
+
+
+func load_current_profile_mission():
+	is_in_campaign = true
+	load_campaign_data(profiles_data.current_profile.campaign)
+	load_mission_data(profiles_data.current_profile.mission)
+
+
 # Loads mission data from file; returns true if successful, false if not
-func load_mission_data(path: String):
+func load_mission_data(path: String, save_to_profile: bool = false):
 	var file = File.new()
 
 	if file.file_exists(path):
 		var mission_scene = load(path)
 		var mission_instance = mission_scene.instance()
+
+		if save_to_profile:
+			profiles_data.set_mission(path)
+			profiles_data.unlock_mission(path)
 
 		# Check for required meta data
 		var missing_meta: bool = false
@@ -171,6 +254,13 @@ func load_mission_data(path: String):
 		wing_names = mission_instance.get_meta("wing_names")
 
 		# Get loadout for each ship by wing
+		wing_loadouts = []
+
+		# These are so we only load each model we need once
+		var ship_models: Dictionary = {}
+		var energy_weapon_models: Dictionary = {}
+		var missile_weapon_models: Dictionary = {}
+
 		var default_loadouts = mission_instance.get_meta("default_loadouts")
 		var wing_index: int = 0
 		for loadout in default_loadouts:
@@ -179,6 +269,9 @@ func load_mission_data(path: String):
 			for index in range(min(MAX_SHIPS_PER_WING, loadout.size())):
 				var ship = mission_instance.get_node("Targets Container/" + loadout[index].name)
 				var ship_class = ship.get_meta("ship_class")
+
+				if not ship_models.has(ship_class):
+					ship_models[ship_class] = load(ship_data[ship_class].model_path)
 
 				var ship_loadout: Dictionary = {
 					"ship_class": ship_class,
@@ -198,7 +291,10 @@ func load_mission_data(path: String):
 
 				var energy_weapon_index: int = 0
 				for energy_weapon_name in loadout[index].get("energy_weapons", []):
-					if energy_weapon_name != "none" and energy_weapon_models.has(energy_weapon_name) and armory.energy_weapons.has(energy_weapon_name):
+					if energy_weapon_name != "none" and energy_weapon_data.has(energy_weapon_name) and armory.energy_weapons.has(energy_weapon_name):
+						if not energy_weapon_models.has(energy_weapon_name):
+							energy_weapon_models[energy_weapon_name] = load(energy_weapon_data[energy_weapon_name].model_path)
+
 						ship_loadout["energy_weapons"][energy_weapon_index] = { "name": energy_weapon_name, "model": energy_weapon_models[energy_weapon_name] }
 
 					energy_weapon_index += 1
@@ -207,7 +303,10 @@ func load_mission_data(path: String):
 
 				var missile_weapon_index: int = 0
 				for missile_weapon_name in loadout[index].get("missile_weapons", []):
-					if missile_weapon_name != "none" and missile_weapon_models.has(missile_weapon_name) and armory.missile_weapons.has(missile_weapon_name):
+					if missile_weapon_name != "none" and missile_weapon_data.has(missile_weapon_name) and armory.missile_weapons.has(missile_weapon_name):
+						if not missile_weapon_models.has(missile_weapon_name):
+							missile_weapon_models[missile_weapon_name] = load(missile_weapon_data[missile_weapon_name].model_path)
+
 						ship_loadout["missile_weapons"][missile_weapon_index] = { "name": missile_weapon_name, "model": missile_weapon_models[missile_weapon_name] }
 
 					missile_weapon_index += 1
@@ -233,12 +332,14 @@ func load_mission_data(path: String):
 					non_player_loadouts[ship_name].beam_weapons.append(beam_weapon_models[beam_weapon_name])
 
 			for energy_weapon_name in meta_loadouts[ship_name].get("energy_weapons", []):
-				if energy_weapon_models.has(energy_weapon_name):
-					non_player_loadouts[ship_name].energy_weapons.append(energy_weapon_models[energy_weapon_name])
+				if energy_weapon_data.has(energy_weapon_name):
+					var energy_weapon_model = load(energy_weapon_data[energy_weapon_name].model_path)
+					non_player_loadouts[ship_name].energy_weapons.append(energy_weapon_model)
 
 			for missile_weapon_name in meta_loadouts[ship_name].get("missile_weapons", []):
-				if missile_weapon_models.has(missile_weapon_name):
-					non_player_loadouts[ship_name].missile_weapons.append(missile_weapon_models[missile_weapon_name])
+				if missile_weapon_data.has(missile_weapon_name):
+					var missile_weapon_model = load(missile_weapon_data[missile_weapon_name].model_path)
+					non_player_loadouts[ship_name].missile_weapons.append(missile_weapon_model)
 
 		# Get mission objectives
 		objectives = [ [], [], [] ]
@@ -288,4 +389,6 @@ const REQUIRED_MISSION_META: Array = [
 	"reinforcement_wings",
 	"wing_names"
 ]
+const USER_CAMPAIGNS_DIR: String = "user://campaigns"
+const USER_MISSIONS_DIR: String = "user://missions"
 const VALID_WINGS: Array = [ "Alpha", "Beta", "Gamma", "Delta", "Epsilon" ]

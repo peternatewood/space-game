@@ -1,0 +1,82 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://scripts/BeamWeapon.gd" type="Script" id=1]
+[ext_resource path="res://textures/animated_beam.tres" type="Texture" id=2]
+[ext_resource path="res://images/beam_core.png" type="Texture" id=3]
+[ext_resource path="res://models/beam_weapons/argon_beam/warm_up.wav" type="AudioStream" id=4]
+[ext_resource path="res://models/beam_weapons/argon_beam/cool_down.wav" type="AudioStream" id=5]
+[ext_resource path="res://models/beam_weapons/argon_beam/sound.wav" type="AudioStream" id=6]
+
+[sub_resource type="QuadMesh" id=1]
+size = Vector2( 0.35, 1 )
+
+[sub_resource type="SpatialMaterial" id=2]
+flags_unshaded = true
+flags_vertex_lighting = true
+flags_do_not_receive_shadows = true
+flags_disable_ambient_light = true
+vertex_color_use_as_albedo = true
+params_blend_mode = 1
+params_cull_mode = 2
+albedo_color = Color( 1, 2, 3, 1 )
+albedo_texture = ExtResource( 2 )
+
+[sub_resource type="QuadMesh" id=3]
+size = Vector2( 0.5, 0.5 )
+
+[sub_resource type="SpatialMaterial" id=4]
+flags_unshaded = true
+flags_vertex_lighting = true
+flags_do_not_receive_shadows = true
+flags_disable_ambient_light = true
+vertex_color_use_as_albedo = true
+params_blend_mode = 1
+params_cull_mode = 2
+params_billboard_mode = 1
+params_billboard_keep_scale = true
+albedo_color = Color( 1, 2, 3, 1 )
+albedo_texture = ExtResource( 3 )
+
+[node name="Blue Beam" type="Spatial"]
+script = ExtResource( 1 )
+fire_delay = 6.0
+hull_damage = 25.0
+shield_damage = 65.0
+warm_up_duration = 2.5
+weapon_name = "Argon Beam"
+
+[node name="Beam" type="Spatial" parent="."]
+
+[node name="Beam Mesh" type="MeshInstance" parent="Beam"]
+transform = Transform( 1.91069e-15, 4.37114e-08, 1, 1, -4.37114e-08, -3.59989e-21, 4.37114e-08, 1, -4.37114e-08, 0, 0, -0.5 )
+mesh = SubResource( 1 )
+material/0 = SubResource( 2 )
+
+[node name="Core" type="MeshInstance" parent="."]
+mesh = SubResource( 3 )
+material/0 = SubResource( 4 )
+
+[node name="Raycast Container" type="Spatial" parent="."]
+
+[node name="RayCast" type="RayCast" parent="Raycast Container"]
+enabled = true
+cast_to = Vector3( 0, 0, -500 )
+collide_with_areas = true
+
+[node name="Warm Up Player" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 4 )
+unit_size = 15.0
+bus = "Sound Effects"
+
+[node name="Cool Down Player" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 5 )
+unit_size = 15.0
+bus = "Sound Effects"
+
+[node name="Beam Sound Player" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 6 )
+unit_size = 15.0
+bus = "Sound Effects"
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true

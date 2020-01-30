@@ -1,0 +1,270 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://scripts/MissionController.gd" type="Script" id=1]
+[ext_resource path="res://scripts/EyecatchCamera.gd" type="Script" id=2]
+[ext_resource path="res://prefabs/movement_debris.tscn" type="PackedScene" id=3]
+[ext_resource path="res://models/ships/spider_fighter/model.dae" type="PackedScene" id=4]
+[ext_resource path="res://scripts/NPCShip.gd" type="Script" id=5]
+[ext_resource path="res://models/ships/spider_battleship/model.dae" type="PackedScene" id=6]
+[ext_resource path="res://models/ships/hawk_fighter/model.dae" type="PackedScene" id=7]
+
+[node name="Mission Controller" type="Spatial"]
+script = ExtResource( 1 )
+__meta__ = {
+"armory": {
+"energy_weapons": [  ],
+"missile_weapons": [  ],
+"ships": [  ]
+},
+"briefing": [ "" ],
+"default_loadouts": [ [  ] ],
+"factions": {
+"frog": {
+"hawk": 0,
+"spider": 0
+},
+"hawk": {
+"frog": 0,
+"spider": 2
+},
+"spider": {
+"frog": 0,
+"hawk": 2
+}
+},
+"name": "",
+"non_player_loadouts": {
+"Spider Battleship": {
+"beam_weapons": [ "Argon Beam", "Argon Beam", "Argon Beam", "Argon Beam" ],
+"energy_weapons": [ "Energy Bolt", "Energy Bolt", "Disintigrator", "Disintigrator" ],
+"missile_weapons": [ "Heat Seeker", "Heat Seeker", "Heat Seeker", "Heat Seeker" ]
+}
+},
+"objectives": [ [  ], [  ], [  ] ],
+"player_path": "",
+"reinforcement_wings": [  ],
+"wing_names": [ "Alpha", "Beta", "", "", "", "" ]
+}
+is_eyecatch = true
+
+[node name="Sun Light" type="DirectionalLight" parent="."]
+transform = Transform( 0.866025, 0.482963, -0.129409, 0, 0.258819, 0.965926, 0.5, -0.836516, 0.224144, 0, 0, 0 )
+
+[node name="Camera" type="Camera" parent="."]
+script = ExtResource( 2 )
+
+[node name="Camera Timer" type="Timer" parent="Camera"]
+wait_time = 4.0
+
+[node name="Movement Debris" parent="." instance=ExtResource( 3 )]
+
+[node name="Targets Container" type="Node" parent="."]
+
+[node name="Alpha 1" parent="Targets Container" instance=ExtResource( 4 )]
+script = ExtResource( 5 )
+faction = "spider"
+initial_orders = [ {
+"priority": 50,
+"target": "",
+"type": 4
+}, {
+"priority": 50,
+"target": "",
+"type": 0
+}, {
+"priority": 50,
+"target": "",
+"type": 0
+}, {
+"priority": 50,
+"target": "",
+"type": 0
+}, {
+"priority": 50,
+"target": "",
+"type": 0
+}, {
+"priority": 50,
+"target": "",
+"type": 0
+} ]
+
+[node name="Alpha 2" parent="Targets Container" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 4 )
+script = ExtResource( 5 )
+faction = "spider"
+initial_orders = [ {
+"priority": 50,
+"target": "",
+"type": 4
+}, {
+"priority": 50,
+"target": "",
+"type": 0
+}, {
+"priority": 50,
+"target": "",
+"type": 0
+}, {
+"priority": 50,
+"target": "",
+"type": 0
+}, {
+"priority": 50,
+"target": "",
+"type": 0
+}, {
+"priority": 50,
+"target": "",
+"type": 0
+} ]
+
+[node name="Alpha 3" parent="Targets Container" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 4 )
+script = ExtResource( 5 )
+faction = "spider"
+initial_orders = [ {
+"priority": 50,
+"target": "",
+"type": 4
+}, {
+"priority": 50,
+"target": "",
+"type": 0
+}, {
+"priority": 50,
+"target": "",
+"type": 0
+}, {
+"priority": 50,
+"target": "",
+"type": 0
+}, {
+"priority": 50,
+"target": "",
+"type": 0
+}, {
+"priority": 50,
+"target": "",
+"type": 0
+} ]
+
+[node name="Spider Battleship" parent="Targets Container" instance=ExtResource( 6 )]
+transform = Transform( 0.506742, 0, -0.862098, -0.5066, 0.809125, -0.29778, 0.697545, 0.587637, 0.410017, -0.0427513, -15.2183, -2.26635 )
+script = ExtResource( 5 )
+faction = "spider"
+initial_orders = [ {
+"priority": 50,
+"target": "",
+"type": 4
+}, {
+"priority": 50,
+"target": "",
+"type": 0
+}, {
+"priority": 50,
+"target": "",
+"type": 0
+}, {
+"priority": 50,
+"target": "",
+"type": 0
+}, {
+"priority": 50,
+"target": "",
+"type": 0
+}, {
+"priority": 50,
+"target": "",
+"type": 0
+} ]
+
+[node name="Buteo 1" parent="Targets Container" instance=ExtResource( 7 )]
+transform = Transform( -0.855639, 0, -0.517573, 0, 1, 0, 0.517573, 0, -0.855639, -38.0654, 35.3629, -77.7164 )
+script = ExtResource( 5 )
+faction = "hawk"
+initial_orders = [ {
+"priority": 50,
+"target": "",
+"type": 4
+}, {
+"priority": 50,
+"target": "",
+"type": 0
+}, {
+"priority": 50,
+"target": "",
+"type": 0
+}, {
+"priority": 50,
+"target": "",
+"type": 0
+}, {
+"priority": 50,
+"target": "",
+"type": 0
+}, {
+"priority": 50,
+"target": "",
+"type": 0
+} ]
+
+[node name="Buteo 2" parent="Targets Container" instance=ExtResource( 7 )]
+transform = Transform( -0.855639, 0, -0.517573, 0, 1, 0, 0.517573, 0, -0.855639, -34.8295, 35.3629, -87.7984 )
+script = ExtResource( 5 )
+faction = "hawk"
+initial_orders = [ {
+"priority": 50,
+"target": "",
+"type": 4
+}, {
+"priority": 50,
+"target": "",
+"type": 0
+}, {
+"priority": 50,
+"target": "",
+"type": 0
+}, {
+"priority": 50,
+"target": "",
+"type": 0
+}, {
+"priority": 50,
+"target": "",
+"type": 0
+}, {
+"priority": 50,
+"target": "",
+"type": 0
+} ]
+
+[node name="Buteo 3" parent="Targets Container" instance=ExtResource( 7 )]
+transform = Transform( -0.855639, 0, -0.517573, 0, 1, 0, 0.517573, 0, -0.855639, -47.128, 35.3629, -79.4381 )
+script = ExtResource( 5 )
+faction = "hawk"
+initial_orders = [ {
+"priority": 50,
+"target": "",
+"type": 4
+}, {
+"priority": 50,
+"target": "",
+"type": 0
+}, {
+"priority": 50,
+"target": "",
+"type": 0
+}, {
+"priority": 50,
+"target": "",
+"type": 0
+}, {
+"priority": 50,
+"target": "",
+"type": 0
+}, {
+"priority": 50,
+"target": "",
+"type": 0
+} ]

@@ -10,7 +10,7 @@ static func get_line_intersect(aStart: Vector2, aEnd: Vector2, bStart: Vector2, 
 	var t2: float
 	var t1: float
 
-	if bDist.x * aDist.x - bDist.y * aDist.x == 0:
+	if bDist.x * aDist.y - bDist.y * aDist.x == 0:
 		t2 = 0
 	else:
 		t2 = (aDist.x * (bStart.x - aStart.y) + aDist.y * (aStart.x + bStart.x)) / (bDist.x * aDist.y - bDist.y * aDist.x)
@@ -93,9 +93,7 @@ static func units_to_speed(amount: float, units: int):
 			return 19.438445 * amount
 
 
-# This one turned out to be too high?
-#const MASS_SPEED_FACTOR: float = 0.031124095253675
-const MASS_SPEED_FACTOR: float = 0.015562047626838
+const MASS_SPEED_FACTOR: float = 0.031124095253675
 
 """
 TODO: figure out the curve for this conversion; for now we're just expecting 0.85 damping for all ships
@@ -115,4 +113,13 @@ Damping: 0.95 | Mass: 1.0 | Max Speed:  20.532631
 
 max_speed = factor * 32.129448 / mass
 factor = max_speed * mass / 32.129448
+
+Mass:  1 | turn speed: 10 | start theta: 49.909172 | rotation_degrees.x: 50.173042 | turn time: 0.750000
+Mass:  1 | turn speed:  1 | start theta:  1.084776 | rotation_degrees.x:  1.481611 | turn time: 7.585120
+Mass:  1 | turn speed:  1 | start theta:  1.481611 | rotation_degrees.x:  1.878318 | turn time: 7.588124
+
+Mass: 10 | turn speed: 10 | start theta:  1.084776 | rotation_degrees.x:  1.481611 | turn time: 7.586450
+Mass: 10 | turn speed: 10 | start theta:  4.642991 | rotation_degrees.x:  5.039694 | turn time: 7.585080
+
+turn speed = turn time / 7.585 * mass
 """

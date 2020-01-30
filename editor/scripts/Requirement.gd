@@ -1,10 +1,14 @@
 extends Control
 
 onready var add_target_button = get_node("Add Target Button")
+onready var objective_label = get_node("Requirement Grid/Objective Label")
 onready var objective_options = get_node("Requirement Grid/Objective Options")
+onready var objective_type_label = get_node("Requirement Grid/Objective Type Label")
 onready var objective_type_options = get_node("Requirement Grid/Objective Type Options")
 onready var target_rows = get_node("Targets Rows")
+onready var targets_label = get_node("Targets Label")
 onready var type_options = get_node("Requirement Grid/Type Options")
+onready var waypoint_label = get_node("Requirement Grid/Waypoints Label")
 onready var waypoint_options = get_node("Requirement Grid/Waypoints Options")
 
 var objectives: Array = [ [], [], [] ]
@@ -16,6 +20,10 @@ func _ready():
 	add_target_button.connect("pressed", self, "_on_add_target_pressed")
 	objective_options.connect("item_selected", self, "_on_objective_changed")
 	objective_type_options.connect("item_selected", self, "_on_objective_type_changed")
+	type_options.connect("item_selected", self, "_on_type_changed")
+
+	var delete_button = get_node("Delete Button")
+	delete_button.connect("pressed", self, "queue_free")
 
 
 func _on_add_target_pressed():
@@ -32,6 +40,37 @@ func _on_objective_type_changed(item_index: int):
 	update_objective_fields()
 
 
+func _on_type_changed(item_index: int):
+	# Toggle options based on objective type
+	if item_index == Objective.PATROL:
+		waypoint_label.show()
+		waypoint_options.show()
+	else:
+		waypoint_label.hide()
+		waypoint_options.hide()
+
+	if item_index == Objective.OBJECTIVE:
+		objective_label.show()
+		objective_options.show()
+		objective_type_label.show()
+		objective_type_options.show()
+	else:
+		objective_label.hide()
+		objective_options.hide()
+		objective_type_label.hide()
+		objective_type_options.hide()
+
+	match item_index:
+		Objective.PATROL, Objective.OBJECTIVE:
+			target_rows.hide()
+			targets_label.hide()
+			add_target_button.hide()
+		_:
+			target_rows.show()
+			targets_label.show()
+			add_target_button.show()
+
+
 # PUBLIC
 
 
@@ -44,6 +83,12 @@ func add_target(name: String = ""):
 
 func get_requirement():
 	requirement.type = type_options.get_selected_id()
+	# Both objective OptionButtons start at 0, but the first option is "none" meaning -1
+	requirement.objective_type = objective_type_options.get_selected_id() - 1
+	requirement.objective_index = objective_options.get_selected_id() - 1
+
+	var selected_waypoint_index: int = waypoint_options.get_selected_id()
+	requirement.waypoints_name = waypoint_options.get_item_text(selected_waypoint_index)
 
 	var target_names: Array = []
 	for target in target_rows.get_children():
@@ -58,6 +103,7 @@ func populate_fields(requirement_object, new_objectives: Array = [ [], [], [] ])
 	objectives = new_objectives
 	requirement = requirement_object
 	type_options.select(requirement_object.type)
+	_on_type_changed(requirement_object.type)
 
 	# Add one because the first is "none" which should correspond to -1 in the Requirement
 	objective_type_options.select(requirement.objective_type + 1)
@@ -79,6 +125,25 @@ func populate_fields(requirement_object, new_objectives: Array = [ [], [], [] ])
 			add_target(name)
 
 		target_index += 1
+
+
+func populate_waypoint_options(waypoint_groups: Array):
+	# We subtract one from our options count, to exclude the "none" option
+	var current_group_count: int = waypoint_options.get_item_count() - 1
+	var new_group_count: int = waypoint_groups.size()
+
+	# Note: the waypoint option index is always one greater than the waypoint group index so our first element can be "none"
+	for index in range(max(current_group_count, new_group_count)):
+		if index >= current_group_count:
+			# Add waypoint items
+			waypoint_options.add_item(waypoint_groups[index], index + 1)
+		else:
+			if index >= new_group_count:
+				# Remove old waypoint items
+				waypoint_options.remove_item(new_group_count + 1)
+			else:
+				# Update item text
+				waypoint_options.set_item_text(index + 1, waypoint_groups[index])
 
 
 func update_objective_fields():
@@ -107,5 +172,7 @@ func update_ship_names(new_ship_names: Array):
 	for target in target_rows.get_children():
 		target.populate_options(ship_names)
 
+
+const Objective = preload("res://scripts/Objective.gd")
 
 const REQUIREMENT_TARGET = preload("res://editor/prefabs/requirement_target.tscn")

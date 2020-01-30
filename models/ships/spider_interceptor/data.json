@@ -1,8 +1,0 @@
-{
-  "ship_class": "Spider Interceptor",
-  "hull_hitpoints": 90.0,
-  "shield_hitpoints": 85.0,
-  "mass": 8,
-  "max_speed": 74.0,
-  "missile_capacity": 40.0
-}

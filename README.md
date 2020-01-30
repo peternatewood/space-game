@@ -26,22 +26,27 @@ Here I'll be keeping track of the all the features I want to implement, and chec
 - [x] Pause Menu
 - [x] Mission Editor
 - [ ] Campaign Tree
-- [ ] Capital Ships
+- [x] Capital Ships
 - [ ] Carrier Ships
 - [ ] User Interface Sounds
 - [x] Ship/Weapon Sound Effects
+- [x] Ship Subsystems
+- [x] Lead Indicator
+- [x] Eyecatch
+- [x] Gallery/Library
 - [ ] Music
 
 ### Accessibility Options
 
 - [x] Dyslexia-friendly theme
-- [ ] Colorblindness options
+- [x] Colorblindness options
 
 ### Optional Features
 
 I'd like to implement these, but I'm not sure whether they're feasible.
 
-- [ ] Customize HUD Colors
+- [x] Customize HUD Colors
+- [ ] Cockpit Model for each playable ship
 - [ ] Custom Ships users can import
 
 ## Feature Descriptions
@@ -55,6 +60,8 @@ Here are some more in-depth descriptions for certain features.
 - __Loadout Menu__: The player chooses their ship and loadout before launching the mission.
 - __Campaign Tree__: Missions need to be connected to each other to form a progression. A tree structure will allow for paths that branch off or loop around. Whether the player meets certain objectives during a mission will determine how the following missions will branch and loop.
 - __Carrier Ships__: Ship that can launch small ships (fighters/bombers.) Maybe the player can land there to repair/reload?
+- __Eyecatch__: A video or auto-playing level that appears on the title screen after a long-enough period of inactivity. Originally used in arcade machines to draw attention to a machine not currently being played.
+- __Gallery/Library__: View detailed info on ships
 
 ## Mission Objectives
 

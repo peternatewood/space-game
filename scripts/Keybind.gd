@@ -228,7 +228,7 @@ static func action_to_simplified_events(action: String):
 		elif event is InputEventJoypadButton:
 			events["joypad_button"] = { "button_index": event.button_index }
 		elif event is InputEventJoypadMotion:
-			var axis_direction = 1 if event.axis_value < 0 else 0
+			var axis_direction = 1 if event.axis_value < 0 else -1
 			events["joypad_axis"] = { "axis": event.axis, "axis_direction": axis_direction }
 
 	return events

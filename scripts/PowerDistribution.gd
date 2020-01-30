@@ -6,9 +6,9 @@ onready var engine_bar = get_node("Engine Container/TextureProgress")
 
 
 func set_power_bars(power_dist: Array):
-	weapon_bar.set_value(power_dist[AttackShipBase.WEAPON])
-	shield_bar.set_value(power_dist[AttackShipBase.SHIELD])
-	engine_bar.set_value(power_dist[AttackShipBase.ENGINE])
+	weapon_bar.set_value(power_dist[ShipBase.WEAPON])
+	shield_bar.set_value(power_dist[ShipBase.SHIELD])
+	engine_bar.set_value(power_dist[ShipBase.ENGINE])
 
 
-const AttackShipBase = preload("AttackShipBase.gd")
+const ShipBase = preload("ShipBase.gd")

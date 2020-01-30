@@ -11,14 +11,14 @@ dest_files=[ "res://.import/model.dae-7e22bbb44481a0523c2800eae7b2ea67.scn" ]
 
 [params]
 
-nodes/root_type="RigidBody"
+nodes/root_type="KinematicBody"
 nodes/root_name="Frog Fighter"
 nodes/root_scale=1.0
 nodes/custom_script="res://scripts/PostImportShip.gd"
 nodes/storage=0
 materials/location=1
 materials/storage=1
-materials/keep_on_reimport=true
+materials/keep_on_reimport=false
 meshes/compress=true
 meshes/ensure_tangents=true
 meshes/storage=0

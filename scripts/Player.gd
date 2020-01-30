@@ -1,4 +1,4 @@
-extends "res://scripts/AttackShipBase.gd"
+extends "res://scripts/ShipBase.gd"
 
 enum { COCKPIT, CHASE }
 
@@ -7,13 +7,8 @@ var cam_dist: float
 var cam_mode: int
 var cam_offset: Vector3
 var camera
-var input_velocity: Vector3
-
 
 func _ready():
-	var debris = DEBRIS_PARTICLES.instance()
-	add_child(debris)
-
 	if has_warp_ramp_up:
 		self.connect("warping_ramped_up", warp_ramp_up_player, "stop")
 
@@ -40,16 +35,16 @@ func _input(event):
 			if warping == NONE:
 				warp_out()
 		elif event.is_action("throttle_up") and event.pressed:
-			throttle = min(MAX_THROTTLE, throttle + ACCELERATION)
+			self.throttle = min(MAX_THROTTLE, throttle + ACCELERATION)
 			emit_signal("throttle_changed")
 		elif event.is_action("throttle_down") and event.pressed:
-			throttle = max(0, throttle - ACCELERATION)
+			self.throttle = max(0, throttle - ACCELERATION)
 			emit_signal("throttle_changed")
 		elif event.is_action("set_throttle_zero") and event.pressed:
-			throttle = 0
+			self.throttle = 0
 			emit_signal("throttle_changed")
 		elif event.is_action("set_throttle_full") and event.pressed:
-			throttle = MAX_THROTTLE
+			self.throttle = MAX_THROTTLE
 			emit_signal("throttle_changed")
 		# Targeting
 		elif event.is_action("deselect_target") and event.pressed:
@@ -113,50 +108,54 @@ func _input(event):
 				_set_current_target(targets[target_index])
 
 			emit_signal("target_changed", last_target)
+		elif event.is_action("deselect_subsystem") and event.pressed:
+			_deselect_target_subsystem()
+		elif event.is_action("target_subsystem") and event.pressed:
+			_cycle_target_subsystems()
 		# Shield Boosting/Redirecting
 		elif event.is_action("boost_shield_front") and event.pressed:
-			ShieldQuadrant.boost_shield_quadrant(shields, FRONT)
+			shields[0].boost_shield_quadrant(shields, FRONT)
 			emit_signal("shield_boost_changed")
 		elif event.is_action("boost_shield_rear") and event.pressed:
-			ShieldQuadrant.boost_shield_quadrant(shields, REAR)
+			shields[0].boost_shield_quadrant(shields, REAR)
 			emit_signal("shield_boost_changed")
 		elif event.is_action("boost_shield_left") and event.pressed:
-			ShieldQuadrant.boost_shield_quadrant(shields, LEFT)
+			shields[0].boost_shield_quadrant(shields, LEFT)
 			emit_signal("shield_boost_changed")
 		elif event.is_action("boost_shield_right") and event.pressed:
-			ShieldQuadrant.boost_shield_quadrant(shields, RIGHT)
+			shields[0].boost_shield_quadrant(shields, RIGHT)
 			emit_signal("shield_boost_changed")
 		elif event.is_action("clear_shield_boost") and event.pressed:
-			ShieldQuadrant.boost_shield_quadrant(shields, -1)
+			shields[0].boost_shield_quadrant(shields, -1)
 			emit_signal("shield_boost_changed")
 		elif event.is_action("redirect_shield_to_front") and event.pressed:
-			ShieldQuadrant.redirect_hitpoints_to_quadrant(shields, FRONT)
+			shields[0].redirect_hitpoints_to_quadrant(shields, FRONT)
 		elif event.is_action("redirect_shield_to_rear") and event.pressed:
-			ShieldQuadrant.redirect_hitpoints_to_quadrant(shields, REAR)
+			shields[0].redirect_hitpoints_to_quadrant(shields, REAR)
 		elif event.is_action("redirect_shield_to_left") and event.pressed:
-			ShieldQuadrant.redirect_hitpoints_to_quadrant(shields, LEFT)
+			shields[0].redirect_hitpoints_to_quadrant(shields, LEFT)
 		elif event.is_action("redirect_shield_to_right") and event.pressed:
-			ShieldQuadrant.redirect_hitpoints_to_quadrant(shields, RIGHT)
+			shields[0].redirect_hitpoints_to_quadrant(shields, RIGHT)
 		elif event.is_action("equalize_shields") and event.pressed:
-			ShieldQuadrant.equalize_shields(shields)
+			shields[0].equalize_shields(shields)
 		# System power distribution
 		elif event.is_action("increment_weapon_power") and event.pressed:
-			_increment_power_level(AttackShipBase.WEAPON, 1)
+			_increment_power_level(WEAPON, 1)
 			emit_signal("power_distribution_changed")
 		elif event.is_action("decrement_weapon_power") and event.pressed:
-			_increment_power_level(AttackShipBase.WEAPON, -1)
+			_increment_power_level(WEAPON, -1)
 			emit_signal("power_distribution_changed")
 		elif event.is_action("increment_shield_power") and event.pressed:
-			_increment_power_level(AttackShipBase.SHIELD, 1)
+			_increment_power_level(SHIELD, 1)
 			emit_signal("power_distribution_changed")
 		elif event.is_action("decrement_shield_power") and event.pressed:
-			_increment_power_level(AttackShipBase.SHIELD, -1)
+			_increment_power_level(SHIELD, -1)
 			emit_signal("power_distribution_changed")
 		elif event.is_action("increment_engine_power") and event.pressed:
-			_increment_power_level(AttackShipBase.ENGINE, 1)
+			_increment_power_level(ENGINE, 1)
 			emit_signal("power_distribution_changed")
 		elif event.is_action("decrement_engine_power") and event.pressed:
-			_increment_power_level(AttackShipBase.ENGINE, -1)
+			_increment_power_level(ENGINE, -1)
 			emit_signal("power_distribution_changed")
 		elif event.is_action("equalize_power") and event.pressed:
 			power_distribution[WEAPON] = TOTAL_SYSTEM_POWER / 3
@@ -167,10 +166,8 @@ func _input(event):
 		# Weapons stuff
 		elif event.is_action("cycle_energy_weapon") and event.pressed:
 			_cycle_energy_weapon(1)
-			emit_signal("energy_weapon_changed")
 		elif event.is_action("cycle_missile_weapon") and event.pressed:
 			_cycle_missile_weapon(1)
-			emit_signal("missile_weapon_changed")
 
 
 func _on_fov_changed(value: int):
@@ -192,11 +189,10 @@ func _process(delta):
 	match warping:
 		NONE:
 			if is_alive:
-				input_velocity.x = Input.get_action_strength("pitch_up") - Input.get_action_strength("pitch_down")
-				input_velocity.y = Input.get_action_strength("yaw_left") - Input.get_action_strength("yaw_right")
-				input_velocity.z = Input.get_action_strength("roll_left") - Input.get_action_strength("roll_right")
-
-				torque_vector = transform.basis.x * input_velocity.x + transform.basis.y * input_velocity.y + transform.basis.z * input_velocity.z
+				if subsystems["Engines"].operative:
+					input_velocity.x = Input.get_action_strength("pitch_up") - Input.get_action_strength("pitch_down")
+					input_velocity.y = Input.get_action_strength("yaw_left") - Input.get_action_strength("yaw_right")
+					input_velocity.z = Input.get_action_strength("roll_left") - Input.get_action_strength("roll_right")
 
 				if Input.is_action_pressed("fire_energy_weapon"):
 					_fire_energy_weapon()
@@ -253,7 +249,7 @@ func _toggle_ship_mesh(show_meshes: bool):
 
 func warp_out():
 	# Allow physics to bring player to a full stop
-	torque_vector = Vector3.ZERO
+	input_velocity = Vector3.ZERO
 
 	# Move camera to a roughly random position behind the player
 	_toggle_ship_mesh(true)
@@ -276,8 +272,5 @@ signal target_changed
 signal throttle_changed
 signal began_warp_out
 
-const AttackShipBase = preload("AttackShipBase.gd")
-
 const CAM_ROLL_MOD: float = 0.25
 const CAM_THROTTLE_MOD: float = 1.5
-const DEBRIS_PARTICLES = preload("res://models/Debris_Particles.tscn")

@@ -40,14 +40,13 @@ func fire_missile_weapon(ship, target = null):
 func fire_weapon(ship):
 	# Instance weapon and make it ignore the ship that fired it
 	var weapon_instance = weapon.instance()
-	weapon_instance.add_collision_exception_with(ship)
 	weapon_instance.owner_ship = ship
 
 	get_tree().get_root().add_child(weapon_instance)
 	weapon_instance.transform.origin = hardpoints[hardpoint_index].global_transform.origin
 
 	weapon_instance.look_at(ship.get_targeting_endpoint(), ship.transform.basis.y)
-	weapon_instance.add_speed(ship.get_linear_velocity().length())
+	weapon_instance.add_speed(ship.linear_velocity.length())
 
 	countdown = weapon_instance.fire_delay
 	hardpoint_index = (hardpoint_index + 1) % hardpoint_count
@@ -68,11 +67,16 @@ func set_weapon(weapon_scene, missile_capacity = null):
 		weapon = weapon_scene
 
 		var weapon_instance = weapon.instance()
-		for name in WEAPON_DATA_NAMES:
-			if weapon_instance.has_meta(name):
-				weapon_data[name] = weapon_instance.get_meta(name)
 
-		if weapon_data.has("ammo_cost") and missile_capacity != null:
+		weapon_data["firing_range"] = weapon_instance.firing_range
+		weapon_data["speed"] = weapon_instance.speed
+		weapon_data["weapon_name"] = weapon_instance.weapon_name
+
+		if weapon_instance is EnergyBolt:
+			weapon_data["cost"] = weapon_instance.cost
+		elif weapon_instance is Missile:
+			weapon_data["ammo_cost"] = weapon_instance.ammo_cost
+
 			ammo_capacity = round(missile_capacity / weapon_data["ammo_cost"])
 			ammo_count = ammo_capacity
 
@@ -82,9 +86,13 @@ func set_weapon(weapon_scene, missile_capacity = null):
 signal countdown_completed
 signal ammo_count_changed
 
+const EnergyBolt = preload("EnergyBolt.gd")
+const Missile = preload("Missile.gd")
+
 const WEAPON_DATA_NAMES: Array = [
 	"ammo_cost",
 	"cost",
 	"firing_range",
+	"speed",
 	"weapon_name"
 ]

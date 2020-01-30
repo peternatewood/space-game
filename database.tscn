@@ -1,0 +1,95 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://themes/interface_blue.tres" type="Theme" id=1]
+[ext_resource path="res://scripts/Database.gd" type="Script" id=2]
+[ext_resource path="res://images/background_blue.png" type="Texture" id=3]
+[ext_resource path="res://prefabs/ship_preview_container.tscn" type="PackedScene" id=4]
+[ext_resource path="res://prefabs/weapon_preview_container.tscn" type="PackedScene" id=5]
+
+[node name="Database" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
+
+[node name="Background" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 3 )
+expand = true
+stretch_mode = 7
+
+[node name="Database Rows" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 16.0
+margin_top = 16.0
+margin_right = -16.0
+margin_bottom = -16.0
+
+[node name="Tabs" type="TabContainer" parent="Database Rows"]
+margin_right = 992.0
+margin_bottom = 538.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Ships" type="HBoxContainer" parent="Database Rows/Tabs"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 36.0
+margin_right = -8.0
+margin_bottom = -8.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Ship List Scroll Container" type="ScrollContainer" parent="Database Rows/Tabs/Ships"]
+margin_right = 486.0
+margin_bottom = 494.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+scroll_horizontal_enabled = false
+
+[node name="Ship List" type="VBoxContainer" parent="Database Rows/Tabs/Ships/Ship List Scroll Container"]
+margin_right = 486.0
+margin_bottom = 494.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Ship Preview Container" parent="Database Rows/Tabs/Ships" instance=ExtResource( 4 )]
+margin_left = 490.0
+margin_right = 976.0
+margin_bottom = 494.0
+show_description = true
+
+[node name="Weapons" type="HBoxContainer" parent="Database Rows/Tabs"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 36.0
+margin_right = -8.0
+margin_bottom = -8.0
+
+[node name="Weapon List Scroll Container" type="ScrollContainer" parent="Database Rows/Tabs/Weapons"]
+margin_right = 772.0
+margin_bottom = 494.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+scroll_horizontal_enabled = false
+
+[node name="Weapon List" type="VBoxContainer" parent="Database Rows/Tabs/Weapons/Weapon List Scroll Container"]
+margin_right = 772.0
+margin_bottom = 494.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Weapon Preview Container" parent="Database Rows/Tabs/Weapons" instance=ExtResource( 5 )]
+show_description = true
+
+[node name="Back Button" type="Button" parent="Database Rows"]
+margin_top = 542.0
+margin_right = 48.0
+margin_bottom = 568.0
+size_flags_horizontal = 0
+text = "Back"

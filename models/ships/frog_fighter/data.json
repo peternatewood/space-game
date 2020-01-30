@@ -1,8 +1,0 @@
-{
-  "ship_class": "Frog Fighter",
-  "hull_hitpoints": 110.0,
-  "shield_hitpoints": 120.0,
-  "mass": 11,
-  "max_speed": 55.0,
-  "missile_capacity": 60.0
-}

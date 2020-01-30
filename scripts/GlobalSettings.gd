@@ -6,38 +6,8 @@ enum Colorblindness { FULL, PROTANOPIA, DEUTERANOPIA, TRITANOPIA, CUSTOM }
 # Dueteranopia: similar to protanopia, without dimming effect
 # Tritanopia: no blue photoreceptors (very rare)
 
-# TODO: change to using .cfg format and manipulating ProjectSettings directly
-
 var keybinds: Dictionary = {}
-# Default settings
-var settings: Dictionary = {
-	"aniso_filtering": Setting.new("aniso_filtering", 0),
-	"audio_master_percent": Setting.new("audio_master_percent", 100),
-	"audio_master_mute": Setting.new("audio_master_mute", false),
-	"audio_music_percent": Setting.new("audio_music_percent", 100),
-	"audio_music_mute": Setting.new("audio_music_mute", false),
-	"audio_sound_effects_percent": Setting.new("audio_sound_effects_percent", 100),
-	"audio_sound_effects_mute": Setting.new("audio_sound_effects_mute", false),
-	"audio_ui_sounds_percent": Setting.new("audio_ui_sounds_percent", 100),
-	"audio_ui_sounds_mute": Setting.new("audio_ui_sounds_mute", false),
-	"borderless": Setting.new("borderless", false),
-	"colorblindness": Setting.new("colorblindness", Colorblindness.FULL),
-	"custom_ui_colors": Setting.new("custom_ui_colors", [ Color.white, Color.white, Color.white ]),
-	"dyslexia": Setting.new("dyslexia", false),
-	"fov": Setting.new("fov", 70),
-	"fullscreen": Setting.new("fullscreen", false),
-	"hdr": Setting.new("hdr", false),
-	"hud_palette_colors": Setting.new("hud_palette_colors", { "default": Color.white }),
-	"hud_palette_index": Setting.new("hud_palette_index", 0),
-	"msaa": Setting.new("msaa", 0),
-	"reflections": Setting.new("reflections", 2048),
-	"resolution": Setting.new("resolution", Vector2(1280, 720)),
-	"shadows_dir": Setting.new("shadows_dir", 4096),
-	"shadows_point": Setting.new("shadows_point", 4096),
-	"subsurf_scatter": Setting.new("subsurf_scatter", 0),
-	"units": Setting.new("units", MathHelper.Units.METRIC),
-	"vsync": Setting.new("vsync", true)
-}
+var settings: Dictionary = {}
 
 
 func _ready():
@@ -45,53 +15,64 @@ func _ready():
 	for action in InputMap.get_actions():
 		keybinds[action] = Keybind.action_to_simplified_events(action)
 
+	_load_default_settings()
 	_load_keybinds_from_file()
 	_load_settings_from_file()
+
+
+func _load_default_settings():
+	var settings_file = ConfigFile.new()
+	var file_error = settings_file.load(DEFAULT_SETTINGS_PATH)
+
+	if file_error == OK:
+		for section in settings_file.get_sections():
+			for key in settings_file.get_section_keys(section):
+				settings[key] = Setting.new(section, settings_file.get_value(section, key))
+	else:
+		print("Default settings file load error: ", file_error)
 
 
 func _load_keybinds_from_file():
 	var keybinds_file = File.new()
 	if keybinds_file.file_exists(KEYBINDS_PATH):
-		var file_error = keybinds_file.open(KEYBINDS_PATH, File.READ)
+		keybinds_file = ConfigFile.new()
+		var file_error = keybinds_file.load(KEYBINDS_PATH)
 		if file_error == OK:
-			var parse_result = JSON.parse(keybinds_file.get_as_text())
-			if parse_result.error == OK:
-				for action in parse_result.result.keys():
-					if keybinds.has(action):
-						keybinds[action] = parse_result.result[action]
-			else:
-				print("Error parsing keybinds file: " + parse_result.error_string)
-		else:
-			print("File read error: " + str(file_error))
+			for action in keybinds_file.get_sections():
+				var keybind: Dictionary = {}
 
-		keybinds_file.close()
+				for input_type in keybinds_file.get_section_keys(action):
+					keybind[input_type] = keybinds_file.get_value(action, input_type)
+
+				keybinds[action] = keybind
+		else:
+			print("User keybinds file read error: ", file_error)
 	else:
-		print("File not found")
+		print("User keybinds file not found")
+		# Assign events to keybinds object from InputMap
+		for action in InputMap.get_actions():
+			keybinds[action] = Keybind.action_to_simplified_events(action)
 
 	_save_keybinds_to_file()
 
 
 func _load_settings_from_file():
 	var settings_file = File.new()
-	if settings_file.file_exists(SETTINGS_PATH):
-		var file_error = settings_file.open(SETTINGS_PATH, File.READ)
-		if file_error == OK:
-			var parse_result = JSON.parse(settings_file.get_as_text())
-			if parse_result.error == OK:
-				for key in parse_result.result.keys():
-					if settings.has(key):
-						settings[key].set_value(parse_result.result[key])
-			else:
-				print("Error parsing settings file: " + parse_result.error_string)
-		else:
-			print("File read error: " + str(file_error))
+	var file_error: int
 
-		settings_file.close()
-	else:
-		print("File not found")
+	if settings_file.file_exists(SETTINGS_PATH):
+		settings_file = ConfigFile.new()
+		file_error = settings_file.load(SETTINGS_PATH)
+
+		if file_error == OK:
+			for section in settings_file.get_sections():
+				for key in settings_file.get_section_keys(section):
+					settings[key] = Setting.new(section, settings_file.get_value(section, key))
+		else:
+			print("User settings file read error: ", file_error)
 
 	# Always save settings, in case the file is missing some defaults
-	_save_settings_to_file()
+	_save_all_settings_to_file()
 
 	# Actually update settings from file settings
 	for bus_index in range(AUDIO_BUS_COUNT):
@@ -129,26 +110,40 @@ func _on_keybind_changed(action):
 
 
 func _save_keybinds_to_file():
-	var keybinds_file = File.new()
-	keybinds_file.open(KEYBINDS_PATH, File.WRITE)
-	keybinds_file.store_string(JSON.print(keybinds))
-	keybinds_file.close()
+	var keybinds_file = ConfigFile.new()
+
+	for action in InputMap.get_actions():
+		var keybind = Keybind.action_to_simplified_events(action)
+		for input_type in keybind.keys():
+			keybinds_file.set_value(action, input_type, keybind[input_type])
+
+	keybinds_file.save(KEYBINDS_PATH)
 
 
-func _save_settings_to_file():
-	var settings_file = File.new()
-	settings_file.open(SETTINGS_PATH, File.WRITE)
+func _save_all_settings_to_file():
+	var settings_file = ConfigFile.new()
 
-	var string_settings: Dictionary = {}
 	for key in settings.keys():
-		match settings[key]._type:
-			TYPE_BOOL, TYPE_INT, TYPE_REAL, TYPE_STRING:
-				string_settings[key] = settings[key]._value
-			_:
-				string_settings[key] = settings[key]._value_string
+		settings_file.set_value(settings[key]._section, key, settings[key]._value)
 
-	settings_file.store_string(JSON.print(string_settings))
-	settings_file.close()
+	settings_file.save(SETTINGS_PATH)
+
+
+func _save_setting_to_file(key: String):
+	if settings.has(key):
+		var settings_file = File.new()
+		# Just in case the user settings file is missing
+		if not settings_file.file_exists(SETTINGS_PATH):
+			_save_all_settings_to_file()
+
+		settings_file = ConfigFile.new()
+		settings_file.load(SETTINGS_PATH)
+
+		settings_file.set_value(settings[key]._section, key, settings[key]._value)
+
+		settings_file.save(SETTINGS_PATH)
+	else:
+		print("Invalid setting name: ", key)
 
 
 func _update_fullscreen():
@@ -284,48 +279,54 @@ func set_audio_percent(bus_index: int, percent: float):
 	match bus_index:
 		MASTER:
 			settings.audio_master_percent.set_value(percent)
+			_save_setting_to_file("audio_master_percent")
 		MUSIC:
 			settings.audio_music_percent.set_value(percent)
+			_save_setting_to_file("audio_music_percent")
 		SOUND_EFFECTS:
 			settings.audio_sound_effects_percent.set_value(percent)
+			_save_setting_to_file("audio_sound_effects_percent")
 		UI_SOUNDS:
 			settings.audio_ui_sounds_percent.set_value(percent)
+			_save_setting_to_file("audio_ui_sounds_percent")
 		_:
 			return
 
 	AudioServer.set_bus_volume_db(bus_index, MathHelper.percent_to_db(percent))
-	_save_settings_to_file()
 
 
 func set_audio_mute(bus_index: int, toggle_on: bool):
 	match bus_index:
 		MASTER:
 			settings.audio_master_mute.set_value(toggle_on)
+			_save_setting_to_file("audio_master_mute")
 		MUSIC:
 			settings.audio_music_mute.set_value(toggle_on)
+			_save_setting_to_file("audio_music_mute")
 		SOUND_EFFECTS:
 			settings.audio_sound_effects_mute.set_value(toggle_on)
+			_save_setting_to_file("audio_sound_effects_mute")
 		UI_SOUNDS:
 			settings.audio_ui_sounds_mute.set_value(toggle_on)
+			_save_setting_to_file("audio_ui_sounds_mute")
 		_:
 			return
 
 	AudioServer.set_bus_mute(bus_index, toggle_on)
-	_save_settings_to_file()
 
 
 func set_borderless_window(toggle_on: bool):
 	settings.borderless.set_value(toggle_on)
 	OS.set_borderless_window(settings.borderless._value)
 
-	_save_settings_to_file()
+	_save_setting_to_file("borderless")
 
 
 func set_colorblindness(option_index: int):
 	settings.colorblindness.set_value(option_index)
 	emit_signal("ui_colors_changed")
 
-	_save_settings_to_file()
+	_save_setting_to_file("colorblindness")
 
 
 func set_custom_ui_color(type: int, new_color: Color):
@@ -334,35 +335,35 @@ func set_custom_ui_color(type: int, new_color: Color):
 	settings.custom_ui_colors.set_value(ui_colors)
 	emit_signal("ui_colors_changed")
 
-	_save_settings_to_file()
+	_save_setting_to_file("ui_colors")
 
 
 func set_dyslexia(toggle_on: bool):
 	settings.dyslexia.set_value(toggle_on)
 	emit_signal("dyslexia_toggled", settings.dyslexia._value)
 
-	_save_settings_to_file()
+	_save_setting_to_file("dyslexia")
 
 
 func set_fov(value: int):
 	settings.fov.set_value(value)
 	emit_signal("fov_changed", settings.fov._value)
 
-	_save_settings_to_file()
+	_save_setting_to_file("fov")
 
 
 func set_fullscreen(toggle_on: bool):
 	settings.fullscreen.set_value(toggle_on)
 	_update_fullscreen()
 
-	_save_settings_to_file()
+	_save_setting_to_file("fullscreen")
 
 
 func set_hdr(toggle_on: bool):
 	settings.hdr.set_value(toggle_on)
 	get_viewport().set_hdr(settings.hdr._value)
 
-	_save_settings_to_file()
+	_save_setting_to_file("hdr")
 
 
 func set_hud_custom_color(node_path: String, new_color: Color):
@@ -371,28 +372,28 @@ func set_hud_custom_color(node_path: String, new_color: Color):
 	settings.hud_palette_colors.set_value(palette_colors)
 	emit_signal("hud_palette_color_changed", node_path)
 
-	_save_settings_to_file()
+	_save_setting_to_file("hud_palette_colors")
 
 
 func set_hud_palette(index: int):
 	settings.hud_palette_index.set_value(index)
 	emit_signal("hud_palette_changed")
 
-	_save_settings_to_file()
+	_save_setting_to_file("hud_palette_index")
 
 
 func set_msaa(option: int):
 	settings.msaa.set_value(option)
 	get_viewport().set_msaa(settings.msaa._value)
 
-	_save_settings_to_file()
+	_save_setting_to_file("msaa")
 
 
 func set_resolution(new_resolution: Vector2):
 	settings.resolution.set_value(new_resolution)
 	_update_resolution()
 
-	_save_settings_to_file()
+	_save_setting_to_file("resolution")
 
 	return settings.resolution._value
 
@@ -400,27 +401,27 @@ func set_resolution(new_resolution: Vector2):
 func set_shadows_dir_atlas_size(value: int):
 	settings.shadows_dir.set_value(value)
 
-	_save_settings_to_file()
+	_save_setting_to_file("shadows_dir")
 
 
 func set_shadows_point_atlas_size(value: int):
 	settings.shadows_point.set_value(value)
 
-	_save_settings_to_file()
+	_save_setting_to_file("shadows_point")
 
 
 func set_units(new_units: int):
 	settings.units.set_value(new_units)
 	emit_signal("units_changed", settings.units._value)
 
-	_save_settings_to_file()
+	_save_setting_to_file("units")
 
 
 func set_vsync(toggle_on: bool):
 	settings.vsync.set_value(toggle_on)
 	OS.set_use_vsync(settings.vsync._value)
 
-	_save_settings_to_file()
+	_save_setting_to_file("vsyncs")
 
 
 signal dyslexia_toggled
@@ -433,6 +434,7 @@ signal units_changed
 const Keybind = preload("Keybind.gd")
 const MathHelper = preload("MathHelper.gd")
 
+const DEFAULT_SETTINGS_PATH = "res://settings.cfg"
 const DISTANCE_UNITS: Array = [
 	"m",
 	"ft"
@@ -457,7 +459,7 @@ const INTERFACE_COLORS_FADED: Array = [
 ]
 const INCONSOLATA_THEME = preload("res://themes/default_inconsolata.tres")
 const INCONSOLATA_INTERFACE_THEME = preload("res://themes/interface_blue.tres")
-const KEYBINDS_PATH: String = "user://keybinds.json"
+const KEYBINDS_PATH: String = "user://keybinds.cfg"
 const OPEN_DYSLEXIC_INTERFACE_THEME = preload("res://themes/interface_blue_dyslexia.tres")
 const OPEN_DYSLEXIC_THEME = preload("res://themes/default_dyslexic.tres")
 const RESOLUTIONS: Array = [
@@ -490,7 +492,7 @@ const RESOLUTIONS: Array = [
 	Vector2(2560, 1600),
 	Vector2(3840, 2400)
 ]
-const SETTINGS_PATH: String = "user://settings.json"
+const SETTINGS_PATH: String = "user://settings.cfg"
 # Low, Medium, High, Maximum
 const SHADOW_QUALITY: Array = [
 	1024,
@@ -506,28 +508,22 @@ const SPEED_UNITS: Array = [
 
 # Used to maintain properties of a given setting
 class Setting:
-	var _name: String
+	var _section: String
 	var _type: int
 	var _value
-	var _value_string: String
 
 
-	func _init(name: String, value):
-		_name = name
+	func _init(section: String, value):
+		_section = section
 
 		if value != null:
 			_type = typeof(value)
 			set_value(value)
 		else:
 			_type = TYPE_NIL
-			_value_string = "null"
 
 
 	# PUBLIC
-
-
-	func get_name():
-		return _name
 
 
 	func get_value():
@@ -535,26 +531,17 @@ class Setting:
 
 
 	func set_value(value):
-		if value == null:
-			_value_string = "null"
-			return
-
 		if typeof(value) == _type:
 			_value = value
-			_value_string = var2str(_value)
 
-			return _value
 		elif _type == TYPE_INT:
 			_value = int(value)
-			_value_string = var2str(_value)
 
-			return _value
 		elif typeof(value) == TYPE_STRING:
 			_value = str2var(value)
-			_value_string = value
 
-			return _value
 		else:
-			print("Invalid type for " + _name + " setting: " + str(typeof(value)))
+			print("Invalid type for this setting: " + str(typeof(value)))
+			return null
 
-		return null
+		return _value

@@ -17,6 +17,7 @@ columns = 2
 margin_top = 3.0
 margin_right = 96.0
 margin_bottom = 17.0
+size_flags_horizontal = 3
 text = "Type"
 
 [node name="Type Options" type="OptionButton" parent="Requirement Grid"]
@@ -31,6 +32,7 @@ selected = 0
 margin_top = 27.0
 margin_right = 96.0
 margin_bottom = 41.0
+size_flags_horizontal = 3
 text = "Waypoints"
 
 [node name="Waypoints Options" type="OptionButton" parent="Requirement Grid"]
@@ -46,6 +48,7 @@ selected = 0
 margin_top = 51.0
 margin_right = 96.0
 margin_bottom = 65.0
+size_flags_horizontal = 3
 text = "Objective Type"
 
 [node name="Objective Type Options" type="OptionButton" parent="Requirement Grid"]
@@ -61,6 +64,7 @@ selected = 0
 margin_top = 75.0
 margin_right = 96.0
 margin_bottom = 89.0
+size_flags_horizontal = 3
 text = "Objective"
 
 [node name="Objective Options" type="OptionButton" parent="Requirement Grid"]
@@ -82,9 +86,21 @@ text = "Targets"
 margin_top = 114.0
 margin_right = 178.0
 margin_bottom = 114.0
+custom_constants/separation = 0
 
 [node name="Add Target Button" type="Button" parent="."]
 margin_top = 118.0
 margin_right = 178.0
 margin_bottom = 138.0
 text = "Add Target"
+
+[node name="Delete Button" type="Button" parent="."]
+margin_top = 142.0
+margin_right = 178.0
+margin_bottom = 162.0
+text = "Delete Requirement"
+
+[node name="HSeparator" type="HSeparator" parent="."]
+margin_top = 166.0
+margin_right = 178.0
+margin_bottom = 170.0

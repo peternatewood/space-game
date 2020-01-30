@@ -2,22 +2,19 @@ extends Node
 
 enum { NEUTRAL, FRIENDLY, HOSTILE }
 
+export (bool) var is_eyecatch = false
+
+onready var factions = get_meta("factions")
 onready var loader = get_node("/root/SceneLoader")
 onready var mission_data = get_node("/root/MissionData")
 onready var pause_menu = get_node("Pause Menu")
 onready var player_path: String = get_meta("player_path")
 onready var reinforcement_wings: Array = get_meta("reinforcement_wings")
 
-var factions = {
-	"frog": { "hawk": FRIENDLY, "spider": NEUTRAL },
-	"hawk": { "frog": FRIENDLY, "spider": HOSTILE },
-	"spider": { "hawk": HOSTILE, "frog": NEUTRAL }
-}
 var player
 var targets_container
 var waypoints: Array = []
 var waypoints_container
-# TODO: Multiple groups of waypoints that we can assign to npc ships
 
 
 func _ready():
@@ -26,7 +23,10 @@ func _ready():
 
 
 func _input(event):
-	if event.is_action("pause") and event.pressed:
+	if is_eyecatch:
+		if (event is InputEventKey or event is InputEventMouseButton or event is InputEventJoypadButton) and event.pressed:
+			loader.change_scene("res://title.tscn")
+	elif event.is_action_pressed("pause"):
 		var tree = get_tree()
 		if not tree.paused:
 			tree.set_pause(true)
@@ -34,7 +34,7 @@ func _input(event):
 
 
 func _on_main_menu_confirmed():
-	loader.load_scene("res://title.tscn")
+	loader.change_scene("res://title.tscn")
 
 
 func _on_player_warped_out():
@@ -71,9 +71,7 @@ func _on_scene_loaded():
 				targets_container.add_child(ship_instance)
 				targets_container.move_child(ship_instance, ship_tree_pos)
 
-				if ship_instance is Player:
-					ship_instance.camera_path = ship.camera_path
-				elif ship_instance is NPCShip:
+				if ship_instance is NPCShip:
 					ship_instance.initial_orders = ship.initial_orders
 
 				ship.free()
@@ -88,27 +86,28 @@ func _on_scene_loaded():
 	for ship_name in mission_data.non_player_loadouts.keys():
 		var ship = targets_container.get_node_or_null(ship_name)
 		if ship != null:
-			if ship is NPCShip:
-				ship.set_weapon_hardpoints(mission_data.non_player_loadouts[ship_name].energy_weapons, mission_data.non_player_loadouts[ship_name].missile_weapons)
-			elif ship is CapitalShipBase:
+			if ship.is_capital_ship:
 				ship.set_weapon_turrets(mission_data.non_player_loadouts[ship_name].beam_weapons, mission_data.non_player_loadouts[ship_name].energy_weapons, mission_data.non_player_loadouts[ship_name].missile_weapons)
+			elif ship is NPCShip:
+				ship.set_weapon_hardpoints(mission_data.non_player_loadouts[ship_name].energy_weapons, mission_data.non_player_loadouts[ship_name].missile_weapons)
 			else:
 				print("Invalid node in targets container: " + ship.name)
 
-	player = get_node(player_path)
-	player.connect("warped_out", self, "_on_player_warped_out")
+	if not is_eyecatch:
+		player = get_node(player_path)
+		player.connect("warped_out", self, "_on_player_warped_out")
 
-	# Prepare mission objectives
-	for index in range(mission_data.objectives.size()):
-		for objective in mission_data.objectives[index]:
-			objective.connect_targets_to_requirements(targets_container)
+		# Prepare mission objectives
+		for index in range(mission_data.objectives.size()):
+			for objective in mission_data.objectives[index]:
+				objective.connect_targets_to_requirements(targets_container)
 
-	pause_menu.connect("main_menu_confirmed", self, "_on_main_menu_confirmed")
+		pause_menu.connect("main_menu_confirmed", self, "_on_main_menu_confirmed")
+
+		get_tree().set_pause(true)
 
 	set_process(true)
 	emit_signal("mission_ready")
-
-	get_tree().set_pause(true)
 
 
 # PUBLIC
@@ -151,7 +150,7 @@ func get_commandable_ships(include_warped_out: bool = false):
 
 	for target in get_targets(include_warped_out):
 		# TODO: also check some other property like rank or ship class to determine whether player can command or not
-		if target != player and target is NPCShip and get_alignment(player.faction, target.faction) == FRIENDLY:
+		if target is NPCShip and get_alignment(player.faction, target.faction) == FRIENDLY and target.wing_name != "":
 			commandable_ships.append(target)
 
 	return commandable_ships
@@ -174,7 +173,7 @@ func get_ships_in_wing(wing_name: String, exclude_ship = null, include_warped_ou
 func get_targets(include_warped_out: bool = false):
 	var warped_in_targets: Array = []
 	for child in targets_container.get_children():
-		if include_warped_out or child.is_warped_in:
+		if child.is_alive and (include_warped_out or child.is_warped_in):
 			warped_in_targets.append(child)
 
 	return warped_in_targets
@@ -221,7 +220,6 @@ func get_targets_by_distance(ship, targets: Array, only_alignment: int = -1):
 
 signal mission_ready
 
-const CapitalShipBase = preload("CapitalShipBase.gd")
 const NPCShip = preload("NPCShip.gd")
 const Objective = preload("Objective.gd")
 const Player = preload("Player.gd")
