@@ -1,0 +1,36 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://editor/scripts/ObjectiveRequirementNode.gd" type="Script" id=1]
+
+[node name="Objective Requirement Node" type="HBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+
+[node name="Type Option" type="OptionButton" parent="."]
+margin_right = 510.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+text = "Primary"
+items = [ "Primary", null, false, 0, null, "Secondary", null, false, 1, null, "Secret", null, false, 2, null ]
+selected = 0
+
+[node name="Primary Option" type="OptionButton" parent="."]
+margin_left = 514.0
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+
+[node name="Secondary Option" type="OptionButton" parent="."]
+visible = false
+margin_left = 514.0
+margin_right = 767.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+
+[node name="Secret Option" type="OptionButton" parent="."]
+visible = false
+margin_left = 684.0
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
