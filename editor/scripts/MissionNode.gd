@@ -22,7 +22,7 @@ func _on_change_mission_confirmed():
 # PUBLIC
 
 
-func set_mission(path: String, mission_name: String, mission_description: String):
-	mission_path = path
-	title_label.set_text(mission_name)
-	description.set_text(mission_description)
+func set_mission(mission_data: Dictionary):
+	mission_path = mission_data.path
+	title_label.set_text(mission_data.name)
+	description.set_text(mission_data.description)
