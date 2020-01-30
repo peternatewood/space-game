@@ -4,6 +4,7 @@ onready var mission_data = get_node("/root/MissionData")
 onready var missions_container = get_node("Rows/Missions Panel/Missions Scroll/Missions Container")
 
 var first_mission
+var missions_in_campaign: Array = []
 var missions_list: Array = []
 
 
@@ -41,8 +42,11 @@ func _ready():
 
 
 func _on_mission_node_add_mission_confirmed(mission_index: int, mission_node):
-	add_mission_node(mission_index)
+	if not missions_in_campaign.has(mission_index):
+		add_mission_node(mission_index)
 
+	missions_in_campaign.append(mission_index)
+	mission_node.add_next_mission(missions_list[mission_index])
 
 
 func _on_mission_node_mission_changed(mission_index: int, mission_node):

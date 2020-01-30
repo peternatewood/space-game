@@ -3,9 +3,10 @@ extends Control
 onready var add_mission_dialog = get_node("Add Mission Dialog")
 onready var add_mission_options = get_node("Add Mission Dialog/Rows/Mission Options")
 onready var change_mission_dialog = get_node("Change Mission Dialog")
-onready var description = get_node("Rows/Description")
-onready var title_label = get_node("Rows/Title Label")
+onready var description = get_node("Mission Container/Rows/Description")
+onready var title_label = get_node("Mission Container/Rows/Title Label")
 onready var mission_options = get_node("Change Mission Dialog/Rows/Mission Options")
+onready var next_missions_container = get_node("Next Missions Container")
 
 var mission_path: String
 
@@ -13,10 +14,10 @@ var mission_path: String
 func _ready():
 	change_mission_dialog.connect("confirmed", self, "_on_change_mission_confirmed")
 
-	var change_mission_button = get_node("Rows/Change Mission Button")
+	var change_mission_button = get_node("Mission Container/Rows/Change Mission Button")
 	change_mission_button.connect("pressed", change_mission_dialog, "popup_centered")
 
-	var add_mission_button = get_node("Rows/Buttons Container/Add Mission Button")
+	var add_mission_button = get_node("Mission Container/Rows/Buttons Container/Add Mission Button")
 	add_mission_button.connect("pressed", add_mission_dialog, "popup_centered")
 
 	add_mission_dialog.connect("confirmed", self, "_on_add_mission_confirmed")
@@ -35,6 +36,12 @@ func _on_add_mission_confirmed():
 # PUBLIC
 
 
+func add_next_mission(mission_data: Dictionary):
+	var next_mission = NEXT_MISSION_NODE.instance()
+	next_missions_container.add_child(next_mission)
+	next_mission.set_mission_title(mission_data.name)
+
+
 func set_mission(mission_data: Dictionary):
 	mission_path = mission_data.path
 	title_label.set_text(mission_data.name)
@@ -51,3 +58,5 @@ func set_mission_options(missions: Array):
 
 signal add_mission_confirmed
 signal mission_changed
+
+const NEXT_MISSION_NODE = preload("res://editor/prefabs/next_mission_node.tscn")
