@@ -49,6 +49,10 @@ func _ready():
 	create_new_campaign(0)
 
 
+func _on_add_objective_requirement_pressed(objective_requirement, mission_index: int):
+	objective_requirement.set_objective_options(missions_list[mission_index].objectives)
+
+
 func _on_mission_node_add_mission_confirmed(mission_index: int, mission_node):
 	if not missions_in_campaign.has(mission_index):
 		add_mission_node(mission_index)
@@ -70,6 +74,7 @@ func add_mission_node(mission_index: int):
 	mission_node.set_mission(missions_list[mission_index])
 	mission_node.set_mission_options(missions_list)
 	mission_node.connect("add_mission_confirmed", self, "_on_mission_node_add_mission_confirmed", [mission_node])
+	mission_node.connect("add_objective_requirement_pressed", self, "_on_add_objective_requirement_pressed", [mission_index])
 	mission_node.connect("mission_changed", self, "_on_mission_node_mission_changed", [mission_node])
 
 	return mission_node

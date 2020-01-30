@@ -12,6 +12,7 @@ func _ready():
 func _on_add_objective_requirement_pressed():
 	var objective_requirement = OBJECTIVE_REQUIREMENT_NODE.instance()
 	objective_rows.add_child(objective_requirement)
+	emit_signal("add_objective_requirement_pressed", objective_requirement)
 
 
 # PUBLIC
@@ -20,5 +21,7 @@ func _on_add_objective_requirement_pressed():
 func set_mission_title(mission_title: String):
 	title_label.set_text(mission_title)
 
+
+signal add_objective_requirement_pressed
 
 const OBJECTIVE_REQUIREMENT_NODE = preload("res://editor/prefabs/objective_requirement_node.tscn")

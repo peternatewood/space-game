@@ -33,6 +33,10 @@ func _on_add_mission_confirmed():
 	emit_signal("add_mission_confirmed", mission_index)
 
 
+func _on_add_objective_requirement_pressed(objective_requirement):
+	emit_signal("add_objective_requirement_pressed", objective_requirement)
+
+
 # PUBLIC
 
 
@@ -40,6 +44,9 @@ func add_next_mission(mission_data: Dictionary):
 	var next_mission = NEXT_MISSION_NODE.instance()
 	next_missions_container.add_child(next_mission)
 	next_mission.set_mission_title(mission_data.name)
+
+	var mission_index: int = add_mission_options.get_selected_id()
+	next_mission.connect("add_objective_requirement_pressed", self, "_on_add_objective_requirement_pressed")
 
 
 func set_mission(mission_data: Dictionary):
@@ -57,6 +64,7 @@ func set_mission_options(missions: Array):
 
 
 signal add_mission_confirmed
+signal add_objective_requirement_pressed
 signal mission_changed
 
 const NEXT_MISSION_NODE = preload("res://editor/prefabs/next_mission_node.tscn")
