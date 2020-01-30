@@ -40,12 +40,10 @@ func _on_add_objective_requirement_pressed(objective_requirement):
 # PUBLIC
 
 
-func add_next_mission(mission_data: Dictionary):
+func add_next_mission(mission_index: int, missions_list: Array):
 	var next_mission = NEXT_MISSION_NODE.instance()
 	next_missions_container.add_child(next_mission)
-	next_mission.set_mission_title(mission_data.name)
-
-	var mission_index: int = add_mission_options.get_selected_id()
+	next_mission.set_mission_options(mission_index, missions_list)
 	next_mission.connect("add_objective_requirement_pressed", self, "_on_add_objective_requirement_pressed")
 
 
