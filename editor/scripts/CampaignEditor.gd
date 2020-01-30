@@ -40,6 +40,11 @@ func _ready():
 	create_new_campaign(0)
 
 
+func _on_mission_node_add_mission_confirmed(mission_index: int, mission_node):
+	add_mission_node(mission_index)
+
+
+
 func _on_mission_node_mission_changed(mission_index: int, mission_node):
 	mission_node.set_mission(missions_list[mission_index])
 
@@ -47,11 +52,12 @@ func _on_mission_node_mission_changed(mission_index: int, mission_node):
 # PUBLIC
 
 
-func add_mission_node(hbox, mission_index: int):
+func add_mission_node(mission_index: int):
 	var mission_node = MISSION_NODE.instance()
-	hbox.add_child(mission_node)
+	missions_container.add_child(mission_node)
 	mission_node.set_mission(missions_list[mission_index])
 	mission_node.set_mission_options(missions_list)
+	mission_node.connect("add_mission_confirmed", self, "_on_mission_node_add_mission_confirmed", [mission_node])
 	mission_node.connect("mission_changed", self, "_on_mission_node_mission_changed", [mission_node])
 
 	return mission_node
@@ -61,10 +67,6 @@ func create_new_campaign(first_mission_index: int):
 	for row in missions_container.get_children():
 		row.queue_free()
 
-	var hbox = HBoxContainer.new()
-	missions_container.add_child(hbox)
-	hbox.set_alignment(BoxContainer.ALIGN_CENTER)
-
-	first_mission = add_mission_node(hbox, first_mission_index)
+	add_mission_node(first_mission_index)
 
 const MISSION_NODE = preload("res://editor/prefabs/mission_node.tscn")
