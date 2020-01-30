@@ -40,6 +40,10 @@ func _ready():
 	create_new_campaign(0)
 
 
+func _on_mission_node_mission_changed(mission_index: int, mission_node):
+	mission_node.set_mission(missions_list[mission_index])
+
+
 # PUBLIC
 
 
@@ -48,6 +52,7 @@ func add_mission_node(hbox, mission_index: int):
 	hbox.add_child(mission_node)
 	mission_node.set_mission(missions_list[mission_index])
 	mission_node.set_mission_options(missions_list)
+	mission_node.connect("mission_changed", self, "_on_mission_node_mission_changed", [mission_node])
 
 	return mission_node
 

@@ -16,7 +16,8 @@ func _ready():
 
 
 func _on_change_mission_confirmed():
-	pass
+	var mission_index: int = mission_options.get_selected_id()
+	emit_signal("mission_changed", mission_index)
 
 
 # PUBLIC
@@ -32,3 +33,7 @@ func set_mission_options(missions: Array):
 	var index: int = 0
 	for m in missions:
 		mission_options.add_item(m.name, index)
+		index += 1
+
+
+signal mission_changed
