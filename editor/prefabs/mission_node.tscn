@@ -46,14 +46,8 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 text = "Add Mission +"
 
-[node name="Link to Mission Button" type="Button" parent="Rows/Buttons Container"]
-margin_left = 107.0
-margin_right = 228.0
-margin_bottom = 20.0
-text = "Link to Mission ="
-
 [node name="Spacer" type="Control" parent="Rows/Buttons Container"]
-margin_left = 232.0
+margin_left = 107.0
 margin_right = 277.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
