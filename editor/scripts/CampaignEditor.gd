@@ -25,16 +25,24 @@ func _ready():
 				var file_data: Dictionary = {
 					"name": "name",
 					"description": "<no description>",
+					"objectives": [],
 					"path": path
 				}
 				if mission_instance.has_meta("name"):
 					file_data.name = mission_instance.get_meta("name")
 				else:
 					print("Mission " + file_name + " missing name!")
+
 				if mission_instance.has_meta("description"):
 					file_data.description = mission_instance.get_meta("description")
 				else:
 					print("Mission " + file_name + " missing description!")
+
+				var objectives = mission_instance.get_meta("objectives")
+				if objectives[0].size() != 0 or objectives[1].size() != 0 or objectives[2].size() != 0:
+					file_data.objectives = objectives
+				else:
+					print("Mission " + file_name + " has no objectives!")
 
 				missions_list.append(file_data)
 
