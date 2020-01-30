@@ -23,7 +23,7 @@ func _ready():
 
 				var file_data: Dictionary = {
 					"name": "name",
-					"description": "<none>",
+					"description": "<no description>",
 					"path": path
 				}
 				if mission_instance.has_meta("name"):
@@ -43,6 +43,15 @@ func _ready():
 # PUBLIC
 
 
+func add_mission_node(hbox, mission_index: int):
+	var mission_node = MISSION_NODE.instance()
+	hbox.add_child(mission_node)
+	mission_node.set_mission(missions_list[mission_index])
+	mission_node.set_mission_options(missions_list)
+
+	return mission_node
+
+
 func create_new_campaign(first_mission_index: int):
 	for row in missions_container.get_children():
 		row.queue_free()
@@ -51,9 +60,6 @@ func create_new_campaign(first_mission_index: int):
 	missions_container.add_child(hbox)
 	hbox.set_alignment(BoxContainer.ALIGN_CENTER)
 
-	first_mission = MISSION_NODE.instance()
-	hbox.add_child(first_mission)
-	first_mission.set_mission(missions_list[first_mission_index])
-
+	first_mission = add_mission_node(hbox, first_mission_index)
 
 const MISSION_NODE = preload("res://editor/prefabs/mission_node.tscn")
