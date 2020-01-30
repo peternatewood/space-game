@@ -17,14 +17,19 @@ margin_bottom = 193.0
 [node name="Title Label" type="Label" parent="Rows"]
 margin_right = 336.0
 margin_bottom = 14.0
-text = "title"
+text = "<none>"
 
 [node name="Description" type="RichTextLabel" parent="Rows"]
 margin_top = 18.0
 margin_right = 336.0
-margin_bottom = 162.0
+margin_bottom = 138.0
 size_flags_vertical = 3
-text = "description"
+
+[node name="Change Mission Button" type="Button" parent="Rows"]
+margin_top = 142.0
+margin_right = 336.0
+margin_bottom = 162.0
+text = "Change Mission"
 
 [node name="Buttons Container" type="HBoxContainer" parent="Rows"]
 margin_top = 166.0
