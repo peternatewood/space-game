@@ -70,6 +70,7 @@ margin_right = 244.0
 margin_bottom = 200.0
 
 [node name="Change Mission Dialog" type="ConfirmationDialog" parent="."]
+editor/display_folded = true
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 343.0
@@ -99,6 +100,7 @@ margin_right = 336.0
 margin_bottom = 38.0
 
 [node name="Add Mission Dialog" type="ConfirmationDialog" parent="."]
+editor/display_folded = true
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 343.0
@@ -122,3 +124,10 @@ align = 1
 margin_top = 18.0
 margin_right = 57.0
 margin_bottom = 38.0
+
+[node name="Delete Dialog" type="ConfirmationDialog" parent="."]
+margin_left = 248.0
+margin_right = 448.0
+margin_bottom = 200.0
+dialog_text = "Are you sure you want to
+delete this mission?"
