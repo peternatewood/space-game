@@ -4,6 +4,7 @@ onready var add_mission_dialog = get_node("Add Mission Dialog")
 onready var add_mission_options = get_node("Add Mission Dialog/Rows/Mission Options")
 onready var mission_data = get_node("/root/MissionData")
 onready var missions_container = get_node("Rows/Missions Panel/Missions Scroll/Missions Container")
+onready var save_dialog = get_node("Save Dialog")
 
 var first_mission
 var missions_in_campaign: Array = []
@@ -51,6 +52,9 @@ func _ready():
 				add_mission_options.add_item(file_data.name, mission_index)
 				mission_index += 1
 
+	var file_menu = get_node("Rows/Toolbar/Toolbar Columns/File Menu")
+	file_menu.get_popup().connect("id_pressed", self, "_on_file_id_pressed")
+
 	var add_mission_button = get_node("Rows/Add Mission Button")
 	add_mission_button.connect("pressed", add_mission_dialog, "popup_centered")
 
@@ -66,6 +70,18 @@ func _on_add_mission_confirmed():
 
 func _on_add_objective_requirement_pressed(objective_requirement, mission_index: int):
 	objective_requirement.set_objective_options(missions_list[mission_index].objectives)
+
+
+func _on_file_id_pressed(item_id: int):
+	match item_id:
+		0:
+			# New campaign
+			pass
+		1:
+			# Open file
+			pass
+		2:
+			save_dialog.popup_centered()
 
 
 func _on_mission_node_add_mission_confirmed(mission_index: int, mission_node):

@@ -96,7 +96,21 @@ window_title = "Add Mission"
 [node name="Rows" type="VBoxContainer" parent="Add Mission Dialog"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -38.0
 
 [node name="Mission Options" type="OptionButton" parent="Add Mission Dialog/Rows"]
 margin_right = 200.0
 margin_bottom = 22.0
+
+[node name="Save Dialog" type="FileDialog" parent="."]
+margin_right = 200.0
+margin_bottom = 70.0
+rect_min_size = Vector2( 480, 320 )
+window_title = "Save Campaign"
+access = 1
+current_dir = "user://campaigns"
+current_file = "campaigns"
+current_path = "user://campaigns/campaigns"
