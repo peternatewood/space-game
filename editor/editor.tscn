@@ -1007,12 +1007,12 @@ margin_bottom = 54.0
 editor/display_folded = true
 margin_right = 136.0
 margin_bottom = 39.0
-rect_min_size = Vector2( 136, 39 )
+rect_min_size = Vector2( 160, 48 )
 window_title = "About"
 
 [node name="Label" type="Label" parent="Controls Container/About Window"]
-margin_right = 136.0
-margin_bottom = 39.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Space Game Editor

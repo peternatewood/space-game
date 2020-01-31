@@ -1,5 +1,6 @@
 extends Control
 
+onready var about_window = get_node("About Window")
 onready var add_mission_dialog = get_node("Add Mission Dialog")
 onready var add_mission_options = get_node("Add Mission Dialog/Rows/Mission Options")
 onready var campaign_title = get_node("Rows/Campaign Details/Campaign Title")
@@ -65,6 +66,9 @@ func _ready():
 	var exit_menu = get_node("Rows/Toolbar/Toolbar Columns/Exit Menu")
 	exit_menu.get_popup().connect("id_pressed", self, "_on_exit_id_pressed")
 
+	var help_menu = get_node("Rows/Toolbar/Toolbar Columns/Help Menu")
+	help_menu.get_popup().connect("id_pressed", self, "_on_help_id_pressed")
+
 	var add_mission_button = get_node("Rows/Add Mission Button")
 	add_mission_button.connect("pressed", add_mission_dialog, "popup_centered")
 
@@ -101,6 +105,12 @@ func _on_file_id_pressed(item_id: int):
 			open_dialog.popup_centered()
 		2:
 			save_dialog.popup_centered()
+
+
+func _on_help_id_pressed(item_id: int):
+	match item_id:
+		0:
+			about_window.popup_centered()
 
 
 func _on_mission_node_add_mission_confirmed(mission_index: int, mission_node):

@@ -37,7 +37,15 @@ margin_bottom = 22.0
 text = "Exit"
 items = [ "Quit to Mission Editor", null, 0, false, false, 0, 0, null, "", false, "Quit to Main Menu", null, 0, false, false, 1, 0, null, "", false, "Quit to Desktop", null, 0, false, false, 2, 0, null, "", false ]
 
+[node name="Help Menu" type="MenuButton" parent="Rows/Toolbar/Toolbar Columns"]
+margin_left = 88.0
+margin_right = 128.0
+margin_bottom = 22.0
+text = "Help"
+items = [ "About", null, 0, false, false, 0, 0, null, "", false ]
+
 [node name="Campaign Details" type="GridContainer" parent="Rows"]
+editor/display_folded = true
 margin_top = 30.0
 margin_right = 1024.0
 margin_bottom = 90.0
@@ -76,6 +84,7 @@ margin_bottom = 116.0
 text = "Add Mission"
 
 [node name="Missions Panel" type="PanelContainer" parent="Rows"]
+editor/display_folded = true
 margin_top = 120.0
 margin_right = 1024.0
 margin_bottom = 600.0
@@ -96,6 +105,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Add Mission Dialog" type="ConfirmationDialog" parent="."]
+editor/display_folded = true
 margin_right = 200.0
 margin_bottom = 70.0
 window_title = "Add Mission"
@@ -134,3 +144,18 @@ filters = PoolStringArray( "*.cfg" )
 current_dir = "user://campaigns"
 current_file = "campaigns"
 current_path = "user://campaigns/campaigns"
+
+[node name="About Window" type="WindowDialog" parent="."]
+editor/display_folded = true
+margin_right = 88.0
+margin_bottom = 1.0
+rect_min_size = Vector2( 160, 48 )
+window_title = "About"
+
+[node name="Label" type="Label" parent="About Window"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "Space Game Editor
+v0.2.0"
+align = 1
+valign = 1
