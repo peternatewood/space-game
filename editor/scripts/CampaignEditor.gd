@@ -179,6 +179,10 @@ func _on_save_file_selected(path: String):
 
 	OS.set_window_title(mission_data.original_title + SUB_TITLE + campaign_title.text)
 
+	# Forces the list in each dialog to refresh
+	open_dialog.invalidate()
+	save_dialog.invalidate()
+
 
 # PUBLIC
 
