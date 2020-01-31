@@ -6,6 +6,7 @@ onready var add_mission_options = get_node("Add Mission Dialog/Rows/Mission Opti
 onready var campaign_title = get_node("Rows/Campaign Details/Campaign Title")
 onready var campaign_description = get_node("Rows/Campaign Details/Campaign Description")
 onready var loader = get_node("/root/SceneLoader")
+onready var manual_window = get_node("Manual Window")
 onready var mission_data = get_node("/root/MissionData")
 onready var missions_container = get_node("Rows/Missions Panel/Missions Scroll/Missions Container")
 onready var open_dialog = get_node("Open Dialog")
@@ -111,6 +112,8 @@ func _on_help_id_pressed(item_id: int):
 	match item_id:
 		0:
 			about_window.popup_centered()
+		1:
+			manual_window.show()
 
 
 func _on_mission_node_add_mission_confirmed(mission_index: int, mission_node):

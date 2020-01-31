@@ -1,7 +1,21 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://themes/editor_theme.tres" type="Theme" id=1]
 [ext_resource path="res://editor/scripts/CampaignEditor.gd" type="Script" id=2]
+[ext_resource path="res://editor/scripts/CampaignEditorManual.gd" type="Script" id=3]
+
+[sub_resource type="StyleBoxFlat" id=3]
+content_margin_left = 4.0
+content_margin_right = 4.0
+content_margin_top = 2.0
+content_margin_bottom = 2.0
+bg_color = Color( 0.184314, 0.184314, 0.247059, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.466667, 0.466667, 0.466667, 1 )
+corner_detail = 2
 
 [node name="Campaign Editor" type="Control"]
 anchor_right = 1.0
@@ -42,7 +56,7 @@ margin_left = 88.0
 margin_right = 128.0
 margin_bottom = 22.0
 text = "Help"
-items = [ "About", null, 0, false, false, 0, 0, null, "", false ]
+items = [ "About", null, 0, false, false, 0, 0, null, "", false, "Manual", null, 0, false, false, 1, 0, null, "", false ]
 
 [node name="Campaign Details" type="GridContainer" parent="Rows"]
 editor/display_folded = true
@@ -102,6 +116,46 @@ scroll_horizontal_enabled = false
 margin_right = 1016.0
 margin_bottom = 476.0
 size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Manual Window" type="ScrollContainer" parent="."]
+editor/display_folded = true
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/bg = SubResource( 3 )
+scroll_horizontal_enabled = false
+script = ExtResource( 3 )
+
+[node name="Rows" type="VBoxContainer" parent="Manual Window"]
+margin_left = 4.0
+margin_top = 2.0
+margin_right = 1020.0
+margin_bottom = 598.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Column" type="HBoxContainer" parent="Manual Window/Rows"]
+margin_right = 1016.0
+margin_bottom = 22.0
+
+[node name="Label" type="Label" parent="Manual Window/Rows/Column"]
+margin_top = 2.0
+margin_right = 996.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Campaign Editor Manual"
+
+[node name="Close Button" type="Button" parent="Manual Window/Rows/Column"]
+margin_left = 1000.0
+margin_right = 1016.0
+margin_bottom = 22.0
+text = "X"
+
+[node name="Tree" type="Tree" parent="Manual Window/Rows"]
+margin_top = 26.0
+margin_right = 1016.0
+margin_bottom = 596.0
 size_flags_vertical = 3
 
 [node name="Add Mission Dialog" type="ConfirmationDialog" parent="."]
