@@ -16,6 +16,7 @@ var mission_name: String
 var mission_scene_path: String
 var non_player_loadouts: Dictionary
 var objectives: Array
+var original_title: String = ProjectSettings.get_setting("application/config/name")
 var ship_data: Dictionary = {}
 var wing_loadouts: Array = []
 var wing_names: Array = []
