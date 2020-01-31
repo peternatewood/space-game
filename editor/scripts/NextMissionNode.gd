@@ -18,6 +18,19 @@ func _on_add_objective_requirement_pressed():
 # PUBLIC
 
 
+func get_data():
+	var objectives: Array = []
+	for objective_requirement in objective_rows.get_children():
+		objectives.append(objective_requirement.get_data())
+
+	var data: Dictionary = {
+		"index": mission_option.get_selected_id(),
+		"objectives": objectives
+	}
+
+	return data
+
+
 func set_mission_options(mission_index: int, missions: Array):
 	for index in range(missions.size()):
 		mission_option.add_item(missions[index].name, mission_index)
