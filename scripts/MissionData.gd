@@ -148,6 +148,29 @@ func _ready():
 
 			file_name = dir.get_next()
 
+	# Build custom campaign list
+	if dir.open(USER_CAMPAIGNS_DIR) != OK:
+		print("Unable to open " + USER_CAMPAIGNS_DIR + " directory")
+	else:
+		var campaign_file: ConfigFile = ConfigFile.new()
+
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while file_name != "":
+			if not dir.current_is_dir() and file_name.ends_with(".cfg"):
+				var campaign_path: String = dir.get_current_dir() + "/" + file_name
+				campaign_file.load(campaign_path)
+
+				var custom_campaign_data: Dictionary = {
+					"path": campaign_path,
+					"name": campaign_file.get_value("details", "name"),
+					"description": campaign_file.get_value("details", "description")
+				}
+
+				custom_campaign_list.append(custom_campaign_data)
+
+			file_name = dir.get_next()
+
 
 # PUBLIC
 
