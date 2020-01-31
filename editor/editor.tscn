@@ -1047,13 +1047,13 @@ margin_top = 2.0
 margin_right = 996.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
-text = "Manual"
+text = "Mission Editor Manual"
 
 [node name="Close Button" type="Button" parent="Controls Container/Manual Window/VBoxContainer/HBoxContainer"]
 margin_left = 1000.0
 margin_right = 1016.0
 margin_bottom = 22.0
-text = "x"
+text = "X"
 
 [node name="Tree" type="Tree" parent="Controls Container/Manual Window/VBoxContainer"]
 margin_top = 26.0
