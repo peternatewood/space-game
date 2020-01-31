@@ -101,7 +101,7 @@ size_flags_horizontal = 3
 margin_right = 40.0
 margin_bottom = 22.0
 text = "File"
-items = [ "New", null, 0, false, false, 0, 0, null, "", false, "Open", null, 0, false, false, 1, 0, null, "", false, "Save", null, 0, false, false, 2, 0, null, "", false, "Quit to Menu", null, 0, false, false, 3, 0, null, "", false, "Quit to Desktop", null, 0, false, false, 4, 0, null, "", false ]
+items = [ "New", null, 0, false, false, 0, 0, null, "", false, "Open", null, 0, false, false, 1, 0, null, "", false, "Save", null, 0, false, false, 2, 0, null, "", false, "Campaign Editor", null, 0, false, false, 3, 0, null, "", false, "Quit to Menu", null, 0, false, false, 4, 0, null, "", false, "Quit to Desktop", null, 0, false, false, 5, 0, null, "", false ]
 
 [node name="Edit Menu" type="MenuButton" parent="Controls Container/PanelContainer/Toolbar"]
 margin_left = 44.0
@@ -933,7 +933,7 @@ margin_bottom = 34.0
 margin_right = 400.0
 margin_bottom = 300.0
 rect_min_size = Vector2( 400, 300 )
-window_title = "Open a Mission"
+window_title = "Open a File"
 resizable = true
 mode = 0
 access = 1

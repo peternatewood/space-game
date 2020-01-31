@@ -30,6 +30,13 @@ margin_bottom = 22.0
 text = "File"
 items = [ "New", null, 0, false, false, 0, 0, null, "", false, "Open", null, 0, false, false, 1, 0, null, "", false, "Save", null, 0, false, false, 2, 0, null, "", false ]
 
+[node name="Exit Menu" type="MenuButton" parent="Rows/Toolbar/Toolbar Columns"]
+margin_left = 44.0
+margin_right = 84.0
+margin_bottom = 22.0
+text = "Exit"
+items = [ "Quit to Mission Editor", null, 0, false, false, 0, 0, null, "", false, "Quit to Main Menu", null, 0, false, false, 1, 0, null, "", false, "Quit to Desktop", null, 0, false, false, 2, 0, null, "", false ]
+
 [node name="Campaign Details" type="GridContainer" parent="Rows"]
 margin_top = 30.0
 margin_right = 1024.0

@@ -36,7 +36,6 @@ var default_loadouts: Array = []
 var mouse_pos: Vector2
 var mouse_vel: Vector2
 var objectives: Array = []
-var original_title: String = ProjectSettings.get_setting("application/config/name")
 var non_player_loadouts: Dictionary
 var scene_file_regex = RegEx.new()
 var selected_node = null
@@ -635,9 +634,11 @@ func _on_file_menu_id_pressed(item_id: int):
 		2:
 			save_file_dialog.popup_centered()
 		3:
-			OS.set_window_title(original_title)
-			loader.change_scene("res://title.tscn")
+			loader.change_scene("res://editor/campaign_editor.tscn")
 		4:
+			OS.set_window_title(mission_data.original_title)
+			loader.change_scene("res://title.tscn")
+		5:
 			get_tree().quit()
 
 
@@ -967,7 +968,7 @@ func save_mission_to_file(path: String):
 
 
 func set_title_with_filename():
-	OS.set_window_title(original_title + " Editor: " + active_filename)
+	OS.set_window_title(mission_data.original_title + " Editor: " + active_filename)
 
 
 const NPCShip = preload("res://scripts/NPCShip.gd")

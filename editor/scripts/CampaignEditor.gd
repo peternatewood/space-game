@@ -4,6 +4,7 @@ onready var add_mission_dialog = get_node("Add Mission Dialog")
 onready var add_mission_options = get_node("Add Mission Dialog/Rows/Mission Options")
 onready var campaign_title = get_node("Rows/Campaign Details/Campaign Title")
 onready var campaign_description = get_node("Rows/Campaign Details/Campaign Description")
+onready var loader = get_node("/root/SceneLoader")
 onready var mission_data = get_node("/root/MissionData")
 onready var missions_container = get_node("Rows/Missions Panel/Missions Scroll/Missions Container")
 onready var open_dialog = get_node("Open Dialog")
@@ -61,6 +62,9 @@ func _ready():
 	open_dialog.connect("file_selected", self, "_on_open_file_selected")
 	save_dialog.connect("file_selected", self, "_on_save_file_selected")
 
+	var exit_menu = get_node("Rows/Toolbar/Toolbar Columns/Exit Menu")
+	exit_menu.get_popup().connect("id_pressed", self, "_on_exit_id_pressed")
+
 	var add_mission_button = get_node("Rows/Add Mission Button")
 	add_mission_button.connect("pressed", add_mission_dialog, "popup_centered")
 
@@ -76,6 +80,17 @@ func _on_add_mission_confirmed():
 
 func _on_add_objective_requirement_pressed(objective_requirement, mission_index: int):
 	objective_requirement.initialize_options(missions_list[mission_index].objectives)
+
+
+func _on_exit_id_pressed(item_id: int):
+	match item_id:
+		0:
+			loader.change_scene("res://editor/editor.tscn")
+		1:
+			OS.set_window_title(mission_data.original_title)
+			loader.change_scene("res://title.tscn")
+		2:
+			get_tree().quit()
 
 
 func _on_file_id_pressed(item_id: int):
@@ -135,6 +150,8 @@ func _on_open_file_selected(path: String):
 						objective_requirement.initialize_options(missions_list[mission_index].objectives)
 						objective_requirement.set_options(objective_data.objective_type, objective_data.objective_index)
 
+		OS.set_window_title(mission_data.original_title + SUB_TITLE + config_name)
+
 
 func _on_save_file_selected(path: String):
 	var missions: Array = []
@@ -147,6 +164,8 @@ func _on_save_file_selected(path: String):
 	campaign_config.set_value("details", "description", campaign_description.text)
 	campaign_config.set_value("mission_tree", "missions", missions)
 	campaign_config.save(path)
+
+	OS.set_window_title(mission_data.original_title + SUB_TITLE + campaign_title.text)
 
 
 # PUBLIC
@@ -167,6 +186,8 @@ func add_mission_node(mission_index: int):
 
 
 func create_new_campaign(first_mission_index: int):
+	OS.set_window_title(mission_data.original_title + SUB_TITLE + "untitled")
+
 	campaign_title.set_text("")
 	campaign_description.set_text("")
 
@@ -177,3 +198,4 @@ func create_new_campaign(first_mission_index: int):
 
 
 const MISSION_NODE = preload("res://editor/prefabs/mission_node.tscn")
+const SUB_TITLE: String = " Campaign Editor: "
