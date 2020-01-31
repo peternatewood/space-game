@@ -2,6 +2,8 @@ extends Control
 
 onready var add_mission_dialog = get_node("Add Mission Dialog")
 onready var add_mission_options = get_node("Add Mission Dialog/Rows/Mission Options")
+onready var campaign_title = get_node("Rows/Campaign Details/Campaign Title")
+onready var campaign_description = get_node("Rows/Campaign Details/Campaign Description")
 onready var mission_data = get_node("/root/MissionData")
 onready var missions_container = get_node("Rows/Missions Panel/Missions Scroll/Missions Container")
 onready var save_dialog = get_node("Save Dialog")
@@ -55,6 +57,8 @@ func _ready():
 	var file_menu = get_node("Rows/Toolbar/Toolbar Columns/File Menu")
 	file_menu.get_popup().connect("id_pressed", self, "_on_file_id_pressed")
 
+	save_dialog.connect("file_selected", self, "_on_save_file_selected")
+
 	var add_mission_button = get_node("Rows/Add Mission Button")
 	add_mission_button.connect("pressed", add_mission_dialog, "popup_centered")
 
@@ -95,6 +99,19 @@ func _on_mission_node_mission_changed(mission_index: int, mission_node):
 	mission_node.set_mission(missions_list[mission_index])
 
 
+func _on_save_file_selected(path: String):
+	var missions: Array = []
+
+	for mission in missions_container.get_children():
+		missions.append(mission.get_data())
+
+	var campaign_config: ConfigFile = ConfigFile.new()
+	campaign_config.set_value("details", "name", campaign_title.text)
+	campaign_config.set_value("details", "description", campaign_description.text)
+	campaign_config.set_value("mission_tree", "missions", missions)
+	campaign_config.save(path)
+
+
 # PUBLIC
 
 
@@ -117,5 +134,6 @@ func create_new_campaign(first_mission_index: int):
 		row.queue_free()
 
 	add_mission_node(first_mission_index)
+
 
 const MISSION_NODE = preload("res://editor/prefabs/mission_node.tscn")
