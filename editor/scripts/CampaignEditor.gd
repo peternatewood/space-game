@@ -6,6 +6,7 @@ onready var campaign_title = get_node("Rows/Campaign Details/Campaign Title")
 onready var campaign_description = get_node("Rows/Campaign Details/Campaign Description")
 onready var mission_data = get_node("/root/MissionData")
 onready var missions_container = get_node("Rows/Missions Panel/Missions Scroll/Missions Container")
+onready var open_dialog = get_node("Open Dialog")
 onready var save_dialog = get_node("Save Dialog")
 
 var first_mission
@@ -83,7 +84,7 @@ func _on_file_id_pressed(item_id: int):
 			pass
 		1:
 			# Open file
-			pass
+			open_dialog.popup_centered()
 		2:
 			save_dialog.popup_centered()
 
