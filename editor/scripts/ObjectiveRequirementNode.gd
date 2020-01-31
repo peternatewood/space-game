@@ -1,8 +1,10 @@
 extends Control
 
-onready var primary_options = get_node("Primary Option")
-onready var secondary_options = get_node("Secondary Option")
-onready var secret_options = get_node("Secret Option")
+onready var objective_options: Array = [
+	get_node("Primary Option"),
+	get_node("Secondary Option"),
+	get_node("Secret Option")
+]
 onready var type_option = get_node("Type Option")
 
 
@@ -13,49 +15,42 @@ func _ready():
 func _on_type_selected(item_id: int):
 	match item_id:
 		Objective.PRIMARY:
-			primary_options.show()
-			secondary_options.hide()
-			secret_options.hide()
+			objective_options[Objective.PRIMARY].show()
+			objective_options[Objective.SECONDARY].hide()
+			objective_options[Objective.SECRET].hide()
 		Objective.SECONDARY:
-			primary_options.hide()
-			secondary_options.show()
-			secret_options.hide()
+			objective_options[Objective.PRIMARY].hide()
+			objective_options[Objective.SECONDARY].show()
+			objective_options[Objective.SECRET].hide()
 		Objective.SECRET:
-			primary_options.hide()
-			secondary_options.hide()
-			secret_options.show()
+			objective_options[Objective.PRIMARY].hide()
+			objective_options[Objective.SECONDARY].hide()
+			objective_options[Objective.SECRET].show()
 
 
 # PUBLIC
 
 
+func get_data():
+	var objective_type: int = type_option.get_selected_id()
+	var data: Dictionary = {
+		"objective_type": objective_type,
+		"objective_index": objective_options[objective_type].get_selected_id()
+	}
+
+	return data
+
+
 func set_objective_options(objectives: Array):
-	var primary_count: int = objectives[Objective.PRIMARY].size()
-	if primary_count == 0:
-		type_option.set_item_disabled(Objective.PRIMARY, true)
-	else:
-		type_option.set_item_disabled(Objective.PRIMARY, false)
+	for index in range(objectives.size()):
+		var objective_count: int = objectives[index].size()
+		if objective_count == 0:
+			type_option.set_item_disabled(index, true)
+		else:
+			type_option.set_item_disabled(index, false)
 
-		for index in range(primary_count):
-			primary_options.add_item(objectives[Objective.PRIMARY][index].name, index)
-
-	var secondary_count: int = objectives[Objective.SECONDARY].size()
-	if secondary_count == 0:
-		type_option.set_item_disabled(Objective.SECONDARY, true)
-	else:
-		type_option.set_item_disabled(Objective.SECONDARY, false)
-
-		for index in range(secondary_count):
-			secondary_options.add_item(objectives[Objective.SECONDARY][index].name, index)
-
-	var secret_count: int = objectives[Objective.SECRET].size()
-	if secret_count == 0:
-		type_option.set_item_disabled(Objective.SECRET, true)
-	else:
-		type_option.set_item_disabled(Objective.SECRET, false)
-
-		for index in range(secret_count):
-			secret_options.add_item(objectives[Objective.SECRET][index].name, index)
+			for objective_index in range(objective_count):
+				objective_options[index].add_item(objectives[index][objective_index].name, index)
 
 	if type_option.is_item_disabled(type_option.get_selected_id()):
 		for option_index in range(type_option.get_item_count()):
