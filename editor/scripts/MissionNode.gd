@@ -52,6 +52,8 @@ func add_next_mission(mission_index: int, missions_list: Array):
 	next_mission.set_mission_options(mission_index, missions_list)
 	next_mission.connect("add_objective_requirement_pressed", self, "_on_add_objective_requirement_pressed")
 
+	return next_mission
+
 
 func get_data():
 	var next_missions: Array = []

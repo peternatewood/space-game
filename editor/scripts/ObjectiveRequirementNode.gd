@@ -41,7 +41,7 @@ func get_data():
 	return data
 
 
-func set_objective_options(objectives: Array):
+func initialize_options(objectives: Array):
 	for index in range(objectives.size()):
 		var objective_count: int = objectives[index].size()
 		if objective_count == 0:
@@ -57,6 +57,11 @@ func set_objective_options(objectives: Array):
 			if not type_option.is_item_disabled(option_index):
 				type_option.select(option_index)
 				break
+
+
+func set_options(type: int, index: int):
+	type_option.select(type)
+	objective_options[type].select(index)
 
 
 const Objective = preload("res://scripts/Objective.gd")

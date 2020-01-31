@@ -58,6 +58,7 @@ func _ready():
 	var file_menu = get_node("Rows/Toolbar/Toolbar Columns/File Menu")
 	file_menu.get_popup().connect("id_pressed", self, "_on_file_id_pressed")
 
+	open_dialog.connect("file_selected", self, "_on_open_file_selected")
 	save_dialog.connect("file_selected", self, "_on_save_file_selected")
 
 	var add_mission_button = get_node("Rows/Add Mission Button")
@@ -74,7 +75,7 @@ func _on_add_mission_confirmed():
 
 
 func _on_add_objective_requirement_pressed(objective_requirement, mission_index: int):
-	objective_requirement.set_objective_options(missions_list[mission_index].objectives)
+	objective_requirement.initialize_options(missions_list[mission_index].objectives)
 
 
 func _on_file_id_pressed(item_id: int):
@@ -98,6 +99,43 @@ func _on_mission_node_add_mission_confirmed(mission_index: int, mission_node):
 
 func _on_mission_node_mission_changed(mission_index: int, mission_node):
 	mission_node.set_mission(missions_list[mission_index])
+
+
+func _on_open_file_selected(path: String):
+	var campaign_config: ConfigFile = ConfigFile.new()
+	if campaign_config.load(path) != OK:
+		print("Error opening campaign config file: ", path)
+	else:
+		# TODO: check that this config file is formatted properly
+		var config_name: String = campaign_config.get_value("details", "name", "")
+		var config_description: String = campaign_config.get_value("details", "description", "")
+
+		campaign_title.set_text(config_name)
+		campaign_description.set_text(config_description)
+
+		# Clear any existing missions
+		for mission_node in missions_container.get_children():
+			mission_node.queue_free()
+
+		var missions_list_size: int = missions_list.size()
+		for mission in campaign_config.get_value("mission_tree", "missions", []):
+			var mission_index: int = -1
+
+			for index in range(missions_list_size):
+				if missions_list[index].path == mission.path:
+					mission_index = index
+					break
+
+			if mission_index == -1:
+				print("Mission path not found: ", mission.path)
+			else:
+				var mission_node = add_mission_node(mission_index)
+				for next_mission_data in mission.next_missions:
+					var next_mission = mission_node.add_next_mission(next_mission_data.index, missions_list)
+					for objective_data in next_mission_data.objectives:
+						var objective_requirement = next_mission.add_objective_requirement()
+						objective_requirement.initialize_options(missions_list[mission_index].objectives)
+						objective_requirement.set_options(objective_data.objective_type, objective_data.objective_index)
 
 
 func _on_save_file_selected(path: String):

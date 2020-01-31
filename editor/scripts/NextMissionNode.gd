@@ -10,12 +10,18 @@ func _ready():
 
 
 func _on_add_objective_requirement_pressed():
-	var objective_requirement = OBJECTIVE_REQUIREMENT_NODE.instance()
-	objective_rows.add_child(objective_requirement)
+	var objective_requirement = add_objective_requirement()
 	emit_signal("add_objective_requirement_pressed", objective_requirement)
 
 
 # PUBLIC
+
+
+func add_objective_requirement():
+	var objective_requirement = OBJECTIVE_REQUIREMENT_NODE.instance()
+	objective_rows.add_child(objective_requirement)
+
+	return objective_requirement
 
 
 func get_data():
