@@ -49,6 +49,18 @@ func _on_add_objective_requirement_pressed(objective_requirement):
 	emit_signal("add_objective_requirement_pressed", objective_requirement)
 
 
+func _on_add_objective_requirement_move_left_pressed(next_mission):
+	var position: int = next_mission.get_position_in_parent()
+	if position > 0:
+		next_missions_container.move_child(next_mission, position - 1)
+
+
+func _on_add_objective_requirement_move_right_pressed(next_mission):
+	var position: int = next_mission.get_position_in_parent()
+	if position < next_missions_container.get_child_count() - 1:
+		next_missions_container.move_child(next_mission, position + 1)
+
+
 func _on_move_up_pressed():
 	emit_signal("move_up_pressed")
 
@@ -65,6 +77,8 @@ func add_next_mission(mission_index: int, missions_list: Array):
 	next_missions_container.add_child(next_mission)
 	next_mission.set_mission_options(mission_index, missions_list)
 	next_mission.connect("add_objective_requirement_pressed", self, "_on_add_objective_requirement_pressed")
+	next_mission.connect("move_left_pressed", self, "_on_add_objective_requirement_move_left_pressed", [next_mission])
+	next_mission.connect("move_right_pressed", self, "_on_add_objective_requirement_move_right_pressed", [next_mission])
 
 	return next_mission
 
