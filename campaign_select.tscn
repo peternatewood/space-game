@@ -80,6 +80,12 @@ margin_bottom = 237.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
+[node name="None Label" type="Label" parent="MarginContainer/Campaign Rows/Custom Campaigns Panel/Custom Campaigns Scroll/Custom Campaign Rows"]
+margin_right = 976.0
+margin_bottom = 18.0
+hint_tooltip = "Create your own custom campaigns in the editor"
+text = "<none>"
+
 [node name="Back Button" type="Button" parent="MarginContainer/Campaign Rows"]
 margin_top = 542.0
 margin_right = 48.0

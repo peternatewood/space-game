@@ -1,0 +1,219 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://themes/editor_theme.tres" type="Theme" id=1]
+[ext_resource path="res://editor/scripts/CampaignEditor.gd" type="Script" id=2]
+[ext_resource path="res://editor/scripts/CampaignEditorManual.gd" type="Script" id=3]
+
+[sub_resource type="StyleBoxFlat" id=3]
+content_margin_left = 4.0
+content_margin_right = 4.0
+content_margin_top = 2.0
+content_margin_bottom = 2.0
+bg_color = Color( 0.184314, 0.184314, 0.247059, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.466667, 0.466667, 0.466667, 1 )
+corner_detail = 2
+
+[node name="Campaign Editor" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
+
+[node name="Rows" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Toolbar" type="PanelContainer" parent="Rows"]
+margin_right = 1024.0
+margin_bottom = 26.0
+size_flags_horizontal = 3
+
+[node name="Toolbar Columns" type="HBoxContainer" parent="Rows/Toolbar"]
+margin_left = 4.0
+margin_top = 2.0
+margin_right = 1020.0
+margin_bottom = 24.0
+
+[node name="File Menu" type="MenuButton" parent="Rows/Toolbar/Toolbar Columns"]
+margin_right = 40.0
+margin_bottom = 22.0
+text = "File"
+items = [ "New", null, 0, false, false, 0, 0, null, "", false, "Open", null, 0, false, false, 1, 0, null, "", false, "Save", null, 0, false, false, 2, 0, null, "", false ]
+
+[node name="Exit Menu" type="MenuButton" parent="Rows/Toolbar/Toolbar Columns"]
+margin_left = 44.0
+margin_right = 84.0
+margin_bottom = 22.0
+text = "Exit"
+items = [ "Quit to Mission Editor", null, 0, false, false, 0, 0, null, "", false, "Quit to Main Menu", null, 0, false, false, 1, 0, null, "", false, "Quit to Desktop", null, 0, false, false, 2, 0, null, "", false ]
+
+[node name="Help Menu" type="MenuButton" parent="Rows/Toolbar/Toolbar Columns"]
+margin_left = 88.0
+margin_right = 128.0
+margin_bottom = 22.0
+text = "Help"
+items = [ "About", null, 0, false, false, 0, 0, null, "", false, "Manual", null, 0, false, false, 1, 0, null, "", false ]
+
+[node name="Campaign Details" type="GridContainer" parent="Rows"]
+editor/display_folded = true
+margin_top = 30.0
+margin_right = 1024.0
+margin_bottom = 90.0
+columns = 2
+
+[node name="Title Label" type="Label" parent="Rows/Campaign Details"]
+margin_top = 5.0
+margin_right = 88.0
+margin_bottom = 23.0
+text = "Title"
+
+[node name="Campaign Title" type="LineEdit" parent="Rows/Campaign Details"]
+margin_left = 92.0
+margin_right = 1024.0
+margin_bottom = 28.0
+size_flags_horizontal = 3
+
+[node name="Description Label" type="Label" parent="Rows/Campaign Details"]
+margin_top = 37.0
+margin_right = 88.0
+margin_bottom = 55.0
+text = "Description"
+
+[node name="Campaign Description" type="TextEdit" parent="Rows/Campaign Details"]
+margin_left = 92.0
+margin_top = 32.0
+margin_right = 1024.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 0, 28 )
+size_flags_horizontal = 3
+
+[node name="Add Mission Button" type="Button" parent="Rows"]
+margin_top = 94.0
+margin_right = 1024.0
+margin_bottom = 116.0
+text = "Add Mission"
+
+[node name="Missions Panel" type="PanelContainer" parent="Rows"]
+editor/display_folded = true
+margin_top = 120.0
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_vertical = 3
+
+[node name="Missions Scroll" type="ScrollContainer" parent="Rows/Missions Panel"]
+margin_left = 4.0
+margin_top = 2.0
+margin_right = 1020.0
+margin_bottom = 478.0
+size_flags_vertical = 3
+scroll_horizontal_enabled = false
+
+[node name="Missions Container" type="VBoxContainer" parent="Rows/Missions Panel/Missions Scroll"]
+margin_right = 1016.0
+margin_bottom = 476.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Manual Window" type="ScrollContainer" parent="."]
+editor/display_folded = true
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/bg = SubResource( 3 )
+scroll_horizontal_enabled = false
+script = ExtResource( 3 )
+
+[node name="Rows" type="VBoxContainer" parent="Manual Window"]
+margin_left = 4.0
+margin_top = 2.0
+margin_right = 1020.0
+margin_bottom = 598.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Column" type="HBoxContainer" parent="Manual Window/Rows"]
+margin_right = 1016.0
+margin_bottom = 22.0
+
+[node name="Label" type="Label" parent="Manual Window/Rows/Column"]
+margin_top = 2.0
+margin_right = 996.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Campaign Editor Manual"
+
+[node name="Close Button" type="Button" parent="Manual Window/Rows/Column"]
+margin_left = 1000.0
+margin_right = 1016.0
+margin_bottom = 22.0
+text = "X"
+
+[node name="Tree" type="Tree" parent="Manual Window/Rows"]
+margin_top = 26.0
+margin_right = 1016.0
+margin_bottom = 596.0
+size_flags_vertical = 3
+
+[node name="Add Mission Dialog" type="ConfirmationDialog" parent="."]
+editor/display_folded = true
+margin_right = 200.0
+margin_bottom = 70.0
+window_title = "Add Mission"
+
+[node name="Rows" type="VBoxContainer" parent="Add Mission Dialog"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -38.0
+
+[node name="Mission Options" type="OptionButton" parent="Add Mission Dialog/Rows"]
+margin_right = 200.0
+margin_bottom = 22.0
+
+[node name="Open Dialog" type="FileDialog" parent="."]
+margin_right = 480.0
+margin_bottom = 320.0
+rect_min_size = Vector2( 480, 320 )
+window_title = "Open a File"
+mode = 0
+access = 1
+filters = PoolStringArray( "*.cfg" )
+current_dir = "user://campaigns"
+current_file = "campaigns"
+current_path = "user://campaigns/campaigns"
+
+[node name="Save Dialog" type="FileDialog" parent="."]
+margin_right = 200.0
+margin_bottom = 70.0
+rect_min_size = Vector2( 480, 320 )
+window_title = "Save Campaign"
+access = 1
+filters = PoolStringArray( "*.cfg" )
+current_dir = "user://campaigns"
+current_file = "campaigns"
+current_path = "user://campaigns/campaigns"
+
+[node name="About Window" type="WindowDialog" parent="."]
+editor/display_folded = true
+margin_right = 88.0
+margin_bottom = 1.0
+rect_min_size = Vector2( 160, 48 )
+window_title = "About"
+
+[node name="Label" type="Label" parent="About Window"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "Space Game Editor
+v0.2.0"
+align = 1
+valign = 1
+
+[node name="Alert Dialog" type="AcceptDialog" parent="."]
+margin_right = 96.0
+margin_bottom = 64.0

@@ -1,0 +1,57 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://editor/scripts/NextMissionNode.gd" type="Script" id=1]
+
+[node name="Next Mission Node" type="PanelContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+
+[node name="Columns" type="HBoxContainer" parent="."]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 1017.0
+margin_bottom = 593.0
+
+[node name="Move Left Button" type="Button" parent="Columns"]
+margin_right = 20.0
+margin_bottom = 586.0
+text = "<"
+
+[node name="Rows" type="VBoxContainer" parent="Columns"]
+margin_left = 24.0
+margin_right = 986.0
+margin_bottom = 586.0
+size_flags_horizontal = 3
+
+[node name="Columns" type="HBoxContainer" parent="Columns/Rows"]
+margin_right = 962.0
+margin_bottom = 20.0
+
+[node name="Mission Option" type="OptionButton" parent="Columns/Rows/Columns"]
+margin_right = 903.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+
+[node name="Delete Button" type="Button" parent="Columns/Rows/Columns"]
+margin_left = 907.0
+margin_right = 962.0
+margin_bottom = 20.0
+text = "Delete"
+
+[node name="Add Objective Requirement Button" type="Button" parent="Columns/Rows"]
+margin_top = 24.0
+margin_right = 962.0
+margin_bottom = 44.0
+text = "Add Objective Requirement"
+
+[node name="Objective Rows" type="VBoxContainer" parent="Columns/Rows"]
+margin_top = 48.0
+margin_right = 962.0
+margin_bottom = 48.0
+
+[node name="Move Right Button" type="Button" parent="Columns"]
+margin_left = 990.0
+margin_right = 1010.0
+margin_bottom = 586.0
+text = ">"

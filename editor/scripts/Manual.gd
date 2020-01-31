@@ -35,7 +35,8 @@ func _ready():
 const MANUAL_TEXT: Dictionary = {
 	"Movement/Controls": [
 		"Hold middle mouse to orbit",
-		"Hold Shift and middle mouse to translate"
+		"Hold Shift and middle mouse to translate",
+		"Use the mouse scroll wheel to zoom in and out"
 	],
 	"File Menu": [
 		"New: Create a new mission",

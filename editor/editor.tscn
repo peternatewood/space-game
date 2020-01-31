@@ -101,7 +101,7 @@ size_flags_horizontal = 3
 margin_right = 40.0
 margin_bottom = 22.0
 text = "File"
-items = [ "New", null, 0, false, false, 0, 0, null, "", false, "Open", null, 0, false, false, 1, 0, null, "", false, "Save", null, 0, false, false, 2, 0, null, "", false, "Quit to Menu", null, 0, false, false, 3, 0, null, "", false, "Quit to Desktop", null, 0, false, false, 4, 0, null, "", false ]
+items = [ "New", null, 0, false, false, 0, 0, null, "", false, "Open", null, 0, false, false, 1, 0, null, "", false, "Save", null, 0, false, false, 2, 0, null, "", false, "Campaign Editor", null, 0, false, false, 3, 0, null, "", false, "Quit to Menu", null, 0, false, false, 4, 0, null, "", false, "Quit to Desktop", null, 0, false, false, 5, 0, null, "", false ]
 
 [node name="Edit Menu" type="MenuButton" parent="Controls Container/PanelContainer/Toolbar"]
 margin_left = 44.0
@@ -933,7 +933,7 @@ margin_bottom = 34.0
 margin_right = 400.0
 margin_bottom = 300.0
 rect_min_size = Vector2( 400, 300 )
-window_title = "Open a Mission"
+window_title = "Open a File"
 resizable = true
 mode = 0
 access = 1
@@ -1007,12 +1007,12 @@ margin_bottom = 54.0
 editor/display_folded = true
 margin_right = 136.0
 margin_bottom = 39.0
-rect_min_size = Vector2( 136, 39 )
+rect_min_size = Vector2( 160, 48 )
 window_title = "About"
 
 [node name="Label" type="Label" parent="Controls Container/About Window"]
-margin_right = 136.0
-margin_bottom = 39.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Space Game Editor
@@ -1021,7 +1021,6 @@ align = 1
 valign = 1
 
 [node name="Manual Window" type="ScrollContainer" parent="Controls Container"]
-editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -1047,13 +1046,13 @@ margin_top = 2.0
 margin_right = 996.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
-text = "Manual"
+text = "Mission Editor Manual"
 
 [node name="Close Button" type="Button" parent="Controls Container/Manual Window/VBoxContainer/HBoxContainer"]
 margin_left = 1000.0
 margin_right = 1016.0
 margin_bottom = 22.0
-text = "x"
+text = "X"
 
 [node name="Tree" type="Tree" parent="Controls Container/Manual Window/VBoxContainer"]
 margin_top = 26.0
