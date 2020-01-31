@@ -13,9 +13,20 @@ margin_top = 7.0
 margin_right = 1017.0
 margin_bottom = 593.0
 
-[node name="Mission Option" type="OptionButton" parent="Rows"]
+[node name="Columns" type="HBoxContainer" parent="Rows"]
 margin_right = 1010.0
 margin_bottom = 20.0
+
+[node name="Mission Option" type="OptionButton" parent="Rows/Columns"]
+margin_right = 951.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+
+[node name="Delete Button" type="Button" parent="Rows/Columns"]
+margin_left = 955.0
+margin_right = 1010.0
+margin_bottom = 20.0
+text = "Delete"
 
 [node name="Add Objective Requirement Button" type="Button" parent="Rows"]
 margin_top = 24.0
