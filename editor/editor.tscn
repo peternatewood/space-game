@@ -1021,7 +1021,6 @@ align = 1
 valign = 1
 
 [node name="Manual Window" type="ScrollContainer" parent="Controls Container"]
-editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
