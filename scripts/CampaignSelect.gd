@@ -16,6 +16,18 @@ func _ready():
 		campaign_button.set_text(campaign_data.name + ": " + campaign_data.description)
 		campaign_button.connect("pressed", self, "_on_campaign_button_pressed", [ campaign_data.path ])
 
+	if mission_data.custom_campaign_list.size() != 0:
+		var custom_none_label = get_node("MarginContainer/Campaign Rows/Custom Campaigns Panel/Custom Campaigns Scroll/Custom Campaign Rows/None Label")
+		custom_none_label.queue_free()
+
+		for campaign_data in mission_data.custom_campaign_list:
+			var campaign_button = Button.new()
+			custom_campaign_rows.add_child(campaign_button)
+
+			campaign_button.set_text_align(Button.ALIGN_LEFT)
+			campaign_button.set_text(campaign_data.name + ": " + campaign_data.description)
+			campaign_button.connect("pressed", self, "_on_campaign_button_pressed", [ campaign_data.path ])
+
 	var back_button = get_node("MarginContainer/Campaign Rows/Back Button")
 	back_button.connect("pressed", self, "_on_back_pressed")
 
