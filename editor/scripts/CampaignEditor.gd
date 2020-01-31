@@ -3,6 +3,7 @@ extends Control
 onready var about_window = get_node("About Window")
 onready var add_mission_dialog = get_node("Add Mission Dialog")
 onready var add_mission_options = get_node("Add Mission Dialog/Rows/Mission Options")
+onready var alert_dialog = get_node("Alert Dialog")
 onready var campaign_title = get_node("Rows/Campaign Details/Campaign Title")
 onready var campaign_description = get_node("Rows/Campaign Details/Campaign Description")
 onready var loader = get_node("/root/SceneLoader")
@@ -179,22 +180,36 @@ func _on_open_file_selected(path: String):
 
 
 func _on_save_file_selected(path: String):
+	var alert_messages: PoolStringArray = []
+
+	if campaign_title.text.length() == 0:
+		alert_messages.append("Please provide the campaign with a Title")
+	if campaign_description.text.length() == 0:
+		alert_messages.append("Please provide the campaign with a Description")
+
 	var missions: Array = []
 
 	for mission in missions_container.get_children():
 		missions.append(mission.get_data())
 
-	var campaign_config: ConfigFile = ConfigFile.new()
-	campaign_config.set_value("details", "name", campaign_title.text)
-	campaign_config.set_value("details", "description", campaign_description.text)
-	campaign_config.set_value("mission_tree", "missions", missions)
-	campaign_config.save(path)
+	if missions.size() == 0:
+		alert_messages.append("Please provide at least one mission")
 
-	OS.set_window_title(mission_data.original_title + SUB_TITLE + campaign_title.text)
+	if alert_messages.size() != 0:
+		alert_dialog.set_text(alert_messages.join("\n"))
+		alert_dialog.popup_centered()
+	else:
+		var campaign_config: ConfigFile = ConfigFile.new()
+		campaign_config.set_value("details", "name", campaign_title.text)
+		campaign_config.set_value("details", "description", campaign_description.text)
+		campaign_config.set_value("mission_tree", "missions", missions)
+		campaign_config.save(path)
 
-	# Forces the list in each dialog to refresh
-	open_dialog.invalidate()
-	save_dialog.invalidate()
+		OS.set_window_title(mission_data.original_title + SUB_TITLE + campaign_title.text)
+
+		# Forces the list in each dialog to refresh
+		open_dialog.invalidate()
+		save_dialog.invalidate()
 
 
 # PUBLIC

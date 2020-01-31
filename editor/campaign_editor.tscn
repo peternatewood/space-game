@@ -213,3 +213,7 @@ text = "Space Game Editor
 v0.2.0"
 align = 1
 valign = 1
+
+[node name="Alert Dialog" type="AcceptDialog" parent="."]
+margin_right = 96.0
+margin_bottom = 64.0
