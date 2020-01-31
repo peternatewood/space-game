@@ -81,10 +81,8 @@ func _on_add_objective_requirement_pressed(objective_requirement, mission_index:
 func _on_file_id_pressed(item_id: int):
 	match item_id:
 		0:
-			# New campaign
-			pass
+			create_new_campaign(0)
 		1:
-			# Open file
 			open_dialog.popup_centered()
 		2:
 			save_dialog.popup_centered()
@@ -169,6 +167,9 @@ func add_mission_node(mission_index: int):
 
 
 func create_new_campaign(first_mission_index: int):
+	campaign_title.set_text("")
+	campaign_description.set_text("")
+
 	for row in missions_container.get_children():
 		row.queue_free()
 
