@@ -114,6 +114,18 @@ func _on_mission_node_mission_changed(mission_index: int, mission_node):
 	mission_node.set_mission(missions_list[mission_index])
 
 
+func _on_mission_node_move_up_pressed(mission_node):
+	var position: int = mission_node.get_position_in_parent()
+	if position > 0:
+		missions_container.move_child(mission_node, position - 1)
+
+
+func _on_mission_node_move_down_pressed(mission_node):
+	var position: int = mission_node.get_position_in_parent()
+	if position < missions_container.get_child_count() - 1:
+		missions_container.move_child(mission_node, position + 1)
+
+
 func _on_open_file_selected(path: String):
 	var campaign_config: ConfigFile = ConfigFile.new()
 	if campaign_config.load(path) != OK:
@@ -181,6 +193,8 @@ func add_mission_node(mission_index: int):
 	mission_node.connect("add_mission_confirmed", self, "_on_mission_node_add_mission_confirmed", [mission_node])
 	mission_node.connect("add_objective_requirement_pressed", self, "_on_add_objective_requirement_pressed", [mission_index])
 	mission_node.connect("mission_changed", self, "_on_mission_node_mission_changed", [mission_node])
+	mission_node.connect("move_up_pressed", self, "_on_mission_node_move_up_pressed", [mission_node])
+	mission_node.connect("move_down_pressed", self, "_on_mission_node_move_down_pressed", [mission_node])
 
 	return mission_node
 

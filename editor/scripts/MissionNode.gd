@@ -13,6 +13,12 @@ var mission_path: String
 
 
 func _ready():
+	var move_up_button = get_node("Position Buttons/Move Up Button")
+	move_up_button.connect("pressed", self, "_on_move_up_pressed")
+
+	var move_down_button = get_node("Position Buttons/Move Down Button")
+	move_down_button.connect("pressed", self, "_on_move_down_pressed")
+
 	change_mission_dialog.connect("confirmed", self, "_on_change_mission_confirmed")
 
 	var change_mission_button = get_node("Mission Container/Rows/Change Mission Button")
@@ -41,6 +47,14 @@ func _on_add_mission_confirmed():
 
 func _on_add_objective_requirement_pressed(objective_requirement):
 	emit_signal("add_objective_requirement_pressed", objective_requirement)
+
+
+func _on_move_up_pressed():
+	emit_signal("move_up_pressed")
+
+
+func _on_move_down_pressed():
+	emit_signal("move_down_pressed")
 
 
 # PUBLIC
@@ -86,5 +100,7 @@ func set_mission_options(missions: Array):
 signal add_mission_confirmed
 signal add_objective_requirement_pressed
 signal mission_changed
+signal move_up_pressed
+signal move_down_pressed
 
 const NEXT_MISSION_NODE = preload("res://editor/prefabs/next_mission_node.tscn")
