@@ -11,6 +11,9 @@ onready var type_option = get_node("Type Option")
 func _ready():
 	type_option.connect("item_selected", self, "_on_type_selected")
 
+	var delete_button = get_node("Delete Button")
+	delete_button.connect("pressed", self, "queue_free")
+
 
 func _on_type_selected(item_id: int):
 	match item_id:

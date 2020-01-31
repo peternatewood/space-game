@@ -8,7 +8,7 @@ anchor_bottom = 1.0
 script = ExtResource( 1 )
 
 [node name="Type Option" type="OptionButton" parent="."]
-margin_right = 510.0
+margin_right = 498.0
 margin_bottom = 600.0
 size_flags_horizontal = 3
 text = "Primary"
@@ -16,8 +16,8 @@ items = [ "Primary", null, false, 0, null, "Secondary", null, false, 1, null, "S
 selected = 0
 
 [node name="Primary Option" type="OptionButton" parent="."]
-margin_left = 514.0
-margin_right = 1024.0
+margin_left = 502.0
+margin_right = 1000.0
 margin_bottom = 600.0
 size_flags_horizontal = 3
 
@@ -34,3 +34,9 @@ margin_left = 684.0
 margin_right = 1024.0
 margin_bottom = 600.0
 size_flags_horizontal = 3
+
+[node name="Delete Button" type="Button" parent="."]
+margin_left = 1004.0
+margin_right = 1024.0
+margin_bottom = 600.0
+text = "X"
