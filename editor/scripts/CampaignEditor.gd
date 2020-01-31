@@ -1,5 +1,7 @@
 extends Control
 
+onready var add_mission_dialog = get_node("Add Mission Dialog")
+onready var add_mission_options = get_node("Add Mission Dialog/Rows/Mission Options")
 onready var mission_data = get_node("/root/MissionData")
 onready var missions_container = get_node("Rows/Missions Panel/Missions Scroll/Missions Container")
 
@@ -15,6 +17,7 @@ func _ready():
 	else:
 		missions_directory.list_dir_begin()
 		var file_name = missions_directory.get_next()
+		var mission_index: int = 0
 		while file_name != "":
 			file_name = missions_directory.get_next()
 			if not missions_directory.current_is_dir() and file_name.ends_with(".tscn"):
@@ -45,8 +48,20 @@ func _ready():
 					print("Mission " + file_name + " has no objectives!")
 
 				missions_list.append(file_data)
+				add_mission_options.add_item(file_data.name, mission_index)
+				mission_index += 1
+
+	var add_mission_button = get_node("Rows/Add Mission Button")
+	add_mission_button.connect("pressed", add_mission_dialog, "popup_centered")
+
+	add_mission_dialog.connect("confirmed", self, "_on_add_mission_confirmed")
 
 	create_new_campaign(0)
+
+
+func _on_add_mission_confirmed():
+	var mission_index: int = add_mission_options.get_selected_id()
+	add_mission_node(mission_index)
 
 
 func _on_add_objective_requirement_pressed(objective_requirement, mission_index: int):
@@ -57,7 +72,6 @@ func _on_mission_node_add_mission_confirmed(mission_index: int, mission_node):
 	if not missions_in_campaign.has(mission_index):
 		add_mission_node(mission_index)
 
-	missions_in_campaign.append(mission_index)
 	mission_node.add_next_mission(mission_index, missions_list)
 
 
@@ -69,6 +83,8 @@ func _on_mission_node_mission_changed(mission_index: int, mission_node):
 
 
 func add_mission_node(mission_index: int):
+	missions_in_campaign.append(mission_index)
+
 	var mission_node = MISSION_NODE.instance()
 	missions_container.add_child(mission_node)
 	mission_node.set_mission(missions_list[mission_index])

@@ -62,8 +62,14 @@ margin_bottom = 60.0
 rect_min_size = Vector2( 0, 28 )
 size_flags_horizontal = 3
 
-[node name="Missions Panel" type="PanelContainer" parent="Rows"]
+[node name="Add Mission Button" type="Button" parent="Rows"]
 margin_top = 94.0
+margin_right = 1024.0
+margin_bottom = 116.0
+text = "Add Mission"
+
+[node name="Missions Panel" type="PanelContainer" parent="Rows"]
+margin_top = 120.0
 margin_right = 1024.0
 margin_bottom = 600.0
 size_flags_vertical = 3
@@ -72,12 +78,25 @@ size_flags_vertical = 3
 margin_left = 4.0
 margin_top = 2.0
 margin_right = 1020.0
-margin_bottom = 504.0
+margin_bottom = 478.0
 size_flags_vertical = 3
 scroll_horizontal_enabled = false
 
 [node name="Missions Container" type="VBoxContainer" parent="Rows/Missions Panel/Missions Scroll"]
 margin_right = 1016.0
-margin_bottom = 502.0
+margin_bottom = 476.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="Add Mission Dialog" type="ConfirmationDialog" parent="."]
+margin_right = 200.0
+margin_bottom = 70.0
+window_title = "Add Mission"
+
+[node name="Rows" type="VBoxContainer" parent="Add Mission Dialog"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Mission Options" type="OptionButton" parent="Add Mission Dialog/Rows"]
+margin_right = 200.0
+margin_bottom = 22.0
