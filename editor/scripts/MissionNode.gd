@@ -53,6 +53,19 @@ func add_next_mission(mission_index: int, missions_list: Array):
 	next_mission.connect("add_objective_requirement_pressed", self, "_on_add_objective_requirement_pressed")
 
 
+func get_data():
+	var next_missions: Array = []
+	for mission in next_missions_container.get_children():
+		next_missions.append(mission.get_data())
+
+	var data: Dictionary = {
+		"path": mission_path,
+		"next_missions": next_missions
+	}
+
+	return data
+
+
 func set_mission(mission_data: Dictionary):
 	mission_path = mission_data.path
 	title_label.set_text(mission_data.name)
