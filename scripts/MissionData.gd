@@ -74,6 +74,7 @@ func _ready():
 		else:
 			var ship_instance = model.instance()
 
+			# Stuff that's only for capital ships or small ships
 			if ship_instance.get_meta("is_capital_ship"):
 				if ship_instance.has_node("Beam Weapon Turrets"):
 					ship_config_data.beam_weapon_turrets = ship_instance.get_node("Beam Weapon Turrets").get_child_count()
@@ -82,6 +83,19 @@ func _ready():
 				if ship_instance.has_node("Missile Weapon Turrets"):
 					ship_config_data.missile_weapon_turrets = ship_instance.get_node("Missile Weapon Turrets").get_child_count()
 			else:
+				var icon_path: String = model_dir + "icon.png"
+				if not dir.file_exists(icon_path):
+					icon_path = "res://models/ships/" + default_ship_directory + "/icon.png"
+					print("Warning: missing icon for ", ship_class, ". The default icon will be used instead: ", icon_path)
+
+				var loadout_overhead_path: String = model_dir + "loadout_overhead.png"
+				if not dir.file_exists(loadout_overhead_path):
+					loadout_overhead_path = "res://models/ships/" + default_ship_directory + "/loadout_overhead.png"
+					print("Warning: missing loadout overhead for ", ship_class, ". The default loadout overhead will be used instead: ", loadout_overhead_path)
+
+				ship_config_data["icon_path"] = icon_path
+				ship_config_data["loadout_overhead_path"] = loadout_overhead_path
+
 				var energy_weapon_groups = ship_instance.get_node_or_null("Energy Weapon Groups")
 				var missile_weapon_groups = ship_instance.get_node_or_null("Missile Weapon Groups")
 
@@ -134,9 +148,15 @@ func _ready():
 				else:
 					print("Warning: missing beam weapon model file for " + weapon_name + ". The default model will be used instead: ", model_path)
 
+				var video_path: String = model_dir + "video.ogv"
+				if not dir.file_exists(video_path):
+					video_path = "res://models/beam_weapon/" + default_beam_weapon_directory + "/video.ogv"
+					print("Warning: missing video for ", weapon_name, ". The default video will be used instead: ", video_path)
+
 				var beam_weapon_config_data: Dictionary = {
 					"model_dir": model_dir,
-					"model_path": model_path
+					"model_path": model_path,
+					"video_path": video_path
 				}
 
 				for key in weapons_config.get_section_keys(section):
@@ -170,9 +190,21 @@ func _ready():
 				else:
 					print("Warning: missing energy weapon model file for " + weapon_name + ". The default model will be used instead: ", model_path)
 
+				var icon_path: String = model_dir + "icon.png"
+				if not dir.file_exists(icon_path):
+					icon_path = "res://models/energy_weapons/" + default_energy_weapon_directory + "/icon.png"
+					print("Warning: missing icon for ", weapon_name, ". The default icon will be used instead: ", icon_path)
+
+				var video_path: String = model_dir + "video.ogv"
+				if not dir.file_exists(video_path):
+					video_path = "res://models/energy_weapons/" + default_energy_weapon_directory + "/video.ogv"
+					print("Warning: missing video for ", weapon_name, ". The default video will be used instead: ", video_path)
+
 				var energy_weapon_config_data: Dictionary = {
+					"icon_path": icon_path,
 					"model_dir": model_dir,
-					"model_path": model_path
+					"model_path": model_path,
+					"video_path": video_path
 				}
 
 				for key in weapons_config.get_section_keys(section):
@@ -192,9 +224,21 @@ func _ready():
 				else:
 					print("Warning: missing missile weapon model file for " + weapon_name + ". The default model will be used instead: ", model_path)
 
+				var icon_path: String = model_dir + "icon.png"
+				if not dir.file_exists(icon_path):
+					icon_path = "res://models/missile_weapons/" + default_missile_weapon_directory + "/icon.png"
+					print("Warning: missing icon for ", weapon_name, ". The default icon will be used instead: ", icon_path)
+
+				var video_path: String = model_dir + "video.ogv"
+				if not dir.file_exists(video_path):
+					video_path = "res://models/missile_weapons/" + default_missile_weapon_directory + "/video.ogv"
+					print("Warning: missing video for ", weapon_name, ". The default video will be used instead: ", video_path)
+
 				var missile_weapon_config_data = {
+					"icon_path": icon_path,
 					"model_dir": model_dir,
-					"model_path": model_path
+					"model_path": model_path,
+					"video_path": video_path
 				}
 
 				for key in weapons_config.get_section_keys(section):

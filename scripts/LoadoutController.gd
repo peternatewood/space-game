@@ -29,12 +29,12 @@ func _ready():
 			var model = load(mission_data.ship_data[section].model_path)
 
 			var icon = ImageTexture.new()
-			var icon_stream_texture = load(mission_data.ship_data[ship_class].model_dir + "/icon.png")
+			var icon_stream_texture = load(mission_data.ship_data[ship_class].icon_path)
 			var icon_texture = icon_stream_texture.get_data()
 			icon.create_from_image(icon_texture, 0)
 
 			var overhead = ImageTexture.new()
-			var overhead_stream_texture = load(mission_data.ship_data[ship_class].model_dir + "/loadout_overhead.png")
+			var overhead_stream_texture = load(mission_data.ship_data[ship_class].loadout_overhead_path)
 			var overhead_texture = overhead_stream_texture.get_data()
 			overhead.create_from_image(overhead_texture, 0)
 
@@ -55,7 +55,7 @@ func _ready():
 			var model = load(mission_data.energy_weapon_data[energy_weapon_name].model_path)
 
 			var icon = ImageTexture.new()
-			var icon_stream_texture = load(mission_data.energy_weapon_data[energy_weapon_name].model_dir + "/icon.png")
+			var icon_stream_texture = load(mission_data.energy_weapon_data[energy_weapon_name].icon_path)
 			var icon_texture = icon_stream_texture.get_data()
 			icon.create_from_image(icon_texture, 0)
 
@@ -64,7 +64,7 @@ func _ready():
 			energy_weapon_icon.set_weapon(energy_weapon_name, icon)
 			energy_weapon_icon.connect("pressed", self, "_update_weapon_preview", [ "energy_weapon", energy_weapon_name ])
 
-			var energy_weapon_video = load(mission_data.energy_weapon_data[energy_weapon_name].model_dir + "/video.ogv")
+			var energy_weapon_video = load(mission_data.energy_weapon_data[energy_weapon_name].video_path)
 
 			energy_weapon_resources[energy_weapon_name] = {
 				"icon": icon,
@@ -82,7 +82,7 @@ func _ready():
 			var model = load(mission_data.missile_weapon_data[missile_weapon_name].model_path)
 
 			var icon = ImageTexture.new()
-			var icon_stream_texture = load(mission_data.missile_weapon_data[missile_weapon_name].model_dir + "/icon.png")
+			var icon_stream_texture = load(mission_data.missile_weapon_data[missile_weapon_name].icon_path)
 			var icon_texture = icon_stream_texture.get_data()
 			icon.create_from_image(icon_texture, 0)
 
@@ -91,7 +91,7 @@ func _ready():
 			missile_weapon_icon.set_weapon(missile_weapon_name, icon)
 			missile_weapon_icon.connect("pressed", self, "_update_weapon_preview", [ "missile_weapon", missile_weapon_name ])
 
-			var missile_weapon_video = load(mission_data.missile_weapon_data[missile_weapon_name].model_dir + "/video.ogv")
+			var missile_weapon_video = load(mission_data.missile_weapon_data[missile_weapon_name].video_path)
 
 			missile_weapon_resources[missile_weapon_name] = {
 				"icon": icon,

@@ -61,28 +61,17 @@ func _on_back_pressed():
 
 
 func _on_beam_weapon_button_pressed(beam_weapon_name: String):
-	# Provide default in case the video or weapon data is missing
-	var model_dir: String = mission_data.beam_weapon_data[mission_data.default_weapon_name].model_dir
-	if mission_data.beam_weapon_data.has(beam_weapon_name):
-		model_dir = mission_data.beam_weapon_data[beam_weapon_name].model_dir
-
-	var video_path = model_dir + "video.ogv"
-	var video_stream = load(video_path)
-
+	var video_stream = load(mission_data.beam_weapon_data[beam_weapon_name].video_path)
 	weapon_preview.set_weapon(beam_weapon_name, mission_data.beam_weapon_data[beam_weapon_name], video_stream)
 
 
 func _on_energy_weapon_button_pressed(energy_weapon_name: String):
-	var video_path = mission_data.energy_weapon_data[energy_weapon_name].model_dir + "video.ogv"
-	var video_stream = load(video_path)
-
+	var video_stream = load(mission_data.energy_weapon_data[energy_weapon_name].video_path)
 	weapon_preview.set_weapon(energy_weapon_name, mission_data.energy_weapon_data[energy_weapon_name], video_stream)
 
 
 func _on_missile_weapon_button_pressed(missile_weapon_name: String):
-	var video_path = mission_data.missile_weapon_data[missile_weapon_name].model_dir + "video.ogv"
-	var video_stream = load(video_path)
-
+	var video_stream = load(mission_data.missile_weapon_data[missile_weapon_name].video_path)
 	weapon_preview.set_weapon(missile_weapon_name, mission_data.missile_weapon_data[missile_weapon_name], video_stream)
 
 
