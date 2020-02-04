@@ -61,16 +61,15 @@ func _on_back_pressed():
 
 
 func _on_beam_weapon_button_pressed(beam_weapon_name: String):
-	var video_path = mission_data.beam_weapon_data[beam_weapon_name].model_dir + "video.ogv"
+	# Provide default in case the video or weapon data is missing
+	var model_dir: String = mission_data.beam_weapon_data[mission_data.default_weapon_name].model_dir
+	if mission_data.beam_weapon_data.has(beam_weapon_name):
+		model_dir = mission_data.beam_weapon_data[beam_weapon_name].model_dir
+
+	var video_path = model_dir + "video.ogv"
 	var video_stream = load(video_path)
 
 	weapon_preview.set_weapon(beam_weapon_name, mission_data.beam_weapon_data[beam_weapon_name], video_stream)
-
-	#weapon_preview.set_stream(video_stream)
-	#weapon_preview.play()
-
-	#weapon_label.set_text(beam_weapon_name)
-	#weapon_description.set_text(mission_data.beam_weapon_data[beam_weapon_name].get("description", "*no description provided*"))
 
 
 func _on_energy_weapon_button_pressed(energy_weapon_name: String):
@@ -79,24 +78,12 @@ func _on_energy_weapon_button_pressed(energy_weapon_name: String):
 
 	weapon_preview.set_weapon(energy_weapon_name, mission_data.energy_weapon_data[energy_weapon_name], video_stream)
 
-#	weapon_preview.set_stream(video_stream)
-#	weapon_preview.play()
-#
-#	weapon_label.set_text(energy_weapon_name)
-#	weapon_description.set_text(mission_data.energy_weapon_data[energy_weapon_name].get("description", "*no description provided*"))
-
 
 func _on_missile_weapon_button_pressed(missile_weapon_name: String):
 	var video_path = mission_data.missile_weapon_data[missile_weapon_name].model_dir + "video.ogv"
 	var video_stream = load(video_path)
 
 	weapon_preview.set_weapon(missile_weapon_name, mission_data.missile_weapon_data[missile_weapon_name], video_stream)
-
-#	weapon_preview.set_stream(video_stream)
-#	weapon_preview.play()
-#
-#	weapon_label.set_text(missile_weapon_name)
-#	weapon_description.set_text(mission_data.missile_weapon_data[missile_weapon_name].get("description", "*no description provided*"))
 
 
 func _on_ship_button_pressed(ship_name: String):

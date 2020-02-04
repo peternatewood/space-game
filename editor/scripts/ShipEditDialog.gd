@@ -476,7 +476,7 @@ func prepare_options(mission_data, mission_node):
 
 	# Start at one since the first option "none" is at index 0
 	var beam_weapon_index: int = 1
-	for name in mission_data.beam_weapon_models.keys():
+	for name in mission_data.beam_weapon_data.keys():
 		for option in beam_weapon_options:
 			option.add_item(name, beam_weapon_index)
 		beam_weapon_index += 1

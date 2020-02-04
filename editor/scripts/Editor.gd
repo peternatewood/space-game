@@ -88,7 +88,7 @@ func _ready():
 	add_ship_dialog.populate_ship_options(ship_index_name_map)
 	add_ship_dialog.connect("confirmed", self, "_on_add_ship_confirmed")
 
-	for beam_weapon_name in mission_data.beam_weapon_models.keys():
+	for beam_weapon_name in mission_data.beam_weapon_data.keys():
 		ship_edit_dialog.beam_weapon_index_name_map.append(beam_weapon_name)
 
 	for energy_weapon_name in mission_data.energy_weapon_data.keys():
