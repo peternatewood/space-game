@@ -9,6 +9,7 @@ onready var title_label = get_node("Mission Container/Rows/Title Label")
 onready var mission_options = get_node("Change Mission Dialog/Rows/Mission Options")
 onready var next_missions_container = get_node("Next Missions Container")
 
+var mission_index: int
 var mission_path: String
 
 
@@ -96,7 +97,8 @@ func get_data():
 	return data
 
 
-func set_mission(mission_data: Dictionary):
+func set_mission(mission_data: Dictionary, index: int):
+	mission_index = index
 	mission_path = mission_data.path
 	title_label.set_text(mission_data.name)
 	description.set_text(mission_data.description)

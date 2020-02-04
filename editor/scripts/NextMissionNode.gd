@@ -47,7 +47,7 @@ func get_data():
 		objectives.append(objective_requirement.get_data())
 
 	var data: Dictionary = {
-		"index": mission_option.get_selected_id(),
+		"selected_index": mission_option.get_selected_id(),
 		"objectives": objectives
 	}
 

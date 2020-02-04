@@ -188,9 +188,21 @@ func _on_save_file_selected(path: String):
 		alert_messages.append("Please provide the campaign with a Description")
 
 	var missions: Array = []
+	# This maps the selected index (from the full list of user missions) to the index of the mission nodes (the list of mission nodes in this campaign)
+	var mission_index_map: Array = []
+	mission_index_map.resize(missions_list.size())
 
+	var map_index: int = 0
 	for mission in missions_container.get_children():
 		missions.append(mission.get_data())
+		mission_index_map[mission.mission_index] = map_index
+
+		map_index += 1
+
+	for mission in missions:
+		for next_mission in mission.next_missions:
+			next_mission["index"] = mission_index_map[next_mission["selected_index"]]
+			next_mission.erase("selected_index")
 
 	if missions.size() == 0:
 		alert_messages.append("Please provide at least one mission")
@@ -220,7 +232,7 @@ func add_mission_node(mission_index: int):
 
 	var mission_node = MISSION_NODE.instance()
 	missions_container.add_child(mission_node)
-	mission_node.set_mission(missions_list[mission_index])
+	mission_node.set_mission(missions_list[mission_index], mission_index)
 	mission_node.set_mission_options(missions_list)
 	mission_node.connect("add_mission_confirmed", self, "_on_mission_node_add_mission_confirmed", [mission_node])
 	mission_node.connect("add_objective_requirement_pressed", self, "_on_add_objective_requirement_pressed", [mission_index])
