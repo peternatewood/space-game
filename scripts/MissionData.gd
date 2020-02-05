@@ -4,11 +4,14 @@ onready var profiles_data = get_node("/root/ProfilesData")
 
 var armory: Dictionary
 var beam_weapon_data: Dictionary = {}
-var beam_weapon_models: Dictionary
 var briefing: Array
 var campaign_data: Dictionary
 var custom_campaign_list: Array = []
 var default_campaign_list: Array = []
+var default_ship_directory: String = "spider_fighter"
+var default_beam_weapon_directory: String = "argon_beam"
+var default_energy_weapon_directory: String = "energy_bolt"
+var default_missile_weapon_directory: String = "heat_seeker"
 var energy_weapon_data: Dictionary = {}
 var is_in_campaign: bool = false
 var missile_weapon_data: Dictionary = {}
@@ -23,16 +26,38 @@ var wing_names: Array = []
 
 
 func _ready():
+	var dir: Directory = Directory.new()
+
 	# Map ship and weapon models by name
 	var ships_config: ConfigFile = ConfigFile.new()
 	ships_config.load("res://configs/ships.cfg")
 
 	for section in ships_config.get_sections():
-		var model_dir: String = "res://models/ships/" + section + "/"
-		var ship_class: String = ships_config.get_value(section, "ship_class")
-		var model_path: String = model_dir + "model.dae"
+		var is_data_good: bool = true
 
-		ship_data[ship_class] = {
+		# Fall back on Spider Fighter for any missing data
+		var model_dir: String = "res://models/ships/" + default_ship_directory +"/"
+		if dir.dir_exists("res://models/ships/" + section + "/"):
+			model_dir = "res://models/ships/" + section + "/"
+		else:
+			print("Warning: missing directory for ship model " + section + ". The default directory will be used instead: ", model_dir)
+
+		var ship_class: String = ships_config.get_value(section, "ship_class")
+		if ship_class == null:
+			print("Missing ship_class for: ", section, " config!")
+			continue
+
+		if ship_data.has(ship_class):
+			print("Ship data already loaded for class: ", ship_class)
+			continue
+
+		var model_path: String = "res://models/ships/" + default_ship_directory + "/model.dae"
+		if dir.file_exists(model_path):
+			model_path = model_dir + "model.dae"
+		else:
+			print("Warning: missing ship model file. The default model will be used instead: ", model_path)
+
+		var ship_config_data: Dictionary = {
 			"model_dir": model_dir,
 			"model_path": model_path,
 			"energy_weapon_slots": 0,
@@ -43,88 +68,183 @@ func _ready():
 		}
 
 		var model = load(model_path)
-		var ship_instance = model.instance()
-
-		if ship_instance.get_meta("is_capital_ship"):
-			if ship_instance.has_node("Beam Weapon Turrets"):
-				ship_data[ship_class].beam_weapon_turrets = ship_instance.get_node("Beam Weapon Turrets").get_child_count()
-			if ship_instance.has_node("Energy Weapon Turrets"):
-				ship_data[ship_class].energy_weapon_turrets = ship_instance.get_node("Energy Weapon Turrets").get_child_count()
-			if ship_instance.has_node("Missile Weapon Turrets"):
-				ship_data[ship_class].missile_weapon_turrets = ship_instance.get_node("Missile Weapon Turrets").get_child_count()
+		if model == null:
+			print("Unable to load ship model: ", ship_class)
+			is_data_good = false
 		else:
-			ship_data[ship_class].energy_weapon_slots = ship_instance.get_node("Energy Weapon Groups").get_child_count()
-			ship_data[ship_class].missile_weapon_slots = ship_instance.get_node("Missile Weapon Groups").get_child_count()
+			var ship_instance = model.instance()
 
-		ship_instance.free()
+			# Stuff that's only for capital ships or small ships
+			if ship_instance.get_meta("is_capital_ship"):
+				if ship_instance.has_node("Beam Weapon Turrets"):
+					ship_config_data.beam_weapon_turrets = ship_instance.get_node("Beam Weapon Turrets").get_child_count()
+				if ship_instance.has_node("Energy Weapon Turrets"):
+					ship_config_data.energy_weapon_turrets = ship_instance.get_node("Energy Weapon Turrets").get_child_count()
+				if ship_instance.has_node("Missile Weapon Turrets"):
+					ship_config_data.missile_weapon_turrets = ship_instance.get_node("Missile Weapon Turrets").get_child_count()
+			else:
+				var icon_path: String = model_dir + "icon.png"
+				if not dir.file_exists(icon_path):
+					icon_path = "res://models/ships/" + default_ship_directory + "/icon.png"
+					print("Warning: missing icon for ", ship_class, ". The default icon will be used instead: ", icon_path)
+
+				var loadout_overhead_path: String = model_dir + "loadout_overhead.png"
+				if not dir.file_exists(loadout_overhead_path):
+					loadout_overhead_path = "res://models/ships/" + default_ship_directory + "/loadout_overhead.png"
+					print("Warning: missing loadout overhead for ", ship_class, ". The default loadout overhead will be used instead: ", loadout_overhead_path)
+
+				ship_config_data["icon_path"] = icon_path
+				ship_config_data["loadout_overhead_path"] = loadout_overhead_path
+
+				var energy_weapon_groups = ship_instance.get_node_or_null("Energy Weapon Groups")
+				var missile_weapon_groups = ship_instance.get_node_or_null("Missile Weapon Groups")
+
+				if energy_weapon_groups == null:
+					print("Missing energy weapon groups for ", ship_class)
+				else:
+					ship_config_data.energy_weapon_slots = energy_weapon_groups.get_child_count()
+
+				if missile_weapon_groups == null:
+					print("Missing missile weapon groups for ", ship_class)
+				else:
+					ship_config_data.missile_weapon_slots = missile_weapon_groups.get_child_count()
+
+			ship_instance.free()
 
 		for key in ships_config.get_section_keys(section):
-			ship_data[ship_class][key] = ships_config.get_value(section, key)
+			ship_config_data[key] = ships_config.get_value(section, key)
 
-	var dir = Directory.new()
-	if dir.open("res://models/beam_weapons") != OK:
-		print("Unable to open res://models/beam_weapons directory")
-	else:
-		dir.list_dir_begin()
-		var file_name = dir.get_next()
-		while file_name != "":
-			if dir.current_is_dir() and file_name != "." and file_name != "..":
-				var model_dir: String = dir.get_current_dir() + "/" + file_name + "/"
-				var model_file = load(model_dir + "model.tscn")
-
-				var weapon_instance = model_file.instance()
-
-				beam_weapon_models[weapon_instance.weapon_name] = model_file
-
-			file_name = dir.get_next()
+		if is_data_good:
+			ship_data[ship_class] = ship_config_data
 
 	var weapons_config: ConfigFile = ConfigFile.new()
 	weapons_config.load("res://configs/weapons.cfg")
 
 	for section in weapons_config.get_sections():
+		var is_data_good: bool = true
+
 		var weapon_name = weapons_config.get_value(section, "name")
+		if weapon_name == null:
+			print("Missing weapon name for ", section, " config!")
+			continue
+
 		var model_dir: String
 
 		match weapons_config.get_value(section, "type"):
 			"beam_weapon":
-				model_dir = "res://models/beam_weapons/" + section + "/"
+				if beam_weapon_data.has(section):
+					print("Beam weapon data already loaded for name: ", weapon_name)
+					is_data_good = false
 
-				beam_weapon_data[weapon_name] = {
-					"model_path": model_dir + "model.dae",
-					"model_dir": model_dir
+				model_dir = "res://models/beam_weapons/" + default_beam_weapon_directory + "/"
+				if dir.dir_exists("res://models/beam_weapons/" + section + "/"):
+					model_dir = "res://models/beam_weapons/" + section + "/"
+				else:
+					print("Warning: missing directory for beam weapon model " + weapon_name + ". The default directory will be used instead: ", model_dir)
+
+				var model_path: String = model_dir + "model.tscn"
+				if dir.file_exists(model_path):
+					model_path = model_dir + "model.tscn"
+				else:
+					print("Warning: missing beam weapon model file for " + weapon_name + ". The default model will be used instead: ", model_path)
+
+				var video_path: String = model_dir + "video.ogv"
+				if not dir.file_exists(video_path):
+					video_path = "res://models/beam_weapon/" + default_beam_weapon_directory + "/video.ogv"
+					print("Warning: missing video for ", weapon_name, ". The default video will be used instead: ", video_path)
+
+				var beam_weapon_config_data: Dictionary = {
+					"model_dir": model_dir,
+					"model_path": model_path,
+					"video_path": video_path
 				}
 
 				for key in weapons_config.get_section_keys(section):
-					beam_weapon_data[weapon_name][key] = weapons_config.get_value(section, key)
+					beam_weapon_config_data[key] = weapons_config.get_value(section, key)
 
-				var beam_instance = beam_weapon_models[weapon_name].instance()
+				var beam_weapon_model = load(beam_weapon_config_data.model_path)
+				if beam_weapon_model == null:
+					print("Unable to load beam weapon model: ", weapon_name)
+				else:
+					var beam_instance = beam_weapon_model.instance()
 
-				beam_weapon_data[weapon_name]["fire_delay"] = beam_instance.fire_delay
-				beam_weapon_data[weapon_name]["fire_duration"] = beam_instance.fire_duration
-				beam_weapon_data[weapon_name]["damage_hull"] = beam_instance.hull_damage
-				beam_weapon_data[weapon_name]["damage_shield"] = beam_instance.shield_damage
+					beam_weapon_config_data["fire_delay"] = beam_instance.fire_delay
+					beam_weapon_config_data["fire_duration"] = beam_instance.fire_duration
+					beam_weapon_config_data["damage_hull"] = beam_instance.hull_damage
+					beam_weapon_config_data["damage_shield"] = beam_instance.shield_damage
 
-				beam_instance.free()
+					beam_instance.free()
+
+				if is_data_good:
+					beam_weapon_data[weapon_name] = beam_weapon_config_data
 			"energy_weapon":
-				model_dir = "res://models/energy_weapons/" + section + "/"
+				model_dir = "res://models/energy_weapons/" + default_energy_weapon_directory + "/"
+				if dir.dir_exists("res://models/energy_weapons/" + section + "/"):
+					model_dir = "res://models/energy_weapons/" + section + "/"
+				else:
+					print("Warning: missing directory for energy weapon model " + weapon_name + ". The default directory will be used instead: ", model_dir)
 
-				energy_weapon_data[weapon_name] = {
-					"model_path": model_dir + "model.dae",
-					"model_dir": model_dir
+				var model_path: String = model_dir + "model.dae"
+				if dir.file_exists(model_path):
+					model_path = model_dir + "model.dae"
+				else:
+					print("Warning: missing energy weapon model file for " + weapon_name + ". The default model will be used instead: ", model_path)
+
+				var icon_path: String = model_dir + "icon.png"
+				if not dir.file_exists(icon_path):
+					icon_path = "res://models/energy_weapons/" + default_energy_weapon_directory + "/icon.png"
+					print("Warning: missing icon for ", weapon_name, ". The default icon will be used instead: ", icon_path)
+
+				var video_path: String = model_dir + "video.ogv"
+				if not dir.file_exists(video_path):
+					video_path = "res://models/energy_weapons/" + default_energy_weapon_directory + "/video.ogv"
+					print("Warning: missing video for ", weapon_name, ". The default video will be used instead: ", video_path)
+
+				var energy_weapon_config_data: Dictionary = {
+					"icon_path": icon_path,
+					"model_dir": model_dir,
+					"model_path": model_path,
+					"video_path": video_path
 				}
 
 				for key in weapons_config.get_section_keys(section):
-					energy_weapon_data[weapon_name][key] = weapons_config.get_value(section, key)
+					energy_weapon_config_data[key] = weapons_config.get_value(section, key)
+
+				energy_weapon_data[weapon_name] = energy_weapon_config_data
 			"missile_weapon":
-				model_dir = "res://models/missile_weapons/" + section + "/"
+				model_dir = "res://models/energy_weapons/" + default_missile_weapon_directory + "/"
+				if dir.dir_exists("res://models/missile_weapons/" + section + "/"):
+					model_dir = "res://models/missile_weapons/" + section + "/"
+				else:
+					print("Warning: missing directory for missile weapon model " + weapon_name + ". The default directory will be used instead: ", model_dir)
 
-				missile_weapon_data[weapon_name] = {
-					"model_path": model_dir + "model.dae",
-					"model_dir": model_dir
+				var model_path: String = model_dir + "model.dae"
+				if dir.file_exists(model_path):
+					model_path = model_dir + "model.dae"
+				else:
+					print("Warning: missing missile weapon model file for " + weapon_name + ". The default model will be used instead: ", model_path)
+
+				var icon_path: String = model_dir + "icon.png"
+				if not dir.file_exists(icon_path):
+					icon_path = "res://models/missile_weapons/" + default_missile_weapon_directory + "/icon.png"
+					print("Warning: missing icon for ", weapon_name, ". The default icon will be used instead: ", icon_path)
+
+				var video_path: String = model_dir + "video.ogv"
+				if not dir.file_exists(video_path):
+					video_path = "res://models/missile_weapons/" + default_missile_weapon_directory + "/video.ogv"
+					print("Warning: missing video for ", weapon_name, ". The default video will be used instead: ", video_path)
+
+				var missile_weapon_config_data = {
+					"icon_path": icon_path,
+					"model_dir": model_dir,
+					"model_path": model_path,
+					"video_path": video_path
 				}
 
 				for key in weapons_config.get_section_keys(section):
-					missile_weapon_data[weapon_name][key] = weapons_config.get_value(section, key)
+					missile_weapon_config_data[key] = weapons_config.get_value(section, key)
+
+				missile_weapon_data[weapon_name] = missile_weapon_config_data
 
 	# Build campaign list
 	if dir.open("res://campaigns") != OK:
@@ -352,8 +472,9 @@ func load_mission_data(path: String, save_to_profile: bool = false):
 			}
 
 			for beam_weapon_name in meta_loadouts[ship_name].get("beam_weapons", []):
-				if beam_weapon_models.has(beam_weapon_name):
-					non_player_loadouts[ship_name].beam_weapons.append(beam_weapon_models[beam_weapon_name])
+				if beam_weapon_data.has(beam_weapon_name):
+					var beam_weapon_model = load(beam_weapon_data[beam_weapon_name].model_path)
+					non_player_loadouts[ship_name].beam_weapons.append(beam_weapon_model)
 
 			for energy_weapon_name in meta_loadouts[ship_name].get("energy_weapons", []):
 				if energy_weapon_data.has(energy_weapon_name):
