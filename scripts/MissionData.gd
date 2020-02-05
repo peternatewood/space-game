@@ -2,10 +2,10 @@ extends Node
 
 onready var profiles_data = get_node("/root/ProfilesData")
 
-var armory: Dictionary
+var armory: Dictionary = {}
 var beam_weapon_data: Dictionary = {}
-var briefing: Array
-var campaign_data: Dictionary
+var briefing: Array = []
+var campaign_data: Dictionary = {}
 var custom_campaign_list: Array = []
 var default_campaign_list: Array = []
 var default_ship_directory: String = "spider_fighter"
@@ -17,8 +17,8 @@ var is_in_campaign: bool = false
 var missile_weapon_data: Dictionary = {}
 var mission_name: String
 var mission_scene_path: String
-var non_player_loadouts: Dictionary
-var objectives: Array
+var non_player_loadouts: Dictionary = {}
+var objectives: Array = []
 var original_title: String = ProjectSettings.get_setting("application/config/name")
 var ship_data: Dictionary = {}
 var wing_loadouts: Array = []
@@ -247,27 +247,29 @@ func _ready():
 				missile_weapon_data[weapon_name] = missile_weapon_config_data
 
 	# Build campaign list
-	if dir.open("res://campaigns") != OK:
-		print("Unable to open res://campaigns directory")
+	if !dir.dir_exists("res://campaigns"):
+		print("Missin res://campaigns directory!")
 	else:
-		var campaign_file: ConfigFile = ConfigFile.new()
+		var campaigns_config: ConfigFile = ConfigFile.new()
+		campaigns_config.load("res://configs/campaigns.cfg")
 
-		dir.list_dir_begin()
-		var file_name = dir.get_next()
-		while file_name != "":
-			if not dir.current_is_dir() and file_name.ends_with(".cfg"):
-				var campaign_path: String = dir.get_current_dir() + "/" + file_name
-				campaign_file.load(campaign_path)
+		for file_name in campaigns_config.get_value("list", "config_files", []):
+			var campaign_file: ConfigFile = ConfigFile.new()
+			var campaign_path: String = "res://campaigns/" + file_name
 
-				var default_campaign_data: Dictionary = {
-					"path": campaign_path,
-					"name": campaign_file.get_value("details", "name"),
-					"description": campaign_file.get_value("details", "description")
-				}
+			if !dir.file_exists(campaign_path):
+				print("No such file exists: ", campaign_path)
+				continue
 
-				default_campaign_list.append(default_campaign_data)
+			campaign_file.load(campaign_path)
 
-			file_name = dir.get_next()
+			var default_campaign_data: Dictionary = {
+				"path": campaign_path,
+				"name": campaign_file.get_value("details", "name"),
+				"description": campaign_file.get_value("details", "description")
+			}
+
+			default_campaign_list.append(default_campaign_data)
 
 	# Build custom campaign list
 	if dir.open(USER_CAMPAIGNS_DIR) != OK:
