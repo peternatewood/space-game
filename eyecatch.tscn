@@ -34,6 +34,30 @@ __meta__ = {
 },
 "name": "",
 "non_player_loadouts": {
+"Alpha 1": {
+"energy_weapons": [ "Energy Bolt", "Energy Bolt" ],
+"missile_weapons": [ "Heat Seeker", "Heat Seeker" ]
+},
+"Alpha 2": {
+"energy_weapons": [ "Energy Bolt", "Energy Bolt" ],
+"missile_weapons": [ "Heat Seeker", "Heat Seeker" ]
+},
+"Alpha 3": {
+"energy_weapons": [ "Energy Bolt", "Energy Bolt" ],
+"missile_weapons": [ "Heat Seeker", "Heat Seeker" ]
+},
+"Buteo 1": {
+"energy_weapons": [ "Energy Bolt" ],
+"missile_weapons": [ "Heat Seeker", "Heat Seeker" ]
+},
+"Buteo 2": {
+"energy_weapons": [ "Energy Bolt" ],
+"missile_weapons": [ "Heat Seeker", "Heat Seeker" ]
+},
+"Buteo 3": {
+"energy_weapons": [ "Energy Bolt" ],
+"missile_weapons": [ "Heat Seeker", "Heat Seeker" ]
+},
 "Spider Battleship": {
 "beam_weapons": [ "Argon Beam", "Argon Beam", "Argon Beam", "Argon Beam" ],
 "energy_weapons": [ "Energy Bolt", "Energy Bolt", "Disintigrator", "Disintigrator" ],
