@@ -1,7 +1,6 @@
 extends Control
 
 onready var edge_target_icon = get_node("Edge Target Icon")
-onready var settings = get_node("/root/GlobalSettings")
 onready var lead_indicator = get_node("Lead Indicator")
 onready var target_class = get_node("Target View Container/Target View Rows/Target Class")
 onready var target_details_minimal = get_node("Target Details Minimal")
@@ -13,7 +12,7 @@ var is_current_node_self_modulated: bool = false
 
 
 func _ready():
-	set_palette(settings.get_hud_palette())
+	set_palette(GlobalSettings.get_hud_palette())
 
 	# Listen for colorable nodes getting clicked on
 	for path in COLORABLE_NODE_PATHS:
@@ -50,8 +49,8 @@ func _ready():
 	# Hide a few nodes that are covering other nodes we need to click on
 	get_node("Radar/Radar Icons Container").hide()
 
-	settings.connect("hud_palette_color_changed", self, "set_icon_color")
-	settings.connect("ui_colors_changed", self, "update_colored_icons")
+	GlobalSettings.connect("hud_palette_color_changed", self, "set_icon_color")
+	GlobalSettings.connect("ui_colors_changed", self, "update_colored_icons")
 	update_colored_icons()
 
 
@@ -66,9 +65,9 @@ func _on_colorable_node_gui_input(event, node, path: String, is_self_modulated: 
 # PUBLIC
 
 
-func set_current_icon_color(new_color: Color, update_settings: bool = true):
-	if update_settings:
-		settings.set_hud_custom_color(current_node_path, new_color)
+func set_current_icon_color(new_color: Color, update_GlobalSettings: bool = true):
+	if update_GlobalSettings:
+		GlobalSettings.set_hud_custom_color(current_node_path, new_color)
 	else:
 		var node = get_node_or_null(current_node_path)
 		if node == null:
@@ -87,7 +86,7 @@ func set_icon_color(path: String):
 	if node == null:
 		print("Invalid node path! " + path)
 	else:
-		var color = settings.get_hud_custom_color(path)
+		var color = GlobalSettings.get_hud_custom_color(path)
 
 		if is_self_modulated:
 			node.set_self_modulate(color)
@@ -116,7 +115,7 @@ func set_palette(palette: Dictionary):
 
 
 func update_colored_icons():
-	var target_color = settings.get_interface_color(2)
+	var target_color = GlobalSettings.get_interface_color(2)
 
 	edge_target_icon.set_modulate(target_color)
 	lead_indicator.set_modulate(target_color)

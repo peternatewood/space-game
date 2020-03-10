@@ -7,7 +7,6 @@ onready var cam_distance: float = get_meta("cam_distance")
 onready var capital_ship = get_parent().get_parent()
 onready var max_hull_hitpoints: int = get_meta("hull_hitpoints")
 onready var mission_controller = get_node_or_null("/root/Mission Controller")
-onready var settings = get_node("/root/GlobalSettings")
 onready var turret_base = get_node("Turret Base")
 
 var current_target

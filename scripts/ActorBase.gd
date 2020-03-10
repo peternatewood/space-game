@@ -7,7 +7,6 @@ onready var cam_distance: float = get_meta("cam_distance")
 onready var collision_sound_player = get_node_or_null("Collision Sound Player")
 onready var max_hull_hitpoints: float = get_meta("hull_hitpoints")
 onready var mission_controller = get_tree().get_root().get_node_or_null("Mission Controller")
-onready var settings = get_node("/root/GlobalSettings")
 
 var destruction_delay: float = 0.0
 var has_collision_sound: bool = false

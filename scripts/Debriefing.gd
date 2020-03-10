@@ -1,13 +1,10 @@
 extends Control
 
-onready var loader = get_node("/root/SceneLoader")
-onready var mission_data = get_node("/root/MissionData")
 onready var mission_name = get_node("Rows/Title Container/Mission Name Label")
-onready var settings = get_node("/root/GlobalSettings")
 
 
 func _ready():
-	mission_name.set_text(mission_data.mission_name)
+	mission_name.set_text(MissionData.mission_name)
 
 	var retry_button = get_node("Rows/Buttons Container/Retry Button")
 	retry_button.connect("pressed", self, "_on_retry_pressed")
@@ -23,7 +20,7 @@ func _ready():
 
 	for index in range(objective_containers.size()):
 		var hide_container: bool = true
-		for objective in mission_data.objectives[index]:
+		for objective in MissionData.objectives[index]:
 			if objective.enabled and (index != Objective.SECRET or objective.state == Objective.COMPLETED):
 				if hide_container:
 					hide_container = false
@@ -44,25 +41,25 @@ func _ready():
 	else:
 		next_button.set_disabled(true)
 
-	toggle_dyslexia(settings.get_dyslexia())
+	toggle_dyslexia(GlobalSettings.get_dyslexia())
 
 
 func _on_next_pressed():
-	if mission_data.is_in_campaign:
-		var next_mission_path = mission_data.get_next_mission_path()
+	if MissionData.is_in_campaign:
+		var next_mission_path = MissionData.get_next_mission_path()
 
 		if next_mission_path == null:
-			loader.change_scene("res://title.tscn")
+			SceneLoader.change_scene("res://title.tscn")
 		else:
-			mission_data.load_mission_data(next_mission_path, true)
-			loader.load_scene("res://briefing.tscn")
+			MissionData.load_mission_data(next_mission_path, true)
+			SceneLoader.load_scene("res://briefing.tscn")
 	else:
-		loader.change_scene("res://mission_select.tscn")
+		SceneLoader.change_scene("res://mission_select.tscn")
 
 
 func _on_retry_pressed():
-	mission_data.load_mission_data(mission_data.mission_scene_path)
-	loader.load_scene("res://briefing.tscn")
+	MissionData.load_mission_data(MissionData.mission_scene_path)
+	SceneLoader.load_scene("res://briefing.tscn")
 
 
 # PUBLIC
@@ -70,9 +67,9 @@ func _on_retry_pressed():
 
 func toggle_dyslexia(toggle_on: bool):
 	if toggle_on:
-		set_theme(settings.OPEN_DYSLEXIC_INTERFACE_THEME)
+		set_theme(GlobalSettings.OPEN_DYSLEXIC_INTERFACE_THEME)
 	else:
-		set_theme(settings.INCONSOLATA_INTERFACE_THEME)
+		set_theme(GlobalSettings.INCONSOLATA_INTERFACE_THEME)
 
 
 const Objective = preload("Objective.gd")

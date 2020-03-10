@@ -1,7 +1,5 @@
 extends Node
 
-onready var profiles_data = get_node("/root/ProfilesData")
-
 var armory: Dictionary = {}
 var beam_weapon_data: Dictionary = {}
 var briefing: Array = []
@@ -247,7 +245,7 @@ func _ready():
 				missile_weapon_data[weapon_name] = missile_weapon_config_data
 
 	# Build campaign list
-	if !dir.dir_exists("res://campaigns"):
+	if not dir.dir_exists("res://campaigns"):
 		print("Missin res://campaigns directory!")
 	else:
 		var campaigns_config: ConfigFile = ConfigFile.new()
@@ -257,7 +255,7 @@ func _ready():
 			var campaign_file: ConfigFile = ConfigFile.new()
 			var campaign_path: String = "res://campaigns/" + file_name
 
-			if !dir.file_exists(campaign_path):
+			if not dir.file_exists(campaign_path):
 				print("No such file exists: ", campaign_path)
 				continue
 
@@ -339,11 +337,11 @@ func get_weapon_models(type: String, wing_index: int, ship_index: int):
 
 
 func get_unlocked_missions():
-	return profiles_data.current_profile.unlocked_missions
+	return ProfilesData.current_profile.unlocked_missions
 
 
 func has_profile_started_campaign():
-	return profiles_data.current_profile.campaign != ""
+	return ProfilesData.current_profile.campaign != ""
 
 
 func load_campaign_data(path: String, save_to_profile: bool = false):
@@ -359,7 +357,7 @@ func load_campaign_data(path: String, save_to_profile: bool = false):
 			campaign_data["missions"] = campaign_file.get_value("mission_tree", "missions")
 
 			if save_to_profile:
-				profiles_data.set_campaign(path)
+				ProfilesData.set_campaign(path)
 		else:
 			print("Error loading campaign file ", path, ": ", load_error)
 	else:
@@ -368,8 +366,8 @@ func load_campaign_data(path: String, save_to_profile: bool = false):
 
 func load_current_profile_mission():
 	is_in_campaign = true
-	load_campaign_data(profiles_data.current_profile.campaign)
-	load_mission_data(profiles_data.current_profile.mission)
+	load_campaign_data(ProfilesData.current_profile.campaign)
+	load_mission_data(ProfilesData.current_profile.mission)
 
 
 # Loads mission data from file; returns true if successful, false if not
@@ -381,8 +379,8 @@ func load_mission_data(path: String, save_to_profile: bool = false):
 		var mission_instance = mission_scene.instance()
 
 		if save_to_profile:
-			profiles_data.set_mission(path)
-			profiles_data.unlock_mission(path)
+			ProfilesData.set_mission(path)
+			ProfilesData.unlock_mission(path)
 
 		# Check for required meta data
 		var missing_meta: bool = false

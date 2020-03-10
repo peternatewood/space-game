@@ -5,8 +5,6 @@ enum { NEUTRAL, FRIENDLY, HOSTILE }
 export (bool) var is_eyecatch = false
 
 onready var factions = get_meta("factions")
-onready var loader = get_node("/root/SceneLoader")
-onready var mission_data = get_node("/root/MissionData")
 onready var pause_menu = get_node("Pause Menu")
 onready var player_path: String = get_meta("player_path")
 onready var reinforcement_wings: Array = get_meta("reinforcement_wings")
@@ -18,14 +16,14 @@ var waypoints_container
 
 
 func _ready():
-	loader.connect("scene_loaded", self, "_on_scene_loaded")
+	SceneLoader.connect("scene_loaded", self, "_on_scene_loaded")
 	set_process(false)
 
 
 func _input(event):
 	if is_eyecatch:
 		if (event is InputEventKey or event is InputEventMouseButton or event is InputEventJoypadButton) and event.pressed:
-			loader.change_scene("res://title.tscn")
+			SceneLoader.change_scene("res://title.tscn")
 	elif event.is_action_pressed("pause"):
 		var tree = get_tree()
 		if not tree.paused:
@@ -34,11 +32,11 @@ func _input(event):
 
 
 func _on_main_menu_confirmed():
-	loader.change_scene("res://title.tscn")
+	SceneLoader.change_scene("res://title.tscn")
 
 
 func _on_player_warped_out():
-	loader.change_scene("res://debriefing.tscn")
+	SceneLoader.change_scene("res://debriefing.tscn")
 
 
 func _on_scene_loaded():
@@ -48,14 +46,14 @@ func _on_scene_loaded():
 		waypoints = waypoints_container.get_children()
 
 	# Assign loadouts from mission data to ships in scene
-	for wing_index in range(mission_data.wing_loadouts.size()):
-		var wing_name = mission_data.wing_names[wing_index]
+	for wing_index in range(MissionData.wing_loadouts.size()):
+		var wing_name = MissionData.wing_names[wing_index]
 
-		for index in range(mission_data.wing_loadouts[wing_index].size()):
+		for index in range(MissionData.wing_loadouts[wing_index].size()):
 			var ship = targets_container.get_node_or_null(wing_name + " " + str(index + 1))
 
-			if ship != null and ship.get_meta("ship_class") != mission_data.wing_loadouts[wing_index][index].ship_class:
-				var ship_instance = mission_data.wing_loadouts[wing_index][index].model.instance()
+			if ship != null and ship.get_meta("ship_class") != MissionData.wing_loadouts[wing_index][index].ship_class:
+				var ship_instance = MissionData.wing_loadouts[wing_index][index].model.instance()
 
 				# Copy relevant data from ship to new instance
 				ship_instance.name = ship.name
@@ -80,16 +78,16 @@ func _on_scene_loaded():
 			if ship == null:
 				print("No such ship in scene: " + wing_name + " " + str(index + 1))
 			else:
-				ship.set_weapon_hardpoints(mission_data.get_weapon_models("energy_weapons", wing_index, index), mission_data.get_weapon_models("missile_weapons", wing_index, index))
+				ship.set_weapon_hardpoints(MissionData.get_weapon_models("energy_weapons", wing_index, index), MissionData.get_weapon_models("missile_weapons", wing_index, index))
 
 	# And don't forget the non-player-accessible ships!
-	for ship_name in mission_data.non_player_loadouts.keys():
+	for ship_name in MissionData.non_player_loadouts.keys():
 		var ship = targets_container.get_node_or_null(ship_name)
 		if ship != null:
 			if ship.is_capital_ship:
-				ship.set_weapon_turrets(mission_data.non_player_loadouts[ship_name].beam_weapons, mission_data.non_player_loadouts[ship_name].energy_weapons, mission_data.non_player_loadouts[ship_name].missile_weapons)
+				ship.set_weapon_turrets(MissionData.non_player_loadouts[ship_name].beam_weapons, MissionData.non_player_loadouts[ship_name].energy_weapons, MissionData.non_player_loadouts[ship_name].missile_weapons)
 			elif ship is NPCShip:
-				ship.set_weapon_hardpoints(mission_data.non_player_loadouts[ship_name].energy_weapons, mission_data.non_player_loadouts[ship_name].missile_weapons)
+				ship.set_weapon_hardpoints(MissionData.non_player_loadouts[ship_name].energy_weapons, MissionData.non_player_loadouts[ship_name].missile_weapons)
 			else:
 				print("Invalid node in targets container: " + ship.name)
 
@@ -98,8 +96,8 @@ func _on_scene_loaded():
 		player.connect("warped_out", self, "_on_player_warped_out")
 
 		# Prepare mission objectives
-		for index in range(mission_data.objectives.size()):
-			for objective in mission_data.objectives[index]:
+		for index in range(MissionData.objectives.size()):
+			for objective in MissionData.objectives[index]:
 				objective.connect_targets_to_requirements(targets_container)
 
 		pause_menu.connect("main_menu_confirmed", self, "_on_main_menu_confirmed")

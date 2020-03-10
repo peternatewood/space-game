@@ -1,10 +1,7 @@
 extends Control
 
 onready var eyecatch_timer = get_node("Eyecatch Timer")
-onready var loader = get_node("/root/SceneLoader")
-onready var mission_data = get_node("/root/MissionData")
 onready var options_menu = get_node("Options Menu")
-onready var settings = get_node("/root/GlobalSettings")
 
 
 func _ready():
@@ -17,7 +14,7 @@ func _ready():
 	var new_campaign_button = get_node("Container/New Campaign")
 	var options_button = get_node("Container/Options")
 
-	if mission_data.has_profile_started_campaign():
+	if MissionData.has_profile_started_campaign():
 		continue_campaign_button.set_disabled(false)
 		continue_campaign_button.connect("pressed", self, "_on_continue_campaign_pressed")
 		continue_campaign_button.grab_focus()
@@ -34,8 +31,8 @@ func _ready():
 
 	options_menu.connect("back_button_pressed", self, "_on_back_button_pressed")
 
-	toggle_dyslexia(settings.get_dyslexia())
-	settings.connect("dyslexia_toggled", self, "toggle_dyslexia")
+	toggle_dyslexia(GlobalSettings.get_dyslexia())
+	GlobalSettings.connect("dyslexia_toggled", self, "toggle_dyslexia")
 
 	eyecatch_timer.connect("timeout", self, "_on_eyecatch_timeout")
 	eyecatch_timer.start()
@@ -50,16 +47,16 @@ func _on_back_button_pressed():
 
 
 func _on_change_profile_pressed():
-	loader.change_scene("res://profiles.tscn")
+	SceneLoader.change_scene("res://profiles.tscn")
 
 
 func _on_continue_campaign_pressed():
-	mission_data.load_current_profile_mission()
-	loader.load_scene("res://briefing.tscn")
+	MissionData.load_current_profile_mission()
+	SceneLoader.load_scene("res://briefing.tscn")
 
 
 func _on_database_pressed():
-	loader.change_scene("res://database.tscn")
+	SceneLoader.change_scene("res://database.tscn")
 
 
 func _on_exit_pressed():
@@ -67,20 +64,20 @@ func _on_exit_pressed():
 
 
 func _on_eyecatch_timeout():
-	mission_data.load_mission_data("res://eyecatch.tscn")
-	loader.load_scene("res://eyecatch.tscn")
+	MissionData.load_mission_data("res://eyecatch.tscn")
+	SceneLoader.load_scene("res://eyecatch.tscn")
 
 
 func _on_mission_editor_pressed():
-	loader.load_scene("res://editor/editor.tscn")
+	SceneLoader.load_scene("res://editor/editor.tscn")
 
 
 func _on_mission_select_pressed():
-	loader.change_scene("res://mission_select.tscn")
+	SceneLoader.change_scene("res://mission_select.tscn")
 
 
 func _on_new_campaign_pressed():
-	loader.change_scene("res://campaign_select.tscn")
+	SceneLoader.change_scene("res://campaign_select.tscn")
 
 
 func _on_options_pressed():
@@ -92,6 +89,6 @@ func _on_options_pressed():
 
 func toggle_dyslexia(toggled_on: bool):
 	if toggled_on:
-		set_theme(settings.OPEN_DYSLEXIC_THEME)
+		set_theme(GlobalSettings.OPEN_DYSLEXIC_THEME)
 	else:
-		set_theme(settings.INCONSOLATA_THEME)
+		set_theme(GlobalSettings.INCONSOLATA_THEME)

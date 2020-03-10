@@ -1,13 +1,12 @@
 extends Control
 
-onready var loader = get_node("/root/SceneLoader")
 onready var progress_bar = get_node("Progress Bar")
 onready var spinner = get_node("Spinner")
 
 
 func _ready():
 	progress_bar.set_value(0)
-	loader.connect("loading_progressed", self, "_update_progress_bar")
+	SceneLoader.connect("loading_progressed", self, "_update_progress_bar")
 
 
 func _process(delta):

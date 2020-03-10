@@ -23,7 +23,6 @@ onready var power_container = get_node("Power Container")
 onready var radar = get_node("Radar")
 onready var sensors_bar = get_node("Damage Bars Panel/Damage Bars Grid/Sensors Bar")
 onready var sensors_bar_label = get_node("Damage Bars Panel/Damage Bars Grid/Sensors Label")
-onready var settings = get_node("/root/GlobalSettings")
 onready var speed_indicator = get_node("Throttle Bar Container/Speed Indicator")
 onready var speed_units_label = get_node("Target View Container/Target View Rows/Target Distance Container/Speed Units")
 onready var subsystem_target_icon = get_node("Subsystem Target Icon")
@@ -77,21 +76,21 @@ func _ready():
 	target_view_cam = target_viewport.get_node("Camera")
 	target_view_model = target_viewport.get_node("Frog Fighter")
 
-	var units = settings.get_units()
+	var units = GlobalSettings.get_units()
 	distance_units_label.set_text(GlobalSettings.DISTANCE_UNITS[units])
 	speed_units_label.set_text(GlobalSettings.SPEED_UNITS[units])
 
-	toggle_dyslexia(settings.get_dyslexia())
-	settings.connect("dyslexia_toggled", self, "toggle_dyslexia")
-	settings.connect("ui_colors_changed", self, "_on_ui_colors_changed")
-	settings.connect("units_changed", self, "_on_units_changed")
+	toggle_dyslexia(GlobalSettings.get_dyslexia())
+	GlobalSettings.connect("dyslexia_toggled", self, "toggle_dyslexia")
+	GlobalSettings.connect("ui_colors_changed", self, "_on_ui_colors_changed")
+	GlobalSettings.connect("units_changed", self, "_on_units_changed")
 
 	if mission_controller != null:
 		mission_controller.connect("mission_ready", self, "_on_mission_ready")
 
 	update_hud_colors()
-	settings.connect("hud_palette_changed", self, "update_hud_colors")
-	settings.connect("hud_palette_color_changed", self, "_on_hud_palette_color_changed")
+	GlobalSettings.connect("hud_palette_changed", self, "update_hud_colors")
+	GlobalSettings.connect("hud_palette_color_changed", self, "_on_hud_palette_color_changed")
 
 	set_process(false)
 
@@ -114,7 +113,7 @@ func _on_hud_palette_color_changed(path: String):
 	if node == null:
 		print("Invalid node path! " + path)
 	else:
-		var color = settings.get_hud_custom_color(path)
+		var color = GlobalSettings.get_hud_custom_color(path)
 
 		if is_self_modulated:
 			node.set_self_modulate(color)
@@ -178,7 +177,7 @@ func _on_mission_ready():
 			# Set icon color based on alignment
 			var alignment = mission_controller.get_alignment(player.faction, node.faction)
 			if alignment != -1:
-				icon.set_modulate(settings.get_interface_color(alignment, true))
+				icon.set_modulate(GlobalSettings.get_interface_color(alignment, true))
 			else:
 				icon.set_modulate(Color.white)
 
@@ -213,8 +212,8 @@ func _on_mission_ready():
 	for child in objectives_rows.get_children():
 		child.free()
 
-	for index in range(mission_controller.mission_data.objectives.size()):
-		for objective in mission_controller.mission_data.objectives[index]:
+	for index in range(MissionData.objectives.size()):
+		for objective in MissionData.objectives[index]:
 			var objective_label = OBJECTIVE_LABEL.instance()
 			objective_label.set_text(objective.name)
 			objectives_rows.add_child(objective_label)
@@ -297,7 +296,7 @@ func _on_player_target_changed(last_target):
 		_disconnect_target_signals(last_target)
 
 		for icon in radar_icons:
-			icon.set_modulate(settings.get_interface_color(mission_controller.get_alignment(player.faction, icon.target.faction), true))
+			icon.set_modulate(GlobalSettings.get_interface_color(mission_controller.get_alignment(player.faction, icon.target.faction), true))
 
 	if player.has_target:
 		target_viewport.remove_child(target_view_model)
@@ -334,15 +333,15 @@ func _on_player_target_changed(last_target):
 		var alignment = mission_controller.get_alignment(player.faction, player.current_target.faction)
 		for icon in radar_icons:
 			if icon.target == player.current_target:
-				icon.set_modulate(Color.white if alignment == -1 else settings.get_interface_color(alignment))
+				icon.set_modulate(Color.white if alignment == -1 else GlobalSettings.get_interface_color(alignment))
 				break
 
 		if alignment != -1:
-			target_name.set_modulate(settings.get_interface_color(alignment))
-			target_class.set_modulate(settings.get_interface_color(alignment))
-			edge_target_icon.set_modulate(settings.get_interface_color(alignment))
-			target_icon.set_modulate(settings.get_interface_color(alignment))
-			lead_indicator.set_modulate(settings.get_interface_color(alignment))
+			target_name.set_modulate(GlobalSettings.get_interface_color(alignment))
+			target_class.set_modulate(GlobalSettings.get_interface_color(alignment))
+			edge_target_icon.set_modulate(GlobalSettings.get_interface_color(alignment))
+			target_icon.set_modulate(GlobalSettings.get_interface_color(alignment))
+			lead_indicator.set_modulate(GlobalSettings.get_interface_color(alignment))
 		else:
 			target_name.set_modulate(Color.white)
 			target_class.set_modulate(Color.white)
@@ -473,18 +472,18 @@ func _on_ui_colors_changed():
 		var alignment = mission_controller.get_alignment(player.faction, icon.target.faction)
 
 		if icon.target == player.current_target:
-			icon.set_modulate(Color.white if alignment == -1 else settings.get_interface_color(alignment))
+			icon.set_modulate(Color.white if alignment == -1 else GlobalSettings.get_interface_color(alignment))
 		else:
-			icon.set_modulate(Color.white if alignment == -1 else settings.get_interface_color(alignment, true))
+			icon.set_modulate(Color.white if alignment == -1 else GlobalSettings.get_interface_color(alignment, true))
 
 	if player.has_target:
 		var target_alignment = mission_controller.get_alignment(player.faction, player.current_target.faction)
 
 		if target_alignment != -1:
-			target_name.set_modulate(settings.get_interface_color(target_alignment))
-			target_class.set_modulate(settings.get_interface_color(target_alignment))
-			edge_target_icon.set_modulate(settings.get_interface_color(target_alignment))
-			target_icon.set_modulate(settings.get_interface_color(target_alignment))
+			target_name.set_modulate(GlobalSettings.get_interface_color(target_alignment))
+			target_class.set_modulate(GlobalSettings.get_interface_color(target_alignment))
+			edge_target_icon.set_modulate(GlobalSettings.get_interface_color(target_alignment))
+			target_icon.set_modulate(GlobalSettings.get_interface_color(target_alignment))
 		else:
 			target_name.set_modulate(Color.white)
 			target_class.set_modulate(Color.white)
@@ -547,7 +546,7 @@ func _process(delta):
 		var cam_target_dist = (player.current_target.transform.origin - camera.transform.origin).length()
 		var icon_pos: Vector2 = camera.unproject_position(player.current_target.transform.origin)
 		# Multiply all units by 10 to get meters
-		var target_dist = MathHelper.units_to_distance(to_target.length(), settings.get_units())
+		var target_dist = MathHelper.units_to_distance(to_target.length(), GlobalSettings.get_units())
 
 		if camera.is_position_in_view(player.current_target.transform.origin):
 			if not target_icon.visible:
@@ -609,7 +608,7 @@ func _process(delta):
 		target_view_model.set_rotation(player.current_target.rotation)
 
 		target_distance.set_text(str(round(target_dist)))
-		target_speed.set_text(str(round(MathHelper.units_to_speed(player.current_target.linear_velocity.length(), settings.get_units()))))
+		target_speed.set_text(str(round(MathHelper.units_to_speed(player.current_target.linear_velocity.length(), GlobalSettings.get_units()))))
 
 		if player.current_subsystem_index != -1:
 			var subsystem_position = target_view_cam.unproject_position(target_view_subsystem.global_transform.origin)
@@ -751,7 +750,7 @@ func _update_speed_indicator():
 		throttle_bar.set_value(speed_percent)
 
 		# Multiply all units by 10 to get meters
-		speed_indicator.set_text(str(round(MathHelper.units_to_speed(speed, settings.get_units()))))
+		speed_indicator.set_text(str(round(MathHelper.units_to_speed(speed, GlobalSettings.get_units()))))
 		var indicator_pos = Vector2(speed_indicator.rect_position.x, throttle_bar.rect_size.y - (speed_indicator.rect_size.y / 2) - (throttle_bar.value / throttle_bar.max_value) * throttle_bar.rect_size.y)
 		speed_indicator.set_position(indicator_pos)
 
@@ -761,9 +760,9 @@ func _update_speed_indicator():
 
 func toggle_dyslexia(toggled_on: bool):
 	if toggled_on:
-		set_theme(settings.OPEN_DYSLEXIC_THEME)
+		set_theme(GlobalSettings.OPEN_DYSLEXIC_THEME)
 	else:
-		set_theme(settings.INCONSOLATA_THEME)
+		set_theme(GlobalSettings.INCONSOLATA_THEME)
 
 
 func update_hud_colors():
@@ -773,7 +772,7 @@ func update_hud_colors():
 		if node == null:
 			print("Invalid node path! " + path)
 		else:
-			var color: Color = settings.get_hud_custom_color(path)
+			var color: Color = GlobalSettings.get_hud_custom_color(path)
 			node.set_modulate(color)
 
 	for path in InteractiveHUD.SELF_COLORABLE_NODE_PATHS:
@@ -782,7 +781,7 @@ func update_hud_colors():
 		if node == null:
 			print("Invalid node path! " + path)
 		else:
-			var color: Color = settings.get_hud_custom_color(path)
+			var color: Color = GlobalSettings.get_hud_custom_color(path)
 			node.set_self_modulate(color)
 
 

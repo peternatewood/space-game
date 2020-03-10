@@ -176,8 +176,8 @@ func _on_fov_changed(value: int):
 
 func _on_mission_ready():
 	camera = get_viewport().get_camera()
-	camera.set_fov(settings.get_fov())
-	settings.connect("fov_changed", self, "_on_fov_changed")
+	camera.set_fov(GlobalSettings.get_fov())
+	GlobalSettings.connect("fov_changed", self, "_on_fov_changed")
 	_set_cam_mode(COCKPIT)
 
 	._on_mission_ready()

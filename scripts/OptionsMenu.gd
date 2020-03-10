@@ -23,7 +23,6 @@ onready var reflections_popup = get_node("Reflections Popup")
 onready var resolution_options = get_node("Options Rows/TabContainer/Video/Resolution Options")
 onready var resolution_x_spinbox = get_node("Options Rows/TabContainer/Video/Custom Res Container/Res X SpinBox")
 onready var resolution_y_spinbox = get_node("Options Rows/TabContainer/Video/Custom Res Container/Res Y SpinBox")
-onready var settings = get_node("/root/GlobalSettings")
 onready var shadows_atlas_popup = get_node("Shadows Atlas Settings")
 onready var shadows_dir_spinbox = get_node("Shadows Atlas Settings/Shadows Atlas Rows/Shadow Spinboxes Container/Directional Shadows SpinBox")
 onready var shadows_point_spinbox = get_node("Shadows Atlas Settings/Shadows Atlas Rows/Shadow Spinboxes Container/Point Light Shadows SpinBox")
@@ -50,19 +49,19 @@ func _ready():
 
 	var min_res_x: int = screen_size.x
 	var min_res_y: int = screen_size.y
-	var res = settings.get_resolution()
+	var res = GlobalSettings.get_resolution()
 	# Get resolution options and disable any bigger than the current screen size
-	for index in range(settings.RESOLUTIONS.size()):
-		var res_label = str(settings.RESOLUTIONS[index].x) + " x " + str(settings.RESOLUTIONS[index].y)
+	for index in range(GlobalSettings.RESOLUTIONS.size()):
+		var res_label = str(GlobalSettings.RESOLUTIONS[index].x) + " x " + str(GlobalSettings.RESOLUTIONS[index].y)
 		resolution_options.add_item(res_label, index)
 
-		if settings.RESOLUTIONS[index].x > screen_size.x or settings.RESOLUTIONS[index].y > screen_size.y:
+		if GlobalSettings.RESOLUTIONS[index].x > screen_size.x or GlobalSettings.RESOLUTIONS[index].y > screen_size.y:
 			resolution_options.set_item_disabled(index, true)
 
-		if settings.RESOLUTIONS[index].x < min_res_x:
-			min_res_x = settings.RESOLUTIONS[index].x
-		if settings.RESOLUTIONS[index].y < min_res_y:
-			min_res_y = settings.RESOLUTIONS[index].y
+		if GlobalSettings.RESOLUTIONS[index].x < min_res_x:
+			min_res_x = GlobalSettings.RESOLUTIONS[index].x
+		if GlobalSettings.RESOLUTIONS[index].y < min_res_y:
+			min_res_y = GlobalSettings.RESOLUTIONS[index].y
 
 	_update_resolution_options_control(res)
 
@@ -77,16 +76,16 @@ func _ready():
 	resolution_button.connect("pressed", self, "_on_resolution_button_pressed")
 
 	var aa_options = get_node("Options Rows/TabContainer/Video/Two Columns/AA Options")
-	aa_options.select(settings.get_msaa())
+	aa_options.select(GlobalSettings.get_msaa())
 	aa_options.connect("item_selected", self, "_on_aa_options_item_selected")
 
-	shadows_dir_spinbox.set_value(settings.get_shadows_dir_atlas_size())
-	shadows_point_spinbox.set_value(settings.get_shadows_point_atlas_size())
+	shadows_dir_spinbox.set_value(GlobalSettings.get_shadows_dir_atlas_size())
+	shadows_point_spinbox.set_value(GlobalSettings.get_shadows_point_atlas_size())
 
 	var shadow_quality_index: int = 0
 	if shadows_dir_spinbox.value == shadows_point_spinbox.value:
-		for index in range(settings.SHADOW_QUALITY.size()):
-			if shadows_dir_spinbox.value == settings.SHADOW_QUALITY[index]:
+		for index in range(GlobalSettings.SHADOW_QUALITY.size()):
+			if shadows_dir_spinbox.value == GlobalSettings.SHADOW_QUALITY[index]:
 				# We have to add one since the first option item is "Custom"
 				shadow_quality_index = index + 1
 				break
@@ -96,11 +95,11 @@ func _ready():
 	shadow_quality_options.connect("item_selected", self, "_on_shadow_quality_options_item_selected")
 
 	var hdr_checkbox = get_node("Options Rows/TabContainer/Video/HDR CheckBox")
-	hdr_checkbox.set_pressed(settings.get_hdr())
+	hdr_checkbox.set_pressed(GlobalSettings.get_hdr())
 	hdr_checkbox.connect("toggled", self, "_on_hdr_checkbox_toggled")
 
 	var vsync_checkbox = get_node("Options Rows/TabContainer/Video/Vsync CheckBox")
-	vsync_checkbox.set_pressed(settings.get_vsync())
+	vsync_checkbox.set_pressed(GlobalSettings.get_vsync())
 	vsync_checkbox.connect("toggled", self, "_on_vsync_checkbox_toggled")
 
 	# Connect popups and their buttons
@@ -127,7 +126,7 @@ func _ready():
 	reflections_cancel.connect("pressed", self, "_on_reflections_cancel_pressed")
 
 	var fov_slider = get_node("Options Rows/TabContainer/Video/FOV Container/FOV Slider")
-	fov_slider.set_value(settings.get_fov())
+	fov_slider.set_value(GlobalSettings.get_fov())
 	fov_slider.connect("value_changed", self, "_on_fov_changed")
 
 	# Audio
@@ -136,28 +135,28 @@ func _ready():
 	var sound_effects_mute = get_node("Options Rows/TabContainer/Audio/Sound Effects Mute")
 	var ui_sounds_mute = get_node("Options Rows/TabContainer/Audio/UI Sounds Mute")
 
-	master_mute.set_pressed(settings.get_audio_mute(settings.MASTER))
-	master_mute.connect("toggled", self, "_on_mute_toggled", [ settings.MASTER ])
-	music_mute.set_pressed(settings.get_audio_mute(settings.MUSIC))
-	music_mute.connect("toggled", self, "_on_mute_toggled", [ settings.MUSIC ])
-	sound_effects_mute.set_pressed(settings.get_audio_mute(settings.SOUND_EFFECTS))
-	sound_effects_mute.connect("toggled", self, "_on_mute_toggled", [ settings.SOUND_EFFECTS ])
-	ui_sounds_mute.set_pressed(settings.get_audio_mute(settings.UI_SOUNDS))
-	ui_sounds_mute.connect("toggled", self, "_on_mute_toggled", [ settings.UI_SOUNDS ])
+	master_mute.set_pressed(GlobalSettings.get_audio_mute(GlobalSettings.MASTER))
+	master_mute.connect("toggled", self, "_on_mute_toggled", [ GlobalSettings.MASTER ])
+	music_mute.set_pressed(GlobalSettings.get_audio_mute(GlobalSettings.MUSIC))
+	music_mute.connect("toggled", self, "_on_mute_toggled", [ GlobalSettings.MUSIC ])
+	sound_effects_mute.set_pressed(GlobalSettings.get_audio_mute(GlobalSettings.SOUND_EFFECTS))
+	sound_effects_mute.connect("toggled", self, "_on_mute_toggled", [ GlobalSettings.SOUND_EFFECTS ])
+	ui_sounds_mute.set_pressed(GlobalSettings.get_audio_mute(GlobalSettings.UI_SOUNDS))
+	ui_sounds_mute.connect("toggled", self, "_on_mute_toggled", [ GlobalSettings.UI_SOUNDS ])
 
 	var master_audio_slider = get_node("Options Rows/TabContainer/Audio/Master Audio Slider")
 	var music_audio_slider = get_node("Options Rows/TabContainer/Audio/Music Audio Slider")
 	var sound_effects_audio_slider = get_node("Options Rows/TabContainer/Audio/Sound Effects Audio Slider")
 	var ui_sounds_audio_slider = get_node("Options Rows/TabContainer/Audio/UI Sounds Audio Slider")
 
-	master_audio_slider.set_value(settings.get_audio_percent(settings.MASTER))
-	master_audio_slider.connect("value_changed", self, "_on_audio_slider_changed", [ settings.MASTER ])
-	music_audio_slider.set_value(settings.get_audio_percent(settings.MUSIC))
-	music_audio_slider.connect("value_changed", self, "_on_audio_slider_changed", [ settings.MUSIC ])
-	sound_effects_audio_slider.set_value(settings.get_audio_percent(settings.SOUND_EFFECTS))
-	sound_effects_audio_slider.connect("value_changed", self, "_on_audio_slider_changed", [ settings.SOUND_EFFECTS ])
-	ui_sounds_audio_slider.set_value(settings.get_audio_percent(settings.UI_SOUNDS))
-	ui_sounds_audio_slider.connect("value_changed", self, "_on_audio_slider_changed", [ settings.UI_SOUNDS ])
+	master_audio_slider.set_value(GlobalSettings.get_audio_percent(GlobalSettings.MASTER))
+	master_audio_slider.connect("value_changed", self, "_on_audio_slider_changed", [ GlobalSettings.MASTER ])
+	music_audio_slider.set_value(GlobalSettings.get_audio_percent(GlobalSettings.MUSIC))
+	music_audio_slider.connect("value_changed", self, "_on_audio_slider_changed", [ GlobalSettings.MUSIC ])
+	sound_effects_audio_slider.set_value(GlobalSettings.get_audio_percent(GlobalSettings.SOUND_EFFECTS))
+	sound_effects_audio_slider.connect("value_changed", self, "_on_audio_slider_changed", [ GlobalSettings.SOUND_EFFECTS ])
+	ui_sounds_audio_slider.set_value(GlobalSettings.get_audio_percent(GlobalSettings.UI_SOUNDS))
+	ui_sounds_audio_slider.connect("value_changed", self, "_on_audio_slider_changed", [ GlobalSettings.UI_SOUNDS ])
 
 	# Controls
 	keybind_popup.connect("about_to_show", self, "show_popup_backdrop")
@@ -172,7 +171,7 @@ func _ready():
 			if container is ScrollContainer:
 				for node in container.get_node("Controls Grid").get_children():
 					if node is Keybind:
-						node.load_from_simplified_events(settings.keybinds[node.action])
+						node.load_from_simplified_events(GlobalSettings.keybinds[node.action])
 						# TODO: Check for conflicts
 						for keybind in keybinds:
 							for event in node.events:
@@ -182,7 +181,7 @@ func _ready():
 									break
 
 						node.connect("keybind_button_pressed", self, "_on_keybind_button_pressed")
-						node.connect("keybind_changed", settings, "_on_keybind_changed")
+						node.connect("keybind_changed", GlobalSettings, "_on_keybind_changed")
 						keybinds.append(node)
 
 	# Game
@@ -191,13 +190,13 @@ func _ready():
 
 	# Accessibility
 	var dyslexia_checkbox = get_node("Options Rows/TabContainer/Accessibility/Dyslexia Checkbox")
-	dyslexia_checkbox.set_pressed(settings.get_dyslexia())
+	dyslexia_checkbox.set_pressed(GlobalSettings.get_dyslexia())
 	dyslexia_checkbox.connect("toggled", self, "_on_dyslexia_checkbox_toggled")
 
-	toggle_dyslexia(settings.get_dyslexia())
-	settings.connect("dyslexia_toggled", self, "toggle_dyslexia")
+	toggle_dyslexia(GlobalSettings.get_dyslexia())
+	GlobalSettings.connect("dyslexia_toggled", self, "toggle_dyslexia")
 
-	colorblindness_options.select(settings.get_colorblindness())
+	colorblindness_options.select(GlobalSettings.get_colorblindness())
 	colorblindness_options.connect("item_selected", self, "_on_colorblindness_selected")
 
 	for index in range(color_pickers.size()):
@@ -206,7 +205,7 @@ func _ready():
 	update_color_pickers()
 
 	# HUD
-	hud_color_options.select(settings.get_hud_palette_index())
+	hud_color_options.select(GlobalSettings.get_hud_palette_index())
 	hud_color_options.connect("item_selected", self, "_on_hud_color_options_selected")
 
 	interactive_hud.connect("colorable_node_clicked", self, "_on_interactive_hud_colorable_node_clicked")
@@ -244,11 +243,11 @@ func _input(event):
 
 
 func _on_aa_options_item_selected(item_index: int):
-	settings.set_msaa(item_index)
+	GlobalSettings.set_msaa(item_index)
 
 
 func _on_audio_slider_changed(percent: float, bus_index: int):
-	settings.set_audio_percent(bus_index, percent)
+	GlobalSettings.set_audio_percent(bus_index, percent)
 
 
 func _on_back_button_pressed():
@@ -256,14 +255,14 @@ func _on_back_button_pressed():
 
 
 func _on_borderless_checkbox_toggled(button_pressed: bool):
-	settings.set_borderless_window(button_pressed)
+	GlobalSettings.set_borderless_window(button_pressed)
 
 
 func _on_color_picker_changed(new_color: Color, type_index: int):
-	if colorblindness_options.get_selected_id() != settings.Colorblindness.CUSTOM:
-		colorblindness_options.select(settings.Colorblindness.CUSTOM)
+	if colorblindness_options.get_selected_id() != GlobalSettings.Colorblindness.CUSTOM:
+		colorblindness_options.select(GlobalSettings.Colorblindness.CUSTOM)
 
-	settings.set_custom_ui_color(type_index, new_color)
+	GlobalSettings.set_custom_ui_color(type_index, new_color)
 
 
 func _on_color_picker_dialog_confirmed():
@@ -272,34 +271,34 @@ func _on_color_picker_dialog_confirmed():
 
 
 func _on_color_picker_dialog_popup_hide():
-	var previous_color = settings.get_hud_custom_color(interactive_hud.current_node_path)
+	var previous_color = GlobalSettings.get_hud_custom_color(interactive_hud.current_node_path)
 	interactive_hud.set_current_icon_color(previous_color)
 
 
 func _on_colorblindness_selected(item_index: int):
-	settings.set_colorblindness(item_index)
+	GlobalSettings.set_colorblindness(item_index)
 	update_color_pickers()
 
 
 func _on_dyslexia_checkbox_toggled(button_pressed: bool):
-	settings.set_dyslexia(button_pressed)
+	GlobalSettings.set_dyslexia(button_pressed)
 
 
 func _on_fov_changed(value: float):
-	settings.set_fov(int(value))
+	GlobalSettings.set_fov(int(value))
 
 
 func _on_fullscreen_checkbox_toggled(button_pressed: bool):
-	settings.set_fullscreen(button_pressed)
+	GlobalSettings.set_fullscreen(button_pressed)
 
 
 func _on_hdr_checkbox_toggled(button_pressed: bool):
-	settings.set_hdr(button_pressed)
+	GlobalSettings.set_hdr(button_pressed)
 
 
 func _on_hud_color_options_selected(item_index: int):
-	settings.set_hud_palette(item_index)
-	interactive_hud.set_palette(settings.get_hud_palette())
+	GlobalSettings.set_hud_palette(item_index)
+	interactive_hud.set_palette(GlobalSettings.get_hud_palette())
 
 
 func _on_hud_colorpicker_changed(new_color: Color):
@@ -382,11 +381,11 @@ func _on_keybind_popup_cancel_pressed():
 
 
 func _on_mute_toggled(button_pressed: bool, bus_index: int):
-	settings.set_audio_mute(bus_index, button_pressed)
+	GlobalSettings.set_audio_mute(bus_index, button_pressed)
 
 
 func _on_reflections_accept_pressed():
-	# TODO: update reflections settings
+	# TODO: update reflections GlobalSettings
 	reflections_popup.hide()
 
 
@@ -405,12 +404,12 @@ func _on_resolution_button_pressed():
 
 func _on_resolution_options_item_selected(res_index: int):
 	# We have to subtract one from the index, since the first element is "Custom"
-	_set_resolution(settings.RESOLUTIONS[res_index - 1])
+	_set_resolution(GlobalSettings.RESOLUTIONS[res_index - 1])
 
 
 func _on_shadow_atlas_accept_pressed():
-	settings.set_shadows_dir_atlas_size(shadows_dir_spinbox.value)
-	settings.set_shadows_point_atlas_size(shadows_point_spinbox.value)
+	GlobalSettings.set_shadows_dir_atlas_size(shadows_dir_spinbox.value)
+	GlobalSettings.set_shadows_point_atlas_size(shadows_point_spinbox.value)
 	shadows_atlas_popup.hide()
 
 
@@ -424,25 +423,25 @@ func _on_shadow_atlas_cancel_pressed():
 
 func _on_shadow_quality_options_item_selected(item_index: int):
 	if item_index != 0:
-		var atlas_size = settings.SHADOW_QUALITY[item_index - 1]
-		settings.set_shadows_dir_atlas_size(atlas_size)
-		settings.set_shadows_point_atlas_size(atlas_size)
+		var atlas_size = GlobalSettings.SHADOW_QUALITY[item_index - 1]
+		GlobalSettings.set_shadows_dir_atlas_size(atlas_size)
+		GlobalSettings.set_shadows_point_atlas_size(atlas_size)
 
 		# Update popup spinboxes
-		shadows_dir_spinbox.set_value(settings.get_shadows_dir_atlas_size())
-		shadows_point_spinbox.set_value(settings.get_shadows_point_atlas_size())
+		shadows_dir_spinbox.set_value(GlobalSettings.get_shadows_dir_atlas_size())
+		shadows_point_spinbox.set_value(GlobalSettings.get_shadows_point_atlas_size())
 
 
 func _on_units_options_item_selected(item_index: int):
-	settings.set_units(item_index)
+	GlobalSettings.set_units(item_index)
 
 
 func _on_vsync_checkbox_toggled(button_pressed: bool):
-	settings.set_vsync(button_pressed)
+	GlobalSettings.set_vsync(button_pressed)
 
 
 func _set_resolution(size: Vector2):
-	var new_res = settings.set_resolution(size)
+	var new_res = GlobalSettings.set_resolution(size)
 	resolution_x_spinbox.set_value(new_res.x)
 	resolution_y_spinbox.set_value(new_res.y)
 
@@ -457,8 +456,8 @@ func _set_resolution_spinboxes_max():
 
 func _update_resolution_options_control(res: Vector2):
 	var new_res_index = -1
-	for index in range(settings.RESOLUTIONS.size()):
-		if settings.RESOLUTIONS[index] == res:
+	for index in range(GlobalSettings.RESOLUTIONS.size()):
+		if GlobalSettings.RESOLUTIONS[index] == res:
 			new_res_index = index
 			break
 
@@ -479,21 +478,21 @@ func show_popup_backdrop():
 
 func toggle_dyslexia(toggle_on: bool):
 	if toggle_on:
-		set_theme(settings.OPEN_DYSLEXIC_INTERFACE_THEME)
+		set_theme(GlobalSettings.OPEN_DYSLEXIC_INTERFACE_THEME)
 	else:
-		set_theme(settings.INCONSOLATA_INTERFACE_THEME)
+		set_theme(GlobalSettings.INCONSOLATA_INTERFACE_THEME)
 
 
 func update_color_pickers():
-	var colorblindness_option = settings.get_colorblindness()
+	var colorblindness_option = GlobalSettings.get_colorblindness()
 
-	if colorblindness_option == settings.Colorblindness.CUSTOM:
+	if colorblindness_option == GlobalSettings.Colorblindness.CUSTOM:
 		# Use custom options
 		for index in range(color_pickers.size()):
-			color_pickers[index].set_pick_color(settings.get_custom_ui_color(index))
+			color_pickers[index].set_pick_color(GlobalSettings.get_custom_ui_color(index))
 	else:
 		for index in range(color_pickers.size()):
-			color_pickers[index].set_pick_color(settings.INTERFACE_COLORS[colorblindness_option][index])
+			color_pickers[index].set_pick_color(GlobalSettings.INTERFACE_COLORS[colorblindness_option][index])
 
 
 signal back_button_pressed
