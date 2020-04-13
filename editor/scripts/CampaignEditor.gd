@@ -232,7 +232,10 @@ func add_mission_node(mission_index: int):
 
 	var mission_node = MISSION_NODE.instance()
 	missions_container.add_child(mission_node)
-	mission_node.set_mission(missions_list[mission_index], mission_index)
+	if missions_list.size() == 0:
+		print("No user missions available!")
+	else:
+		mission_node.set_mission(missions_list[mission_index], mission_index)
 	mission_node.set_mission_options(missions_list)
 	mission_node.connect("add_mission_confirmed", self, "_on_mission_node_add_mission_confirmed", [mission_node])
 	mission_node.connect("add_objective_requirement_pressed", self, "_on_add_objective_requirement_pressed", [mission_index])
