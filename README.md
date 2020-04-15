@@ -25,7 +25,7 @@ Here I'll be keeping track of the all the features I want to implement, and chec
 - [x] Loadout Menu
 - [x] Pause Menu
 - [x] Mission Editor
-- [ ] Campaign Tree
+- [x] Campaign Tree
 - [x] Capital Ships
 - [ ] Carrier Ships
 - [ ] User Interface Sounds
