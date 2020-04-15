@@ -34,11 +34,11 @@ func _ready():
 		var is_data_good: bool = true
 
 		# Fall back on Spider Fighter for any missing data
-		var model_dir: String = "res://models/ships/" + default_ship_directory +"/"
-		if dir.dir_exists("res://models/ships/" + section + "/"):
-			model_dir = "res://models/ships/" + section + "/"
-		else:
-			print("Warning: missing directory for ship model " + section + ". The default directory will be used instead: ", model_dir)
+		var model_dir: String = "res://models/ships/" + section + "/"
+		# TODO: This doesn't work on export, even though the directory is present
+		#if not dir.dir_exists(model_dir):
+		#	model_dir = "res://models/ships/" + default_ship_directory +"/"
+		#	print("Warning: missing directory for ship model " + section + ". The default directory will be used instead: ", model_dir)
 
 		var ship_class: String = ships_config.get_value(section, "ship_class")
 		if ship_class == null:
@@ -49,10 +49,10 @@ func _ready():
 			print("Ship data already loaded for class: ", ship_class)
 			continue
 
-		var model_path: String = "res://models/ships/" + default_ship_directory + "/model.dae"
-		if dir.file_exists(model_path):
-			model_path = model_dir + "model.dae"
-		else:
+		var model_path: String = model_dir + "model.dae"
+		# TODO: file_exists doesn't work properly on export either, so checking for the import file is the best I can do
+		if not (dir.file_exists(model_path) or dir.file_exists(model_path + ".import")):
+			model_path = "res://models/ships/" + default_ship_directory + "/model.dae"
 			print("Warning: missing ship model file. The default model will be used instead: ", model_path)
 
 		var ship_config_data: Dictionary = {
@@ -82,12 +82,12 @@ func _ready():
 					ship_config_data.missile_weapon_turrets = ship_instance.get_node("Missile Weapon Turrets").get_child_count()
 			else:
 				var icon_path: String = model_dir + "icon.png"
-				if not dir.file_exists(icon_path):
+				if not (dir.file_exists(icon_path) or dir.file_exists(icon_path + ".import")):
 					icon_path = "res://models/ships/" + default_ship_directory + "/icon.png"
 					print("Warning: missing icon for ", ship_class, ". The default icon will be used instead: ", icon_path)
 
 				var loadout_overhead_path: String = model_dir + "loadout_overhead.png"
-				if not dir.file_exists(loadout_overhead_path):
+				if not (dir.file_exists(loadout_overhead_path) or dir.file_exists(loadout_overhead_path + ".import")):
 					loadout_overhead_path = "res://models/ships/" + default_ship_directory + "/loadout_overhead.png"
 					print("Warning: missing loadout overhead for ", ship_class, ". The default loadout overhead will be used instead: ", loadout_overhead_path)
 
@@ -134,11 +134,13 @@ func _ready():
 					print("Beam weapon data already loaded for name: ", weapon_name)
 					is_data_good = false
 
-				model_dir = "res://models/beam_weapons/" + default_beam_weapon_directory + "/"
-				if dir.dir_exists("res://models/beam_weapons/" + section + "/"):
-					model_dir = "res://models/beam_weapons/" + section + "/"
-				else:
-					print("Warning: missing directory for beam weapon model " + weapon_name + ". The default directory will be used instead: ", model_dir)
+				model_dir = "res://models/beam_weapons/" + section + "/"
+				# TODO: same issue with dir_exists above
+				#model_dir = "res://models/beam_weapons/" + default_beam_weapon_directory + "/"
+				#if dir.dir_exists("res://models/beam_weapons/" + section + "/"):
+				#	model_dir = "res://models/beam_weapons/" + section + "/"
+				#else:
+				#	print("Warning: missing directory for beam weapon model " + weapon_name + ". The default directory will be used instead: ", model_dir)
 
 				var model_path: String = model_dir + "model.tscn"
 				if dir.file_exists(model_path):
@@ -147,7 +149,7 @@ func _ready():
 					print("Warning: missing beam weapon model file for " + weapon_name + ". The default model will be used instead: ", model_path)
 
 				var video_path: String = model_dir + "video.ogv"
-				if not dir.file_exists(video_path):
+				if not (dir.file_exists(video_path) or dir.file_exists(video_path + ".import")):
 					video_path = "res://models/beam_weapon/" + default_beam_weapon_directory + "/video.ogv"
 					print("Warning: missing video for ", weapon_name, ". The default video will be used instead: ", video_path)
 
@@ -176,25 +178,26 @@ func _ready():
 				if is_data_good:
 					beam_weapon_data[weapon_name] = beam_weapon_config_data
 			"energy_weapon":
-				model_dir = "res://models/energy_weapons/" + default_energy_weapon_directory + "/"
-				if dir.dir_exists("res://models/energy_weapons/" + section + "/"):
-					model_dir = "res://models/energy_weapons/" + section + "/"
-				else:
-					print("Warning: missing directory for energy weapon model " + weapon_name + ". The default directory will be used instead: ", model_dir)
+				model_dir = "res://models/energy_weapons/" + section + "/"
+				# TODO: same issue with dir_exists above
+				#model_dir = "res://models/energy_weapons/" + default_energy_weapon_directory + "/"
+				#if dir.dir_exists("res://models/energy_weapons/" + section + "/"):
+				#	model_dir = "res://models/energy_weapons/" + section + "/"
+				#else:
+				#	print("Warning: missing directory for energy weapon model " + weapon_name + ". The default directory will be used instead: ", model_dir)
 
 				var model_path: String = model_dir + "model.dae"
-				if dir.file_exists(model_path):
+				if not (dir.file_exists(model_path) or dir.file_exists(model_path + ".import")):
 					model_path = model_dir + "model.dae"
-				else:
 					print("Warning: missing energy weapon model file for " + weapon_name + ". The default model will be used instead: ", model_path)
 
 				var icon_path: String = model_dir + "icon.png"
-				if not dir.file_exists(icon_path):
+				if not (dir.file_exists(icon_path) or dir.file_exists(icon_path + ".import")):
 					icon_path = "res://models/energy_weapons/" + default_energy_weapon_directory + "/icon.png"
 					print("Warning: missing icon for ", weapon_name, ". The default icon will be used instead: ", icon_path)
 
 				var video_path: String = model_dir + "video.ogv"
-				if not dir.file_exists(video_path):
+				if not (dir.file_exists(video_path) or dir.file_exists(video_path + ".import")):
 					video_path = "res://models/energy_weapons/" + default_energy_weapon_directory + "/video.ogv"
 					print("Warning: missing video for ", weapon_name, ". The default video will be used instead: ", video_path)
 
@@ -210,25 +213,26 @@ func _ready():
 
 				energy_weapon_data[weapon_name] = energy_weapon_config_data
 			"missile_weapon":
-				model_dir = "res://models/energy_weapons/" + default_missile_weapon_directory + "/"
-				if dir.dir_exists("res://models/missile_weapons/" + section + "/"):
-					model_dir = "res://models/missile_weapons/" + section + "/"
-				else:
-					print("Warning: missing directory for missile weapon model " + weapon_name + ". The default directory will be used instead: ", model_dir)
+				model_dir = "res://models/missile_weapons/" + section + "/"
+				# TODO: same issue with dir_exists above
+				#model_dir = "res://models/energy_weapons/" + default_missile_weapon_directory + "/"
+				#if dir.dir_exists("res://models/missile_weapons/" + section + "/"):
+				#	model_dir = "res://models/missile_weapons/" + section + "/"
+				#else:
+				#	print("Warning: missing directory for missile weapon model " + weapon_name + ". The default directory will be used instead: ", model_dir)
 
 				var model_path: String = model_dir + "model.dae"
-				if dir.file_exists(model_path):
+				if not (dir.file_exists(model_path) or dir.file_exists(model_path + ".import")):
 					model_path = model_dir + "model.dae"
-				else:
 					print("Warning: missing missile weapon model file for " + weapon_name + ". The default model will be used instead: ", model_path)
 
 				var icon_path: String = model_dir + "icon.png"
-				if not dir.file_exists(icon_path):
+				if not (dir.file_exists(icon_path) or dir.file_exists(icon_path + ".import")):
 					icon_path = "res://models/missile_weapons/" + default_missile_weapon_directory + "/icon.png"
 					print("Warning: missing icon for ", weapon_name, ". The default icon will be used instead: ", icon_path)
 
 				var video_path: String = model_dir + "video.ogv"
-				if not dir.file_exists(video_path):
+				if not (dir.file_exists(video_path) or dir.file_exists(video_path + ".import")):
 					video_path = "res://models/missile_weapons/" + default_missile_weapon_directory + "/video.ogv"
 					print("Warning: missing video for ", weapon_name, ". The default video will be used instead: ", video_path)
 
@@ -246,7 +250,7 @@ func _ready():
 
 	# Build campaign list
 	if not dir.dir_exists("res://campaigns"):
-		print("Missin res://campaigns directory!")
+		print("Missing res://campaigns directory!")
 	else:
 		var campaigns_config: ConfigFile = ConfigFile.new()
 		campaigns_config.load("res://configs/campaigns.cfg")
@@ -272,6 +276,7 @@ func _ready():
 	# Build custom campaign list
 	if dir.open(USER_CAMPAIGNS_DIR) != OK:
 		print("Unable to open " + USER_CAMPAIGNS_DIR + " directory")
+		# TODO: create directory
 	else:
 		var campaign_file: ConfigFile = ConfigFile.new()
 
