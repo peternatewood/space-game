@@ -53,7 +53,7 @@ var power_distribution: Array = [
 	float(TOTAL_SYSTEM_POWER / 3),
 	float(TOTAL_SYSTEM_POWER / 3)
 ]
-var propulsion_force: float = get_meta("propulsion_force")
+#var propulsion_force: float = get_meta("propulsion_force")
 var shields: Array = []
 var ship_class: String = get_meta("ship_class")
 var source_folder = get_meta("source_folder")
